@@ -49,16 +49,12 @@ public class ParticipantDaoTest {
         }
     }
 
-    @Test
-    public void testGet() {
-        Participant participant = participantDAO.get(1);
-        if (participant != null) {
-            assertThat(participant.getId(), is(1));
-        } else {
-            fail("database is empty");
-        }
-    }
-
+    /*
+     * @Test public void testGet() { Participant participant =
+     * participantDAO.get(1); if (participant != null) {
+     * assertThat(participant.getId(), is(1)); } else {
+     * fail("database is empty"); } }
+     */
     @Test
     public void testListByCriteria() {
         DetachedCriteria criteria = DetachedCriteria
