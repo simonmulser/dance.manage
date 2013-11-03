@@ -12,7 +12,7 @@ import at.danceandfun.entity.Participant;
 import at.danceandfun.service.ParticipantManager;
 
 @Controller
-@RequestMapping(value = "/paricipant")
+@RequestMapping(value = "/participant")
 public class EditParticipantController {
 
     @Autowired
