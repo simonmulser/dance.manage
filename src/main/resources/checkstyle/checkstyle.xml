@@ -29,7 +29,7 @@
         applicable -->
     <!-- to checking such files -->
     <module name="TreeWalker">
-        <property name="cacheFile" value="file.cache" />
+        <property name="cacheFile" value="/src/main/resources/checkstyle/.checkstyleCache" />
         <property name="fileExtensions" value="java" />
 
         <!-- Checks for naming conventions -->
