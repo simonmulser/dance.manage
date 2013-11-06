@@ -13,6 +13,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
+
+/**
+ * @author simon
+ *
+ */
+/**
+ * @author simon
+ * 
+ */
 @Entity
 @Table(name = "PERSON")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -38,15 +49,9 @@ public abstract class Person {
     @Column(name = "PASSWORD")
     private String password;
 
-    /*
-     * TODO make working with joda DateTime.
-     * 
-     * @Column(name = "BIRTHDAY")
-     * 
-     * @Type(type =
-     * "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime") private
-     * DateTime birthday;
-     */
+    @Column(name = "BIRTHDAY")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    private DateTime birthday;
 
     @Column(name = "ACTIVE")
     private boolean active;
@@ -106,11 +111,13 @@ public abstract class Person {
         this.password = password;
     }
 
-    /*
-     * public DateTime getBirthday() { return birthday; }
-     * 
-     * public void setBirthday(DateTime birthday) { this.birthday = birthday; }
-     */
+    public DateTime getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(DateTime birthday) {
+        this.birthday = birthday;
+    }
 
     public boolean isActive() {
         return active;
