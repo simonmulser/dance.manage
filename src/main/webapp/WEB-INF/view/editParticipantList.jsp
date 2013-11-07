@@ -9,7 +9,7 @@
   
 <h2>Participant Management Screen</h2>
   
-<form:form method="post" action="add" commandName="participant">
+<form:form method="post" action="participant/add" commandName="participant">
   
     <table>
     <tr>
@@ -48,7 +48,7 @@
 </tr>
 <c:forEach items="${participantList}" var="emp">
     <tr>
-        <td>${emp.lastname}, ${emp.firstname} </td>
+        <td>${emp.lastname}  ${emp.firstname} </td>
         <td>${emp.email}</td>
         <td>${emp.telephone}</td>
     </tr>
