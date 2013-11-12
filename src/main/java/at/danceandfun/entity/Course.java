@@ -24,6 +24,9 @@ public class Course {
     @GeneratedValue
     private Integer cid;
 
+    @Column(name = "NAME")
+    private String name;
+
     @Column(name = "DURATION")
     private Integer duration;
 
@@ -87,6 +90,14 @@ public class Course {
 
     public void setCid(Integer cid) {
         this.cid = cid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getDuration() {

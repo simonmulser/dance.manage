@@ -32,8 +32,8 @@ public class Rating {
     @Column(name = "CONTRACRITIQUE")
     private String contraCritique;
 
-    @Column(name = "COURSE_SATISFACTION")
-    private Integer courseSatisfaction;
+    @Column(name = "ANSWER")
+    private String answer;
 
     @ManyToOne
     @JoinColumn(name = "C_ID")
@@ -87,12 +87,12 @@ public class Rating {
         this.contraCritique = contraCritique;
     }
 
-    public Integer getCourseSatisfaction() {
-        return courseSatisfaction;
+    public String getAnswer() {
+        return answer;
     }
 
-    public void setCourseSatisfaction(Integer courseSatisfaction) {
-        this.courseSatisfaction = courseSatisfaction;
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 
     public Course getCourse() {
