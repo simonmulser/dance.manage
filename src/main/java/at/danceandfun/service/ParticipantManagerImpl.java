@@ -10,11 +10,8 @@ import at.danceandfun.entity.Participant;
 public class ParticipantManagerImpl extends ManagerBaseImpl<Participant>
         implements ParticipantManager {
 
-    private ParticipantDao participantDao;
-
     @Autowired
     public void initializeDao(ParticipantDao participantDao) {
-        this.participantDao = participantDao;
         setDao(participantDao);
     }
 }
