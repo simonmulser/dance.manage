@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import at.danceandfun.entity.Participant;
+import at.danceandfun.service.AddressManager;
 import at.danceandfun.service.ParticipantManager;
 
 @Controller
@@ -22,6 +23,8 @@ public class EditParticipantController {
 
     @Autowired
     private ParticipantManager participantManager;
+    @Autowired
+    private AddressManager addressManager;
 
     private Participant p = new Participant();
 
@@ -40,7 +43,12 @@ public class EditParticipantController {
             BindingResult result) {
         logger.debug("ADD Participant with id " + participant.getPid());
         logger.debug("ADD Participant with bd " + participant.getBirthday());
+        participant.setActive(true);
         participantManager.save(participant);
+        if (!participant.getAddress().equals(null)) {
+            addressManager.save(participant.getAddress());
+        }
+
         this.p = new Participant();
         return "redirect:/participant";
     }
@@ -58,6 +66,8 @@ public class EditParticipantController {
         this.p = participantManager.get(pid);
         p.setActive(false);
         participantManager.update(p);
+        // p.getAddress().setActive(false);
+        // addressManager.update(p.getAddress());
         p = new Participant();
         return "redirect:/participant";
     }
