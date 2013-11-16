@@ -2,6 +2,7 @@ package at.danceandfun.dao;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.fail;
 
 import org.hibernate.criterion.DetachedCriteria;
@@ -69,5 +70,11 @@ public class ParticipantDaoTest {
                 .forClass(Participant.class);
         assertThat(participantDAO.getListByCriteria(criteria, 0, 1).isEmpty(),
                 is(false));
+    }
+
+    @Test
+    public void test() {
+        assertThat(participantDAO.getParticipantsWithNumberOfCourses(),
+                is(notNullValue()));
     }
 }

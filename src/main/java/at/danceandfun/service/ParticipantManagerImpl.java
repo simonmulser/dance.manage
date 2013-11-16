@@ -1,5 +1,8 @@
 package at.danceandfun.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,5 +19,11 @@ public class ParticipantManagerImpl extends ManagerBaseImpl<Participant>
     public void initializeDao(ParticipantDao participantDao) {
         this.participantDao = participantDao;
         setDao(participantDao);
+    }
+
+    @Override
+    public Map<Integer, List<Participant>> getParticipantsByNumberOfCourses() {
+
+        return participantDao.getParticipantsWithNumberOfCourses();
     }
 }

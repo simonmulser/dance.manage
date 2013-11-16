@@ -3,6 +3,8 @@ package at.danceandfun.service;
 import java.io.Serializable;
 import java.util.List;
 
+import org.hibernate.criterion.DetachedCriteria;
+
 import at.danceandfun.dao.DaoBase;
 
 public abstract class ManagerBaseImpl<T> implements ManagerBase<T> {
@@ -31,6 +33,17 @@ public abstract class ManagerBaseImpl<T> implements ManagerBase<T> {
     @Override
     public T get(Serializable id) {
         return dao.get(id);
+    }
+
+    @Override
+    public List<T> getListByCriteria(DetachedCriteria detachedCriteria) {
+        return dao.getListByCriteria(detachedCriteria);
+    }
+
+    @Override
+    public List<T> getListByCriteria(DetachedCriteria detachedCriteria,
+            int offset, int size) {
+        return dao.getListByCriteria(detachedCriteria, offset, size);
     }
 
 }

@@ -33,19 +33,19 @@ public class Course {
     @Column(name = "PRICE")
     private Double price;
 
-    @Column(name = "WEEKDAY")
     // TODO Enumeration für Tag
+    @Column(name = "WEEKDAY")
     private Integer weekday;
 
     @Column(name = "TIME")
     private Time time;
 
-    @Column(name = "ESTIMATED_SPECTATORS")
     // TODO Enumeration für Zuschauer
+    @Column(name = "ESTIMATED_SPECTATORS")
     private Integer estimatedSpectators;
 
-    @Column(name = "AGEGROUP")
     // TODO Enumeartion für Altersgruppe
+    @Column(name = "AGEGROUP")
     private Integer ageGroup;
 
     @Column(name = "AMOUNT_PERFORMANCES")
@@ -90,14 +90,6 @@ public class Course {
 
     public void setCid(Integer cid) {
         this.cid = cid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Integer getDuration() {
@@ -164,14 +156,6 @@ public class Course {
         this.active = active;
     }
 
-    public Integer getLevel() {
-        return level;
-    }
-
-    public void setLevel(Integer level) {
-        this.level = level;
-    }
-
     public List<Rating> getRatings() {
         return ratings;
     }
@@ -226,6 +210,22 @@ public class Course {
 
     public void setPositions(List<Position> positions) {
         this.positions = positions;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
 }

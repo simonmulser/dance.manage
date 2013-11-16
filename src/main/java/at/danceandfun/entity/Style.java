@@ -25,8 +25,7 @@ public class Style {
     @Column(name = "NAME")
     private String name;
 
-    @OneToMany
-    @JoinColumn(name = "C_ID")
+    @OneToMany(mappedBy = "style")
     private List<Course> courses;
 
     @ManyToMany(cascade = { CascadeType.ALL })
