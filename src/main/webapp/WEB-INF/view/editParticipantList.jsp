@@ -105,22 +105,22 @@
 	<c:if test="${!empty participantList}">
 		<table class="data">
 			<tr>
-				<th>Name</th>
-				<th>Email</th>
-				<th>Telephone</th>
-				<th>Birthday</th>
-				<th>Contact Person</th>
-				<th>Emergency Number</th>
-				<th>Street</th>
-				<th>ZIP</th>
-				<th>City</th>
+				<th><spring:message code="label.name"/></th>
+				<th><spring:message code="label.email"/></th>
+				<th><spring:message code="label.telephone"/></th>
+				<th><spring:message code="label.birthday"/></th>
+				<th><spring:message code="label.contactPerson"/></th>
+				<th><spring:message code="label.emergencyNumber"/></th>
+				<th><spring:message code="label.street"/></th>
+				<th><spring:message code="label.zip"/></th>
+				<th><spring:message code="label.city"/></th>
 				<th>&nbsp;</th>
 			</tr>
 
 			<c:forEach items="${participantList}" var="emp">
 
 				<tr>
-					<td>${emp.lastname}${emp.firstname}</td>
+					<td>${emp.lastname} ${emp.firstname}</td>
 					<td>${emp.email}</td>
 					<td>${emp.telephone}</td>
 					<td>${emp.birthday}</td>
@@ -132,8 +132,8 @@
 						<td>${emp.address.zip}</td>
 						<td>${emp.address.city}</td>
 					</c:if>
-					<td><a href="participant/edit/${emp.pid}">Edit</a></td>
-					<td><a href="participant/delete/${emp.pid}">Delete</a></td>
+					<td><a href="participant/edit/${emp.pid}"><spring:message code="label.edit" /></a></td>
+					<td><a href="participant/delete/${emp.pid}"><spring:message code="label.delete"/></a></td>
 				</tr>
 
 			</c:forEach>

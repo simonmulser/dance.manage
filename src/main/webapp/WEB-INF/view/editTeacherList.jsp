@@ -48,6 +48,18 @@
 				<td><form:input path="birthday" /></td>
 			</tr>
 			<tr>
+				<td><form:label path="svnr">
+						<spring:message code="label.svnr" />
+					</form:label></td>
+				<td><form:input path="svnr" /></td>
+			</tr>
+			<tr>
+				<td><form:label path="salary">
+						<spring:message code="label.salary" />
+					</form:label></td>
+				<td><form:input path="salary" /></td>
+			</tr>
+			<tr>
 				<td><form:label path="address.street">
 						<spring:message code="label.street" />
 					</form:label></td>
@@ -93,31 +105,35 @@
 	<c:if test="${!empty teacherList}">
 		<table class="data">
 			<tr>
-				<th>Name</th>
-				<th>Email</th>
-				<th>Telephone</th>
-				<th>Birthday</th>
-				<th>Street</th>
-				<th>ZIP</th>
-				<th>City</th>
+				<th><spring:message code="label.name"/></th>
+				<th><spring:message code="label.email"/></th>
+				<th><spring:message code="label.telephone"/></th>
+				<th><spring:message code="label.birthday"/></th>
+				<th><spring:message code="label.svnr"/></th>
+				<th><spring:message code="label.salary"/></th>
+				<th><spring:message code="label.street"/></th>
+				<th><spring:message code="label.zip"/></th>
+				<th><spring:message code="label.city"/></th>
 				<th>&nbsp;</th>
 			</tr>
 
 			<c:forEach items="${teacherList}" var="teacher">
 
 				<tr>
-					<td>${teacher.lastname}${teacher.firstname}</td>
+					<td>${teacher.lastname} ${teacher.firstname}</td>
 					<td>${teacher.email}</td>
 					<td>${teacher.telephone}</td>
 					<td>${teacher.birthday}</td>
+					<td>${teacher.svnr}</td>
+					<td>${teacher.salary}</td>
 					<c:if test="${!empty teacher.address}">
 						<td>${teacher.address.street}
 							${teacher.address.number}/${teacher.address.stair}/${teacher.address.door}</td>
 						<td>${teacher.address.zip}</td>
 						<td>${teacher.address.city}</td>
 					</c:if>
-					<td><a href="teacher/edit/${teacher.pid}">Edit</a></td>
-					<td><a href="teacher/delete/${teacher.pid}">Delete</a></td>
+					<td><a href="teacher/edit/${teacher.pid}"><spring:message code="label.edit"/></a></td>
+					<td><a href="teacher/delete/${teacher.pid}"><spring:message code="label.delete"/></a></td>
 				</tr>
 
 			</c:forEach>
