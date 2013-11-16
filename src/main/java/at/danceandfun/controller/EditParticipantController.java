@@ -32,7 +32,7 @@ public class EditParticipantController {
     public String listParticipants(ModelMap map) {
         logger.debug("LIST Participant with id " + p.getPid());
         map.addAttribute("participant", this.p);
-        map.addAttribute("participantList", participantManager.getList());
+        map.addAttribute("participantList", participantManager.getActiveList());
 
         return "editParticipantList";
     }
