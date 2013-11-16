@@ -8,4 +8,6 @@ import at.danceandfun.entity.Participant;
 public interface ParticipantManager extends ManagerBase<Participant> {
 
     public Map<Integer, List<Participant>> getParticipantsByNumberOfCourses();
+
+    public List<Participant> getActiveList();
 }

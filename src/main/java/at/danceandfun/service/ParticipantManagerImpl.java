@@ -3,6 +3,8 @@ package at.danceandfun.service;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,4 +28,11 @@ public class ParticipantManagerImpl extends ManagerBaseImpl<Participant>
 
         return participantDao.getParticipantsWithNumberOfCourses();
     }
+
+    public List<Participant> getActiveList() {
+        DetachedCriteria active = DetachedCriteria.forClass(Participant.class);
+        active.add(Restrictions.eq("active", true));
+        return participantDao.getListByCriteria(active);
+    }
+
 }

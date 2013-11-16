@@ -15,6 +15,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import at.danceandfun.enumeration.AgeGroup;
+import at.danceandfun.enumeration.CourseLevel;
+import at.danceandfun.enumeration.SpectatorAmount;
+import at.danceandfun.enumeration.WeekDay;
+
 @Entity
 @Table(name = "COURSE")
 public class Course {
@@ -33,20 +38,17 @@ public class Course {
     @Column(name = "PRICE")
     private Double price;
 
-    // TODO Enumeration für Tag
     @Column(name = "WEEKDAY")
-    private Integer weekday;
+    private WeekDay weekday;
 
     @Column(name = "TIME")
     private Time time;
 
-    // TODO Enumeration für Zuschauer
     @Column(name = "ESTIMATED_SPECTATORS")
-    private Integer estimatedSpectators;
+    private SpectatorAmount estimatedSpectators;
 
-    // TODO Enumeartion für Altersgruppe
     @Column(name = "AGEGROUP")
-    private Integer ageGroup;
+    private AgeGroup ageGroup;
 
     @Column(name = "AMOUNT_PERFORMANCES")
     private Integer amountPerformances;
@@ -55,8 +57,7 @@ public class Course {
     private boolean active;
 
     @Column(name = "LEVEL")
-    // TODO Enumeration für Können
-    private Integer level;
+    private CourseLevel level;
 
     @OneToMany(mappedBy = "course")
     private List<Rating> ratings;
@@ -108,11 +109,11 @@ public class Course {
         this.price = price;
     }
 
-    public Integer getWeekday() {
+    public WeekDay getWeekday() {
         return weekday;
     }
 
-    public void setWeekday(Integer weekday) {
+    public void setWeekday(WeekDay weekday) {
         this.weekday = weekday;
     }
 
@@ -124,19 +125,19 @@ public class Course {
         this.time = time;
     }
 
-    public Integer getEstimatedSpectators() {
+    public SpectatorAmount getEstimatedSpectators() {
         return estimatedSpectators;
     }
 
-    public void setEstimatedSpectators(Integer estimatedSpectators) {
+    public void setEstimatedSpectators(SpectatorAmount estimatedSpectators) {
         this.estimatedSpectators = estimatedSpectators;
     }
 
-    public Integer getAgeGroup() {
+    public AgeGroup getAgeGroup() {
         return ageGroup;
     }
 
-    public void setAgeGroup(Integer ageGroup) {
+    public void setAgeGroup(AgeGroup ageGroup) {
         this.ageGroup = ageGroup;
     }
 
@@ -154,6 +155,14 @@ public class Course {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public CourseLevel getLevel() {
+        return level;
+    }
+
+    public void setLevel(CourseLevel level) {
+        this.level = level;
     }
 
     public List<Rating> getRatings() {
@@ -218,14 +227,6 @@ public class Course {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Integer getLevel() {
-        return level;
-    }
-
-    public void setLevel(Integer level) {
-        this.level = level;
     }
 
 }

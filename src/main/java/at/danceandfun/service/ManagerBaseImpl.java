@@ -21,6 +21,11 @@ public abstract class ManagerBaseImpl<T> implements ManagerBase<T> {
     }
 
     @Override
+    public List<T> getListByCriteria(DetachedCriteria detachedCriteria) {
+        return dao.getListByCriteria(detachedCriteria);
+    }
+
+    @Override
     public void save(T t) {
         dao.save(t);
     }
@@ -33,11 +38,6 @@ public abstract class ManagerBaseImpl<T> implements ManagerBase<T> {
     @Override
     public T get(Serializable id) {
         return dao.get(id);
-    }
-
-    @Override
-    public List<T> getListByCriteria(DetachedCriteria detachedCriteria) {
-        return dao.getListByCriteria(detachedCriteria);
     }
 
     @Override
