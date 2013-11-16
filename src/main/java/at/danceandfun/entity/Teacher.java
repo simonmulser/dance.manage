@@ -9,9 +9,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
-
 @Entity
 @Table(name = "TEACHER")
 @PrimaryKeyJoinColumn(name = "P_ID")
@@ -23,10 +20,13 @@ public class Teacher extends Person {
     @Column(name = "SALLARY")
     private Double sallary;
 
-    @Column(name = "ENGAGEMENTDATE")
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
-    private DateTime engagementDate;
-
+    /*
+     * @Column(name = "ENGAGEMENTDATE")
+     * 
+     * @Type(type =
+     * "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime") private
+     * DateTime engagementDate;
+     */
     @OneToMany(mappedBy = "teacher")
     private List<Course> courses;
 
@@ -49,13 +49,12 @@ public class Teacher extends Person {
         this.sallary = sallary;
     }
 
-    public DateTime getEngagementDate() {
-        return engagementDate;
-    }
-
-    public void setEngagementDate(DateTime engagementDate) {
-        this.engagementDate = engagementDate;
-    }
+    /*
+     * public DateTime getEngagementDate() { return engagementDate; }
+     * 
+     * public void setEngagementDate(DateTime engagementDate) {
+     * this.engagementDate = engagementDate; }
+     */
 
     public List<Course> getCourses() {
         return courses;

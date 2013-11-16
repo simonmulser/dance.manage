@@ -63,12 +63,13 @@ public abstract class DaoBaseImpl<T> implements DaoBase<T> {
     @SuppressWarnings("unchecked")
     public List<T> getListByCriteria(DetachedCriteria detachedCriteria) {
         logger.debug("getListByCriteria");
+
         return detachedCriteria.getExecutableCriteria(getCurrentSession())
                 .list();
 
     }
 
-    private Session getCurrentSession() {
+    protected Session getCurrentSession() {
         return sessionFactory.getCurrentSession();
     }
 }

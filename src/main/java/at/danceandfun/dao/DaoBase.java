@@ -19,4 +19,5 @@ public interface DaoBase<T> {
 
     public List<T> getListByCriteria(DetachedCriteria detachedCriteria,
             int offset, int size);
+
 }

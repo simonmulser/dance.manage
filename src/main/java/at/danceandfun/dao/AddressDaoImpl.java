@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,4 @@ public class AddressDaoImpl extends DaoBaseImpl<Address> implements AddressDao {
         return criteria.list();
     }
 
-    private Session getCurrentSession() {
-        return sessionFactory.getCurrentSession();
-    }
 }

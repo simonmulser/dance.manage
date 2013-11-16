@@ -1,6 +1,7 @@
 package at.danceandfun.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -20,6 +21,12 @@ public class ParticipantManagerImpl extends ManagerBaseImpl<Participant>
     public void initializeDao(ParticipantDao participantDao) {
         this.participantDao = participantDao;
         setDao(participantDao);
+    }
+
+    @Override
+    public Map<Integer, List<Participant>> getParticipantsByNumberOfCourses() {
+
+        return participantDao.getParticipantsWithNumberOfCourses();
     }
 
     public List<Participant> getActiveList() {
