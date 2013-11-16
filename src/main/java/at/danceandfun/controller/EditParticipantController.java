@@ -26,12 +26,12 @@ public class EditParticipantController {
     @Autowired
     private AddressManager addressManager;
 
-    private Participant p = new Participant();
+    private Participant participant = new Participant();
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String listParticipants(ModelMap map) {
-        logger.debug("LIST Participant with id " + p.getPid());
-        map.addAttribute("participant", this.p);
+        logger.debug("LIST Participant with id " + participant.getPid());
+        map.addAttribute("participant", participant);
         map.addAttribute("participantList", participantManager.getActiveList());
 
         return "editParticipantList";
@@ -49,26 +49,26 @@ public class EditParticipantController {
             addressManager.save(participant.getAddress());
         }
 
-        this.p = new Participant();
+        participant = new Participant();
         return "redirect:/participant";
     }
 
     @RequestMapping(value = "/edit/{pid}")
     public String editParticipant(@PathVariable("pid") Integer pid) {
         logger.debug("Edit Participant with id " + pid);
-        this.p = participantManager.get(pid);
+        participant = participantManager.get(pid);
         return "redirect:/participant";
     }
 
     @RequestMapping(value = "/delete/{pid}")
     public String deleteParticipant(@PathVariable("pid") Integer pid) {
         logger.debug("Delete Participant with id " + pid);
-        this.p = participantManager.get(pid);
-        p.setActive(false);
-        participantManager.update(p);
+        participant = participantManager.get(pid);
+        participant.setActive(false);
+        participantManager.update(participant);
         // p.getAddress().setActive(false);
         // addressManager.update(p.getAddress());
-        p = new Participant();
+        participant = new Participant();
         return "redirect:/participant";
     }
 
