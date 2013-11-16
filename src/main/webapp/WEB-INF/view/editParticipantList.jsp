@@ -7,31 +7,16 @@
 
 <dmtags:base title="Kursteilnehmer">
 
-	<c:if test="${!empty participantList}">
-		<table class="table table-striped table-bordered">
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Email</th>
-					<th>Telephone</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach items="${participantList}" var="emp">
-					<tr>
-						<td>${emp.firstname} ${emp.lastname}</td>
-						<td>${emp.email}</td>
-						<td>${emp.telephone}</td>
-					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
-	</c:if>
-
+	
 	<form:form method="post" action="participant/add"
 		commandName="participant">
 
 		<table>
+			<tr>
+				<td><form:input path="pid" type="hidden" /> <form:input
+						path="active" type="hidden" /> <form:input path="address.aid"
+						type="hidden" /></td>
+			</tr>
 			<tr>
 				<td><form:label path="firstname">
 						<spring:message code="label.firstname" />
@@ -57,10 +42,104 @@
 				<td><form:input path="telephone" /></td>
 			</tr>
 			<tr>
+				<td><form:label path="birthday">
+						<spring:message code="label.birthday" />
+					</form:label></td>
+				<td><form:input path="birthday" /></td>
+			</tr>
+			<tr>
+				<td><form:label path="contactPerson">
+						<spring:message code="label.contactPerson" />
+					</form:label></td>
+				<td><form:input path="contactPerson" /></td>
+			</tr>
+			<tr>
+				<td><form:label path="emergencyNumber">
+						<spring:message code="label.emergencyNumber" />
+					</form:label></td>
+				<td><form:input path="emergencyNumber" /></td>
+			</tr>
+			<tr>
+				<td><form:label path="address.street">
+						<spring:message code="label.street" />
+					</form:label></td>
+				<td><form:input path="address.street" /></td>
+			</tr>
+			<tr>
+				<td><form:label path="address.number">
+						<spring:message code="label.number" />
+					</form:label></td>
+				<td><form:input path="address.number" /></td>
+			</tr>
+			<tr>
+				<td><form:label path="address.stair">
+						<spring:message code="label.stair" />
+					</form:label></td>
+				<td><form:input path="address.stair" /></td>
+			</tr>
+			<tr>
+				<td><form:label path="address.door">
+						<spring:message code="label.door" />
+					</form:label></td>
+				<td><form:input path="address.door" /></td>
+			</tr>
+			<tr>
+				<td><form:label path="address.zip">
+						<spring:message code="label.zip" />
+					</form:label></td>
+				<td><form:input path="address.zip" /></td>
+			</tr>
+			<tr>
+				<td><form:label path="address.city">
+						<spring:message code="label.city" />
+					</form:label></td>
+				<td><form:input path="address.city" /></td>
+			</tr>
+			<tr>
 				<td colspan="2"><input type="submit"
-					value="<spring:message code="label.add"/>" /></td>
+					value="<spring:message code="label.save"/>" /></td>
 			</tr>
 		</table>
 	</form:form>
+	
+	<c:if test="${!empty participantList}">
+		<table class="data">
+			<tr>
+				<th>Name</th>
+				<th>Email</th>
+				<th>Telephone</th>
+				<th>Birthday</th>
+				<th>Contact Person</th>
+				<th>Emergency Number</th>
+				<th>Street</th>
+				<th>ZIP</th>
+				<th>City</th>
+				<th>&nbsp;</th>
+			</tr>
+
+			<c:forEach items="${participantList}" var="emp">
+
+				<tr>
+					<td>${emp.lastname}${emp.firstname}</td>
+					<td>${emp.email}</td>
+					<td>${emp.telephone}</td>
+					<td>${emp.birthday}</td>
+					<td>${emp.contactPerson}</td>
+					<td>${emp.emergencyNumber}</td>
+					<c:if test="${!empty emp.address}">
+						<td>${emp.address.street}
+							${emp.address.number}/${emp.address.stair}/${emp.address.door}</td>
+						<td>${emp.address.zip}</td>
+						<td>${emp.address.city}</td>
+					</c:if>
+					<td><a href="participant/edit/${emp.pid}">Edit</a></td>
+					<td><a href="participant/delete/${emp.pid}">Delete</a></td>
+				</tr>
+
+			</c:forEach>
+
+		</table>
+	</c:if>
+	
 
 </dmtags:base>

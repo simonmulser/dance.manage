@@ -6,13 +6,12 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import at.danceandfun.entity.Participant;
+import at.danceandfun.entity.Style;
 
 @Repository
-public class ParticipantDaoImpl extends DaoBaseImpl<Participant> implements
-        ParticipantDao {
+public class StyleDaoImpl extends DaoBaseImpl<Style> implements StyleDao {
 
-    private static Logger logger = Logger.getLogger(ParticipantDaoImpl.class);
+    private static Logger logger = Logger.getLogger(StyleDaoImpl.class);
 
     @Autowired
     private SessionFactory sessionFactory;
