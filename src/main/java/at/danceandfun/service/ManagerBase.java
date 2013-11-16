@@ -9,11 +9,14 @@ public interface ManagerBase<T> {
 
     public List<T> getList();
 
-    public List<T> getListByCriteria(DetachedCriteria detachedCriteria);
-
     public void save(T t);
 
     public void update(T t);
 
     public T get(Serializable id);
+
+    public List<T> getListByCriteria(DetachedCriteria detachedCriteria);
+
+    public List<T> getListByCriteria(DetachedCriteria detachedCriteria,
+            int offset, int size);
 }

@@ -93,14 +93,6 @@ public class Course {
         this.cid = cid;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Integer getDuration() {
         return duration;
     }
@@ -227,6 +219,14 @@ public class Course {
 
     public void setPositions(List<Position> positions) {
         this.positions = positions;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

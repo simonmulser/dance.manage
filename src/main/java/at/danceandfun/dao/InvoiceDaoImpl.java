@@ -1,7 +1,6 @@
 package at.danceandfun.dao;
 
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -16,7 +15,4 @@ public class InvoiceDaoImpl extends DaoBaseImpl<Invoice> implements InvoiceDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-    private Session getCurrentSession() {
-        return sessionFactory.getCurrentSession();
-    }
 }

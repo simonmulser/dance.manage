@@ -40,4 +40,10 @@ public abstract class ManagerBaseImpl<T> implements ManagerBase<T> {
         return dao.get(id);
     }
 
+    @Override
+    public List<T> getListByCriteria(DetachedCriteria detachedCriteria,
+            int offset, int size) {
+        return dao.getListByCriteria(detachedCriteria, offset, size);
+    }
+
 }
