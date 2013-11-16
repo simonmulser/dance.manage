@@ -22,7 +22,6 @@ public class EditParticipantController {
     @Autowired
     private ParticipantManager participantManager;
 
-
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String listParticipants(ModelMap map) {
         map.addAttribute("participant", new Participant());
