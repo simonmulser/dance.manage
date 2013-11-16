@@ -17,7 +17,7 @@ public class Participant extends Person {
     private String emergencyNumber;
 
     @Column(name = "CONTACTPERSON")
-    private String concatPerson;
+    private String contactPerson;
 
     @ManyToMany(mappedBy = "participants")
     private List<Course> courses;
@@ -32,12 +32,12 @@ public class Participant extends Person {
         this.emergencyNumber = emergencyNumber;
     }
 
-    public String getConcatPerson() {
-        return concatPerson;
+    public String getContactPerson() {
+        return contactPerson;
     }
 
-    public void setConcatPerson(String concatPerson) {
-        this.concatPerson = concatPerson;
+    public void setContactPerson(String contactPerson) {
+        this.contactPerson = contactPerson;
     }
 
     public List<Course> getCourses() {
