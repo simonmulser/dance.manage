@@ -44,7 +44,7 @@
                 <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
                 <prop key="hibernate.hbm2ddl.import_files">${hibernate.hbm2ddl.import_files}</prop>
                 <prop key="hibernate.hbm2ddl.import_files_sql_extractor">${hibernate.hbm2ddl.import_files_sql_extractor}</prop>
-                
+                <prop key="hibernate.connection.characterEncoding">${hibernate.connection.characterEncoding}</prop>
             </props>
         </property>
     </bean>

@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@attribute name="title" required="true" type="java.lang.String"%>
 
-
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
