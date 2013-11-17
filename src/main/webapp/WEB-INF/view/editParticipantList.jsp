@@ -7,7 +7,7 @@
 
 <dmtags:base title="Kursteilnehmer">
 
-	
+
 	<form:form method="post" action="participant/add"
 		commandName="participant">
 
@@ -101,45 +101,47 @@
 			</tr>
 		</table>
 	</form:form>
-	
+
 	<c:if test="${!empty participantList}">
-		<table class="data">
-			<tr>
-				<th><spring:message code="label.name"/></th>
-				<th><spring:message code="label.email"/></th>
-				<th><spring:message code="label.telephone"/></th>
-				<th><spring:message code="label.birthday"/></th>
-				<th><spring:message code="label.contactPerson"/></th>
-				<th><spring:message code="label.emergencyNumber"/></th>
-				<th><spring:message code="label.street"/></th>
-				<th><spring:message code="label.zip"/></th>
-				<th><spring:message code="label.city"/></th>
-				<th>&nbsp;</th>
-			</tr>
-
-			<c:forEach items="${participantList}" var="emp">
-
+		<table class="table table-striped table-bordered">
+			<thead>
 				<tr>
-					<td>${emp.lastname} ${emp.firstname}</td>
-					<td>${emp.email}</td>
-					<td>${emp.telephone}</td>
-					<td>${emp.birthday}</td>
-					<td>${emp.contactPerson}</td>
-					<td>${emp.emergencyNumber}</td>
-					<c:if test="${!empty emp.address}">
-						<td>${emp.address.street}
-							${emp.address.number}/${emp.address.stair}/${emp.address.door}</td>
-						<td>${emp.address.zip}</td>
-						<td>${emp.address.city}</td>
-					</c:if>
-					<td><a href="participant/edit/${emp.pid}"><spring:message code="label.edit" /></a></td>
-					<td><a href="participant/delete/${emp.pid}"><spring:message code="label.delete"/></a></td>
+					<th><spring:message code="label.name" /></th>
+					<th><spring:message code="label.email" /></th>
+					<th><spring:message code="label.telephone" /></th>
+					<th><spring:message code="label.birthday" /></th>
+					<th><spring:message code="label.contactPerson" /></th>
+					<th><spring:message code="label.emergencyNumber" /></th>
+					<th><spring:message code="label.street" /></th>
+					<th><spring:message code="label.zip" /></th>
+					<th><spring:message code="label.city" /></th>
+					<th>&nbsp;</th>
 				</tr>
-
-			</c:forEach>
-
+			</thead>
+			<tbody>
+				<c:forEach items="${participantList}" var="emp">
+					<tr>
+						<td>${emp.lastname}${emp.firstname}</td>
+						<td>${emp.email}</td>
+						<td>${emp.telephone}</td>
+						<td>${emp.birthday}</td>
+						<td>${emp.contactPerson}</td>
+						<td>${emp.emergencyNumber}</td>
+						<c:if test="${!empty emp.address}">
+							<td>${emp.address.street}
+								${emp.address.number}/${emp.address.stair}/${emp.address.door}</td>
+							<td>${emp.address.zip}</td>
+							<td>${emp.address.city}</td>
+						</c:if>
+						<td><a href="participant/edit/${emp.pid}"><spring:message
+									code="label.edit" /></a></td>
+						<td><a href="participant/delete/${emp.pid}"><spring:message
+									code="label.delete" /></a></td>
+					</tr>
+				</c:forEach>
+			</tbody>
 		</table>
 	</c:if>
-	
+
 
 </dmtags:base>
