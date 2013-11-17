@@ -17,8 +17,8 @@ public class Teacher extends Person {
     @Column(name = "SVNR")
     private String svnr;
 
-    @Column(name = "SALLARY")
-    private Double sallary;
+    @Column(name = "SALARY")
+    private Double salary;
 
     /*
      * @Column(name = "ENGAGEMENTDATE")
@@ -41,12 +41,12 @@ public class Teacher extends Person {
         this.svnr = svnr;
     }
 
-    public Double getSallary() {
-        return sallary;
+    public Double getSalary() {
+        return salary;
     }
 
-    public void setSallary(Double sallary) {
-        this.sallary = sallary;
+    public void setSalary(Double salary) {
+        this.salary = salary;
     }
 
     /*
