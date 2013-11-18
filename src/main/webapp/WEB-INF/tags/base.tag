@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@attribute name="title" required="true" type="java.lang.String"%>
 
-
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -100,18 +100,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="span12">
-						<div class="widget">
-							<div class="widget-header">
-								<i class="icon-bar-chart"></i>
-								<h3>Kursteilnehmer</h3>
-							</div>
-							<!-- /widget-header -->
-							<div class="widget-content">
-								<jsp:doBody />
-							</div>
-							<!-- /widget-content -->
-						</div>
-						<!-- /widget -->
+						<jsp:doBody />
 					</div>
 					<!-- /span12 -->
 				</div>
