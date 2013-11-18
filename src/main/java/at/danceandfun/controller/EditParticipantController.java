@@ -49,7 +49,7 @@ public class EditParticipantController {
             addressManager.save(participant.getAddress());
         }
 
-        participant = new Participant();
+        this.participant = new Participant();
         return "redirect:/participant";
     }
 
