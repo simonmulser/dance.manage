@@ -6,6 +6,7 @@
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 
 <dmtags:base title="Kursteilnehmer">
+
 	<dmtags:widget title="Kursteilnehmer" icon="icon-user">
 		<form:form method="post" action="participant/add"
 			commandName="participant" class="form-horizontal">
@@ -142,8 +143,8 @@
 		</form:form>
 	</dmtags:widget>
 
-	<dmtags:widget title="Übersicht" style="table" icon="icon-list">
-		<c:if test="${!empty participantList}">
+	<c:if test="${!empty participantList}">
+		<dmtags:widget title="Übersicht" style="table" icon="icon-list">
 			<table class="table table-striped table-bordered">
 				<thead>
 					<tr>
@@ -190,7 +191,7 @@
 					</c:forEach>
 				</tbody>
 			</table>
-		</c:if>
-	</dmtags:widget>
+		</dmtags:widget>
+	</c:if>
 
 </dmtags:base>
