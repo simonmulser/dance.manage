@@ -1,56 +1,68 @@
 package at.danceandfun.controller;
 
-/*
- @Controller
- @RequestMapping(value = "/course")
- public class CourseController {
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
- private static Logger logger = Logger.getLogger(CourseController.class);
+import at.danceandfun.entity.Course;
+import at.danceandfun.service.CourseManager;
 
- @Autowired
- // TODO MANAGER private CourseManager courseManager;
- private Course course = new Course();
 
- @RequestMapping(value = "", method = RequestMethod.GET)
- public String listCourses(ModelMap map) {
- logger.debug("LIST Participant with id " + course.getCid());
- map.addAttribute("course", course);
- // TODO Insert manager map.addAttribute("courseList",
- // courseManager.getActiveList()));
+@Controller
+@RequestMapping(value = "/course")
+public class CourseController {
 
- return "courseView";
- }
+    private static Logger logger = Logger.getLogger(CourseController.class);
 
- @RequestMapping(value = "/add", method = RequestMethod.POST)
- public String addCourse(@ModelAttribute(value = "course") Course course,
- BindingResult result) {
- logger.debug("ADD Course with id " + course.getCid());
- course.setActive(true);
- // TODO MANAGER courseManager.save(course);
- course = new Course();
- return "redirect:/course";
- }
+    @Autowired
+    private CourseManager courseManager;
 
- @RequestMapping(value = "/edit/{cid}")
- public String editCourse(@PathVariable("cid") Integer cid) {
- logger.debug("Edit Course with id " + cid);
- // TODO MANAGER course = courseManager.get(cid);
- return "redirect:/course";
- }
+    private Course course = new Course();
 
- @RequestMapping(value = "/delete/{cid}")
- public String deleteCourse(@PathVariable("cid") Integer cid) {
- logger.debug("Delete Course with id " + cid);
- // TODO MANAGER course = courseManager.get(cid);
- course.setActive(false);
- // TODO MANAGER courseManager.update(course);
- course = new Course();
- return "redirect:/course";
- }
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public String listCourses(ModelMap map) {
+        logger.debug("LIST course with id " + course.getCid());
+        map.addAttribute("course", course);
+        map.addAttribute("courseList", courseManager.getActiveList());
+        logger.debug("GROESSE: " + courseManager.getActiveList().size());
 
- /*
- * TODO MANAGER public void setCourseManager(CourseManager courseManager) {
- * this.courseManager = courseManager; }
- */
+        return "courseView";
+    }
 
-// }
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String addCourse(@ModelAttribute(value = "course") Course course,
+            BindingResult result) {
+        logger.debug("ADD Course with id " + course.getCid());
+        course.setActive(true);
+        courseManager.save(course);
+        course = new Course();
+        return "redirect:/course";
+    }
+
+    @RequestMapping(value = "/edit/{cid}")
+    public String editCourse(@PathVariable("cid") Integer cid) {
+        logger.debug("Edit Course with id " + cid);
+        course = courseManager.get(cid);
+        return "redirect:/course";
+    }
+
+    @RequestMapping(value = "/delete/{cid}")
+    public String deleteCourse(@PathVariable("cid") Integer cid) {
+        logger.debug("Delete Course with id " + cid);
+        course = courseManager.get(cid);
+        course.setActive(false);
+        courseManager.update(course);
+        course = new Course();
+        return "redirect:/course";
+    }
+
+    public void setCourseManager(CourseManager courseManager) {
+        this.courseManager = courseManager;
+    }
+}
