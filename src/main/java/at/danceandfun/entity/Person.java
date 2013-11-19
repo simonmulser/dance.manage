@@ -16,7 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 /**
  * @author simon
@@ -57,8 +57,8 @@ public abstract class Person implements Serializable {
     private String password;
 
     @Column(name = "BIRTHDAY")
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-    private DateTime birthday;
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+    private LocalDate birthday;
 
     @Column(name = "ACTIVE")
     private boolean active;
@@ -118,11 +118,11 @@ public abstract class Person implements Serializable {
         this.password = password;
     }
 
-    public DateTime getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(DateTime birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 

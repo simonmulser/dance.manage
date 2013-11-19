@@ -2,11 +2,11 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 <%@taglib prefix="joda" uri="http://www.joda.org/joda/time/tags" %>
 
 <dmtags:base title="Kursteilnehmer">
-
 
 	<form:form method="post" action="participant/add"
 		commandName="participant">
@@ -101,47 +101,49 @@
 			</tr>
 		</table>
 	</form:form>
-
-	<c:if test="${!empty participantList}">
-		<table class="table table-striped table-bordered">
-			<!--  <thead>
-				<tr>
-					<th><spring:message code="label.name" /></th>
-					<th><spring:message code="label.email" /></th>
-					<th><spring:message code="label.telephone" /></th>
-					<th><spring:message code="label.birthday" /></th>
-					<th><spring:message code="label.contactPerson" /></th>
-					<th><spring:message code="label.emergencyNumber" /></th>
-					<th><spring:message code="label.street" /></th>
-					<th><spring:message code="label.zip" /></th>
-					<th><spring:message code="label.city" /></th>
-					<th>&nbsp;</th>
-				</tr>
-			</thead>-->
-			<tbody>
-				<c:forEach items="${participantList}" var="emp">
+	
+	<dmtags:widget title="Übersicht" style="table">
+		<c:if test="${!empty participantList}">
+			<table class="table table-striped table-bordered">
+				<thead>
 					<tr>
-						<td>${emp.lastname}${emp.firstname}</td>
-						<td>${emp.email}</td>
-						<td>${emp.telephone}</td>
-						<td>${emp.birthday}</td>
-						<td>${emp.contactPerson}</td>
-						<td>${emp.emergencyNumber}</td>
-						<c:if test="${!empty emp.address}">
-							<td>${emp.address.street}
-								${emp.address.number}/${emp.address.stair}/${emp.address.door}</td>
-							<td>${emp.address.zip}</td>
-							<td>${emp.address.city}</td>
-						</c:if>
-						<td><a href="participant/edit/${emp.pid}"><spring:message
-									code="label.edit" /></a></td>
-						<td><a href="participant/delete/${emp.pid}"><spring:message
-									code="label.delete" /></a></td>
+						<th><spring:message code="label.name" /></th>
+						<th><spring:message code="label.email" /></th>
+						<th><spring:message code="label.telephone" /></th>
+						<th><spring:message code="label.birthday" /></th>
+						<th><spring:message code="label.contactPerson" /></th>
+						<th><spring:message code="label.emergencyNumber" /></th>
+						<th><spring:message code="label.street" /></th>
+						<th><spring:message code="label.zip" /></th>
+						<th><spring:message code="label.city" /></th>
+						<th>&nbsp;</th>
 					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
-	</c:if>
-
-
+				</thead>
+				<tbody>
+					<c:forEach items="${participantList}" var="emp">
+						<tr>
+							<td>${emp.firstname}&nbsp;${emp.lastname}</td>
+							<td>${emp.email}</td>
+							<td>${emp.telephone}</td>
+							<td><joda:format value="${emp.birthday}"
+									pattern="yyyy-MM-dd" /></td>
+							<td>${emp.contactPerson}</td>
+							<td>${emp.emergencyNumber}</td>
+							<c:if test="${!empty emp.address}">
+								<td>${emp.address.street}
+									${emp.address.number}/${emp.address.stair}/${emp.address.door}</td>
+								<td>${emp.address.zip}</td>
+								<td>${emp.address.city}</td>
+							</c:if>
+							<td><a href="participant/edit/${emp.pid}"><spring:message
+										code="label.edit" /></a> &nbsp; <a
+								href="participant/delete/${emp.pid}"><spring:message
+										code="label.delete" /></a></td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		</c:if>
+	</dmtags:widget>
+	
 </dmtags:base>
