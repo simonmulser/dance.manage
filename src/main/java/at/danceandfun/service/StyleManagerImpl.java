@@ -16,6 +16,11 @@ public class StyleManagerImpl extends ManagerBaseImpl<Style> implements
 
     private StyleDao styleDao;
 
+    public StyleManagerImpl() {
+        super(Style.class);
+        // TODO Auto-generated constructor stub
+    }
+
     @Autowired
     public void initializeDao(StyleDao styleDao) {
         this.styleDao = styleDao;

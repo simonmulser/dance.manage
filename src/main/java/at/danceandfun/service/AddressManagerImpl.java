@@ -10,6 +10,11 @@ import at.danceandfun.entity.Address;
 public class AddressManagerImpl extends ManagerBaseImpl<Address> implements
         AddressManager {
 
+    public AddressManagerImpl() {
+        super(Address.class);
+        // TODO Auto-generated constructor stub
+    }
+
     @Autowired
     public void initializeDao(AddressDao addresstDao) {
         setDao(addresstDao);

@@ -1,5 +1,6 @@
 package at.danceandfun.entity;
 
+import java.io.Serializable;
 import java.sql.Time;
 import java.util.List;
 
@@ -22,7 +23,12 @@ import at.danceandfun.enumeration.WeekDay;
 
 @Entity
 @Table(name = "COURSE")
-public class Course {
+public class Course implements Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 6088131134219471148L;
 
     @Id
     @Column(name = "C_ID")

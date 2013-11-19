@@ -16,6 +16,11 @@ public class InvoiceManagerImpl extends ManagerBaseImpl<Invoice> implements
 
     private InvoiceDao invoiceDao;
 
+    public InvoiceManagerImpl() {
+        super(Invoice.class);
+        // TODO Auto-generated constructor stub
+    }
+
     @Autowired
     public void initializeDao(InvoiceDao invoiceDao) {
         this.invoiceDao = invoiceDao;

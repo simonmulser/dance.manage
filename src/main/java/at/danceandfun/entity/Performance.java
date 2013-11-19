@@ -1,5 +1,6 @@
 package at.danceandfun.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -16,7 +17,12 @@ import org.joda.time.DateTime;
 
 @Entity
 @Table(name = "PERFORMANCE")
-public class Performance {
+public class Performance implements Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -4142311801625221575L;
 
     @Id
     @Column(name = "PER_ID")

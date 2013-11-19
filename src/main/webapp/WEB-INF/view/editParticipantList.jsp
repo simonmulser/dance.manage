@@ -3,11 +3,14 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<%@taglib prefix="joda" uri="http://www.joda.org/joda/time/tags" %>
+  <% pageContext.setAttribute("now", new org.joda.time.DateTime()); %>
 
 <dmtags:base title="Kursteilnehmer">
 
-	
+
 	<form:form method="post" action="participant/add"
 		commandName="participant">
 
@@ -101,7 +104,8 @@
 			</tr>
 		</table>
 	</form:form>
-	
+  <joda:format value="${now}" style="SM" />
+
 	<c:if test="${!empty participantList}">
 		<table class="data">
 			<tr>
@@ -123,7 +127,7 @@
 					<td>${emp.lastname}${emp.firstname}</td>
 					<td>${emp.email}</td>
 					<td>${emp.telephone}</td>
-					<td>${emp.birthday}</td>
+					<td><joda:format value="${emp.birthday}" pattern="yy/M/d" style="SM" /></td>
 					<td>${emp.contactPerson}</td>
 					<td>${emp.emergencyNumber}</td>
 					<c:if test="${!empty emp.address}">
@@ -140,6 +144,6 @@
 
 		</table>
 	</c:if>
-	
+
 
 </dmtags:base>

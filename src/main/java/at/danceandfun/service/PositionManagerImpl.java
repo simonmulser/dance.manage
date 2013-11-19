@@ -12,6 +12,11 @@ public class PositionManagerImpl extends ManagerBaseImpl<Position> implements
 
     private PositionDao positionDao;
 
+    public PositionManagerImpl() {
+        super(Position.class);
+        // TODO Auto-generated constructor stub
+    }
+
     @Autowired
     public void initializeDao(PositionDao positionDao) {
         this.positionDao = positionDao;

@@ -1,5 +1,6 @@
 package at.danceandfun.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -15,7 +16,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "STYLE")
-public class Style {
+public class Style implements Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -3370722147282080437L;
 
     @Id
     @Column(name = "S_ID")

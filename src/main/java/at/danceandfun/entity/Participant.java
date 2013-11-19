@@ -1,9 +1,15 @@
 package at.danceandfun.entity;
 
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -11,7 +17,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "PARTICIPANT")
 @PrimaryKeyJoinColumn(name = "P_ID")
-public class Participant extends Person {
+public class Participant extends Person implements Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 8277820405941269587L;
 
     @Column(name = "EMERGENCYNUMBER")
     private String emergencyNumber;
@@ -23,6 +34,13 @@ public class Participant extends Person {
     private List<Course> courses;
 
     // TODO NiceToHave mapping with performance for ticket selling
+
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(name = "PARTICIPANT_SIBLING", joinColumns = { @JoinColumn(name = "P_ID") }, inverseJoinColumns = { @JoinColumn(name = "P_ID_REVERSE") })
+    private Set<Participant> siblings = new HashSet<Participant>();
+
+    @ManyToMany(mappedBy = "siblings")
+    private Set<Participant> siblingsReverse = new HashSet<Participant>();
 
     public String getEmergencyNumber() {
         return emergencyNumber;
@@ -46,6 +64,15 @@ public class Participant extends Person {
 
     public void setCourses(List<Course> courses) {
         this.courses = courses;
+    }
+
+    public Set<Participant> getSiblings() {
+        siblings.addAll(siblingsReverse);
+        return siblings;
+    }
+
+    public void setSiblings(Set<Participant> siblings) {
+        this.siblings = siblings;
     }
 
 }

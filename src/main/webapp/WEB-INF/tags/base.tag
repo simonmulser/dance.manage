@@ -65,7 +65,7 @@
 				<ul class="mainnav">
 					<li><a href="index.html"><i class="icon-dashboard"></i><span>Dashboard</span>
 					</a></li>
-					<li><a href="reports.html"><i class="icon-list-alt"></i><span>Reports</span>
+					<li><a href="lists"><i class="icon-list-alt"></i><span>Listen</span>
 					</a></li>
 					<li><a href="guidely.html"><i class="icon-facetime-video"></i><span>App
 								Tour</span> </a></li>

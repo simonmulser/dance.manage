@@ -1,5 +1,6 @@
 package at.danceandfun.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -28,7 +29,12 @@ import org.joda.time.DateTime;
 @Entity
 @Table(name = "PERSON")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Person {
+public abstract class Person implements Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -2343963120328915547L;
 
     @Id
     @Column(name = "P_ID")

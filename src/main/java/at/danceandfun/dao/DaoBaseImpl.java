@@ -2,24 +2,27 @@ package at.danceandfun.dao;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
+@Repository
 public abstract class DaoBaseImpl<T> implements DaoBase<T> {
     private static Logger logger = Logger.getLogger(DaoBaseImpl.class);
 
     private Class<T> entityClass;
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @SuppressWarnings("unchecked")
     public DaoBaseImpl() {
@@ -27,49 +30,46 @@ public abstract class DaoBaseImpl<T> implements DaoBase<T> {
                 .getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
-    @SuppressWarnings("unchecked")
-    public List<T> getList() {
-        logger.debug("loadAll");
-        Criteria criteria = getCurrentSession().createCriteria(entityClass);
-        return criteria.list();
-    }
-
     public void save(T domain) {
         logger.debug("save");
-        getCurrentSession().saveOrUpdate(domain);
-
+        entityManager.persist(domain);
     }
 
     public void update(T domain) {
         logger.debug("update");
-        getCurrentSession().merge(domain);
+        entityManager.merge(domain);
     }
 
     public T get(Serializable id) {
         logger.debug("get");
-        @SuppressWarnings("unchecked")
-        T object = (T) getCurrentSession().get(entityClass, id);
-        return object;
+        return entityManager.find(entityClass, id);
     }
 
     @SuppressWarnings("unchecked")
     public List<T> getListByCriteria(DetachedCriteria detachedCriteria,
             int offset, int size) {
         logger.debug("getListByCriteria with offset and size");
-        return detachedCriteria.getExecutableCriteria(getCurrentSession())
+        return detachedCriteria.getExecutableCriteria(getHibernateSession())
                 .list();
     }
 
     @SuppressWarnings("unchecked")
     public List<T> getListByCriteria(DetachedCriteria detachedCriteria) {
         logger.debug("getListByCriteria");
-
-        return detachedCriteria.getExecutableCriteria(getCurrentSession())
+        return detachedCriteria.getExecutableCriteria(getHibernateSession())
                 .list();
 
     }
 
-    protected Session getCurrentSession() {
-        return sessionFactory.getCurrentSession();
+    @SuppressWarnings("unchecked")
+    @Override
+    public Iterator<Object> getQueryResults(String query) {
+        Session session = getHibernateSession();
+        return session.createQuery(query).list().iterator();
+    }
+
+    protected Session getHibernateSession() {
+        Session session = entityManager.unwrap(Session.class);
+        return session;
     }
 }

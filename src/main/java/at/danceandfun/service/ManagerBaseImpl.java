@@ -4,20 +4,23 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 
 import at.danceandfun.dao.DaoBase;
 
 public abstract class ManagerBaseImpl<T> implements ManagerBase<T> {
 
-    private DaoBase<T> dao;
+    protected DaoBase<T> dao;
 
-    public void setDao(DaoBase<T> dao) {
-        this.dao = dao;
+    private final Class<T> type;
+
+    public ManagerBaseImpl(Class<T> type) {
+        this.type = type;
     }
 
     @Override
-    public List<T> getList() {
-        return dao.getList();
+    public void setDao(DaoBase<T> dao) {
+        this.dao = dao;
     }
 
     @Override
@@ -46,4 +49,10 @@ public abstract class ManagerBaseImpl<T> implements ManagerBase<T> {
         return dao.getListByCriteria(detachedCriteria, offset, size);
     }
 
+    @Override
+    public List<T> getActiveList() {
+        DetachedCriteria criteria = DetachedCriteria.forClass(this.type);
+        criteria.add(Restrictions.eq("active", true));
+        return dao.getListByCriteria(criteria);
+    }
 }

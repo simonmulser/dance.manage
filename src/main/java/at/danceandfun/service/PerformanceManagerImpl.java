@@ -16,6 +16,11 @@ public class PerformanceManagerImpl extends ManagerBaseImpl<Performance>
 
     private PerformanceDao performanceDao;
 
+    public PerformanceManagerImpl() {
+        super(Performance.class);
+        // TODO Auto-generated constructor stub
+    }
+
     @Autowired
     public void initializeDao(PerformanceDao performanceDao) {
         this.performanceDao = performanceDao;
