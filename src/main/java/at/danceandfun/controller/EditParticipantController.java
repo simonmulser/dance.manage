@@ -44,10 +44,13 @@ public class EditParticipantController {
         logger.debug("ADD Participant with id " + participant.getPid());
         logger.debug("ADD Participant with bd " + participant.getBirthday());
         participant.setActive(true);
+
+        // TODO is not saving the participant enough?
+        /*
+         * if (!participant.getAddress().equals(null)) {
+         * addressManager.save(participant.getAddress()); }
+         */
         participantManager.save(participant);
-        if (!participant.getAddress().equals(null)) {
-            addressManager.save(participant.getAddress());
-        }
 
         this.p = new Participant();
         return "redirect:/participant";

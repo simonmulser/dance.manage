@@ -1,5 +1,7 @@
 package at.danceandfun.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +12,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "RATING")
-public class Rating {
+public class Rating implements Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 6091999443496109388L;
 
     @Id
     @Column(name = "R_ID")

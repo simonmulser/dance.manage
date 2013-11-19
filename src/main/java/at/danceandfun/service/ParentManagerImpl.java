@@ -12,6 +12,11 @@ public class ParentManagerImpl extends ManagerBaseImpl<Parent> implements
 
     private ParentDao parentDao;
 
+    public ParentManagerImpl() {
+        super(Parent.class);
+        // TODO Auto-generated constructor stub
+    }
+
     @Autowired
     public void initializeDao(ParentDao parentDao) {
         this.parentDao = parentDao;

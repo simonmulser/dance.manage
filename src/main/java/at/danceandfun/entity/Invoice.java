@@ -1,5 +1,6 @@
 package at.danceandfun.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -17,7 +18,12 @@ import org.joda.time.DateTime;
 
 @Entity
 @Table(name = "INVOICE")
-public class Invoice {
+public class Invoice implements Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -3488842415714301558L;
 
     @Id
     @Column(name = "I_ID")

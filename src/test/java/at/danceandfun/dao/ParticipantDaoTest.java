@@ -2,11 +2,9 @@ package at.danceandfun.dao;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.fail;
 
 import org.hibernate.criterion.DetachedCriteria;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +26,6 @@ public class ParticipantDaoTest {
      * Testing generic methods. only one time necessary. don't repeat in other
      * entities.
      */
-    @Test
-    public void testGetList() {
-        assertThat(participantDAO.getList().isEmpty(), is(false));
-    }
 
     @Test
     public void testSave() {
@@ -40,7 +34,6 @@ public class ParticipantDaoTest {
     }
 
     @Test
-    @Ignore
     public void testUpdate() {
         Participant participant = participantDAO.get(1);
         if (participant != null) {
@@ -50,12 +43,26 @@ public class ParticipantDaoTest {
         }
     }
 
-    /*
-     * @Test public void testGet() { Participant participant =
-     * participantDAO.get(1); if (participant != null) {
-     * assertThat(participant.getId(), is(1)); } else {
-     * fail("database is empty"); } }
-     */
+    @Test
+    public void testGetSiblings() {
+        Participant participant = participantDAO.get(3);
+        if (participant != null) {
+            assertThat(participant.getSiblings().size(), is(2));
+        } else {
+            fail("database is empty");
+        }
+    }
+
+    @Test
+    public void testGetSiblings_forOtherSiblingShouldBeSameNumberOfSiblings() {
+        Participant participant = participantDAO.get(4);
+        if (participant != null) {
+            assertThat(participant.getSiblings().size(), is(2));
+        } else {
+            fail("database is empty");
+        }
+    }
+
     @Test
     public void testListByCriteria() {
         DetachedCriteria criteria = DetachedCriteria
@@ -70,11 +77,5 @@ public class ParticipantDaoTest {
                 .forClass(Participant.class);
         assertThat(participantDAO.getListByCriteria(criteria, 0, 1).isEmpty(),
                 is(false));
-    }
-
-    @Test
-    public void test() {
-        assertThat(participantDAO.getParticipantsWithNumberOfCourses(),
-                is(notNullValue()));
     }
 }

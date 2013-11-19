@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
 
-public interface ManagerBase<T> {
+import at.danceandfun.dao.DaoBase;
 
-    public List<T> getList();
+public interface ManagerBase<T> {
 
     public void save(T t);
 
@@ -19,4 +19,9 @@ public interface ManagerBase<T> {
 
     public List<T> getListByCriteria(DetachedCriteria detachedCriteria,
             int offset, int size);
+
+    public List<T> getActiveList();
+
+    public void setDao(DaoBase<T> dao);
+
 }

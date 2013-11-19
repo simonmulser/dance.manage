@@ -1,5 +1,6 @@
 package at.danceandfun.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -11,7 +12,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "ADDRESS")
-public class Address {
+public class Address implements Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 6848318736740069349L;
 
     @Id
     @Column(name = "A_ID")

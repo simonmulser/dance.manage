@@ -1,5 +1,7 @@
 package at.danceandfun.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
 import javax.persistence.Column;
@@ -13,7 +15,12 @@ import javax.persistence.Table;
 @AssociationOverrides({
         @AssociationOverride(name = "key.invoice", joinColumns = @JoinColumn(name = "INVOICE_ID")),
         @AssociationOverride(name = "key.course", joinColumns = @JoinColumn(name = "COURSE_ID")) })
-public class Position {
+public class Position implements Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -5049666362328255024L;
 
     private PositionID key = new PositionID();
 

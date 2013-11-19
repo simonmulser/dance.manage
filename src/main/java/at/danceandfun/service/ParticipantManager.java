@@ -9,5 +9,7 @@ public interface ParticipantManager extends ManagerBase<Participant> {
 
     public Map<Integer, List<Participant>> getParticipantsByNumberOfCourses();
 
+    public List<Participant> getParticipantsByNumberOfSiblings();
+
     public List<Participant> getActiveList();
 }

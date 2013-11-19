@@ -16,6 +16,11 @@ public class TeacherManagerImpl extends ManagerBaseImpl<Teacher> implements
 
     private TeacherDao teacherDao;
 
+    public TeacherManagerImpl() {
+        super(Teacher.class);
+        // TODO Auto-generated constructor stub
+    }
+
     @Autowired
     public void initializeDao(TeacherDao teacherDao) {
         this.teacherDao = teacherDao;

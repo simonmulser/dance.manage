@@ -1,5 +1,6 @@
 package at.danceandfun.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -12,7 +13,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "TEACHER")
 @PrimaryKeyJoinColumn(name = "P_ID")
-public class Teacher extends Person {
+public class Teacher extends Person implements Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -3696904570909388688L;
 
     @Column(name = "SVNR")
     private String svnr;

@@ -12,6 +12,11 @@ public class RatingManagerImpl extends ManagerBaseImpl<Rating> implements
 
     private RatingDao ratingDao;
 
+    public RatingManagerImpl() {
+        super(Rating.class);
+        // TODO Auto-generated constructor stub
+    }
+
     @Autowired
     public void initializeDao(RatingDao ratingDao) {
         this.ratingDao = ratingDao;

@@ -14,41 +14,12 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
         http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd">
    
-    <context:property-placeholder location="classpath:hibernate.properties, classpath:test/test-db.properties" />
+    <context:property-placeholder location="classpath:db.properties, classpath:test/test-db.properties" />
     <context:annotation-config />
-    <tx:annotation-driven />
     <context:component-scan base-package="at.danceandfun" />
     
+    <import resource="classpath:/applicationContext.xml"/> 
+    
     <jdbc:embedded-database id="dataSource" />
-
-    <bean id="messageSource"
-        class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-        <property name="basename" value="classpath:messages"></property>
-        <property name="defaultEncoding" value="UTF-8"></property>
-    </bean>
-
-    <bean id="sessionFactory"
-        class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
-        <property name="packagesToScan" value="at.danceandfun.entity" />
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
-                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
-                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
-                <prop key="hibernate.hbm2ddl.import_files">${hibernate.hbm2ddl.import_files}</prop>
-                <prop key="hibernate.hbm2ddl.import_files_sql_extractor">${hibernate.hbm2ddl.import_files_sql_extractor}</prop>
-                <prop key="hibernate.connection.characterEncoding">${hibernate.connection.characterEncoding}</prop>
-            </props>
-        </property>
-    </bean>
-
-    <bean id="transactionManager"
-        class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory" />
-    </bean>
-
-    <bean id="persistenceExceptionTranslationPostProcessor"
-        class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 
 </beans>

@@ -3,7 +3,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
-
+<%@taglib prefix="joda" uri="http://www.joda.org/joda/time/tags" %>
 
 <dmtags:base title="Kursteilnehmer">
 
@@ -104,7 +104,7 @@
 
 	<c:if test="${!empty participantList}">
 		<table class="table table-striped table-bordered">
-			<thead>
+			<!--  <thead>
 				<tr>
 					<th><spring:message code="label.name" /></th>
 					<th><spring:message code="label.email" /></th>
@@ -117,7 +117,7 @@
 					<th><spring:message code="label.city" /></th>
 					<th>&nbsp;</th>
 				</tr>
-			</thead>
+			</thead>-->
 			<tbody>
 				<c:forEach items="${participantList}" var="emp">
 					<tr>

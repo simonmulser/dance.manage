@@ -27,5 +27,5 @@
         <property name="prefix" value="/WEB-INF/view/"></property>
         <property name="suffix" value=".jsp"></property>
     </bean>
-
+        
 </beans>

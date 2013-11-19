@@ -11,8 +11,7 @@ public class PositionID implements Serializable {
     /**
      * 
      */
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = 3833338001069588617L;
     private Invoice invoice;
     private Course course;
 

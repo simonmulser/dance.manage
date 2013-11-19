@@ -12,6 +12,11 @@ public class ManagementManagerImpl extends ManagerBaseImpl<Management>
 
     private ManagementDao managementDao;
 
+    public ManagementManagerImpl() {
+        super(Management.class);
+        // TODO Auto-generated constructor stub
+    }
+
     @Autowired
     public void initializeDao(ManagementDao managementDao) {
         this.managementDao = managementDao;
