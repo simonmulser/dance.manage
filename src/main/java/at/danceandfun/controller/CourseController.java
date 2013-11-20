@@ -30,8 +30,6 @@ public class CourseController {
         logger.debug("LIST course with id " + course.getCid());
         map.addAttribute("course", course);
         map.addAttribute("courseList", courseManager.getActiveList());
-        logger.debug("GROESSE: " + courseManager.getActiveList().size());
-
         return "courseView";
     }
 

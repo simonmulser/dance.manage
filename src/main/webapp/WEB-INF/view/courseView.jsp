@@ -4,17 +4,16 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
-<%@taglib prefix="joda" uri="http://www.joda.org/joda/time/tags" %>
+<%@taglib prefix="joda" uri="http://www.joda.org/joda/time/tags"%>
 
 <dmtags:base title="Kurse">
 
-	<form:form method="post" action="course/add"
-		commandName="course">
+	<form:form method="post" action="course/add" commandName="course">
 
 		<table>
 			<tr>
 				<td><form:input path="cid" type="hidden" /> <form:input
-						path="active" type="hidden" /> </td>
+						path="active" type="hidden" /></td>
 			</tr>
 			<tr>
 				<td><form:label path="name">
@@ -38,7 +37,10 @@
 				<td><form:label path="weekday">
 						<spring:message code="label.courseweekday" />
 					</form:label></td>
-				<td><form:input path="weekday" /></td>
+				<td><form:select path="weekday">
+						<form:option value="NONE" label="--- Select ---" />
+						<form:options items="${WeekDay}" />
+					</form:select></td>
 			</tr>
 			<tr>
 				<td><form:label path="time">
@@ -50,13 +52,19 @@
 				<td><form:label path="estimatedSpectators">
 						<spring:message code="label.estimatedSpectators" />
 					</form:label></td>
-				<td><form:input path="estimatedSpectators" /></td>
+				<td><form:select path="estimatedSpectators">
+						<form:option value="NONE" label="--- Select ---" />
+						<form:options items="${SpectatorAmount}" />
+					</form:select></td>
 			</tr>
 			<tr>
 				<td><form:label path="ageGroup">
 						<spring:message code="label.ageGroup" />
 					</form:label></td>
-				<td><form:input path="ageGroup" /></td>
+				<td><form:select path="ageGroup">
+						<form:option value="NONE" label="--- Select ---" />
+						<form:options items="${AgeGroup}" />
+					</form:select></td>
 			</tr>
 			<tr>
 				<td><form:label path="amountPerformances">
@@ -68,7 +76,10 @@
 				<td><form:label path="level">
 						<spring:message code="label.courselevel" />
 					</form:label></td>
-				<td><form:input path="level" /></td>
+				<td><form:select path="level">
+						<form:option value="NONE" label="--- Select ---" />
+						<form:options items="${CourseLevel}" />
+					</form:select></td>
 			</tr>
 			<tr>
 				<td colspan="2"><input type="submit"
@@ -76,7 +87,7 @@
 			</tr>
 		</table>
 	</form:form>
-	
+
 	<dmtags:widget title="Übersicht" style="table">
 		<c:if test="${!empty courseList}">
 			<table class="table table-striped table-bordered">
@@ -116,5 +127,5 @@
 			</table>
 		</c:if>
 	</dmtags:widget>
-	
+
 </dmtags:base>
