@@ -20,7 +20,7 @@ import at.danceandfun.entity.Participant;
 public class ParticipantDaoTest {
 
     @Autowired
-    private ParticipantDao participantDAO;
+    private DaoBaseImpl<Participant> participantDao;
 
     /*
      * Testing generic methods. only one time necessary. don't repeat in other
@@ -30,14 +30,14 @@ public class ParticipantDaoTest {
     @Test
     public void testSave() {
         Participant participant = new Participant();
-        participantDAO.save(participant);
+        participantDao.save(participant);
     }
 
     @Test
     public void testUpdate() {
-        Participant participant = participantDAO.get(1);
+        Participant participant = participantDao.get(1);
         if (participant != null) {
-            participantDAO.update(participant);
+            participantDao.update(participant);
         } else {
             fail("database is empty");
         }
@@ -45,7 +45,7 @@ public class ParticipantDaoTest {
 
     @Test
     public void testGetSiblings() {
-        Participant participant = participantDAO.get(3);
+        Participant participant = participantDao.get(3);
         if (participant != null) {
             assertThat(participant.getSiblings().size(), is(2));
         } else {
@@ -55,7 +55,7 @@ public class ParticipantDaoTest {
 
     @Test
     public void testGetSiblings_forOtherSiblingShouldBeSameNumberOfSiblings() {
-        Participant participant = participantDAO.get(4);
+        Participant participant = participantDao.get(4);
         if (participant != null) {
             assertThat(participant.getSiblings().size(), is(2));
         } else {
@@ -67,7 +67,7 @@ public class ParticipantDaoTest {
     public void testListByCriteria() {
         DetachedCriteria criteria = DetachedCriteria
                 .forClass(Participant.class);
-        assertThat(participantDAO.getListByCriteria(criteria).isEmpty(),
+        assertThat(participantDao.getListByCriteria(criteria).isEmpty(),
                 is(false));
     }
 
@@ -75,7 +75,7 @@ public class ParticipantDaoTest {
     public void testListByCriteriaWithOffsetAndSize() {
         DetachedCriteria criteria = DetachedCriteria
                 .forClass(Participant.class);
-        assertThat(participantDAO.getListByCriteria(criteria, 0, 1).isEmpty(),
+        assertThat(participantDao.getListByCriteria(criteria, 0, 1).isEmpty(),
                 is(false));
     }
 }

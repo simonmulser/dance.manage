@@ -14,7 +14,7 @@
 		<table>
 			<tr>
 				<td><form:input path="pid" type="hidden" /> <form:input
-						path="active" type="hidden" /> <form:input path="address.aid"
+						path="enabled" type="hidden" /> <form:input path="address.aid"
 						type="hidden" /></td>
 			</tr>
 			<tr>

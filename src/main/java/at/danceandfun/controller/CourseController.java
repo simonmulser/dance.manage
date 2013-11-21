@@ -16,7 +16,7 @@ package at.danceandfun.controller;
  logger.debug("LIST Participant with id " + course.getCid());
  map.addAttribute("course", course);
  // TODO Insert manager map.addAttribute("courseList",
- // courseManager.getActiveList()));
+ // courseManager.getEnabledList()));
 
  return "courseView";
  }
@@ -25,7 +25,7 @@ package at.danceandfun.controller;
  public String addCourse(@ModelAttribute(value = "course") Course course,
  BindingResult result) {
  logger.debug("ADD Course with id " + course.getCid());
- course.setActive(true);
+ course.setEnabled(true);
  // TODO MANAGER courseManager.save(course);
  course = new Course();
  return "redirect:/course";
@@ -42,7 +42,7 @@ package at.danceandfun.controller;
  public String deleteCourse(@PathVariable("cid") Integer cid) {
  logger.debug("Delete Course with id " + cid);
  // TODO MANAGER course = courseManager.get(cid);
- course.setActive(false);
+ course.setEnabled(false);
  // TODO MANAGER courseManager.update(course);
  course = new Course();
  return "redirect:/course";

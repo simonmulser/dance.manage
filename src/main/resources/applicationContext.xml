@@ -50,7 +50,7 @@
         </property>
     </bean>
     
-    <tx:annotation-driven />
+    <tx:annotation-driven proxy-target-class="true" />
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
@@ -66,4 +66,7 @@
         <property name="basename" value="classpath:messages"></property>
         <property name="defaultEncoding" value="UTF-8"></property>
     </bean>
+    
+    <import resource="classpath:dao.xml" />
+    
 </beans>

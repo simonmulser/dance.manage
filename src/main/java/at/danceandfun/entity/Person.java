@@ -17,6 +17,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * @author simon
@@ -29,7 +30,7 @@ import org.joda.time.LocalDate;
 @Entity
 @Table(name = "PERSON")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Person implements Serializable {
+public abstract class Person implements Serializable, UserDetails {
 
     /**
      * 
@@ -60,8 +61,8 @@ public abstract class Person implements Serializable {
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
     private LocalDate birthday;
 
-    @Column(name = "ACTIVE")
-    private boolean active;
+    @Column(name = "ENABLED")
+    private boolean enabled;
 
     @ManyToOne(cascade = { CascadeType.ALL })
     @JoinColumn(name = "A_ID")
@@ -126,12 +127,8 @@ public abstract class Person implements Serializable {
         this.birthday = birthday;
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public Address getAddress() {
@@ -148,6 +145,35 @@ public abstract class Person implements Serializable {
 
     public void setInvoices(List<Invoice> invoices) {
         this.invoices = invoices;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    @Override
+    public String getUsername() {
+        // TODO change to mail or something
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        // TODO Auto-generated method stub
+        return true;
     }
 
 }

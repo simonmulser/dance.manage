@@ -1,6 +1,7 @@
 <%@tag description="dance.manage base template" language="java"
 	pageEncoding="UTF-8"%>
 <%@attribute name="title" required="true" type="java.lang.String"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
 <html>
@@ -45,7 +46,7 @@
 								EGrappler.com <b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<li><a href="javascript:;">Profile</a></li>
-								<li><a href="javascript:;">Logout</a></li>
+								<li><a href="<c:url value='j_spring_security_logout' />" >Logout</a></li>
 							</ul></li>
 					</ul>
 					<form class="navbar-search pull-right">

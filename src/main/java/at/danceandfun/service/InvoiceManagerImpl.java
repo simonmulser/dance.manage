@@ -1,36 +1,18 @@
 package at.danceandfun.service;
 
-import java.util.List;
-
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import at.danceandfun.dao.InvoiceDao;
+import at.danceandfun.dao.DaoBaseImpl;
 import at.danceandfun.entity.Invoice;
 
 @Service
 public class InvoiceManagerImpl extends ManagerBaseImpl<Invoice> implements
         InvoiceManager {
 
-    private InvoiceDao invoiceDao;
-
-    public InvoiceManagerImpl() {
-        super(Invoice.class);
-        // TODO Auto-generated constructor stub
-    }
-
     @Autowired
-    public void initializeDao(InvoiceDao invoiceDao) {
-        this.invoiceDao = invoiceDao;
-        setDao(invoiceDao);
-    }
-
-    public List<Invoice> getActiveList() {
-        DetachedCriteria active = DetachedCriteria.forClass(Invoice.class);
-        active.add(Restrictions.eq("active", true));
-        return invoiceDao.getListByCriteria(active);
+    public void setDao(DaoBaseImpl<Invoice> invoiceDao) {
+        setMainDao(invoiceDao);
     }
 
 }

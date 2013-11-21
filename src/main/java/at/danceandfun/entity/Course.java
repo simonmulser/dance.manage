@@ -59,8 +59,8 @@ public class Course implements Serializable {
     @Column(name = "AMOUNT_PERFORMANCES")
     private Integer amountPerformances;
 
-    @Column(name = "ACTIVE")
-    private boolean active;
+    @Column(name = "ENABLED")
+    private boolean enabled;
 
     @Column(name = "LEVEL")
     private CourseLevel level;
@@ -155,12 +155,12 @@ public class Course implements Serializable {
         this.amountPerformances = amountPerformances;
     }
 
-    public boolean isActive() {
-        return active;
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public CourseLevel getLevel() {

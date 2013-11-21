@@ -1,5 +1,8 @@
 package at.danceandfun.service;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.Mockito.mock;
 
 import org.junit.Test;
@@ -24,7 +27,21 @@ public class ParticipantManagerTest {
     private DaoBase<Participant> dao = (DaoBase<Participant>) mock(DaoBase.class);
 
     @Test
-    public void test() {
+    public void testGetParticipantsByNumberOfSiblings() {
+        assertThat(participantManager.getParticipantsByNumberOfSiblings(),
+                is(notNullValue()));
+    }
+
+    @Test
+    public void testGetParticipantsByNumberOfCourses() {
+        assertThat(participantManager.getParticipantsByNumberOfCourses(),
+                is(notNullValue()));
+    }
+
+    @Test
+    public void testLoadUserByUsername() {
+        assertThat(participantManager.loadUserByUsername("franz@mail.com"),
+                is(notNullValue()));
     }
 
 }

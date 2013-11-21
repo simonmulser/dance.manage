@@ -13,6 +13,8 @@ public interface DaoBase<T> {
 
     public T get(Serializable id);
 
+    public List<T> getEnabledListWithCriteria(DetachedCriteria detachedCriteria);
+
     public List<T> getListByCriteria(DetachedCriteria detachedCriteria);
 
     public List<T> getListByCriteria(DetachedCriteria detachedCriteria,

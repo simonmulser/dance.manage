@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="addressDao" class="at.danceandfun.dao.DaoBaseImpl">
+        <property name="classz" value="at.danceandfun.entity.Address" />
+    </bean>
+    <bean id="participantDao" class="at.danceandfun.dao.DaoBaseImpl">
+        <property name="classz" value=" at.danceandfun.entity.Participant" />
+    </bean>
+    <bean id="courseDao" class="at.danceandfun.dao.DaoBaseImpl">
+        <property name="classz" value="at.danceandfun.entity.Course" />
+    </bean>
+    <bean id="invoiceDao" class="at.danceandfun.dao.DaoBaseImpl">
+        <property name="classz" value="at.danceandfun.entity.Invoice" />
+    </bean>
+    <bean id="managementDao" class="at.danceandfun.dao.DaoBaseImpl">
+        <property name="classz" value="at.danceandfun.entity.Management" />
+    </bean>
+    <bean id="parentDao" class="at.danceandfun.dao.DaoBaseImpl">
+        <property name="classz" value="at.danceandfun.entity.Parent" />
+    </bean>
+    <bean id="performanceDao" class="at.danceandfun.dao.DaoBaseImpl">
+        <property name="classz" value="at.danceandfun.entity.Performance" />
+    </bean>
+    <bean id="positionDao" class="at.danceandfun.dao.DaoBaseImpl">
+        <property name="classz" value="at.danceandfun.entity.Position" />
+    </bean>
+    <bean id="ratingDao" class="at.danceandfun.dao.DaoBaseImpl">
+        <property name="classz" value="at.danceandfun.entity.Rating" />
+    </bean>
+    <bean id="styleDao" class="at.danceandfun.dao.DaoBaseImpl">
+        <property name="classz" value="at.danceandfun.entity.Style" />
+    </bean>
+    <bean id="teacherDao" class="at.danceandfun.dao.DaoBaseImpl">
+        <property name="classz" value="at.danceandfun.entity.Teacher" />
+    </bean>
+
+</beans>

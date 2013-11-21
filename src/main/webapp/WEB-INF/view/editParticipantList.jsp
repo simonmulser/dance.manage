@@ -12,7 +12,7 @@
 			commandName="participant" class="form-horizontal">
 
 			<form:input path="pid" type="hidden" />
-			<form:input path="active" type="hidden" />
+			<form:input path="enabled" type="hidden" />
 			<form:input path="address.aid" type="hidden" />
 
 			<div class="control-group">
