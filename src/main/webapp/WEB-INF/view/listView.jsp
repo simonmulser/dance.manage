@@ -5,6 +5,7 @@
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 
 <dmtags:base title="Listen">
+
 	<c:if test="${!empty participantsByNumberOfCourses}">
 		<dmtags:widget title="Liste" style="table">
 			<table class="table table-striped table-bordered">
@@ -28,6 +29,7 @@
 			</table>
 		</dmtags:widget>
 	</c:if>
+
 	<c:if test="${!empty participantsByNumberOfSiblings}">
 		<dmtags:widget title="Teilnehmer" style="table">
 			<table class="table table-striped table-bordered">
@@ -48,6 +50,7 @@
 							<td>${participant.siblings.size()}<c:if
 									test="${!empty participant.siblings}">&nbsp;-&nbsp;(<c:forEach
 										items="${participant.siblings}" var="sibling" varStatus="loop">
+
                                 ${sibling.firstname}&nbsp;${sibling.lastname}
                                 ${!loop.last ? ', ' : ''}
 								</c:forEach>)
@@ -64,6 +67,7 @@
 			</table>
 		</dmtags:widget>
 	</c:if>
+
 	<c:if test="${!empty courses}">
 		<dmtags:widget title="Kursinformation" style="table">
 			<table class="table table-striped table-bordered">
@@ -92,4 +96,5 @@
 			</table>
 		</dmtags:widget>
 	</c:if>
+
 </dmtags:base>

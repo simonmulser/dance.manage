@@ -3,6 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@attribute name="title" required="true" type="java.lang.String"%>
 <%@attribute name="style" required="false" type="java.lang.String"%>
+<%@attribute name="icon" required="true" type="java.lang.String"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <c:set var="widgetStyle" value="widget" />
@@ -14,7 +15,7 @@
 
 <div class="${widgetStyle}">
 	<div class="widget-header">
-		<i class="icon-bar-chart"></i>
+		<i class="${icon}"></i>
 		<h3>${title}</h3>
 	</div>
 	<!-- /widget-header -->
