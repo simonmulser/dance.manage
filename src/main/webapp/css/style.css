@@ -11,6 +11,7 @@ Bootstrap Admin Template by EGrappler.com
 body {
 	background: #f9f6f1;
 	font: 13px/1.7em 'Open Sans';
+	padding-top: 54px;
 }
     
 p { 
@@ -72,7 +73,16 @@ textarea {
 .navbar-inner {
 	padding: 7px 0;
 	
-	background: #00ba8b !important;
+	background: #ff9f00 !important; /* Old browsers */
+	background: -moz-linear-gradient(top,  #ff9f00 1%, #ff8106 100%) !important; /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#ff9f00), color-stop(100%,#ff8106)) !important; /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ff9f00 1%,#ff8106 100%) !important; /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ff9f00 1%,#ff8106 100%) !important; /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ff9f00 1%,#ff8106 100%) !important; /* IE10+ */
+	background: linear-gradient(to bottom,  #ff9f00 1%,#ff8106 100%) !important; /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff9f00', endColorstr='#ff8106',GradientType=0 ) !important; /* IE6-9 */
+
+	
 	
 	-moz-border-radius: 0;
 	-webkit-border-radius: 0;
@@ -80,7 +90,6 @@ textarea {
 }
 
 .navbar-fixed-top {
-	position: static;
 }
 
 .navbar .nav a {
@@ -108,7 +117,8 @@ textarea {
     color: #666;
 }
 
-.navbar-search .search-query { background:#008866; border:0; color:#fff; line-height:normal;}
+.navbar-search .search-query { 
+background: #ffffff; /* Old browsers */ color:#444; line-height:normal;}
 
 
 /*------------------------------------------------------------------
@@ -184,7 +194,7 @@ textarea {
 
 .subnavbar .container > ul > li.active > a {
 	
-	border-bottom:3px solid #ff7f74;
+	border-bottom:3px solid #ff8106;
 	color: #383838;
 }
     

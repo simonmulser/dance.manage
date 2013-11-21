@@ -5,7 +5,7 @@
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 
 
-<dmtags:base title="Lehrer">
+<dmtags:base title="Lehrer" activesection="teacher">
 
 	
 	<form:form method="post" action="teacher/add"
