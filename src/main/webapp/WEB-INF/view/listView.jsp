@@ -4,10 +4,10 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 
-<dmtags:base title="Listen">
+<dmtags:base title="Listen" activesection="statistics">
 
 	<c:if test="${!empty participantsByNumberOfCourses}">
-		<dmtags:widget title="Liste" style="table">
+		<dmtags:widget title="Liste" style="table" icon="icon-list">
 			<table class="table table-striped table-bordered">
 				<thead>
 					<tr>
@@ -31,7 +31,7 @@
 	</c:if>
 
 	<c:if test="${!empty participantsByNumberOfSiblings}">
-		<dmtags:widget title="Teilnehmer" style="table">
+		<dmtags:widget title="Teilnehmer" style="table" icon="icon-list">
 			<table class="table table-striped table-bordered">
 				<thead>
 					<tr>
@@ -69,7 +69,7 @@
 	</c:if>
 
 	<c:if test="${!empty courses}">
-		<dmtags:widget title="Kursinformation" style="table">
+		<dmtags:widget title="Kursinformation" style="table" icon="icon-list">
 			<table class="table table-striped table-bordered">
 				<thead>
 					<tr>

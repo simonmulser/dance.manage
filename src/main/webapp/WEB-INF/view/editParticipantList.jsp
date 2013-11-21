@@ -5,7 +5,7 @@
 <%@taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 
-<dmtags:base title="Kursteilnehmer">
+<dmtags:base title="Kursteilnehmer" activesection="participants">
 
 	<dmtags:widget title="Kursteilnehmer" icon="icon-user">
 		<form:form method="post" action="participant/add"
