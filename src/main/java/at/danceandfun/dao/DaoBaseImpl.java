@@ -2,7 +2,6 @@ package at.danceandfun.dao;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -63,9 +62,9 @@ public abstract class DaoBaseImpl<T> implements DaoBase<T> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Iterator<Object> getQueryResults(String query) {
+    public List<T> getQueryResults(String query) {
         Session session = getHibernateSession();
-        return session.createQuery(query).list().iterator();
+        return session.createQuery(query).list();
     }
 
     protected Session getHibernateSession() {

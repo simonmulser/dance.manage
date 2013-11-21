@@ -1,7 +1,6 @@
 package at.danceandfun.dao;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
@@ -19,6 +18,6 @@ public interface DaoBase<T> {
     public List<T> getListByCriteria(DetachedCriteria detachedCriteria,
             int offset, int size);
 
-    public Iterator<Object> getQueryResults(String query);
+    public List<T> getQueryResults(String query);
 
 }
