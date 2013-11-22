@@ -1,6 +1,8 @@
 package at.danceandfun.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -9,6 +11,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+
+import org.springframework.security.core.GrantedAuthority;
+
+import at.danceandfun.role.RoleUser;
 
 @Entity
 @Table(name = "TEACHER")
@@ -76,6 +82,13 @@ public class Teacher extends Person implements Serializable {
 
     public void setStyles(List<Style> styles) {
         this.styles = styles;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
+        auth.add(new RoleUser());
+        return auth;
     }
 
 }

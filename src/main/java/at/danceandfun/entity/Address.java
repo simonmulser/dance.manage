@@ -42,8 +42,8 @@ public class Address implements Serializable {
     @Column(name = "CITY")
     private String city;
 
-    @Column(name = "ACTIVE")
-    private boolean active;
+    @Column(name = "ENABLED")
+    private boolean enabled;
 
     @OneToMany(mappedBy = "address")
     private List<Performance> performances;
@@ -110,12 +110,12 @@ public class Address implements Serializable {
         this.city = city;
     }
 
-    public boolean isActive() {
-        return active;
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public List<Performance> getPerformances() {

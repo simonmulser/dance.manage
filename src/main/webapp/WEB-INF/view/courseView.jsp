@@ -6,7 +6,7 @@
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 <%@taglib prefix="joda" uri="http://www.joda.org/joda/time/tags"%>
 
-<dmtags:base title="Kurse">
+<dmtags:base title="Kurse" activesection="courses">
 
 	<form:form method="post" action="course/add" commandName="course">
 
@@ -88,7 +88,7 @@
 		</table>
 	</form:form>
 
-	<dmtags:widget title="Übersicht" style="table">
+	<dmtags:widget title="Übersicht" style="table" icon="icon-list">
 		<c:if test="${!empty courseList}">
 			<table class="table table-striped table-bordered">
 				<thead>

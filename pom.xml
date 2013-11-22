@@ -14,6 +14,7 @@
 
     <properties>
         <org.springframework.version>3.2.4.RELEASE</org.springframework.version>
+        <spring-security.version>3.1.4.RELEASE</spring-security.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -148,6 +149,23 @@
             <scope>test</scope>
         </dependency>
 
+       <!-- Spring Security Dependencies -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${spring-security.version}</version>
+         </dependency> 
+         <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring-security.version}</version>
+          </dependency> 
+          <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring-security.version}</version>
+          </dependency>
+
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
@@ -177,7 +195,7 @@
             <artifactId>hibernate-core</artifactId>
             <version>4.2.6.Final</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>

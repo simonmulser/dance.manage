@@ -31,7 +31,7 @@ public class ListController {
                 participantManager.getParticipantsByNumberOfCourses());
         map.addAttribute("participantsByNumberOfSiblings",
                 participantManager.getParticipantsByNumberOfSiblings());
-        map.addAttribute("courses", courseManager.getActiveList());
+        map.addAttribute("courses", courseManager.getEnabledList());
         return "listView";
     }
 }

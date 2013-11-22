@@ -1,8 +1,6 @@
 package at.danceandfun.dao;
 
 import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -11,23 +9,19 @@ import javax.persistence.PersistenceContext;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
-import org.springframework.stereotype.Repository;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-@Repository
-public abstract class DaoBaseImpl<T> implements DaoBase<T> {
+public class DaoBaseImpl<T> implements DaoBase<T> {
     private static Logger logger = Logger.getLogger(DaoBaseImpl.class);
-
-    private Class<T> entityClass;
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    @SuppressWarnings("unchecked")
+    private Class<T> classz;
+
     public DaoBaseImpl() {
-        entityClass = (Class<T>) ((ParameterizedType) getClass()
-                .getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
     public void save(T domain) {
@@ -42,7 +36,7 @@ public abstract class DaoBaseImpl<T> implements DaoBase<T> {
 
     public T get(Serializable id) {
         logger.debug("get");
-        return entityManager.find(entityClass, id);
+        return entityManager.find(classz, id);
     }
 
     @SuppressWarnings("unchecked")
@@ -62,14 +56,38 @@ public abstract class DaoBaseImpl<T> implements DaoBase<T> {
     }
 
     @SuppressWarnings("unchecked")
+    public List<T> getEnabledListWithCriteria(DetachedCriteria detachedCriteria) {
+        logger.debug("getListByCriteria");
+        detachedCriteria.add(Restrictions.eq("enabled", true));
+        return detachedCriteria.getExecutableCriteria(getHibernateSession())
+                .list();
+
+    }
+
+    @SuppressWarnings("unchecked")
     @Override
-    public Iterator<Object> getQueryResults(String query) {
+    public List<T> getQueryResults(String query) {
         Session session = getHibernateSession();
-        return session.createQuery(query).list().iterator();
+        return session.createQuery(query).list();
     }
 
     protected Session getHibernateSession() {
         Session session = entityManager.unwrap(Session.class);
         return session;
+    }
+
+    public Class<T> getClassz() {
+        return classz;
+    }
+
+    public void setClassz(Class<T> classz) {
+        this.classz = classz;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<T> getEnabledList() {
+        DetachedCriteria criteria = DetachedCriteria.forClass(classz);
+        criteria.add(Restrictions.eq("enabled", true));
+        return criteria.getExecutableCriteria(getHibernateSession()).list();
     }
 }

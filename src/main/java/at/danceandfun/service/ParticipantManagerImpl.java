@@ -1,21 +1,18 @@
 package at.danceandfun.service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
+import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import at.danceandfun.dao.ParticipantDao;
+import at.danceandfun.dao.DaoBaseImpl;
 import at.danceandfun.entity.Participant;
 
 @Service
@@ -23,48 +20,52 @@ import at.danceandfun.entity.Participant;
 public class ParticipantManagerImpl extends ManagerBaseImpl<Participant>
         implements ParticipantManager {
 
-    public ParticipantManagerImpl() {
-        super(Participant.class);
-        // TODO Auto-generated constructor stub
-    }
+    private static Logger logger = Logger
+            .getLogger(ParticipantManagerImpl.class);
 
     @Autowired
-    public void initializeDao(ParticipantDao participantDao) {
-        setDao(participantDao);
+    public void setDao(DaoBaseImpl<Participant> participantDao) {
+        setMainDao(participantDao);
     }
 
     @Override
-    public Map<Integer, List<Participant>> getParticipantsByNumberOfCourses() {
-        Iterator<Object> iterator = dao
-                .getQueryResults("select p, count(p.id)"
+    public List<Participant> getParticipantsByNumberOfCourses() {
+        return mainDao
+                .getQueryResults("select p"
                         + " from Participant as p"
-                        + " inner join p.courses group by p.pid, p.active, p.firstname, p.lastname, p.address, p.telephone, p.password, p.email, p.birthday"
+                        + " inner join p.courses group by p.pid, p.enabled, p.firstname, p.lastname, p.address, p.telephone, p.password, p.email, p.birthday"
                         + " order by count(p.id) desc, p.lastname, p.firstname");
 
-        SortedMap<Integer, List<Participant>> map = new TreeMap<Integer, List<Participant>>(
-                Collections.reverseOrder());
-        while (iterator.hasNext()) {
-            Object[] tuple = (Object[]) iterator.next();
-            Integer numberOfCourses = ((Long) tuple[1]).intValue();
-            List<Participant> participants = map.get(numberOfCourses);
-            if (participants == null) {
-                participants = new ArrayList<Participant>();
-                participants.add((Participant) tuple[0]);
-                map.put(numberOfCourses, participants);
-            } else {
-                participants.add((Participant) tuple[0]);
-            }
-        }
-        return map;
     }
 
     public List<Participant> getParticipantsByNumberOfSiblings() {
         DetachedCriteria criteria = DetachedCriteria
                 .forClass(Participant.class);
-        criteria.add(Restrictions.eq("active", true));
+        criteria.add(Restrictions.eq("enabled", true));
         criteria.addOrder(Order.asc("lastname"));
         criteria.addOrder(Order.asc("firstname"));
-        return dao.getListByCriteria(criteria);
+        return mainDao.getListByCriteria(criteria);
 
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        DetachedCriteria criteria = DetachedCriteria
+                .forClass(Participant.class);
+        criteria.add(Restrictions.eq("email", username));
+        criteria.add(Restrictions.eq("enabled", true));
+
+        logger.debug("getByUsername username=" + username);
+
+        List<Participant> participants = mainDao.getListByCriteria(criteria);
+        if (participants.size() != 1) {
+            logger.debug("no user found. length of retrieved list="
+                    + participants.size());
+            throw new UsernameNotFoundException("no user found with username="
+                    + username);
+        }
+        logger.debug("user found. password="
+                + participants.get(0).getPassword());
+        return participants.get(0);
     }
 }

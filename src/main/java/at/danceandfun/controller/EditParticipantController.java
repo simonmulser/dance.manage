@@ -32,7 +32,7 @@ public class EditParticipantController {
     public String listParticipants(ModelMap map) {
         logger.debug("LIST Participant with id " + participant.getPid());
         map.addAttribute("participant", participant);
-        map.addAttribute("participantList", participantManager.getActiveList());
+        map.addAttribute("participantList", participantManager.getEnabledList());
 
         return "editParticipantList";
     }
@@ -43,7 +43,7 @@ public class EditParticipantController {
             BindingResult result) {
         logger.debug("ADD Participant with id " + participant.getPid());
         logger.debug("ADD Participant with bd " + participant.getBirthday());
-        participant.setActive(true);
+        participant.setEnabled(true);
 
         // TODO is not saving the participant enough?
         /*
@@ -67,9 +67,9 @@ public class EditParticipantController {
     public String deleteParticipant(@PathVariable("pid") Integer pid) {
         logger.debug("Delete Participant with id " + pid);
         participant = participantManager.get(pid);
-        participant.setActive(false);
+        participant.setEnabled(false);
         participantManager.update(participant);
-        // p.getAddress().setActive(false);
+        // p.getAddress().setEnabled(false);
         // addressManager.update(p.getAddress());
         participant = new Participant();
         return "redirect:/participant";

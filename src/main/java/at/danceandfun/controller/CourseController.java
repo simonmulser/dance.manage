@@ -29,7 +29,7 @@ public class CourseController {
     public String listCourses(ModelMap map) {
         logger.debug("LIST course with id " + course.getCid());
         map.addAttribute("course", course);
-        map.addAttribute("courseList", courseManager.getActiveList());
+        map.addAttribute("courseList", courseManager.getEnabledList());
         return "courseView";
     }
 
@@ -37,7 +37,7 @@ public class CourseController {
     public String addCourse(@ModelAttribute(value = "course") Course course,
             BindingResult result) {
         logger.debug("ADD Course with id " + course.getCid());
-        course.setActive(true);
+        course.setEnabled(true);
         courseManager.save(course);
         course = new Course();
         return "redirect:/course";
@@ -54,7 +54,7 @@ public class CourseController {
     public String deleteCourse(@PathVariable("cid") Integer cid) {
         logger.debug("Delete Course with id " + cid);
         course = courseManager.get(cid);
-        course.setActive(false);
+        course.setEnabled(false);
         courseManager.update(course);
         course = new Course();
         return "redirect:/course";

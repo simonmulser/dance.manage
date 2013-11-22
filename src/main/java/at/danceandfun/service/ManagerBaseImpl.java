@@ -4,55 +4,60 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
 
-import at.danceandfun.dao.DaoBase;
+import at.danceandfun.dao.DaoBaseImpl;
 
 public abstract class ManagerBaseImpl<T> implements ManagerBase<T> {
 
-    protected DaoBase<T> dao;
+    protected DaoBaseImpl<T> mainDao;
 
-    private final Class<T> type;
+    @Override
+    public void save(T domain) {
+        mainDao.save(domain);
 
-    public ManagerBaseImpl(Class<T> type) {
-        this.type = type;
     }
 
     @Override
-    public void setDao(DaoBase<T> dao) {
-        this.dao = dao;
-    }
-
-    @Override
-    public List<T> getListByCriteria(DetachedCriteria detachedCriteria) {
-        return dao.getListByCriteria(detachedCriteria);
-    }
-
-    @Override
-    public void save(T t) {
-        dao.save(t);
-    }
-
-    @Override
-    public void update(T t) {
-        dao.update(t);
+    public void update(T domain) {
+        mainDao.update(domain);
     }
 
     @Override
     public T get(Serializable id) {
-        return dao.get(id);
+        return mainDao.get(id);
+    }
+
+    @Override
+    public List<T> getEnabledListWithCriteria(DetachedCriteria detachedCriteria) {
+        return mainDao.getEnabledListWithCriteria(detachedCriteria);
+    }
+
+    @Override
+    public List<T> getListByCriteria(DetachedCriteria detachedCriteria) {
+        return mainDao.getListByCriteria(detachedCriteria);
     }
 
     @Override
     public List<T> getListByCriteria(DetachedCriteria detachedCriteria,
             int offset, int size) {
-        return dao.getListByCriteria(detachedCriteria, offset, size);
+        return mainDao.getListByCriteria(detachedCriteria, offset, size);
     }
 
     @Override
-    public List<T> getActiveList() {
-        DetachedCriteria criteria = DetachedCriteria.forClass(this.type);
-        criteria.add(Restrictions.eq("active", true));
-        return dao.getListByCriteria(criteria);
+    public List<T> getQueryResults(String query) {
+        return mainDao.getQueryResults(query);
+    }
+
+    @Override
+    public List<T> getEnabledList() {
+        return mainDao.getEnabledList();
+    }
+
+    public DaoBaseImpl<T> getMainDao() {
+        return mainDao;
+    }
+
+    public void setMainDao(DaoBaseImpl<T> mainDao) {
+        this.mainDao = mainDao;
     }
 }

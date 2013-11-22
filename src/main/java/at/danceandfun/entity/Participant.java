@@ -1,6 +1,8 @@
 package at.danceandfun.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,6 +15,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+
+import org.springframework.security.core.GrantedAuthority;
+
+import at.danceandfun.role.RoleAdmin;
+import at.danceandfun.role.RoleUser;
 
 @Entity
 @Table(name = "PARTICIPANT")
@@ -75,4 +82,11 @@ public class Participant extends Person implements Serializable {
         this.siblings = siblings;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
+        auth.add(new RoleUser());
+        auth.add(new RoleAdmin());
+        return auth;
+    }
 }

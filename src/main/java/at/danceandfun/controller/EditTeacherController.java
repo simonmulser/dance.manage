@@ -32,7 +32,7 @@ public class EditTeacherController {
     public String listTeachers(ModelMap map) {
         logger.debug("LIST Teacher with id " + t.getPid());
         map.addAttribute("teacher", this.t);
-        map.addAttribute("teacherList", teacherManager.getActiveList());
+        map.addAttribute("teacherList", teacherManager.getEnabledList());
 
         return "editTeacherList";
     }
@@ -43,7 +43,7 @@ public class EditTeacherController {
             BindingResult result) {
         logger.debug("ADD Teacher with id " + teacher.getPid());
         logger.debug("ADD Teacher with bd " + teacher.getBirthday());
-        teacher.setActive(true);
+        teacher.setEnabled(true);
         teacherManager.save(teacher);
         if (!teacher.getAddress().equals(null)) {
             addressManager.save(teacher.getAddress());
@@ -64,9 +64,9 @@ public class EditTeacherController {
     public String deleteTeacher(@PathVariable("pid") Integer pid) {
         logger.debug("Delete Teacher with id " + pid);
         this.t = teacherManager.get(pid);
-        t.setActive(false);
+        t.setEnabled(false);
         teacherManager.update(t);
-        // t.getAddress().setActive(false);
+        // t.getAddress().setEnabled(false);
         // addressManager.update(t.getAddress());
         t = new Teacher();
         return "redirect:/teacher";
