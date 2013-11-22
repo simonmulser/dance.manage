@@ -14,12 +14,22 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
         <intercept-url pattern='/admin/**' access='ROLE_USER' />
         <form-login login-page='/login' default-target-url='/admin'
             always-use-default-target='true' authentication-failure-url="/login" />
-        <logout logout-success-url="/login" />
+        <logout invalidate-session="true" logout-success-url="/login" />
+
+
     </http>
 
-    <authentication-manager>
-        <authentication-provider
-            user-service-ref='participantManagerImpl' />
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider ref="daoAuthenticationProvider" />
     </authentication-manager>
+
+    <beans:bean id="daoAuthenticationProvider"
+        class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <beans:property name="userDetailsService" ref="participantManagerImpl" />
+        <beans:property name="passwordEncoder" ref="passwordEncoder" />
+    </beans:bean>
+
+    <beans:bean id="passwordEncoder"
+        class="org.springframework.security.crypto.password.StandardPasswordEncoder" />
 
 </beans:beans>

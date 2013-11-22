@@ -68,5 +68,4 @@ public class ParticipantManagerImpl extends ManagerBaseImpl<Participant>
                 + participants.get(0).getPassword());
         return participants.get(0);
     }
-
 }
