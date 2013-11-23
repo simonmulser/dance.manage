@@ -75,6 +75,15 @@ public class EditParticipantController {
         return "redirect:/participant";
     }
 
+    @RequestMapping(value = "/getSiblings", method = RequestMethod.GET)
+    public String getSiblings(ModelMap map) {
+        logger.debug("LIST Participant with id " + participant.getPid());
+        map.addAttribute("participant", participant);
+        map.addAttribute("participantList", participantManager.getEnabledList());
+
+        return "editParticipantList";
+    }
+
     public void setParticipantManager(ParticipantManager participantManager) {
         this.participantManager = participantManager;
     }
