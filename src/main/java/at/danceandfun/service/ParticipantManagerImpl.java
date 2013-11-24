@@ -1,5 +1,6 @@
 package at.danceandfun.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -67,5 +68,21 @@ public class ParticipantManagerImpl extends ManagerBaseImpl<Participant>
         logger.debug("user found. password="
                 + participants.get(0).getPassword());
         return participants.get(0);
+    }
+
+    public List<String> searchForSiblings(String query) {
+        DetachedCriteria criteria = DetachedCriteria
+                .forClass(Participant.class);
+
+        logger.debug("Search for: " + query);
+
+        criteria.add(Restrictions.like("firstname", query + "%"));
+        criteria.add(Restrictions.eq("enabled", true));
+        List<Participant> siblings = mainDao.getListByCriteria(criteria);
+        List<String> siblingNames = new ArrayList<String>();
+        for (Participant p : siblings) {
+            siblingNames.add(p.getFirstname());
+        }
+        return siblingNames;
     }
 }

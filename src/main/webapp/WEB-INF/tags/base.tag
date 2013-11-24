@@ -20,6 +20,7 @@
 	rel="stylesheet">
 <link href="css/font-awesome.css" rel="stylesheet">
 <link href="css/style.css" rel="stylesheet">
+<link href="css/ui/jquery-ui.css" rel="stylesheet">
 
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
@@ -127,6 +128,7 @@
 ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="js/jquery-1.7.2.js"></script>
+	<script src="js/jquery-ui.js"></script>
 	<script src="js/excanvas.min.js"></script>
 	<script src="js/chart.min.js" type="text/javascript"></script>
 	<script src="js/bootstrap.js"></script>

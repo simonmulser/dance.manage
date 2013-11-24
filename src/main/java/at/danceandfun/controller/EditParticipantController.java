@@ -1,5 +1,7 @@
 package at.danceandfun.controller;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import at.danceandfun.entity.Participant;
 import at.danceandfun.service.AddressManager;
@@ -34,6 +38,11 @@ public class EditParticipantController {
         map.addAttribute("participant", participant);
         map.addAttribute("participantList", participantManager.getEnabledList());
 
+        /*
+         * if (participant.getPid()) { map.addAttribute("participantSiblings",
+         * participant.getSiblings()); }
+         */
+
         return "editParticipantList";
     }
 
@@ -46,10 +55,18 @@ public class EditParticipantController {
         participant.setEnabled(true);
 
         // TODO is not saving the participant enough?
+
+        if (participant.getSiblings().isEmpty()) {
+            logger.debug("Has siblings");
+        }
+
         /*
-         * if (!participant.getAddress().equals(null)) {
+         * if (!(participant.getAddress() == null)) {
+         * logger.debug("ADD Participant with address: " +
+         * participant.getAddress().getAid().toString());
          * addressManager.save(participant.getAddress()); }
          */
+
         participantManager.save(participant);
 
         this.participant = new Participant();
@@ -76,16 +93,19 @@ public class EditParticipantController {
     }
 
     @RequestMapping(value = "/getSiblings", method = RequestMethod.GET)
-    public String getSiblings(ModelMap map) {
-        logger.debug("LIST Participant with id " + participant.getPid());
-        map.addAttribute("participant", participant);
-        map.addAttribute("participantList", participantManager.getEnabledList());
+    public @ResponseBody
+    List<String> getSiblings(@RequestParam("term") String query) {
+        logger.debug("Entered :" + query);
 
-        return "editParticipantList";
+        return participantManager.searchForSiblings(query);
     }
 
     public void setParticipantManager(ParticipantManager participantManager) {
         this.participantManager = participantManager;
+    }
+
+    public void setAddressManager(AddressManager addressManager) {
+        this.addressManager = addressManager;
     }
 
 }
