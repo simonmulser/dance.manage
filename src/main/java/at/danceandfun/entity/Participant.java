@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import at.danceandfun.role.RoleAdmin;
@@ -65,6 +66,7 @@ public class Participant extends Person implements Serializable {
         this.contactPerson = contactPerson;
     }
 
+    @JsonIgnore
     public List<Course> getCourses() {
         return courses;
     }
@@ -73,6 +75,7 @@ public class Participant extends Person implements Serializable {
         this.courses = courses;
     }
 
+    @JsonIgnore
     public Set<Participant> getSiblings() {
         siblings.addAll(siblingsReverse);
         return siblings;

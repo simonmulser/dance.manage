@@ -134,13 +134,12 @@
 
 			
 			<div id="find_keyword" class="control-group">
-				<form:label path="siblings" class="control-label">
-					<spring:message code="label.siblings" />
-				</form:label>
+				
+				
+				
 				<div class="ui-widget">
-					<input id="tagQuery" type="text" value="" />
-					<div id="selected_tags"><span></span></div>
-					
+					<input id="siblingsQuery" type="text" value="" />
+					<div id="selectedSiblings"><span></span></div>
 				</div>
 			</div>
 				
@@ -196,6 +195,18 @@
 									<td></td>
 								</c:otherwise>
 							</c:choose>
+							<c:choose>
+								<c:when test="${!empty emp.siblings}">
+									<td>
+										<c:forEach items="${emp.siblings}" var="sib">
+											${sib.firstname}
+										</c:forEach>
+									</td>
+								</c:when>
+								<c:otherwise>
+									<td></td>
+								</c:otherwise>
+							</c:choose>
 							<td><a href="participant/edit/${emp.pid}"><spring:message
 										code="label.edit" /></a> &nbsp; <a
 								href="participant/delete/${emp.pid}"><spring:message
@@ -212,7 +223,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
     //attach autocomplete
-    $("#tagQuery").autocomplete({
+    $("#siblingsQuery").autocomplete({
         minLength: 1,
         delay: 500,
         //define callback to format results
@@ -221,11 +232,11 @@ $(document).ready(function() {
                 response($.map(result, function(item) {
                     return {
                         // following property gets displayed in drop down
-                        label: item,
+                        label: item.firstname,
                         // following property gets entered in the textbox
-                        value: item,
+                        value: item.pid,
                         // following property is added for our own use
-                        tag_url: "http://" + window.location.host + "/dancemanage/participant/getSiblings/" + item.pid + "/" + item.firstname
+                        tag_url: "http://" + window.location.host + "/dancemanage/participant/getSiblings/" + item.firstname + "/" + item.pid
                     }
                 }));
             });
@@ -235,11 +246,11 @@ $(document).ready(function() {
         select : function(event, ui) {
             if (ui.item) {
                 event.preventDefault();
-                $("#selected_tags span").append('<a href=" + ui.item.tag_url + " target="_blank">'+ ui.item.label +'</a>');
+                $("#selectedSiblings span").append("<a href='" + ui.item.tag_url + "'>" + ui.item.label +"</a>;");
                 //$("#tagQuery").value = $("#tagQuery").defaultValue
-                var defValue = $("#tagQuery").prop('defaultValue');
-                $("#tagQuery").val(defValue);
-                $("#tagQuery").blur();
+                var defValue = $("#siblingsQuery").prop('defaultValue');
+                $("#siblingsQuery").val(defValue);
+                $("#siblingsQuery").blur();
                 return false;
             }
         }

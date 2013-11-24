@@ -70,7 +70,7 @@ public class ParticipantManagerImpl extends ManagerBaseImpl<Participant>
         return participants.get(0);
     }
 
-    public List<String> searchForSiblings(String query) {
+    public List searchForSiblings(String query) {
         DetachedCriteria criteria = DetachedCriteria
                 .forClass(Participant.class);
 
@@ -83,6 +83,6 @@ public class ParticipantManagerImpl extends ManagerBaseImpl<Participant>
         for (Participant p : siblings) {
             siblingNames.add(p.getFirstname());
         }
-        return siblingNames;
+        return siblings;
     }
 }

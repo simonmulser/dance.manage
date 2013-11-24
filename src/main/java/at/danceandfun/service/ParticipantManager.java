@@ -13,5 +13,5 @@ public interface ParticipantManager extends UserDetailsService,
 
     public List<Participant> getParticipantsByNumberOfSiblings();
 
-    public List<String> searchForSiblings(String query);
+    public List searchForSiblings(String query);
 }

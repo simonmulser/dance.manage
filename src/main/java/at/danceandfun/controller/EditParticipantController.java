@@ -38,11 +38,6 @@ public class EditParticipantController {
         map.addAttribute("participant", participant);
         map.addAttribute("participantList", participantManager.getEnabledList());
 
-        /*
-         * if (participant.getPid()) { map.addAttribute("participantSiblings",
-         * participant.getSiblings()); }
-         */
-
         return "editParticipantList";
     }
 
@@ -54,20 +49,16 @@ public class EditParticipantController {
         logger.debug("ADD Participant with bd " + participant.getBirthday());
         participant.setEnabled(true);
 
-        // TODO is not saving the participant enough?
+        if (participant.getPid() == null) {
+            participantManager.save(participant);
+        } else {
+            participantManager.update(participant);
+
+        }
 
         if (participant.getSiblings().isEmpty()) {
             logger.debug("Has siblings");
         }
-
-        /*
-         * if (!(participant.getAddress() == null)) {
-         * logger.debug("ADD Participant with address: " +
-         * participant.getAddress().getAid().toString());
-         * addressManager.save(participant.getAddress()); }
-         */
-
-        participantManager.save(participant);
 
         this.participant = new Participant();
         return "redirect:/participant";
@@ -94,7 +85,7 @@ public class EditParticipantController {
 
     @RequestMapping(value = "/getSiblings", method = RequestMethod.GET)
     public @ResponseBody
-    List<String> getSiblings(@RequestParam("term") String query) {
+    List getSiblings(@RequestParam("term") String query) {
         logger.debug("Entered :" + query);
 
         return participantManager.searchForSiblings(query);

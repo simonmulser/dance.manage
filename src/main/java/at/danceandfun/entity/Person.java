@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -131,6 +132,7 @@ public abstract class Person implements Serializable, UserDetails {
         this.enabled = enabled;
     }
 
+    @JsonIgnore
     public Address getAddress() {
         return address;
     }
@@ -139,6 +141,7 @@ public abstract class Person implements Serializable, UserDetails {
         this.address = address;
     }
 
+    @JsonIgnore
     public List<Invoice> getInvoices() {
         return invoices;
     }
