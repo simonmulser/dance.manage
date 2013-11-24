@@ -26,6 +26,8 @@
 <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    
+    
 </head>
 <body>
 	<dmtags:navigation activesection="${activesection}"/>
@@ -133,6 +135,7 @@
 	<script src="js/chart.min.js" type="text/javascript"></script>
 	<script src="js/bootstrap.js"></script>
 	<script src="js/base.js"></script>
+	
 	<script>
 		var doughnutData = [ {
 			value : 30,

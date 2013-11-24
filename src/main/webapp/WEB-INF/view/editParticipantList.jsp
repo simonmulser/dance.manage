@@ -8,6 +8,7 @@
 <dmtags:base title="Kursteilnehmer" activesection="participants">
 
 	<dmtags:widget title="Kursteilnehmer" icon="icon-user">
+	<spring:message code="help.participant" />
 		<form:form method="post" action="participant/add"
 			commandName="participant" class="form-horizontal">
 
@@ -134,11 +135,9 @@
 
 			
 			<div id="find_keyword" class="control-group">
-				
-				
-				
+				<spring:message code="label.siblings" />
 				<div class="ui-widget">
-					<input id="siblingsQuery" type="text" value="" />
+					<input id="siblingsQuery" type="text" value="" /><i title="<spring:message code='help.searchSibling' />" class="icon-large icon-question-sign"></i>
 					<div id="selectedSiblings"><span></span></div>
 				</div>
 			</div>
@@ -219,9 +218,10 @@
 	</c:if>
 
 </dmtags:base>
-
 <script type="text/javascript">
+$( 'i' ).tooltip();
 $(document).ready(function() {
+	
     //attach autocomplete
     $("#siblingsQuery").autocomplete({
         minLength: 1,
