@@ -140,6 +140,9 @@
 					<input id="siblingsQuery" type="text" value="" /><i title="<spring:message code='help.searchSibling' />" class="icon-large icon-question-sign"></i>
 					<div id="selectedSiblings"><span></span></div>
 				</div>
+				<c:forEach items="${participant.siblings}" var="sib">
+					<span>${sib.firstname}</span>
+				</c:forEach>
 			</div>
 				
 
@@ -232,7 +235,7 @@ $(document).ready(function() {
                 response($.map(result, function(item) {
                     return {
                         // following property gets displayed in drop down
-                        label: item.firstname,
+                        label: item.firstname + " " + item.lastname,
                         // following property gets entered in the textbox
                         value: item.pid,
                         // following property is added for our own use

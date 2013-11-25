@@ -1,9 +1,9 @@
 package at.danceandfun.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -70,19 +70,27 @@ public class ParticipantManagerImpl extends ManagerBaseImpl<Participant>
         return participants.get(0);
     }
 
-    public List searchForSiblings(String query) {
+    public List searchForSiblings(Participant actualParticipant, String query) {
         DetachedCriteria criteria = DetachedCriteria
                 .forClass(Participant.class);
 
-        logger.debug("Search for: " + query);
+        Criterion rest1 = Restrictions.like("firstname", query + "%");
+        Criterion rest2 = Restrictions.like("lastname", query + "%");
+        criteria.add(Restrictions.or(rest1, rest2));
 
-        criteria.add(Restrictions.like("firstname", query + "%"));
         criteria.add(Restrictions.eq("enabled", true));
-        List<Participant> siblings = mainDao.getListByCriteria(criteria);
-        List<String> siblingNames = new ArrayList<String>();
-        for (Participant p : siblings) {
-            siblingNames.add(p.getFirstname());
+
+        if (!(actualParticipant.getPid() == null)) {
+            Criterion rest3 = Restrictions
+                    .eq("pid", actualParticipant.getPid());
+            criteria.add(Restrictions.not(rest3));
+            for (Participant p : actualParticipant.getSiblings()) {
+                Criterion rest4 = Restrictions.eq("pid", p.getPid());
+                criteria.add(Restrictions.not(rest4));
+            }
         }
+        List<Participant> siblings = mainDao.getListByCriteria(criteria);
+        logger.debug("Size of siblings: " + siblings.size());
         return siblings;
     }
 }

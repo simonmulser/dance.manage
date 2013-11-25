@@ -56,10 +56,6 @@ public class EditParticipantController {
 
         }
 
-        if (participant.getSiblings().isEmpty()) {
-            logger.debug("Has siblings");
-        }
-
         this.participant = new Participant();
         return "redirect:/participant";
     }
@@ -68,6 +64,9 @@ public class EditParticipantController {
     public String editParticipant(@PathVariable("pid") Integer pid) {
         logger.debug("Edit Participant with id " + pid);
         participant = participantManager.get(pid);
+        // TODO: getSiblings --> lazy Load?
+        logger.debug("Participant has Siblings: "
+                + participantManager.get(pid).getSiblings().size());
         return "redirect:/participant";
     }
 
@@ -88,7 +87,7 @@ public class EditParticipantController {
     List getSiblings(@RequestParam("term") String query) {
         logger.debug("Entered :" + query);
 
-        return participantManager.searchForSiblings(query);
+        return participantManager.searchForSiblings(participant, query);
     }
 
     public void setParticipantManager(ParticipantManager participantManager) {
