@@ -1,5 +1,7 @@
 package at.danceandfun.controller;
 
+import javax.validation.Valid;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,10 +41,15 @@ public class EditParticipantController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addParticipant(
-            @ModelAttribute(value = "participant") Participant participant,
+            @ModelAttribute(value = "participant") @Valid Participant participant,
             BindingResult result) {
+
+        if (result.hasErrors()) {
+            logger.debug("ERROR adding participant");
+            return "redirect:/participant";
+        }
+
         logger.debug("ADD Participant with id " + participant.getPid());
-        logger.debug("ADD Participant with bd " + participant.getBirthday());
         participant.setEnabled(true);
 
         // TODO is not saving the participant enough?

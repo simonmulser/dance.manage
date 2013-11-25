@@ -40,6 +40,9 @@
 				<div class="span6">
 					<form:input path="email" />
 				</div>
+				<div class="span12">
+					<font color='red'><form:errors path='email' /></font>
+				</div>
 			</div>
 
 			<div class="control-group">
@@ -66,6 +69,9 @@
 				</form:label>
 				<div class="span6">
 					<form:input path="contactPerson" />
+				</div>
+				<div class="span12">
+					<font color='red'><form:errors path='contactPerson' /></font>
 				</div>
 			</div>
 

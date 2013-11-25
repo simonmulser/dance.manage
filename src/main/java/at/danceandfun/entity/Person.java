@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.Email;
 import org.joda.time.LocalDate;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -49,6 +50,7 @@ public abstract class Person implements Serializable, UserDetails {
     private String lastname;
 
     @Column(name = "EMAIL")
+    @Email
     private String email;
 
     @Column(name = "TELEPHONE")
