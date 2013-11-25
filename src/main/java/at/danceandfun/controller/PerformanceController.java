@@ -36,16 +36,6 @@ public class PerformanceController {
         return "performanceView";
     }
 
-    // @RequestMapping(value = "/add", method = RequestMethod.POST)
-    // public String addCourse(@ModelAttribute(value = "course") Course course,
-    // BindingResult result) {
-    // logger.debug("ADD Course with id " + course.getCid());
-    // course.setEnabled(true);
-    // courseManager.save(course);
-    // course = new Course();
-    // return "redirect:/course";
-    // }
-
     @RequestMapping(value = "/build", method = RequestMethod.POST)
     public String buildPerformance(ModelMap map) {
 
