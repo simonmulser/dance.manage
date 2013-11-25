@@ -135,14 +135,22 @@
 
 			
 			<div id="find_keyword" class="control-group">
-				<spring:message code="label.siblings" />
-				<div class="ui-widget">
+				<form:label path="tempSiblings" class="control-label">
+					<spring:message code="label.siblings" />
+				</form:label>
+				<div class="ui-widget span6">
 					<input id="siblingsQuery" type="text" value="" /><i title="<spring:message code='help.searchSibling' />" class="icon-large icon-question-sign"></i>
-					<div id="selectedSiblings"><span></span></div>
+					<div id="showSiblings">
+						<c:forEach items="${participant.siblings}" var="sib">
+							<span>${sib.firstname}&nbsp;${sib.lastname}&nbsp;<i id="${sib.pid}" title="<spring:message code='help.deleteSibling' />" class="icon-large icon-remove"></i></span>
+						</c:forEach>
+						<span id="selectedSiblings">
+					
+						</span>
+					</div>
 				</div>
-				<c:forEach items="${participant.siblings}" var="sib">
-					<span>${sib.firstname}</span>
-				</c:forEach>
+				
+				<form:input path="tempSiblings" id="tempSiblings" type="hidden" />
 			</div>
 				
 
@@ -201,7 +209,7 @@
 								<c:when test="${!empty emp.siblings}">
 									<td>
 										<c:forEach items="${emp.siblings}" var="sib">
-											${sib.firstname}
+											${sib.firstname}&nbsp;
 										</c:forEach>
 									</td>
 								</c:when>
@@ -224,6 +232,13 @@
 <script type="text/javascript">
 $( 'i' ).tooltip();
 $(document).ready(function() {
+	$("#showSiblings").on("click", "i", function(){
+		var id = $(this).attr("id");
+		$(this).parent().text("");
+		$( "#tempSiblings" ).val(function(i,v){
+			return v.replace(id+";", "-"+id+";");
+		}).val();  
+	});
 	
     //attach autocomplete
     $("#siblingsQuery").autocomplete({
@@ -237,9 +252,7 @@ $(document).ready(function() {
                         // following property gets displayed in drop down
                         label: item.firstname + " " + item.lastname,
                         // following property gets entered in the textbox
-                        value: item.pid,
-                        // following property is added for our own use
-                        tag_url: "http://" + window.location.host + "/dancemanage/participant/getSiblings/" + item.firstname + "/" + item.pid
+                        value: item.pid
                     }
                 }));
             });
@@ -249,7 +262,9 @@ $(document).ready(function() {
         select : function(event, ui) {
             if (ui.item) {
                 event.preventDefault();
-                $("#selectedSiblings span").append("<a href='" + ui.item.tag_url + "'>" + ui.item.label +"</a>;");
+                $("#selectedSiblings").append("<span>" + ui.item.label +"&nbsp;<i id='" + ui.item.value + "' class='icon-large icon-remove'></i></span>");
+                var input = $( "#tempSiblings" );
+                input.val( input.val() + ui.item.value + ";" );
                 //$("#tagQuery").value = $("#tagQuery").defaultValue
                 var defValue = $("#siblingsQuery").prop('defaultValue');
                 $("#siblingsQuery").val(defValue);

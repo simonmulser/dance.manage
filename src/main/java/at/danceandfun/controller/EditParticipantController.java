@@ -49,11 +49,28 @@ public class EditParticipantController {
         logger.debug("ADD Participant with bd " + participant.getBirthday());
         participant.setEnabled(true);
 
+        if (!participant.getTempSiblings().equals("")) {
+            String[] siblings = participant.getTempSiblings().split(";");
+            for (String s : siblings) {
+                Participant actualParticipant = participantManager.get(Math
+                        .abs(Integer.parseInt(s)));
+
+                if (Integer.parseInt(s) < 0) {
+                    actualParticipant.getSiblings().remove(participant);
+                    participant.getSiblings().remove(actualParticipant);
+                    participantManager.update(actualParticipant);
+                } else {
+                    participant.getSiblings().add(actualParticipant);
+                }
+
+            }
+
+        }
+
         if (participant.getPid() == null) {
             participantManager.save(participant);
         } else {
             participantManager.update(participant);
-
         }
 
         this.participant = new Participant();
@@ -64,9 +81,16 @@ public class EditParticipantController {
     public String editParticipant(@PathVariable("pid") Integer pid) {
         logger.debug("Edit Participant with id " + pid);
         participant = participantManager.get(pid);
+
         // TODO: getSiblings --> lazy Load?
-        logger.debug("Participant has Siblings: "
-                + participantManager.get(pid).getSiblings().size());
+        if (participantManager.get(pid).getSiblings().size() > 0) {
+            String actualSiblings = "";
+            for (Participant p : participant.getSiblings()) {
+                actualSiblings += p.getPid().toString() + ";";
+            }
+            participant.setTempSiblings(actualSiblings);
+        }
+
         return "redirect:/participant";
     }
 

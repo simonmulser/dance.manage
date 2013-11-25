@@ -50,6 +50,8 @@ public class Participant extends Person implements Serializable {
     @ManyToMany(mappedBy = "siblings")
     private Set<Participant> siblingsReverse = new HashSet<Participant>();
 
+    private String tempSiblings;
+
     public String getEmergencyNumber() {
         return emergencyNumber;
     }
@@ -85,11 +87,34 @@ public class Participant extends Person implements Serializable {
         this.siblings = siblings;
     }
 
+    public String getTempSiblings() {
+        return this.tempSiblings;
+    }
+
+    public void setTempSiblings(String tempSiblings) {
+        this.tempSiblings = tempSiblings;
+    }
+
+    public Set<Participant> getReverseSiblings() {
+        return this.siblingsReverse;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
         auth.add(new RoleUser());
         auth.add(new RoleAdmin());
         return auth;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        // TODO Auto-generated method stub
+        return super.hashCode();
     }
 }
