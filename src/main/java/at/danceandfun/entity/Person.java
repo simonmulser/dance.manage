@@ -14,10 +14,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.LocalDate;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
@@ -44,16 +49,21 @@ public abstract class Person implements Serializable, UserDetails {
     private Integer pid;
 
     @Column(name = "FIRSTNAME")
+    @NotEmpty
     private String firstname;
 
     @Column(name = "LASTNAME")
+    @NotEmpty
     private String lastname;
 
     @Column(name = "EMAIL")
+    @NotEmpty
     @Email
     private String email;
 
     @Column(name = "TELEPHONE")
+    @NotEmpty
+    @Size(min = 9)
     private String telephone;
 
     @Column(name = "PASSWORD")
@@ -61,6 +71,9 @@ public abstract class Person implements Serializable, UserDetails {
 
     @Column(name = "BIRTHDAY")
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+    @NotNull
+    @DateTimeFormat(pattern = "dd.MM.yyyy")
+    @Past
     private LocalDate birthday;
 
     @Column(name = "ENABLED")
@@ -68,6 +81,7 @@ public abstract class Person implements Serializable, UserDetails {
 
     @ManyToOne(cascade = { CascadeType.ALL })
     @JoinColumn(name = "A_ID")
+    @NotNull
     private Address address;
 
     @OneToMany(mappedBy = "owner")

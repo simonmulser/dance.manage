@@ -9,6 +9,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.NumberFormat.Style;
 
 @Entity
 @Table(name = "ADDRESS")
@@ -25,21 +31,36 @@ public class Address implements Serializable {
     private Integer aid;
 
     @Column(name = "STREET")
+    @NotEmpty
+    @NumberFormat(style = Style.NUMBER)
     private String street;
 
     @Column(name = "NUMBER")
+    @NotNull
+    @Min(1)
+    @NumberFormat(style = Style.NUMBER)
     private Integer number;
 
     @Column(name = "STAIR")
+    @NotNull
+    @Min(1)
+    @NumberFormat(style = Style.NUMBER)
     private Integer stair;
 
     @Column(name = "DOOR")
+    @NotNull
+    @Min(1)
+    @NumberFormat(style = Style.NUMBER)
     private Integer door;
 
     @Column(name = "ZIP")
+    @NotNull
+    @Min(1)
+    @NumberFormat(style = Style.NUMBER)
     private Integer zip;
 
     @Column(name = "CITY")
+    @NotEmpty
     private String city;
 
     @Column(name = "ENABLED")

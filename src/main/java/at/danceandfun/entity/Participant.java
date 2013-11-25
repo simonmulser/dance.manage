@@ -15,8 +15,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 
 import at.danceandfun.role.RoleAdmin;
@@ -36,7 +36,7 @@ public class Participant extends Person implements Serializable {
     private String emergencyNumber;
 
     @Column(name = "CONTACTPERSON")
-    @NotNull
+    @NotEmpty
     private String contactPerson;
 
     @ManyToMany(mappedBy = "participants")

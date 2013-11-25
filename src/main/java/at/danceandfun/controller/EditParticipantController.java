@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import at.danceandfun.entity.Participant;
 import at.danceandfun.service.AddressManager;
@@ -41,26 +42,30 @@ public class EditParticipantController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addParticipant(
-            @ModelAttribute(value = "participant") @Valid Participant participant,
-            BindingResult result) {
-
+            @ModelAttribute("participant") @Valid Participant participant,
+            BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            logger.debug("ERROR adding participant");
-            return "redirect:/participant";
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.myForm",
+                    result);
+            redirectAttributes.addFlashAttribute("participant", participant);
+            return "editParticipantList";
+        } else {
+            logger.debug("ADD Participant with id " + participant.getPid());
+            participant.setEnabled(true);
+
+            // TODO is not saving the participant enough?
+            /*
+             * if (!participant.getAddress().equals(null)) {
+             * addressManager.save(participant.getAddress()); }
+             */
+            participantManager.save(participant);
+
+            this.participant = new Participant();
         }
-
-        logger.debug("ADD Participant with id " + participant.getPid());
-        participant.setEnabled(true);
-
-        // TODO is not saving the participant enough?
-        /*
-         * if (!participant.getAddress().equals(null)) {
-         * addressManager.save(participant.getAddress()); }
-         */
-        participantManager.save(participant);
-
-        this.participant = new Participant();
         return "redirect:/participant";
+
+
     }
 
     @RequestMapping(value = "/edit/{pid}")

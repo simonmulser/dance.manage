@@ -22,6 +22,7 @@
 				<div class="span6">
 					<form:input path="firstname" />
 				</div>
+				<form:errors path="firstname" cssClass="error" />
 			</div>
 
 			<div class="control-group">
@@ -31,6 +32,7 @@
 				<div class="span6">
 					<form:input path="lastname" />
 				</div>
+				<form:errors path="lastname" cssClass="error" />
 			</div>
 
 			<div class="control-group">
@@ -40,9 +42,7 @@
 				<div class="span6">
 					<form:input path="email" />
 				</div>
-				<div class="span12">
-					<font color='red'><form:errors path='email' /></font>
-				</div>
+				<form:errors path="email" cssClass="error"/>
 			</div>
 
 			<div class="control-group">
@@ -52,6 +52,7 @@
 				<div class="span6">
 					<form:input path="telephone" />
 				</div>
+				<form:errors path="telephone" cssClass="error" />
 			</div>
 
 			<div class="control-group">
@@ -61,6 +62,7 @@
 				<div class="span6">
 					<form:input path="birthday" />
 				</div>
+				<form:errors path="birthday" cssClass="error" />
 			</div>
 
 			<div class="control-group">
@@ -70,9 +72,7 @@
 				<div class="span6">
 					<form:input path="contactPerson" />
 				</div>
-				<div class="span12">
-					<font color='red'><form:errors path='contactPerson' /></font>
-				</div>
+				<form:errors path="contactPerson" cssClass="error" />
 			</div>
 
 			<div class="control-group">
@@ -82,6 +82,7 @@
 				<div class="span6">
 					<form:input path="emergencyNumber" />
 				</div>
+				<form:errors path="emergencyNumber" cssClass="error" />
 			</div>
 
 			<div class="control-group">
@@ -91,6 +92,7 @@
 				<div class="span6">
 					<form:input path="address.street" />
 				</div>
+				<form:errors path="address.street" cssClass="error" />
 			</div>
 
 			<div class="control-group">
@@ -100,6 +102,7 @@
 				<div class="span6">
 					<form:input path="address.number" />
 				</div>
+				<form:errors path="address.number" cssClass="error" />a
 			</div>
 
 			<div class="control-group">
@@ -109,6 +112,7 @@
 				<div class="span6">
 					<form:input path="address.stair" />
 				</div>
+				<form:errors path="address.stair" cssClass="error" />
 			</div>
 
 			<div class="control-group">
@@ -118,6 +122,7 @@
 				<div class="span6">
 					<form:input path="address.door" />
 				</div>
+				<form:errors path="address.door" cssClass="error" />
 			</div>
 
 			<div class="control-group">
@@ -127,6 +132,7 @@
 				<div class="span6">
 					<form:input path="address.zip" />
 				</div>
+				<form:errors path="address.zip" cssClass="error" />
 			</div>
 
 			<div class="control-group">
@@ -136,6 +142,7 @@
 				<div class="span6">
 					<form:input path="address.city" />
 				</div>
+				<form:errors path="address.city" cssClass="error" />
 			</div>
 
 			<div class="form-actions">
@@ -173,7 +180,7 @@
 							<td>${emp.email}</td>
 							<td>${emp.telephone}</td>
 							<td><joda:format value="${emp.birthday}"
-									pattern="yyyy-MM-dd" /></td>
+									pattern="dd.MM.yyyy" /></td>
 							<td>${emp.contactPerson}</td>
 							<td>${emp.emergencyNumber}</td>
 							<c:choose>
