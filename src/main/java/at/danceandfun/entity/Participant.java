@@ -15,6 +15,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.security.core.GrantedAuthority;
 
@@ -35,6 +36,7 @@ public class Participant extends Person implements Serializable {
     private String emergencyNumber;
 
     @Column(name = "CONTACTPERSON")
+    @NotNull
     private String contactPerson;
 
     @ManyToMany(mappedBy = "participants")
