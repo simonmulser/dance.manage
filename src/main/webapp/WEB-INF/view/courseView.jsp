@@ -13,7 +13,7 @@
 		<table>
 			<tr>
 				<td><form:input path="cid" type="hidden" /> <form:input
-						path="active" type="hidden" /></td>
+						path="enabled" type="hidden" /></td>
 			</tr>
 			<tr>
 				<td><form:label path="name">

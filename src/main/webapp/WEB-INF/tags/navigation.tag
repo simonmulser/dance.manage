@@ -14,22 +14,27 @@
 			<div class="nav-collapse">
 				<ul class="nav pull-right">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"><i class="icon-cog"></i> <spring:message code="nav.account" /> <b
-							class="caret"></b></a>
+						data-toggle="dropdown"><i class="icon-cog"></i> <spring:message
+								code="nav.account" /> <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="javascript:;"><spring:message code="nav.settings" /></a></li>
-							<li><a href="javascript:;"><spring:message code="nav.help" /></a></li>
+							<li><a href="javascript:;"><spring:message
+										code="nav.settings" /></a></li>
+							<li><a href="javascript:;"><spring:message
+										code="nav.help" /></a></li>
 						</ul></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown"><i class="icon-user"></i> Erika Muster
 							<b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="javascript:;"><spring:message code="nav.profile" /></a></li>
-							<li><a href="<c:url value='j_spring_security_logout' />" ><spring:message code="nav.logout" /></a></li>
+							<li><a href="javascript:;"><spring:message
+										code="nav.profile" /></a></li>
+							<li><a href="<c:url value='j_spring_security_logout' />"><spring:message
+										code="nav.logout" /></a></li>
 						</ul></li>
 				</ul>
 				<form class="navbar-search pull-right">
-					<input type="text" class="search-query" placeholder="<spring:message code="nav.search" />">
+					<input type="text" class="search-query"
+						placeholder="<spring:message code="nav.search" />">
 				</form>
 			</div>
 			<!--/.nav-collapse -->
@@ -69,10 +74,10 @@
 					<ul class="dropdown-menu">
 						<li><a href="participant"><spring:message
 									code="nav.participants" /></a></li>
-						<li><a href="teacher"><spring:message
-									code="nav.teachers" /></a></li>
+						<li><a href="teacher"><spring:message code="nav.teachers" /></a></li>
 					</ul></li>
-				<li><a href="performance"><i class="icon-camera"></i><span><spring:message
+				<li <c:if test="${activesection eq 'performances'}">class="active"</c:if>><a
+					href="performance"><i class="icon-camera"></i><span><spring:message
 								code="nav.performances" /></span> </a></li>
 			</ul>
 		</div>

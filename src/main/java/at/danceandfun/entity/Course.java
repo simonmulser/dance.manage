@@ -235,4 +235,7 @@ public class Course implements Serializable {
         this.name = name;
     }
 
+    public String toString() {
+        return "ID: " + cid + "NAME: " + name;
+    }
 }

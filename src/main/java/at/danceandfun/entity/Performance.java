@@ -33,6 +33,9 @@ public class Performance implements Serializable {
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
     private DateTime dateTime;
 
+    @Column(name = "ENABLED")
+    private boolean enabled;
+
     @ManyToOne
     @JoinColumn(name = "A_ID")
     private Address address;
@@ -64,6 +67,18 @@ public class Performance implements Serializable {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void addCourse(Course course) {
+        courses.add(course);
     }
 
 }
