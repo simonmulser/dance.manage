@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -131,6 +132,7 @@ public abstract class Person implements Serializable, UserDetails {
         this.enabled = enabled;
     }
 
+    @JsonIgnore
     public Address getAddress() {
         return address;
     }
@@ -139,6 +141,7 @@ public abstract class Person implements Serializable, UserDetails {
         this.address = address;
     }
 
+    @JsonIgnore
     public List<Invoice> getInvoices() {
         return invoices;
     }
@@ -173,6 +176,41 @@ public abstract class Person implements Serializable, UserDetails {
     @Override
     public boolean isCredentialsNonExpired() {
         // TODO Auto-generated method stub
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((pid == null) ? 0 : pid.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Person other = (Person) obj;
+        if (pid == null) {
+            if (other.pid != null) {
+                return false;
+            }
+
+        } else if (!pid.equals(other.pid)) {
+            return false;
+        }
+
         return true;
     }
 

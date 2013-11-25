@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 @Entity
 @Table(name = "ADDRESS")
 public class Address implements Serializable {
@@ -126,6 +128,7 @@ public class Address implements Serializable {
         this.performances = performances;
     }
 
+    @JsonIgnore
     public List<Person> getPersons() {
         return persons;
     }
