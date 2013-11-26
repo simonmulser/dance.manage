@@ -14,9 +14,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.LocalDate;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
@@ -43,15 +51,21 @@ public abstract class Person implements Serializable, UserDetails {
     private Integer pid;
 
     @Column(name = "FIRSTNAME")
+    @NotEmpty
     private String firstname;
 
     @Column(name = "LASTNAME")
+    @NotEmpty
     private String lastname;
 
     @Column(name = "EMAIL")
+    @NotEmpty
+    @Email
     private String email;
 
     @Column(name = "TELEPHONE")
+    @NotEmpty
+    @Size(min = 9)
     private String telephone;
 
     @Column(name = "PASSWORD")
@@ -59,6 +73,9 @@ public abstract class Person implements Serializable, UserDetails {
 
     @Column(name = "BIRTHDAY")
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+    @NotNull
+    @DateTimeFormat(pattern = "dd.MM.yyyy")
+    @Past
     private LocalDate birthday;
 
     @Column(name = "ENABLED")
@@ -66,6 +83,8 @@ public abstract class Person implements Serializable, UserDetails {
 
     @ManyToOne(cascade = { CascadeType.ALL })
     @JoinColumn(name = "A_ID")
+    @NotNull
+    @Valid
     private Address address;
 
     @OneToMany(mappedBy = "owner")
@@ -131,6 +150,7 @@ public abstract class Person implements Serializable, UserDetails {
         this.enabled = enabled;
     }
 
+    @JsonIgnore
     public Address getAddress() {
         return address;
     }
@@ -139,6 +159,7 @@ public abstract class Person implements Serializable, UserDetails {
         this.address = address;
     }
 
+    @JsonIgnore
     public List<Invoice> getInvoices() {
         return invoices;
     }
@@ -173,6 +194,41 @@ public abstract class Person implements Serializable, UserDetails {
     @Override
     public boolean isCredentialsNonExpired() {
         // TODO Auto-generated method stub
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((pid == null) ? 0 : pid.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Person other = (Person) obj;
+        if (pid == null) {
+            if (other.pid != null) {
+                return false;
+            }
+
+        } else if (!pid.equals(other.pid)) {
+            return false;
+        }
+
         return true;
     }
 

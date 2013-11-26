@@ -8,6 +8,7 @@
 <dmtags:base title="Kursteilnehmer" activesection="participants">
 
 	<dmtags:widget title="Kursteilnehmer" icon="icon-user">
+		<spring:message code="help.participant" />
 		<form:form method="post" action="participant/add"
 			commandName="participant" class="form-horizontal">
 
@@ -17,47 +18,52 @@
 
 			<div class="control-group">
 				<form:label path="firstname" class="control-label">
-					<spring:message code="label.firstname" />
+					<spring:message code="label.firstname"  />*
 				</form:label>
 				<div class="span6">
 					<form:input path="firstname" />
 				</div>
+				<form:errors path="firstname" cssClass="error" />
 			</div>
 
 			<div class="control-group">
 				<form:label path="lastname" class="control-label">
-					<spring:message code="label.lastname" />
+					<spring:message code="label.lastname" />*
 				</form:label>
 				<div class="span6">
 					<form:input path="lastname" />
 				</div>
+				<form:errors path="lastname" cssClass="error" />
 			</div>
 
 			<div class="control-group">
 				<form:label path="email" class="control-label">
-					<spring:message code="label.email" />
+					<spring:message code="label.email" />*
 				</form:label>
 				<div class="span6">
 					<form:input path="email" />
 				</div>
+				<form:errors path="email" cssClass="error"/>
 			</div>
 
 			<div class="control-group">
 				<form:label path="telephone" class="control-label">
-					<spring:message code="label.telephone" />
+					<spring:message code="label.telephone" />*
 				</form:label>
 				<div class="span6">
 					<form:input path="telephone" />
 				</div>
+				<form:errors path="telephone" cssClass="error" />
 			</div>
 
 			<div class="control-group">
 				<form:label path="birthday" class="control-label">
-					<spring:message code="label.birthday" />
+					<spring:message code="label.birthday" />*
 				</form:label>
 				<div class="span6">
 					<form:input path="birthday" />
 				</div>
+				<form:errors path="birthday" cssClass="error" />
 			</div>
 
 			<div class="control-group">
@@ -67,6 +73,7 @@
 				<div class="span6">
 					<form:input path="contactPerson" />
 				</div>
+				<form:errors path="contactPerson" cssClass="error" />
 			</div>
 
 			<div class="control-group">
@@ -76,24 +83,27 @@
 				<div class="span6">
 					<form:input path="emergencyNumber" />
 				</div>
+				<form:errors path="emergencyNumber" cssClass="error" />
 			</div>
 
 			<div class="control-group">
 				<form:label path="address.street" class="control-label">
-					<spring:message code="label.street" />
+					<spring:message code="label.street" />*
 				</form:label>
 				<div class="span6">
 					<form:input path="address.street" />
 				</div>
+				<form:errors path="address.street" cssClass="error" />
 			</div>
 
 			<div class="control-group">
 				<form:label path="address.number" class="control-label">
-					<spring:message code="label.number" />
+					<spring:message code="label.number" />*
 				</form:label>
 				<div class="span6">
 					<form:input path="address.number" />
 				</div>
+				<form:errors path="address.number" cssClass="error" />
 			</div>
 
 			<div class="control-group">
@@ -103,6 +113,7 @@
 				<div class="span6">
 					<form:input path="address.stair" />
 				</div>
+				<form:errors path="address.stair" cssClass="error" />
 			</div>
 
 			<div class="control-group">
@@ -112,25 +123,51 @@
 				<div class="span6">
 					<form:input path="address.door" />
 				</div>
+				<form:errors path="address.door" cssClass="error" />
 			</div>
 
 			<div class="control-group">
 				<form:label path="address.zip" class="control-label">
-					<spring:message code="label.zip" />
+					<spring:message code="label.zip" />*
 				</form:label>
 				<div class="span6">
 					<form:input path="address.zip" />
 				</div>
+				<form:errors path="address.zip" cssClass="error" />
 			</div>
 
 			<div class="control-group">
 				<form:label path="address.city" class="control-label">
-					<spring:message code="label.city" />
+					<spring:message code="label.city" />*
 				</form:label>
 				<div class="span6">
 					<form:input path="address.city" />
 				</div>
+				<form:errors path="address.city" cssClass="error" />
 			</div>
+
+
+			<div id="find_keyword" class="control-group">
+				<form:label path="tempSiblings" class="control-label">
+					<spring:message code="label.siblings" />
+				</form:label>
+				<div class="ui-widget span6">
+					<input id="siblingsQuery" type="text" value="" /><i
+						title="<spring:message code='help.searchSibling' />"
+						class="inline-tooltip icon icon-question-sign"></i>
+					<div id="showSiblings">
+						<c:forEach items="${participant.siblings}" var="sib">
+							<span class="siblingTag">${sib.firstname}&nbsp;${sib.lastname}&nbsp;<i
+								id="${sib.pid}"
+								class="icon icon-remove"></i></span>
+						</c:forEach>
+						<span id="selectedSiblings"> </span>
+					</div>
+				</div>
+
+				<form:input path="tempSiblings" id="tempSiblings" type="hidden" />
+			</div>
+
 
 			<div class="form-actions">
 				<input type="submit" value="<spring:message code="label.save"/>"
@@ -157,6 +194,7 @@
 						<th><spring:message code="label.street" /></th>
 						<th><spring:message code="label.zip" /></th>
 						<th><spring:message code="label.city" /></th>
+						<th><spring:message code="label.siblings" /></th>
 						<th>&nbsp;</th>
 					</tr>
 				</thead>
@@ -167,12 +205,12 @@
 							<td>${emp.email}</td>
 							<td>${emp.telephone}</td>
 							<td><joda:format value="${emp.birthday}"
-									pattern="yyyy-MM-dd" /></td>
+									pattern="dd.MM.yyyy" /></td>
 							<td>${emp.contactPerson}</td>
 							<td>${emp.emergencyNumber}</td>
 							<c:choose>
 								<c:when test="${!empty emp.address}">
-									<td>${emp.address.street}
+									<td>${emp.address.street}&nbsp;
 										${emp.address.number}/${emp.address.stair}/${emp.address.door}</td>
 									<td>${emp.address.zip}</td>
 									<td>${emp.address.city}</td>
@@ -180,6 +218,17 @@
 								<c:otherwise>
 									<td></td>
 									<td></td>
+									<td></td>
+								</c:otherwise>
+							</c:choose>
+							<c:choose>
+								<c:when test="${!empty emp.siblings}">
+									<td><c:forEach items="${emp.siblings}" var="sib" varStatus="loop">
+											${sib.firstname}
+											${!loop.last ? ', ' : ''}
+										</c:forEach></td>
+								</c:when>
+								<c:otherwise>
 									<td></td>
 								</c:otherwise>
 							</c:choose>
@@ -195,3 +244,73 @@
 	</c:if>
 
 </dmtags:base>
+<script type="text/javascript">
+	$('i').tooltip();
+	$(document)
+			.ready(
+					function() {
+						$("#showSiblings").on("click", "i", function() {
+							var id = $(this).attr("id");
+							$(this).parent().remove();
+							$("#tempSiblings").val(function(i, v) {
+								return v.replace(id + ";", "-" + id + ";");
+							}).val();
+						});
+
+						//attach autocomplete
+						$("#siblingsQuery")
+								.autocomplete(
+										{
+											minLength : 1,
+											delay : 500,
+											//define callback to format results
+											source : function(request, response) {
+												$
+														.getJSON(
+																"/dancemanage/participant/getSiblings",
+																request,
+																function(result) {
+																	response($
+																			.map(
+																					result,
+																					function(
+																							item) {
+																						return {
+																							// following property gets displayed in drop down
+																							label : item.firstname
+																									+ " "
+																									+ item.lastname,
+																							// following property gets entered in the textbox
+																							value : item.pid
+																						};
+																					}));
+																});
+											},
+
+											//define select handler
+											select : function(event, ui) {
+												if (ui.item) {
+													event.preventDefault();
+													$("#selectedSiblings")
+															.append(
+																	"<span class='siblingTag'>"
+																			+ ui.item.label
+																			+ "&nbsp;<i id='" + ui.item.value + "' class='icon icon-remove'></i></span>");
+													var input = $("#tempSiblings");
+													input.val(input.val()
+															+ ui.item.value
+															+ ";");
+													//$("#tagQuery").value = $("#tagQuery").defaultValue
+													var defValue = $(
+															"#siblingsQuery")
+															.prop(
+																	'defaultValue');
+													$("#siblingsQuery").val(
+															defValue);
+													$("#siblingsQuery").blur();
+													return false;
+												}
+											}
+										});
+					});
+</script>
