@@ -24,7 +24,7 @@
 			</div>
 
 			<div class="form-actions">
-				<input type="submit" value="<spring:message code="label.add"/>"
+				<input type="submit" value="<spring:message code="label.create"/>"
 					class="btn btn-primary" />
 			</div>
 
