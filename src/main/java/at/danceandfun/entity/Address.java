@@ -43,14 +43,10 @@ public class Address implements Serializable {
     private Integer number;
 
     @Column(name = "STAIR")
-    @NotNull
-    @Min(1)
     @NumberFormat(style = Style.NUMBER)
     private Integer stair;
 
     @Column(name = "DOOR")
-    @NotNull
-    @Min(1)
     @NumberFormat(style = Style.NUMBER)
     private Integer door;
 

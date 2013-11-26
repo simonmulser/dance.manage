@@ -92,7 +92,7 @@ public class EditParticipantController {
                 logger.debug("His address: "
                         + participant.getAddress().getAid() + " "
                         + participant.getAddress().getZip());
-                addressManager.update(participant.getAddress());
+                // addressManager.update(participant.getAddress());
                 participantManager.update(participant);
 
                 logger.debug("Finished updating participant");
