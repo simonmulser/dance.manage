@@ -15,6 +15,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -39,6 +40,7 @@ public class Participant extends Person implements Serializable {
 
     @Column(name = "CONTACTPERSON")
     @NotEmpty
+    @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]+$", message = "darf nur aus Buchstaben bestehen")
     private String contactPerson;
 
     @ManyToMany(mappedBy = "participants")

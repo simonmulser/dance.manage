@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -34,34 +35,32 @@ public class Address implements Serializable {
     @Column(name = "STREET")
     @NotEmpty
     @NumberFormat(style = Style.NUMBER)
+    @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]+$", message = "darf nur aus Buchstaben bestehen")
     private String street;
 
     @Column(name = "NUMBER")
     @NotNull
     @Min(1)
-    @NumberFormat(style = Style.NUMBER)
     private Integer number;
 
     @Column(name = "STAIR")
     @NotNull
     @Min(1)
-    @NumberFormat(style = Style.NUMBER)
     private Integer stair;
 
     @Column(name = "DOOR")
     @NotNull
     @Min(1)
-    @NumberFormat(style = Style.NUMBER)
     private Integer door;
 
     @Column(name = "ZIP")
     @NotNull
     @Min(1)
-    @NumberFormat(style = Style.NUMBER)
     private Integer zip;
 
     @Column(name = "CITY")
     @NotEmpty
+    @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]+$", message = "darf nur aus Buchstaben bestehen")
     private String city;
 
     @Column(name = "ENABLED")
