@@ -46,20 +46,21 @@ public class EditParticipantController {
             BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute(
-                    "org.springframework.validation.BindingResult.myForm",
+                    "org.springframework.validation.BindingResult.participant",
                     result);
             redirectAttributes.addFlashAttribute("participant", participant);
-            return "editParticipantList";
+            this.participant = participant;
+            return "redirect:/participant";
         } else {
             logger.debug("ADD Participant with id " + participant.getPid());
             participant.setEnabled(true);
 
             // TODO is not saving the participant enough?
-            /*
-             * if (!participant.getAddress().equals(null)) {
-             * addressManager.save(participant.getAddress()); }
-             */
+
             participantManager.save(participant);
+            if (!participant.getAddress().equals(null)) {
+                addressManager.save(participant.getAddress());
+            }
 
             this.participant = new Participant();
         }
