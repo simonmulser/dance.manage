@@ -3,11 +3,13 @@ package at.danceandfun.entity;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -33,11 +35,15 @@ public class Performance implements Serializable {
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
     private DateTime dateTime;
 
+    @Column(name = "ENABLED")
+    private boolean enabled;
+
     @ManyToOne
     @JoinColumn(name = "A_ID")
     private Address address;
 
-    @ManyToMany(mappedBy = "performances")
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(name = "COURSE_PERFORMANCE", joinColumns = { @JoinColumn(name = "PER_ID") }, inverseJoinColumns = { @JoinColumn(name = "C_ID") })
     private List<Course> courses;
 
     // TODO NiceToHave mapping with person/participant for ticket selling
@@ -64,6 +70,22 @@ public class Performance implements Serializable {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
 }

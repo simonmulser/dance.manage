@@ -59,8 +59,6 @@ public class EditParticipantController {
             logger.debug("ADD Participant with id " + participant.getPid());
             participant.setEnabled(true);
 
-            // TODO is not saving the participant enough?
-
             if (!participant.getTempSiblings().equals("")) {
                 String[] siblings = participant.getTempSiblings().split(";");
                 for (String s : siblings) {
@@ -75,9 +73,7 @@ public class EditParticipantController {
                     } else {
                         participant.getSiblings().add(actualParticipant);
                     }
-
                 }
-
             }
 
             if (participant.getAddress().getAid() == null) {
@@ -89,12 +85,7 @@ public class EditParticipantController {
                 participantManager.save(participant);
             } else {
                 logger.debug("Update participant");
-                logger.debug("His address: "
-                        + participant.getAddress().getAid() + " "
-                        + participant.getAddress().getZip());
-                addressManager.update(participant.getAddress());
                 participantManager.update(participant);
-
                 logger.debug("Finished updating participant");
             }
             this.participant = new Participant();
@@ -126,8 +117,6 @@ public class EditParticipantController {
         participant = participantManager.get(pid);
         participant.setEnabled(false);
         participantManager.update(participant);
-        // p.getAddress().setEnabled(false);
-        // addressManager.update(p.getAddress());
         participant = new Participant();
         return "redirect:/participant";
     }

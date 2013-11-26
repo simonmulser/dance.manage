@@ -44,13 +44,9 @@ public class Address implements Serializable {
     private Integer number;
 
     @Column(name = "STAIR")
-    @NotNull
-    @Min(1)
     private Integer stair;
 
     @Column(name = "DOOR")
-    @NotNull
-    @Min(1)
     private Integer door;
 
     @Column(name = "ZIP")

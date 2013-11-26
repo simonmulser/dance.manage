@@ -35,7 +35,6 @@ public class Participant extends Person implements Serializable {
     private static final long serialVersionUID = 8277820405941269587L;
 
     @Column(name = "EMERGENCYNUMBER")
-    @NotEmpty
     private String emergencyNumber;
 
     @Column(name = "CONTACTPERSON")

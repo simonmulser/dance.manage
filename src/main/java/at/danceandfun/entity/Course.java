@@ -80,8 +80,7 @@ public class Course implements Serializable {
     @JoinColumn(name = "S_ID")
     private Style style;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(name = "COURSE_PERFORMANCE", joinColumns = { @JoinColumn(name = "C_ID") }, inverseJoinColumns = { @JoinColumn(name = "PER_ID") })
+    @ManyToMany(mappedBy = "courses")
     private List<Performance> performances;
 
     @ManyToMany(cascade = { CascadeType.ALL })
@@ -235,4 +234,7 @@ public class Course implements Serializable {
         this.name = name;
     }
 
+    public String toString() {
+        return "ID: " + cid + "NAME: " + name;
+    }
 }

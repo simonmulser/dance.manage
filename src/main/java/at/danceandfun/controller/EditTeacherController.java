@@ -1,5 +1,7 @@
 package at.danceandfun.controller;
 
+import javax.validation.Valid;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import at.danceandfun.entity.Teacher;
 import at.danceandfun.service.AddressManager;
@@ -26,12 +29,12 @@ public class EditTeacherController {
     @Autowired
     private AddressManager addressManager;
 
-    private Teacher t = new Teacher();
+    private Teacher teacher = new Teacher();
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String listTeachers(ModelMap map) {
-        logger.debug("LIST Teacher with id " + t.getPid());
-        map.addAttribute("teacher", this.t);
+        logger.debug("LIST Teacher with id " + teacher.getPid());
+        map.addAttribute("teacher", teacher);
         map.addAttribute("teacherList", teacherManager.getEnabledList());
 
         return "editTeacherList";
@@ -39,36 +42,52 @@ public class EditTeacherController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addTeacher(
-            @ModelAttribute(value = "teacher") Teacher teacher,
-            BindingResult result) {
-        logger.debug("ADD Teacher with id " + teacher.getPid());
-        logger.debug("ADD Teacher with bd " + teacher.getBirthday());
-        teacher.setEnabled(true);
-        teacherManager.save(teacher);
-        if (!teacher.getAddress().equals(null)) {
-            addressManager.save(teacher.getAddress());
-        }
+            @ModelAttribute(value = "teacher") @Valid Teacher teacher,
+            BindingResult result, RedirectAttributes redirectAttributes) {
 
-        this.t = new Teacher();
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.teacher",
+                    result);
+            redirectAttributes.addFlashAttribute("teacher", teacher);
+            this.teacher = teacher;
+            return "redirect:/teacher";
+        } else {
+            logger.debug("ADD Teacher with id " + teacher.getPid());
+            teacher.setEnabled(true);
+
+            if (teacher.getAddress().getAid() == null) {
+                addressManager.save(teacher.getAddress());
+            }
+
+            if (teacher.getPid() == null) {
+                logger.debug("New teacher");
+                teacherManager.save(teacher);
+            } else {
+                logger.debug("Update teacher");
+                teacherManager.update(teacher);
+
+                logger.debug("Finished updating teacher");
+            }
+            this.teacher = new Teacher();
+        }
         return "redirect:/teacher";
     }
 
     @RequestMapping(value = "/edit/{pid}")
     public String editTeacher(@PathVariable("pid") Integer pid) {
         logger.debug("Edit Teacher with id " + pid);
-        this.t = teacherManager.get(pid);
+        this.teacher = teacherManager.get(pid);
         return "redirect:/teacher";
     }
 
     @RequestMapping(value = "/delete/{pid}")
     public String deleteTeacher(@PathVariable("pid") Integer pid) {
         logger.debug("Delete Teacher with id " + pid);
-        this.t = teacherManager.get(pid);
-        t.setEnabled(false);
-        teacherManager.update(t);
-        // t.getAddress().setEnabled(false);
-        // addressManager.update(t.getAddress());
-        t = new Teacher();
+        this.teacher = teacherManager.get(pid);
+        teacher.setEnabled(false);
+        teacherManager.update(teacher);
+        teacher = new Teacher();
         return "redirect:/teacher";
     }
 

@@ -18,7 +18,7 @@
 
 			<div class="control-group">
 				<form:label path="firstname" class="control-label">
-					<spring:message code="label.firstname" />
+					<spring:message code="label.firstname" />*
 				</form:label>
 				<div class="span6">
 					<form:input path="firstname" />
@@ -28,7 +28,7 @@
 
 			<div class="control-group">
 				<form:label path="lastname" class="control-label">
-					<spring:message code="label.lastname" />
+					<spring:message code="label.lastname" />*
 				</form:label>
 				<div class="span6">
 					<form:input path="lastname" />
@@ -38,17 +38,17 @@
 
 			<div class="control-group">
 				<form:label path="email" class="control-label">
-					<spring:message code="label.email" />
+					<spring:message code="label.email" />*
 				</form:label>
 				<div class="span6">
 					<form:input path="email" />
 				</div>
-				<form:errors path="email" cssClass="error"/>
+				<form:errors path="email" cssClass="error" />
 			</div>
 
 			<div class="control-group">
 				<form:label path="telephone" class="control-label">
-					<spring:message code="label.telephone" />
+					<spring:message code="label.telephone" />*
 				</form:label>
 				<div class="span6">
 					<form:input path="telephone" />
@@ -58,7 +58,7 @@
 
 			<div class="control-group">
 				<form:label path="birthday" class="control-label">
-					<spring:message code="label.birthday" />
+					<spring:message code="label.birthday" />*
 				</form:label>
 				<div class="span6">
 					<form:input path="birthday" />
@@ -88,7 +88,7 @@
 
 			<div class="control-group">
 				<form:label path="address.street" class="control-label">
-					<spring:message code="label.street" />
+					<spring:message code="label.street" />*
 				</form:label>
 				<div class="span6">
 					<form:input path="address.street" />
@@ -98,7 +98,7 @@
 
 			<div class="control-group">
 				<form:label path="address.number" class="control-label">
-					<spring:message code="label.number" />
+					<spring:message code="label.number" />*
 				</form:label>
 				<div class="span6">
 					<form:input path="address.number" />
@@ -128,7 +128,7 @@
 
 			<div class="control-group">
 				<form:label path="address.zip" class="control-label">
-					<spring:message code="label.zip" />
+					<spring:message code="label.zip" />*
 				</form:label>
 				<div class="span6">
 					<form:input path="address.zip" />
@@ -138,7 +138,7 @@
 
 			<div class="control-group">
 				<form:label path="address.city" class="control-label">
-					<spring:message code="label.city" />
+					<spring:message code="label.city" />*
 				</form:label>
 				<div class="span6">
 					<form:input path="address.city" />
@@ -158,8 +158,7 @@
 					<div id="showSiblings">
 						<c:forEach items="${participant.siblings}" var="sib">
 							<span class="siblingTag">${sib.firstname}&nbsp;${sib.lastname}&nbsp;<i
-								id="${sib.pid}"
-								class="icon icon-remove"></i></span>
+								id="${sib.pid}" class="icon icon-remove"></i></span>
 						</c:forEach>
 						<span id="selectedSiblings"> </span>
 					</div>
@@ -210,7 +209,7 @@
 							<td>${emp.emergencyNumber}</td>
 							<c:choose>
 								<c:when test="${!empty emp.address}">
-									<td>${emp.address.street}
+									<td>${emp.address.street}&nbsp;
 										${emp.address.number}/${emp.address.stair}/${emp.address.door}</td>
 									<td>${emp.address.zip}</td>
 									<td>${emp.address.city}</td>
@@ -223,7 +222,8 @@
 							</c:choose>
 							<c:choose>
 								<c:when test="${!empty emp.siblings}">
-									<td><c:forEach items="${emp.siblings}" var="sib" varStatus="loop">
+									<td><c:forEach items="${emp.siblings}" var="sib"
+											varStatus="loop">
 											${sib.firstname}
 											${!loop.last ? ', ' : ''}
 										</c:forEach></td>
