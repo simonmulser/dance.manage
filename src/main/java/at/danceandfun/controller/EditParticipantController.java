@@ -2,6 +2,8 @@ package at.danceandfun.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import at.danceandfun.entity.Participant;
 import at.danceandfun.service.AddressManager;
@@ -43,38 +46,53 @@ public class EditParticipantController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addParticipant(
-            @ModelAttribute(value = "participant") Participant participant,
-            BindingResult result) {
-        logger.debug("ADD Participant with id " + participant.getPid());
-        logger.debug("ADD Participant with bd " + participant.getBirthday());
-        participant.setEnabled(true);
+            @ModelAttribute("participant") @Valid Participant participant,
+            BindingResult result, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.participant",
+                    result);
+            redirectAttributes.addFlashAttribute("participant", participant);
+            this.participant = participant;
+            return "redirect:/participant";
+        } else {
+            logger.debug("ADD Participant with id " + participant.getPid());
+            participant.setEnabled(true);
 
-        if (!participant.getTempSiblings().equals("")) {
-            String[] siblings = participant.getTempSiblings().split(";");
-            for (String s : siblings) {
-                Participant actualParticipant = participantManager.get(Math
-                        .abs(Integer.parseInt(s)));
+            // TODO is not saving the participant enough?
 
-                if (Integer.parseInt(s) < 0) {
-                    actualParticipant.getSiblings().remove(participant);
-                    participant.getSiblings().remove(actualParticipant);
-                    participantManager.update(actualParticipant);
-                } else {
-                    participant.getSiblings().add(actualParticipant);
+            if (!participant.getTempSiblings().equals("")) {
+                String[] siblings = participant.getTempSiblings().split(";");
+                for (String s : siblings) {
+                    Participant actualParticipant = participantManager.get(Math
+                            .abs(Integer.parseInt(s)));
+
+                    if (Integer.parseInt(s) < 0) {
+                        actualParticipant.getSiblings().remove(participant);
+                        participant.getSiblings().remove(actualParticipant);
+                        participantManager.update(actualParticipant);
+                    } else {
+                        participant.getSiblings().add(actualParticipant);
+                    }
+
                 }
 
             }
 
-        }
+            if (participant.getAddress().getAid() == null) {
+                addressManager.save(participant.getAddress());
+            }
 
-        if (participant.getPid() == null) {
-            participantManager.save(participant);
-        } else {
-            participantManager.update(participant);
+            if (participant.getPid() == null) {
+                participantManager.save(participant);
+            } else {
+                participantManager.update(participant);
+            }
+            this.participant = new Participant();
         }
-
-        this.participant = new Participant();
         return "redirect:/participant";
+
+
     }
 
     @RequestMapping(value = "/edit/{pid}")
