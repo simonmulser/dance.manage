@@ -3,11 +3,13 @@ package at.danceandfun.entity;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -40,7 +42,8 @@ public class Performance implements Serializable {
     @JoinColumn(name = "A_ID")
     private Address address;
 
-    @ManyToMany(mappedBy = "performances")
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(name = "COURSE_PERFORMANCE", joinColumns = { @JoinColumn(name = "PER_ID") }, inverseJoinColumns = { @JoinColumn(name = "C_ID") })
     private List<Course> courses;
 
     // TODO NiceToHave mapping with person/participant for ticket selling
