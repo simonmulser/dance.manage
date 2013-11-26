@@ -16,6 +16,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 @Entity
 @Table(name = "ADDRESS")
 public class Address implements Serializable {
@@ -147,6 +149,7 @@ public class Address implements Serializable {
         this.performances = performances;
     }
 
+    @JsonIgnore
     public List<Person> getPersons() {
         return persons;
     }
