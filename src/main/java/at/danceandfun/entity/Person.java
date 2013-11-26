@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
@@ -83,6 +84,7 @@ public abstract class Person implements Serializable, UserDetails {
     @ManyToOne(cascade = { CascadeType.ALL })
     @JoinColumn(name = "A_ID")
     @NotNull
+    @Valid
     private Address address;
 
     @OneToMany(mappedBy = "owner")
