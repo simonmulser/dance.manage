@@ -17,6 +17,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import at.danceandfun.role.RoleAdmin;
@@ -51,6 +52,8 @@ public class Participant extends Person implements Serializable {
     @ManyToMany(mappedBy = "siblings")
     private Set<Participant> siblingsReverse = new HashSet<Participant>();
 
+    private String tempSiblings;
+
     public String getEmergencyNumber() {
         return emergencyNumber;
     }
@@ -67,6 +70,7 @@ public class Participant extends Person implements Serializable {
         this.contactPerson = contactPerson;
     }
 
+    @JsonIgnore
     public List<Course> getCourses() {
         return courses;
     }
@@ -75,6 +79,7 @@ public class Participant extends Person implements Serializable {
         this.courses = courses;
     }
 
+    @JsonIgnore
     public Set<Participant> getSiblings() {
         siblings.addAll(siblingsReverse);
         return siblings;
@@ -84,11 +89,34 @@ public class Participant extends Person implements Serializable {
         this.siblings = siblings;
     }
 
+    public String getTempSiblings() {
+        return this.tempSiblings;
+    }
+
+    public void setTempSiblings(String tempSiblings) {
+        this.tempSiblings = tempSiblings;
+    }
+
+    public Set<Participant> getReverseSiblings() {
+        return this.siblingsReverse;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
         auth.add(new RoleUser());
         auth.add(new RoleAdmin());
         return auth;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        // TODO Auto-generated method stub
+        return super.hashCode();
     }
 }
