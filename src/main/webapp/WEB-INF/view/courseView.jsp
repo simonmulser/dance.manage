@@ -112,4 +112,44 @@
 			</div>
 		</form:form>
 	</dmtags:widget>
+	<dmtags:widget title="Übersicht" style="table" icon="icon-list">
+		<c:if test="${!empty courseList}">
+			<table class="table table-striped table-bordered">
+				<thead>
+					<tr>
+						<th><spring:message code="label.coursename" /></th>
+						<th><spring:message code="label.courseduration" /></th>
+						<th><spring:message code="label.courseprice" /></th>
+						<th><spring:message code="label.courseweekday" /></th>
+						<th><spring:message code="label.coursetime" /></th>
+						<th><spring:message code="label.estimatedSpectators" /></th>
+						<th><spring:message code="label.ageGroup" /></th>
+						<th><spring:message code="label.amountPerformances" /></th>
+						<th><spring:message code="label.courselevel" /></th>
+						<th>&nbsp;</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach items="${courseList}" var="course">
+						<tr>
+							<td>${course.name}</td>
+							<td>${course.duration}</td>
+							<td>${course.price}</td>
+							<td>${course.weekday}</td>
+							<td>${course.time}</td>
+							<td>${course.estimatedSpectators}</td>
+							<td>${course.ageGroup}</td>
+							<td>${course.amountPerformances}</td>
+							<td>${course.level}</td>
+							<td><a href="course/edit/${course.cid}"><spring:message
+										code="label.edit" /></a> &nbsp; <a
+								href="course/delete/${course.cid}"><spring:message
+										code="label.delete" /></a></td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		</c:if>
+	</dmtags:widget>
+
 </dmtags:base>
