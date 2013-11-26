@@ -53,12 +53,12 @@ public abstract class Person implements Serializable, UserDetails {
 
     @Column(name = "FIRSTNAME")
     @NotEmpty
-    @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]+$", message = "darf nur aus Buchstaben bestehen")
+    @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]*$", message = "darf nur aus Buchstaben bestehen")
     private String firstname;
 
     @Column(name = "LASTNAME")
     @NotEmpty
-    @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]+$", message = "darf nur aus Buchstaben bestehen")
+    @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]*$", message = "darf nur aus Buchstaben bestehen")
     private String lastname;
 
     @Column(name = "EMAIL")

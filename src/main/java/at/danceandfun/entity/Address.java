@@ -35,7 +35,7 @@ public class Address implements Serializable {
     @Column(name = "STREET")
     @NotEmpty
     @NumberFormat(style = Style.NUMBER)
-    @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]+$", message = "darf nur aus Buchstaben bestehen")
+    @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]*$", message = "darf nur aus Buchstaben bestehen")
     private String street;
 
     @Column(name = "NUMBER")
@@ -56,7 +56,7 @@ public class Address implements Serializable {
 
     @Column(name = "CITY")
     @NotEmpty
-    @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]+$", message = "darf nur aus Buchstaben bestehen")
+    @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]*$", message = "darf nur aus Buchstaben bestehen")
     private String city;
 
     @Column(name = "ENABLED")
