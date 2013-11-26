@@ -4,89 +4,112 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
-<%@taglib prefix="joda" uri="http://www.joda.org/joda/time/tags"%>
 
 <dmtags:base title="Kurse" activesection="courses">
 
 	<dmtags:widget icon="icon-calendar" title="Kurs">
-		<form:form method="post" action="course/add" commandName="course">
-
-			<table>
-				<tr>
-					<td><form:input path="cid" type="hidden" /> <form:input
-							path="enabled" type="hidden" /></td>
-				</tr>
-				<tr>
-					<td><form:label path="name">
-							<spring:message code="label.coursename" />
-						</form:label></td>
-					<td><form:input path="name" /></td>
-				</tr>
-				<tr>
-					<td><form:label path="duration">
-							<spring:message code="label.courseduration" />
-						</form:label></td>
-					<td><form:input path="duration" /></td>
-				</tr>
-				<tr>
-					<td><form:label path="price">
-							<spring:message code="label.courseprice" />
-						</form:label></td>
-					<td><form:input path="price" /></td>
-				</tr>
-				<tr>
-					<td><form:label path="weekday">
-							<spring:message code="label.courseweekday" />
-						</form:label></td>
-					<td><form:select path="weekday">
-							<form:option value="NONE" label="--- Select ---" />
-							<form:options items="${WeekDay}" />
-						</form:select></td>
-				</tr>
-				<tr>
-					<td><form:label path="time">
-							<spring:message code="label.coursetime" />
-						</form:label></td>
-					<td><form:input path="time" /></td>
-				</tr>
-				<tr>
-					<td><form:label path="estimatedSpectators">
-							<spring:message code="label.estimatedSpectators" />
-						</form:label></td>
-					<td><form:select path="estimatedSpectators">
-							<form:option value="NONE" label="--- Select ---" />
-							<form:options items="${SpectatorAmount}" />
-						</form:select></td>
-				</tr>
-				<tr>
-					<td><form:label path="ageGroup">
-							<spring:message code="label.ageGroup" />
-						</form:label></td>
-					<td><form:select path="ageGroup">
-							<form:option value="NONE" label="--- Select ---" />
-							<form:options items="${AgeGroup}" />
-						</form:select></td>
-				</tr>
-				<tr>
-					<td><form:label path="amountPerformances">
-							<spring:message code="label.amountPerformances" />
-						</form:label></td>
-					<td><form:input path="amountPerformances" /></td>
-				</tr>
-				<tr>
-					<td><form:label path="level">
-							<spring:message code="label.courselevel" />
-						</form:label></td>
-					<td><form:select path="level">
-							<form:option value="NONE" label="--- Select ---" />
-							<form:options items="${CourseLevel}" />
-						</form:select></td>
-				</tr>
-				<tr>
-					<td colspan="2"><input type="submit"
-						value="<spring:message code="label.save"/>" /></td>
-				</tr>
-			</table>
+		<spring:message code="help.course" />
+		<form:form method="post" action="course/add" commandName="course"
+			class="form-horizontal">
+			<form:input path="cid" type="hidden" />
+			<form:input path="enabled" type="hidden" />
+			<div class="control-group">
+				<form:label path="name" class="control-label">
+					<spring:message code="label.coursename" />*
+				</form:label>
+				<div class="span6">
+					<form:input path="name" />
+				</div>
+				<form:errors path="name" cssClass="error" />
+			</div>
+			<div class="control-group">
+				<form:label path="duration" class="control-label">
+					<spring:message code="label.courseduration" />*
+				</form:label>
+				<div class="span6">
+					<form:input path="duration" />
+				</div>
+				<form:errors path="duration" cssClass="error" />
+			</div>
+			<div class="control-group">
+				<form:label path="price" class="control-label">
+					<spring:message code="label.courseprice" />*
+				</form:label>
+				<div class="span6">
+					<form:input path="price" />
+				</div>
+				<form:errors path="price" cssClass="error" />
+			</div>
+			<div class="control-group">
+				<form:label path="weekday" class="control-label">
+					<spring:message code="label.courseweekday" />*
+				</form:label>
+				<div class="span6">
+					<form:select path="weekday">
+						<form:option value="NONE" label="--- Select ---" />
+						<form:options items="${WeekDay}" />
+					</form:select>
+				</div>
+				<form:errors path="weekday" cssClass="error" />
+			</div>
+			<div class="control-group">
+				<form:label path="time" class="control-label">
+					<spring:message code="label.coursetime" />*
+				</form:label>
+				<div class="span6">
+					<form:input path="time" />
+				</div>
+				<form:errors path="time" cssClass="error" />
+			</div>
+			<div class="control-group">
+				<form:label path="estimatedSpectators" class="control-label">
+					<spring:message code="label.estimatedSpectators" />*
+				</form:label>
+				<div class="span6">
+					<form:select path="estimatedSpectators">
+						<form:option value="NONE" label="--- Select ---" />
+						<form:options items="${SpectatorAmount}" />
+					</form:select>
+				</div>
+				<form:errors path="estimatedSpectators" cssClass="error" />
+			</div>
+			<div class="control-group">
+				<form:label path="ageGroup" class="control-label">
+					<spring:message code="label.ageGroup" />*
+				</form:label>
+				<div class="span6">
+					<form:select path="ageGroup">
+						<form:option value="NONE" label="--- Select ---" />
+						<form:options items="${AgeGroup}" />
+					</form:select>
+				</div>
+				<form:errors path="ageGroup" cssClass="error" />
+			</div>
+			<div class="control-group">
+				<form:label path="amountPerformances" class="control-label">
+					<spring:message code="label.amountPerformances" />*
+				</form:label>
+				<div class="span6">
+					<form:input path="amountPerformances" />
+				</div>
+				<form:errors path="amountPerformances" cssClass="error" />
+			</div>
+			<div class="control-group">
+				<form:label path="level" class="control-label">
+					<spring:message code="label.courselevel" />*
+				</form:label>
+				<div class="span6">
+					<form:select path="level">
+						<form:option value="NONE" label="--- Select ---" />
+						<form:options items="${CourseLevel}" />
+					</form:select>
+				</div>
+				<form:errors path="level" cssClass="error" />
+			</div>
+			<div class="form-actions">
+				<input type="submit"
+					value="<spring:message code="label.save"/>" class="btn btn-primary" />
+			</div>
 		</form:form>
 	</dmtags:widget>
 

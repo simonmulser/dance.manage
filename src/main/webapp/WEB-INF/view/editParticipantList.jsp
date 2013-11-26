@@ -18,7 +18,7 @@
 
 			<div class="control-group">
 				<form:label path="firstname" class="control-label">
-					<spring:message code="label.firstname"  />*
+					<spring:message code="label.firstname" />*
 				</form:label>
 				<div class="span6">
 					<form:input path="firstname" />
@@ -43,7 +43,7 @@
 				<div class="span6">
 					<form:input path="email" />
 				</div>
-				<form:errors path="email" cssClass="error"/>
+				<form:errors path="email" cssClass="error" />
 			</div>
 
 			<div class="control-group">
@@ -158,8 +158,7 @@
 					<div id="showSiblings">
 						<c:forEach items="${participant.siblings}" var="sib">
 							<span class="siblingTag">${sib.firstname}&nbsp;${sib.lastname}&nbsp;<i
-								id="${sib.pid}"
-								class="icon icon-remove"></i></span>
+								id="${sib.pid}" class="icon icon-remove"></i></span>
 						</c:forEach>
 						<span id="selectedSiblings"> </span>
 					</div>
@@ -223,7 +222,8 @@
 							</c:choose>
 							<c:choose>
 								<c:when test="${!empty emp.siblings}">
-									<td><c:forEach items="${emp.siblings}" var="sib" varStatus="loop">
+									<td><c:forEach items="${emp.siblings}" var="sib"
+											varStatus="loop">
 											${sib.firstname}
 											${!loop.last ? ', ' : ''}
 										</c:forEach></td>
