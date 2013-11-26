@@ -1294,3 +1294,31 @@ color: #333;
 	
 }
 
+
+
+/*-------------------------------------------------------------------
+[dance.manage styles]
+*/
+
+.inline-tooltip {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.siblingTag {
+	color: white;
+	border: 1px solid;
+	border-color: #D66C04;
+	border-radius: 5px;
+	padding: 5px;
+	font-size: small;
+	background: #ff9f00 !important; /* Old browsers */
+	background: -moz-linear-gradient(top,  #ff9f00 1%, #ff8106 100%) !important; /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#ff9f00), color-stop(100%,#ff8106)) !important; /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ff9f00 1%,#ff8106 100%) !important; /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ff9f00 1%,#ff8106 100%) !important; /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ff9f00 1%,#ff8106 100%) !important; /* IE10+ */
+	background: linear-gradient(to bottom,  #ff9f00 1%,#ff8106 100%) !important; /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff9f00', endColorstr='#ff8106',GradientType=0 ) !important; /* IE6-9 */
+}
+

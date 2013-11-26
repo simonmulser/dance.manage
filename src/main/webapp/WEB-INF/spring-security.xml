@@ -9,14 +9,16 @@ http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
     <http pattern="/login" security="none" />
+    <http pattern="/css/**" security="none"/>
+    <http pattern="/font/**" security="none"/>
+    <http pattern="/img/**" security="none"/>
+    <http pattern="/js/**" security="none"/>
     <http>
         <intercept-url pattern='/**' access='ROLE_USER' />
         <intercept-url pattern='/admin/**' access='ROLE_USER' />
         <form-login login-page='/login' default-target-url='/admin'
             always-use-default-target='true' authentication-failure-url="/login" />
         <logout invalidate-session="true" logout-success-url="/login" />
-
-
     </http>
 
     <authentication-manager alias="authenticationManager">
