@@ -149,22 +149,22 @@
             <scope>test</scope>
         </dependency>
 
-       <!-- Spring Security Dependencies -->
+        <!-- Spring Security Dependencies -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
             <version>${spring-security.version}</version>
-         </dependency> 
-         <dependency>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
             <version>${spring-security.version}</version>
-          </dependency> 
-          <dependency>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
             <version>${spring-security.version}</version>
-          </dependency>
+        </dependency>
 
         <dependency>
             <groupId>log4j</groupId>
@@ -278,31 +278,36 @@
             <version>1.1.1</version>
         </dependency>
         <dependency>
-    		<groupId>org.codehaus.jackson</groupId>
-		    <artifactId>jackson-mapper-asl</artifactId>
-		    <version>1.9.12</version>
-		</dependency>        
-		<dependency>
-		    <groupId>org.codehaus.jackson</groupId>
-		    <artifactId>jackson-jaxrs</artifactId>
-		    <version>1.9.12</version>
-		</dependency>
-		<dependency>
-		    <groupId>org.codehaus.jackson</groupId>
-		    <artifactId>jackson-core-asl</artifactId>
-		    <version>1.9.12</version>
-		</dependency>
-		<dependency>
-		  	<groupId>javax.validation</groupId>
-		  	<artifactId>validation-api</artifactId>
-		  	<version>1.0.0.GA</version>
-		  	<type>jar</type>
-		</dependency>
-		<dependency>
-		  	<groupId>org.hibernate</groupId>
-		  	<artifactId>hibernate-validator</artifactId>
-		  	<version>4.3.0.Final</version>
-		</dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-jaxrs</artifactId>
+            <version>1.9.12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-core-asl</artifactId>
+            <version>1.9.12</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.0.0.GA</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>4.3.0.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.sat4j</groupId>
+            <artifactId>org.ow2.sat4j.core</artifactId>
+            <version>2.3.5</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
