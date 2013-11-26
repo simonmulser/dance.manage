@@ -12,11 +12,10 @@ import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
-
-import org.codehaus.jackson.annotate.JsonIgnore;
 
 @Entity
 @Table(name = "ADDRESS")
@@ -164,6 +163,36 @@ public class Address implements Serializable {
 
     public void setCourses(List<Course> courses) {
         this.courses = courses;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((aid == null) ? 0 : aid.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Address other = (Address) obj;
+        if (aid == null) {
+            if (other.aid != null) {
+                return false;
+            }
+        } else if (!aid.equals(other.aid)) {
+            return false;
+        }
+        return true;
     }
 
 }

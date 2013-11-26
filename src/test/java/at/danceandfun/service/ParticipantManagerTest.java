@@ -5,6 +5,9 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.Mockito.mock;
 
+import java.util.List;
+
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,9 @@ import at.danceandfun.entity.Participant;
 @ContextConfiguration("classpath:test/test-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ParticipantManagerTest {
+
+    private static Logger logger = Logger
+            .getLogger(ParticipantManagerImpl.class);
 
     @Autowired
     private ParticipantManager participantManager;
@@ -42,6 +48,15 @@ public class ParticipantManagerTest {
     public void testLoadUserByUsername() {
         assertThat(participantManager.loadUserByUsername("franz@mail.com"),
                 is(notNullValue()));
+    }
+
+    @Test
+    public void searchForSiblings() {
+        Participant actualParticipant = participantManager.get(3);
+        List<Participant> possibleSiblings = participantManager
+                .searchForSiblings(actualParticipant, "Fra");
+
+        assertThat(possibleSiblings.get(0), is(notNullValue()));
     }
 
 }

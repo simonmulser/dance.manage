@@ -90,7 +90,6 @@ public class ParticipantManagerImpl extends ManagerBaseImpl<Participant>
             }
         }
         List<Participant> siblings = mainDao.getListByCriteria(criteria);
-        logger.debug("Size of siblings: " + siblings.size());
         return siblings;
     }
 }

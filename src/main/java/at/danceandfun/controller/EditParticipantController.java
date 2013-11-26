@@ -70,6 +70,7 @@ public class EditParticipantController {
                     if (Integer.parseInt(s) < 0) {
                         actualParticipant.getSiblings().remove(participant);
                         participant.getSiblings().remove(actualParticipant);
+                        logger.debug("Kann ich den Sibling speichern?");
                         participantManager.update(actualParticipant);
                     } else {
                         participant.getSiblings().add(actualParticipant);
@@ -84,14 +85,21 @@ public class EditParticipantController {
             }
 
             if (participant.getPid() == null) {
+                logger.debug("New participant");
                 participantManager.save(participant);
             } else {
+                logger.debug("Update participant");
+                logger.debug("His address: "
+                        + participant.getAddress().getAid() + " "
+                        + participant.getAddress().getZip());
+                addressManager.update(participant.getAddress());
                 participantManager.update(participant);
+
+                logger.debug("Finished updating participant");
             }
             this.participant = new Participant();
         }
         return "redirect:/participant";
-
 
     }
 
