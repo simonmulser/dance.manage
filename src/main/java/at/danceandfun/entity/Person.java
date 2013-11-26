@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -52,10 +53,12 @@ public abstract class Person implements Serializable, UserDetails {
 
     @Column(name = "FIRSTNAME")
     @NotEmpty
+    @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]+$", message = "darf nur aus Buchstaben bestehen")
     private String firstname;
 
     @Column(name = "LASTNAME")
     @NotEmpty
+    @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]+$", message = "darf nur aus Buchstaben bestehen")
     private String lastname;
 
     @Column(name = "EMAIL")
