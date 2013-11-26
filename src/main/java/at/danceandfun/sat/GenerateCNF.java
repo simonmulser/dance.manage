@@ -2,6 +2,7 @@ package at.danceandfun.sat;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -9,18 +10,21 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.sat4j.minisat.SolverFactory;
 import org.sat4j.reader.DimacsReader;
-import org.sat4j.reader.InstanceReader;
 import org.sat4j.reader.ParseFormatException;
 import org.sat4j.reader.Reader;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IProblem;
 import org.sat4j.specs.ISolver;
 import org.sat4j.specs.TimeoutException;
-import org.sat4j.tools.ModelIterator;
+
+import at.danceandfun.entity.Course;
+import at.danceandfun.entity.Performance;
 
 public class GenerateCNF {
 
@@ -30,55 +34,58 @@ public class GenerateCNF {
     private int numberOfCourses;
     private int numberOfSlots;
     private int numberOfPlays;
-    private int numberOfHipHop;
-    private int numberOfRock;
-    private int numberOfBallet;
-    private int numberOfStep;
-    private int numberOfClassic;
     private ISolver solver;
+    private Performance performance;
+    private List<Course> originalOrderOfCourses;
 
-    public void main() throws IOException {
-        GenerateCNF gen = new GenerateCNF();
-        List<String> lines = gen.readTextFile(cnfName);
+    public Map<Integer, Performance> generatePerformance(List<Course> courses)
+            throws IOException {
+        originalOrderOfCourses = courses;
+        performance = new Performance();
+        List<String> lines = readTextFile(cnfName);
+        Map<Integer, Performance> plan;
+        int[] solution;
+
+        System.out.println("KURSE------------------------------------");
+        System.out.println(courses.toString());
 
         // Anzahl der verschiedenen Stile und verfügbare Timeslots in der
         // Aufführung
         // Mithilfer der beiden Variablen wird die CNF erstellt
         // Bis 39-39-1 schafft ers noch schnell eine lösung zu finden.
         // Ab 40-40-1 dauerts ein zeitl
-        numberOfCourses = 12;
-        numberOfSlots = 4;
+        numberOfCourses = originalOrderOfCourses.size();
         numberOfPlays = 3;
+        numberOfSlots = originalOrderOfCourses.size() / numberOfPlays;
 
-        // Anzahl der Kurse pro Stil
-        // Die erste 2 Kurse sind vom Stil Ballett
-        numberOfBallet = 10;
-        // numberOfRock = 2;
-        // numberOfClassic = 1;
-        // numberOfHipHop = 0;
-        // numberOfStep = 0;
 
         // Wenn die gewünschte CNF Datei schon erstellt wurde und keine
         // Parameter geaendert wurden, koennen die beiden Befehle auskommentiert
         // werden.
         // Wenn die ausgefuehrt werden, muss die CNF Datei vor dem naechsten
         // Programmstart manuel entleert werden
-        gen.buildTimeslots(lines, numberOfCourses, numberOfSlots, numberOfPlays);
-        gen.addHeader(lines, numberOfCourses, numberOfSlots);
+        // buildTimeslots(lines, originalOrderOfCourses, numberOfCourses,
+        // numberOfSlots, numberOfPlays);
+        // addHeader(lines, numberOfCourses, numberOfSlots);
 
-        modelList = gen.executeSAT(cnfName);
-        // gen.executeSingleSAT(cnfName);
-        // gen.assignStyle(modelList).toString();
+        // modelList = executeSAT(cnfName);
+        solution = executeSingleSAT(cnfName);
+        plan = mapping(solution, originalOrderOfCourses);
 
+        return plan;
     }
 
     List<String> readTextFile(String fileName) throws IOException {
-        Path path = Paths.get(fileName);
-        return Files.readAllLines(path, encoding);
+        // Path path = Paths.get(fileName);
+        // return Files.readAllLines(path, encoding);
+        InputStream is = GenerateCNF.class
+.getResourceAsStream(fileName);
+        return new ArrayList<String>();
     }
 
     void writeTextFile(List<String> lines, String fileName) throws IOException {
         Path path = Paths.get(fileName);
+
         Files.write(path, lines, encoding);
     }
 
@@ -95,7 +102,8 @@ public class GenerateCNF {
     // In Abhaengikeit der Anzahl an Stile und Timeslots wird mithilfe von 3
     // Formelen die
     // Notwendige CNF Datei erstellt.
-    void buildTimeslots(List<String> lines, int k, int t, int p)
+    void buildTimeslots(List<String> lines, List<Course> courses, int k, int t,
+            int p)
             throws IOException {
         StringBuffer sbClause = new StringBuffer();
         String clause = "";
@@ -138,15 +146,15 @@ public class GenerateCNF {
         // Vj = Nächster Slot
         // 1 = Stil Ballett
         // (-Vi1 v -Vj1)
-        for (int i = 1; i <= p; i++) {
-            for (int j = 1; j < t; j++) {
-                for (int l = 1; l <= numberOfBallet; l++) {
-                    clause = -(variable(i, j, l)) + " "
-                            + -(variable(p, j + 1, l)) + " 0";
-                    lines.add(clause);
-                }
-            }
-        }
+        // for (int i = 1; i <= p; i++) {
+        // for (int j = 1; j < t; j++) {
+        // for (int l = 1; l <= numberOfBallet; l++) {
+        // clause = -(variable(i, j, l)) + " "
+        // + -(variable(p, j + 1, l)) + " 0";
+        // lines.add(clause);
+        // }
+        // }
+        // }
 
         // Jedem Slot darf maximal ein Stil zugewiesen werden
         // v = Logisches ODER
@@ -183,176 +191,112 @@ public class GenerateCNF {
         writeTextFile(lines, cnfName);
     }
 
-    // Die vom SAT Solver verwendeten Variablen werden auf die vorhandenen Stile
-    // gemappt
-    // public ArrayList<String> assignStyle(ArrayList<int[]> modelList) {
-    // ArrayList<String> newModel = new ArrayList<String>();
-    // // zaehle mit wie oft ein Stil in einer Loesung vorkommt
-    // int countHipHop = 0;
-    // int countRock = 0;
-    // int countClassic = 0;
-    // int countBallet = 0;
-    // int countStep = 0;
-    //
-    // // gehe die Liste mit allen Loesungen der Reihe nach durch
-    // for (int[] model : modelList) {
-    // StringBuffer sequence = new StringBuffer();
-    //
-    // // setze den Counter fuer die neue Loesung auf 0
-    // countHipHop = countRock = countClassic = countBallet = countStep = 0;
-    //
-    // for (int i = 0; i < numberOfCourses * numberOfSlots; i++) {
-    // int style;
-    //
-    // // verwende nur Variablen denen "true" zugewiesen wurde
-    // if (model[i] > 0) {
-    //
-    // // mapping auf die Stile
-    // if ((model[i] % numberOfCourses) != 0)
-    // style = model[i] % numberOfCourses;
-    // else
-    // style = numberOfCourses;
-    //
-    // if (style == 1) {
-    // sequence.append("Ballett, ");
-    // countBallet++;
-    // } else if (style == 2) {
-    // sequence.append("Rock, ");
-    // countRock++;
-    // } else if (style == 3) {
-    // sequence.append("Klassik, ");
-    // countClassic++;
-    // } else if (style == 4) {
-    // sequence.append("Hip Hop, ");
-    // countHipHop++;
-    // } else if (style == 5) {
-    // sequence.append("Step, ");
-    // countStep++;
-    // }
-    // }
-    // }
-    // System.out.println(sequence);
-    // // verwende nur die Loesungen die die gewuenschte Anzahl an Stilen
-    // // haben
-    // // if (numberOfHipHop == countHipHop && numberOfRock == countRock
-    // // && numberOfClassic == countClassic
-    // // && numberOfBallet == countBallet
-    // // && numberOfStep == countStep) {
-    // // newModel.add(sequence.toString());
-    // // System.out.println(sequence);
-    // // }
-    // }
-    //
-    // return newModel;
-    // }
+    private Map<Integer, Performance> mapping(int[] solution,
+            List<Course> courses) {
+        Map<Integer, Performance> plan = new HashMap<Integer, Performance>();
+        Performance p1 = new Performance();
+        Performance p2 = new Performance();
+        Performance p3 = new Performance();
+        List<Course> list1 = new ArrayList<Course>();
+        List<Course> list2 = new ArrayList<Course>();
+        List<Course> list3 = new ArrayList<Course>();
+        int perf;
+        // int slot;
+        int course;
+        
+        for (int i : solution) {
+            if (i > 0) {
+                String temp = Integer.toString(i);
+                perf = (int) temp.charAt(0) - 48;
+                // slot = Integer.parseInt(temp.substring(1, 3));
+                course = Integer.parseInt(temp.substring(3, 5));
 
-    // public void assignStyle(int[] model) {
-    // ArrayList<String> newModel = new ArrayList<String>();
-    // // zaehle mit wie oft ein Stil in einer Loesung vorkommt
-    // int countHipHop = 0;
-    // int countRock = 0;
-    // int countClassic = 0;
-    // int countBallet = 0;
-    // int countStep = 0;
-    //
-    // // gehe die Liste mit allen Loesungen der Reihe nach durch
-    //
-    // StringBuffer sequence = new StringBuffer();
-    //
-    // // setze den Counter fuer die neue Loesung auf 0
-    // countHipHop = countRock = countClassic = countBallet = countStep = 0;
-    //
-    // for (int i = 0; i < model.length; i++) {
-    // int style;
-    //
-    // // verwende nur Variablen denen "true" zugewiesen wurde
-    // if (model[i] > 0) {
-    //
-    // // mapping auf die Stile
-    // if ((model[i] % numberOfCourses) != 0)
-    // style = model[i] % numberOfCourses;
-    // else
-    // style = numberOfCourses;
-    //
-    // if (style == 1) {
-    // sequence.append("Ballett, ");
-    // countBallet++;
-    // } else if (style == 2) {
-    // sequence.append("Rock, ");
-    // countRock++;
-    // } else if (style == 3) {
-    // sequence.append("Klassik, ");
-    // countClassic++;
-    // } else if (style == 4) {
-    // sequence.append("Hip Hop, ");
-    // countHipHop++;
-    // } else if (style == 5) {
-    // sequence.append("Step, ");
-    // countStep++;
-    // }
-    // }
-    // }
-    // System.out.println(sequence);
-    //
-    // // verwende nur die Loesungen die die gewuenschte Anzahl an Stilen haben
-    // // if (numberOfHipHop == countHipHop && numberOfRock == countRock &&
-    // // numberOfClassic == countClassic && numberOfBallet == countBallet &&
-    // // numberOfStep == countStep) {
-    // // newModel.add(sequence.toString());
-    // // System.out.println(sequence);
-    // // }
-    //
-    // }
-
-    ArrayList<int[]> executeSAT(String fileName) {
-        solver = SolverFactory.newDefault();
-        ModelIterator mi = new ModelIterator(solver);
-        solver.setTimeout(600); // 10 min timeout
-        Reader reader = new InstanceReader(mi);
-        ArrayList<int[]> models = new ArrayList<int[]>();
-
-        try {
-            boolean unsat = true;
-            IProblem problem = reader.parseInstance(fileName);
-
-            int counter = 0;
-            while (problem.isSatisfiable()) {
-                if (counter == 3) {
+                switch (perf) {
+                case 1:
+                    list1.add(courses.get(course - 1));
+                    break;
+                case 2:
+                    list2.add(courses.get(course - 1));
+                    break;
+                case 3:
+                    list3.add(courses.get(course - 1));
+                    break;
+                default:
+                    System.out
+                            .println("INVALID VARIABLE: Invalid performance variable "
+                                    + perf
+                                    + " "
+                                    + course
+                                    + " while mapping to courses");
                     break;
                 }
-                unsat = false;
-                int[] model = problem.model();
-                models.add(model);
-                System.out.println(Arrays.toString(model));
-                counter++;
             }
-            if (unsat) {
-                System.out.println("Unsatisfiable!");
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (ParseFormatException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ContradictionException e) {
-            System.out.println("Unsatisfiable (trivial)!");
-        } catch (TimeoutException e) {
-            System.out.println("Timeout, sorry!");
         }
-        return models;
+        
+        p1.setCourses(list1);
+        p2.setCourses(list2);
+        p3.setCourses(list3);
+
+        plan.put(1, p1);
+        plan.put(2, p2);
+        plan.put(3, p3);
+
+        return plan;
     }
 
-    void executeSingleSAT(String fileName) {
+    // ArrayList<int[]> executeSAT(String fileName) {
+    // solver = SolverFactory.newDefault();
+    // ModelIterator mi = new ModelIterator(solver);
+    // solver.setTimeout(600); // 10 min timeout
+    // Reader reader = new InstanceReader(mi);
+    // ArrayList<int[]> models = new ArrayList<int[]>();
+    //
+    // try {
+    // boolean unsat = true;
+    // IProblem problem = reader.parseInstance(fileName);
+    //
+    // int counter = 0;
+    // while (problem.isSatisfiable()) {
+    // if (counter == 3) {
+    // break;
+    // }
+    // unsat = false;
+    // int[] model = problem.model();
+    // models.add(model);
+    // System.out.println(Arrays.toString(model));
+    // counter++;
+    // }
+    // if (unsat) {
+    // System.out.println("Unsatisfiable!");
+    // }
+    // } catch (FileNotFoundException e) {
+    // e.printStackTrace();
+    // } catch (ParseFormatException e) {
+    // e.printStackTrace();
+    // } catch (IOException e) {
+    // e.printStackTrace();
+    // } catch (ContradictionException e) {
+    // System.out.println("Unsatisfiable (trivial)!");
+    // } catch (TimeoutException e) {
+    // System.out.println("Timeout, sorry!");
+    // }
+    // return models;
+    // }
+    //
+    private int[] executeSingleSAT(String fileName) {
         solver = SolverFactory.newDefault();
         solver.setTimeout(3600); // 1 hour timeout
+
         Reader reader = new DimacsReader(solver);
 
         try {
-            IProblem problem = reader.parseInstance(fileName);
+            IProblem problem = reader.parseInstance(GenerateCNF.class
+                    .getResourceAsStream(fileName));
             if (problem.isSatisfiable()) {
                 System.out.println("Satisfiable !");
-                System.out.println(Arrays.toString(problem.model()));
+                int[] model = problem.model();
+                System.out.println(Arrays.toString(model));
+                return model;
             } else {
                 System.out.println("Unsatisfiable !");
             }
@@ -367,6 +311,7 @@ public class GenerateCNF {
         } catch (TimeoutException e) {
             System.out.println("Timeout, sorry!");
         }
+        return null;
     }
 
 }

@@ -21,7 +21,7 @@
 	</dmtags:widget>
 
 	<dmtags:widget title="Aufführungsplan" style="table" icon="icon-list">
-		<c:if test="${!empty performanceList}">
+		<c:if test="${!empty courseListPerformance1}">
 			<table class="table table-striped table-bordered">
 				<thead>
 					<tr>
@@ -41,6 +41,7 @@
 				</tbody>
 			</table>
 		</c:if>
+		
 	</dmtags:widget>
 
 </dmtags:base>

@@ -1,5 +1,9 @@
 package at.danceandfun.controller;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import at.danceandfun.entity.Performance;
+import at.danceandfun.sat.GenerateCNF;
 import at.danceandfun.service.CourseManager;
 import at.danceandfun.service.PerformanceManager;
 
@@ -38,6 +43,27 @@ public class PerformanceController {
 
     @RequestMapping(value = "/build", method = RequestMethod.POST)
     public String buildPerformance(ModelMap map) {
+        logger.debug("BUILD performance");
+        Map<Integer, Performance> plan = new HashMap<Integer, Performance>();
+
+        GenerateCNF sat = new GenerateCNF();
+        try {
+            plan = sat.generatePerformance(courseManager.getEnabledList());
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        // map.addAttribute("courseListPerformance2", plan.get(1).getCourses());
+        // map.addAttribute("courseListPerformance3", plan.get(1).getCourses());
+        performance = plan.get(1);
+        performance.setEnabled(true);
+
+        map.addAttribute("courseListPerformance1", performance.getCourses());
+
+        performanceManager.save(performance);
+
+        performance = new Performance();
 
         return "redirect:/performance";
     }
