@@ -80,7 +80,7 @@ public class GenerateCNF {
         // (Vi1 v Vi2 v Vi3 ..)
         for (int i = 1; i <= p; i++) {
             for (int j = 1; j <= t; j++) {
-                tempList = new ArrayList<Integer>();
+                tempList.clear();
                 for (int l = 1; l <= k; l++) {
                     tempList.add(variable(i, j, l));
 
@@ -96,7 +96,7 @@ public class GenerateCNF {
         // (V1i v V2i v V3i ..)
         for (int i = 1; i <= p; i++) {
             for (int j = 1 + (k / 3 * (i - 1)); j <= k / 3 * i; j++) {
-                tempList = new ArrayList<Integer>();
+                tempList.clear();
                 for (int l = 1; l <= t; l++) {
                     tempList.add(variable(i, l, j));
                 }
@@ -152,7 +152,7 @@ public class GenerateCNF {
                     int currentBallet = listBallets.get(l);
                     for (int m : listBallets) {
                         if (currentBallet != m) {
-                            tempList = new ArrayList<Integer>();
+                            tempList.clear();
                             tempList.add(-variable(i, j, currentBallet));
                             tempList.add(-variable(i, j + 1, m));
                             clauses.add(convert(tempList));
