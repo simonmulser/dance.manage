@@ -127,9 +127,16 @@ public class GenerateCNF {
 
     private void addNotTwoOfAKind(List<Course> courses, int k, int t, int p) {
         List<Integer> tempList = new ArrayList<Integer>();
-        Course tempCourse;
-        String tempStyle;
-        int lastBallet = 0;
+        List<Integer> listBallets = new ArrayList<Integer>();
+
+        for (int i = 0; i < courses.size(); i++) {
+            if (courses.get(i).getStyle().getName().equals("Ballet")) {
+                listBallets.add(i + 1);
+            }
+        }
+        System.out.println("TEST------------------------");
+        System.out.println(listBallets.toString());
+        System.out.println("TEST------------------------");
 
         // Der nächste Slot darf nicht den selben Stil beinhalten (nur fuer
         // Ballett relevant)
@@ -141,17 +148,14 @@ public class GenerateCNF {
         // (-Vi1 v -Vj1)
         for (int i = 1; i <= p; i++) {
             for (int j = 1; j < t; j++) {
-                lastBallet = 0;
-                for (int l = 1; l <= k; l++) {
-                    tempCourse = courses.get(l - 1);
-                    tempStyle = tempCourse.getStyle().getName();
-                    if (tempStyle.equals("Ballet")) {
-                        if (lastBallet != 0) {
+                for (int l = 0; l < listBallets.size(); l++) {
+                    int currentBallet = listBallets.get(l);
+                    for (int m : listBallets) {
+                        if (currentBallet != m) {
                             tempList = new ArrayList<Integer>();
-                            tempList.add(-variable(i, j, l));
-                            tempList.add(-variable(i, j + 1, lastBallet));
+                            tempList.add(-variable(i, j, currentBallet));
+                            tempList.add(-variable(i, j + 1, m));
                             clauses.add(convert(tempList));
-                            lastBallet = l;
                         }
                     }
                 }
