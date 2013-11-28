@@ -11,22 +11,22 @@ import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
 
-import at.danceandfun.role.RoleParent;
+import at.danceandfun.role.RoleSuperUser;
 
 @Entity
-@Table(name = "PARENT")
+@Table(name = "SUPERUSER")
 @PrimaryKeyJoinColumn(name = "P_ID")
-public class Parent extends Person implements Serializable {
+public class SuperUser extends Person implements Serializable {
 
     /**
      * 
      */
-    private static final long serialVersionUID = -3719714853566965163L;
+    private static final long serialVersionUID = -1264262897688787556L;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
-        auth.add(new RoleParent());
+        auth.add(new RoleSuperUser());
         return auth;
     }
 
@@ -39,5 +39,4 @@ public class Parent extends Person implements Serializable {
     public int hashCode() {
         return super.hashCode();
     }
-
 }

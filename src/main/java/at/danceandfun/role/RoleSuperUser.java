@@ -2,16 +2,16 @@ package at.danceandfun.role;
 
 import org.springframework.security.core.GrantedAuthority;
 
-public class RoleAdmin implements GrantedAuthority {
+public class RoleSuperUser implements GrantedAuthority {
 
     /**
      * 
      */
-    private static final long serialVersionUID = 8950152444737081757L;
+    private static final long serialVersionUID = 1472341919260465400L;
 
     @Override
     public String getAuthority() {
-        return "ROLE_ADMIN";
+        return "ROLE_SUPERUSER";
     }
 
 }

@@ -21,8 +21,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 
-import at.danceandfun.role.RoleAdmin;
-import at.danceandfun.role.RoleUser;
+import at.danceandfun.role.RoleParticipant;
 
 @Entity
 @Table(name = "PARTICIPANT")
@@ -107,8 +106,7 @@ public class Participant extends Person implements Serializable {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
-        auth.add(new RoleUser());
-        auth.add(new RoleAdmin());
+        auth.add(new RoleParticipant());
         return auth;
     }
 
@@ -119,7 +117,6 @@ public class Participant extends Person implements Serializable {
 
     @Override
     public int hashCode() {
-        // TODO Auto-generated method stub
         return super.hashCode();
     }
 }

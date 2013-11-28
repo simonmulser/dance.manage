@@ -17,7 +17,7 @@ import at.danceandfun.entity.Course;
 import at.danceandfun.service.CourseManager;
 
 @Controller
-@RequestMapping(value = "/course")
+@RequestMapping(value = "admin/course")
 public class CourseController {
 
     private static Logger logger = Logger.getLogger(CourseController.class);
@@ -32,7 +32,7 @@ public class CourseController {
         logger.debug("LIST course with id " + course.getCid());
         map.addAttribute("course", course);
         map.addAttribute("courseList", courseManager.getEnabledList());
-        return "courseView";
+        return "admin/courseView";
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
@@ -67,14 +67,14 @@ public class CourseController {
             }
             this.course = new Course();
         }
-        return "redirect:/course";
+        return "redirect:/admin/course";
     }
 
     @RequestMapping(value = "/edit/{cid}")
     public String editCourse(@PathVariable("cid") Integer cid) {
         logger.debug("Edit Course with id " + cid);
         course = courseManager.get(cid);
-        return "redirect:/course";
+        return "redirect:/admin/course";
     }
 
     @RequestMapping(value = "/delete/{cid}")
@@ -84,7 +84,7 @@ public class CourseController {
         course.setEnabled(false);
         courseManager.update(course);
         course = new Course();
-        return "redirect:/course";
+        return "redirect:/admin/course";
     }
 
     public void setCourseManager(CourseManager courseManager) {

@@ -18,7 +18,7 @@ import at.danceandfun.service.AddressManager;
 import at.danceandfun.service.TeacherManager;
 
 @Controller
-@RequestMapping(value = "/teacher")
+@RequestMapping(value = "admin/teacher")
 public class EditTeacherController {
 
     private static Logger logger = Logger
@@ -37,7 +37,7 @@ public class EditTeacherController {
         map.addAttribute("teacher", teacher);
         map.addAttribute("teacherList", teacherManager.getEnabledList());
 
-        return "editTeacherList";
+        return "admin/editTeacherList";
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
@@ -71,14 +71,14 @@ public class EditTeacherController {
             }
             this.teacher = new Teacher();
         }
-        return "redirect:/teacher";
+        return "redirect:/admin/teacher";
     }
 
     @RequestMapping(value = "/edit/{pid}")
     public String editTeacher(@PathVariable("pid") Integer pid) {
         logger.debug("Edit Teacher with id " + pid);
         this.teacher = teacherManager.get(pid);
-        return "redirect:/teacher";
+        return "redirect:/admin/teacher";
     }
 
     @RequestMapping(value = "/delete/{pid}")
@@ -88,7 +88,7 @@ public class EditTeacherController {
         teacher.setEnabled(false);
         teacherManager.update(teacher);
         teacher = new Teacher();
-        return "redirect:/teacher";
+        return "redirect:/admin/teacher";
     }
 
     public void setTeacherManager(TeacherManager teacherManager) {

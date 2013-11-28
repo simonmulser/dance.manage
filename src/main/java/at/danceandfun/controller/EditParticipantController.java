@@ -22,7 +22,7 @@ import at.danceandfun.service.AddressManager;
 import at.danceandfun.service.ParticipantManager;
 
 @Controller
-@RequestMapping(value = "/participant")
+@RequestMapping(value = "admin/participant")
 public class EditParticipantController {
 
     private static Logger logger = Logger
@@ -41,7 +41,7 @@ public class EditParticipantController {
         map.addAttribute("participant", participant);
         map.addAttribute("participantList", participantManager.getEnabledList());
 
-        return "editParticipantList";
+        return "admin/editParticipantList";
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
@@ -54,7 +54,8 @@ public class EditParticipantController {
                     result);
             redirectAttributes.addFlashAttribute("participant", participant);
             this.participant = participant;
-            return "redirect:/participant";
+            return "redirect:/admin/participant";
+
         } else {
             logger.debug("ADD Participant with id " + participant.getPid());
             participant.setEnabled(true);
@@ -90,7 +91,7 @@ public class EditParticipantController {
             }
             this.participant = new Participant();
         }
-        return "redirect:/participant";
+        return "redirect:/admin/participant";
 
     }
 
@@ -108,7 +109,7 @@ public class EditParticipantController {
             participant.setTempSiblings(actualSiblings);
         }
 
-        return "redirect:/participant";
+        return "redirect:/admin/participant";
     }
 
     @RequestMapping(value = "/delete/{pid}")

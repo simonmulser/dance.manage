@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +44,17 @@ public class DaoBaseImpl<T> implements DaoBase<T> {
     public List<T> getListByCriteria(DetachedCriteria detachedCriteria,
             int offset, int size) {
         logger.debug("getListByCriteria with offset and size");
+        return detachedCriteria.getExecutableCriteria(getHibernateSession())
+                .list();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<T> getListByCriterions(List<Criterion> criterions) {
+        logger.debug("getListByCriteria by criterions");
+        DetachedCriteria detachedCriteria = DetachedCriteria.forClass(classz);
+        for (Criterion criterion : criterions) {
+            detachedCriteria.add(criterion);
+        }
         return detachedCriteria.getExecutableCriteria(getHibernateSession())
                 .list();
     }
@@ -89,5 +101,10 @@ public class DaoBaseImpl<T> implements DaoBase<T> {
         DetachedCriteria criteria = DetachedCriteria.forClass(classz);
         criteria.add(Restrictions.eq("enabled", true));
         return criteria.getExecutableCriteria(getHibernateSession()).list();
+    }
+
+    @Override
+    public Class<T> getInjectedClass() {
+        return classz;
     }
 }

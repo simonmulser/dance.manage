@@ -14,7 +14,7 @@ import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
 
-import at.danceandfun.role.RoleUser;
+import at.danceandfun.role.RoleTeacher;
 
 @Entity
 @Table(name = "TEACHER")
@@ -87,8 +87,17 @@ public class Teacher extends Person implements Serializable {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
-        auth.add(new RoleUser());
+        auth.add(new RoleTeacher());
         return auth;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

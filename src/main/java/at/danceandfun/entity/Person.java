@@ -1,6 +1,7 @@
 package at.danceandfun.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -26,6 +27,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
@@ -178,7 +180,6 @@ public abstract class Person implements Serializable, UserDetails {
 
     @Override
     public String getUsername() {
-        // TODO change to mail or something
         return email;
     }
 
@@ -233,6 +234,11 @@ public abstract class Person implements Serializable, UserDetails {
         }
 
         return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
     }
 
 }

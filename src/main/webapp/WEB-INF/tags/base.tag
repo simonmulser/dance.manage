@@ -13,14 +13,14 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+<link href="<c:url value="/css/bootstrap.min.css"/>" rel="stylesheet">
+<link href="<c:url value="/css/bootstrap-responsive.min.css"/>" rel="stylesheet">
 <link
 	href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600"
 	rel="stylesheet">
-<link href="css/font-awesome.css" rel="stylesheet">
-<link href="css/style.css" rel="stylesheet">
-<link href="css/ui/jquery-ui.css" rel="stylesheet">
+<link href="<c:url value="/css/font-awesome.css" />" rel="stylesheet">
+<link href="<c:url value="/css/style.css" />" rel="stylesheet">
+<link href="<c:url value="/css/ui/jquery-ui.css" />" rel="stylesheet">
 
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
@@ -71,12 +71,12 @@
 	<!-- Le javascript
 ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
-	<script src="js/jquery-1.7.2.js"></script>
-	<script src="js/jquery-ui.js"></script>
-	<script src="js/excanvas.min.js"></script>
-	<script src="js/chart.min.js" type="text/javascript"></script>
-	<script src="js/bootstrap.js"></script>
-	<script src="js/base.js"></script>
+	<script src="<c:url value="/js/jquery-1.7.2.js" />"></script>
+	<script src="<c:url value="/js/jquery-ui.js" />"></script>
+	<script src="<c:url value="/js/excanvas.min.js" />"></script>
+	<script src="<c:url value="/js/chart.min.js" />" type="text/javascript"></script>
+	<script src="<c:url value="/js/bootstrap.js" />"></script>
+	<script src="<c:url value="/js/base.js" />"></script>
 	
 	<script>
 		var doughnutData = [ {
