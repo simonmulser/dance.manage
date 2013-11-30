@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import at.danceandfun.role.RoleTeacher;
@@ -40,10 +41,10 @@ public class Teacher extends Person implements Serializable {
      * DateTime engagementDate;
      */
     @OneToMany(mappedBy = "teacher")
-    private List<Course> courses;
+    private List<Course> courses = new ArrayList<Course>();
 
     @ManyToMany(mappedBy = "teachers")
-    private List<Style> styles;
+    private List<Style> styles = new ArrayList<Style>();
 
     public String getSvnr() {
         return svnr;
@@ -68,6 +69,7 @@ public class Teacher extends Person implements Serializable {
      * this.engagementDate = engagementDate; }
      */
 
+    @JsonIgnore
     public List<Course> getCourses() {
         return courses;
     }

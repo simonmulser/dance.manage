@@ -1,6 +1,7 @@
 package at.danceandfun.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -93,7 +94,7 @@ public abstract class Person implements Serializable, UserDetails {
     private Address address;
 
     @OneToMany(mappedBy = "owner")
-    private List<Invoice> invoices;
+    private List<Invoice> invoices = new ArrayList<Invoice>();
 
     public Integer getPid() {
         return pid;

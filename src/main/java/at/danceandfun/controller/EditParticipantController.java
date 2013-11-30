@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import at.danceandfun.entity.Course;
 import at.danceandfun.entity.Participant;
 import at.danceandfun.service.AddressManager;
+import at.danceandfun.service.CourseManager;
 import at.danceandfun.service.ParticipantManager;
 
 @Controller
@@ -32,6 +34,8 @@ public class EditParticipantController {
     private ParticipantManager participantManager;
     @Autowired
     private AddressManager addressManager;
+    @Autowired
+    private CourseManager courseManager;
 
     private Participant participant = new Participant();
 
@@ -69,11 +73,32 @@ public class EditParticipantController {
                     if (Integer.parseInt(s) < 0) {
                         actualParticipant.getSiblings().remove(participant);
                         participant.getSiblings().remove(actualParticipant);
-                        logger.debug("Kann ich den Sibling speichern?");
                         participantManager.update(participant);
                         participantManager.update(actualParticipant);
-                    } else {
+                    } else if (!participant.getSiblings().contains(
+                            actualParticipant)) {
                         participant.getSiblings().add(actualParticipant);
+                    }
+                }
+            }
+
+            if (!participant.getTempCourses().equals("")) {
+                String[] courses = participant.getTempCourses().split(";");
+                for (String s : courses) {
+                    Course actualCourse = courseManager.get(Math.abs(Integer
+                            .parseInt(s)));
+
+                    if (Integer.parseInt(s) < 0) {
+                        // actualCourse.getParticipants().remove(participant);
+                        participant.getCourses().remove(actualCourse);
+                        participantManager.update(participant);
+                        // courseManager.update(actualCourse);
+                    } else if (!participant.getCourses().contains(actualCourse)) {
+                        logger.debug("Neuen Kurs hinzufügen");
+                        participant.getCourses().add(actualCourse);
+                    } else {
+                        logger.debug("Bestehender Kurs mit name: "
+                                + actualCourse.getName());
                     }
                 }
             }
@@ -110,6 +135,14 @@ public class EditParticipantController {
             participant.setTempSiblings(actualSiblings);
         }
 
+        if (participantManager.get(pid).getCourses().size() > 0) {
+            String actualCourses = "";
+            for (Course c : participant.getCourses()) {
+                actualCourses += c.getCid().toString() + ";";
+            }
+            participant.setTempCourses(actualCourses);
+        }
+
         return "redirect:/admin/participant";
     }
 
@@ -129,6 +162,14 @@ public class EditParticipantController {
         logger.debug("Entered :" + query);
 
         return participantManager.searchForSiblings(participant, query);
+    }
+
+    @RequestMapping(value = "/getCourses", method = RequestMethod.GET)
+    public @ResponseBody
+    List getCourses(@RequestParam("term") String query) {
+        logger.debug("Entered coursname:" + query);
+
+        return courseManager.searchForCourses(participant, query);
     }
 
     public void setParticipantManager(ParticipantManager participantManager) {

@@ -2,6 +2,7 @@ package at.danceandfun.entity;
 
 import java.io.Serializable;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -10,11 +11,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import at.danceandfun.enumeration.AgeGroup;
 import at.danceandfun.enumeration.CourseLevel;
@@ -66,7 +68,7 @@ public class Course implements Serializable {
     private CourseLevel level;
 
     @OneToMany(mappedBy = "course")
-    private List<Rating> ratings;
+    private List<Rating> ratings = new ArrayList<Rating>();
 
     @ManyToOne
     @JoinColumn(name = "A_ID")
@@ -81,14 +83,13 @@ public class Course implements Serializable {
     private Style style;
 
     @ManyToMany(mappedBy = "courses")
-    private List<Performance> performances;
+    private List<Performance> performances = new ArrayList<Performance>();
 
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(name = "COURSE_PARTICIPANT", joinColumns = { @JoinColumn(name = "C_ID") }, inverseJoinColumns = { @JoinColumn(name = "P_ID") })
-    private List<Participant> participants;
+    @ManyToMany(mappedBy = "courses")
+    private List<Participant> participants = new ArrayList<Participant>();
 
     @OneToMany(mappedBy = "key.course", cascade = CascadeType.ALL)
-    private List<Position> positions;
+    private List<Position> positions = new ArrayList<Position>();
 
     public Integer getCid() {
         return cid;
@@ -202,6 +203,7 @@ public class Course implements Serializable {
         this.style = style;
     }
 
+    @JsonIgnore
     public List<Performance> getPerformances() {
         return performances;
     }
@@ -210,6 +212,7 @@ public class Course implements Serializable {
         this.performances = performances;
     }
 
+    @JsonIgnore
     public List<Participant> getParticipants() {
         return participants;
     }
@@ -218,6 +221,7 @@ public class Course implements Serializable {
         this.participants = participants;
     }
 
+    @JsonIgnore
     public List<Position> getPositions() {
         return positions;
     }
@@ -237,4 +241,35 @@ public class Course implements Serializable {
     public String toString() {
         return "ID: " + cid + "NAME: " + name;
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((cid == null) ? 0 : cid.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Course other = (Course) obj;
+        if (cid == null) {
+            if (other.cid != null) {
+                return false;
+            }
+        } else if (!cid.equals(other.cid)) {
+            return false;
+        }
+        return true;
+    }
+
 }

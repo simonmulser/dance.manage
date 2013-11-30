@@ -1,6 +1,7 @@
 package at.danceandfun.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -42,7 +43,7 @@ public class Invoice implements Serializable {
     private Person owner;
 
     @OneToMany(mappedBy = "key.invoice", cascade = CascadeType.ALL)
-    private List<Position> positions;
+    private List<Position> positions = new ArrayList<Position>();
 
     public Integer getIid() {
         return iid;

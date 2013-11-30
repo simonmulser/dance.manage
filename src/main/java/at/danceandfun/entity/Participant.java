@@ -42,8 +42,9 @@ public class Participant extends Person implements Serializable {
     @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]*$", message = "darf nur aus Buchstaben bestehen")
     private String contactPerson;
 
-    @ManyToMany(mappedBy = "participants")
-    private List<Course> courses;
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(name = "COURSE_PARTICIPANT", joinColumns = { @JoinColumn(name = "P_ID") }, inverseJoinColumns = { @JoinColumn(name = "C_ID") })
+    private List<Course> courses = new ArrayList<Course>();
 
     // TODO NiceToHave mapping with performance for ticket selling
 
@@ -55,6 +56,8 @@ public class Participant extends Person implements Serializable {
     private Set<Participant> siblingsReverse = new HashSet<Participant>();
 
     private String tempSiblings;
+
+    private String tempCourses;
 
     public String getEmergencyNumber() {
         return emergencyNumber;
@@ -97,6 +100,14 @@ public class Participant extends Person implements Serializable {
 
     public void setTempSiblings(String tempSiblings) {
         this.tempSiblings = tempSiblings;
+    }
+
+    public String getTempCourses() {
+        return this.tempCourses;
+    }
+
+    public void setTempCourses(String tempCourses) {
+        this.tempCourses = tempCourses;
     }
 
     @JsonIgnore

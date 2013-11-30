@@ -166,6 +166,26 @@
 
 				<form:input path="tempSiblings" id="tempSiblings" type="hidden" />
 			</div>
+			
+			<div id="find_keyword" class="control-group">
+				<form:label path="tempCourses" class="control-label">
+					<spring:message code="label.courses" />
+				</form:label>
+				<div class="ui-widget span6">
+					<input id="coursesQuery" type="text" value="" /><i
+						title="<spring:message code='help.searchCourse' />"
+						class="inline-tooltip icon icon-question-sign"></i>
+					<div id="showCourses">
+						<c:forEach items="${participant.courses}" var="cou">
+							<span class="courseTag">${cou.name}&nbsp;<i
+								id="${cou.cid}" class="icon icon-remove"></i></span>
+						</c:forEach>
+						<span id="selectedCourses"> </span>
+					</div>
+				</div>
+
+				<form:input path="tempCourses" id="tempCourses" />
+			</div>
 
 
 			<div class="form-actions">
@@ -194,6 +214,7 @@
 						<th><spring:message code="label.zip" /></th>
 						<th><spring:message code="label.city" /></th>
 						<th><spring:message code="label.siblings" /></th>
+						<th><spring:message code="label.courses" /></th>
 						<th>&nbsp;</th>
 					</tr>
 				</thead>
@@ -225,6 +246,18 @@
 									<td><c:forEach items="${emp.siblings}" var="sib"
 											varStatus="loop">
 											${sib.firstname}
+											${!loop.last ? ', ' : ''}
+										</c:forEach></td>
+								</c:when>
+								<c:otherwise>
+									<td></td>
+								</c:otherwise>
+							</c:choose>
+							<c:choose>
+								<c:when test="${!empty emp.courses}">
+									<td><c:forEach items="${emp.courses}" var="cou"
+											varStatus="loop">
+											${cou.name}
 											${!loop.last ? ', ' : ''}
 										</c:forEach></td>
 								</c:when>
@@ -313,4 +346,69 @@
 											}
 										});
 					});
+	$(document)
+	.ready(
+			function() {
+				$("#showCourses").on("click", "i", function() {
+					var id = $(this).attr("id");
+					$(this).parent().remove();
+					$("#tempCourses").val(function(i, v) {
+						return v.replace(id + ";", "-" + id + ";");
+					}).val();
+				});
+
+				//attach autocomplete
+				$("#coursesQuery")
+						.autocomplete(
+								{
+									minLength : 1,
+									delay : 500,
+									//define callback to format results
+									source : function(request, response) {
+										$
+												.getJSON(
+														"/dancemanage/admin/participant/getCourses",
+														request,
+														function(result) {
+															response($
+																	.map(
+																			result,
+																			function(
+																					item) {
+																				return {
+																					// following property gets displayed in drop down
+																					label : item.name,
+																					// following property gets entered in the textbox
+																					value : item.cid
+																				};
+																			}));
+														});
+									},
+
+									//define select handler
+									select : function(event, ui) {
+										if (ui.item) {
+											event.preventDefault();
+											$("#selectedCourses")
+													.append(
+															"<span class='courseTag'>"
+																	+ ui.item.label
+																	+ "&nbsp;<i id='" + ui.item.value + "' class='icon icon-remove'></i></span>");
+											var input = $("#tempCourses");
+											input.val(input.val()
+													+ ui.item.value
+													+ ";");
+											//$("#tagQuery").value = $("#tagQuery").defaultValue
+											var defValue = $(
+													"#coursesQuery")
+													.prop(
+															'defaultValue');
+											$("#coursesQuery").val(
+													defValue);
+											$("#coursesQuery").blur();
+											return false;
+										}
+									}
+								});
+			});
 </script>

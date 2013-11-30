@@ -1,6 +1,7 @@
 package at.danceandfun.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 @Entity
 @Table(name = "STYLE")
@@ -32,11 +35,11 @@ public class Style implements Serializable {
     private String name;
 
     @OneToMany(mappedBy = "style")
-    private List<Course> courses;
+    private List<Course> courses = new ArrayList<Course>();
 
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(name = "STYLE_TEACHER", joinColumns = { @JoinColumn(name = "S_ID") }, inverseJoinColumns = { @JoinColumn(name = "P_ID") })
-    private List<Teacher> teachers;
+    private List<Teacher> teachers = new ArrayList<Teacher>();
 
     public Integer getSid() {
         return sid;
@@ -54,6 +57,7 @@ public class Style implements Serializable {
         this.name = name;
     }
 
+    @JsonIgnore
     public List<Course> getCourses() {
         return courses;
     }
@@ -62,6 +66,7 @@ public class Style implements Serializable {
         this.courses = courses;
     }
 
+    @JsonIgnore
     public List<Teacher> getTeachers() {
         return teachers;
     }
