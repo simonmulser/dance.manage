@@ -267,7 +267,7 @@
 											source : function(request, response) {
 												$
 														.getJSON(
-																"/dancemanage/participant/getSiblings",
+																"/dancemanage/admin/participant/getSiblings",
 																request,
 																function(result) {
 																	response($

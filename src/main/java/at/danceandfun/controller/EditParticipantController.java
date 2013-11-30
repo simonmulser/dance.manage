@@ -70,6 +70,7 @@ public class EditParticipantController {
                         actualParticipant.getSiblings().remove(participant);
                         participant.getSiblings().remove(actualParticipant);
                         logger.debug("Kann ich den Sibling speichern?");
+                        participantManager.update(participant);
                         participantManager.update(actualParticipant);
                     } else {
                         participant.getSiblings().add(actualParticipant);

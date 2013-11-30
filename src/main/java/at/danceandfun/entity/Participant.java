@@ -99,6 +99,7 @@ public class Participant extends Person implements Serializable {
         this.tempSiblings = tempSiblings;
     }
 
+    @JsonIgnore
     public Set<Participant> getReverseSiblings() {
         return this.siblingsReverse;
     }
