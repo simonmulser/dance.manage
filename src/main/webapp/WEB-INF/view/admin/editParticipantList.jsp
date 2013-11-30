@@ -184,7 +184,7 @@
 					</div>
 				</div>
 
-				<form:input path="tempCourses" id="tempCourses" />
+				<form:input path="tempCourses" id="tempCourses" type="hidden" />
 			</div>
 
 

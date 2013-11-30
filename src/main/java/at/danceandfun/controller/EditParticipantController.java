@@ -1,5 +1,7 @@
 package at.danceandfun.controller;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -151,9 +153,20 @@ public class EditParticipantController {
         logger.debug("Delete Participant with id " + pid);
         participant = participantManager.get(pid);
         participant.setEnabled(false);
+        if (participant.getSiblings().size() > 0) {
+            for (Participant p : participant.getSiblings()) {
+                p.getSiblings().remove(participant);
+                participantManager.update(p);
+            }
+            participant.setSiblings(new HashSet<Participant>());
+        }
+        if (participant.getCourses().size() > 0) {
+            participant.setCourses(new ArrayList<Course>());
+        }
+
         participantManager.update(participant);
         participant = new Participant();
-        return "redirect:/participant";
+        return "redirect:/admin/participant";
     }
 
     @RequestMapping(value = "/getSiblings", method = RequestMethod.GET)
