@@ -1,6 +1,5 @@
 package at.danceandfun.entity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -19,12 +18,12 @@ import at.danceandfun.role.RoleTeacher;
 @Entity
 @Table(name = "TEACHER")
 @PrimaryKeyJoinColumn(name = "P_ID")
-public class Teacher extends Person implements Serializable {
+public class Teacher extends Person {
 
     /**
      * 
      */
-    private static final long serialVersionUID = -3696904570909388688L;
+    private static final long serialVersionUID = 1L;
 
     @Column(name = "SVNR")
     private String svnr;

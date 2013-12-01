@@ -1,6 +1,5 @@
 package at.danceandfun.entity;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -19,7 +18,7 @@ import org.joda.time.DateTime;
 
 @Entity
 @Table(name = "PERFORMANCE")
-public class Performance implements Serializable {
+public class Performance extends EntityBase {
 
     /**
      * 

@@ -1,6 +1,5 @@
 package at.danceandfun.entity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -13,8 +12,10 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Pattern;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -26,12 +27,12 @@ import at.danceandfun.role.RoleParticipant;
 @Entity
 @Table(name = "PARTICIPANT")
 @PrimaryKeyJoinColumn(name = "P_ID")
-public class Participant extends Person implements Serializable {
+public class Participant extends Person {
 
     /**
      * 
      */
-    private static final long serialVersionUID = 8277820405941269587L;
+    private static final long serialVersionUID = 1L;
 
     @Column(name = "EMERGENCYNUMBER")
     @NotEmpty
@@ -42,8 +43,12 @@ public class Participant extends Person implements Serializable {
     @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]*$", message = "darf nur aus Buchstaben bestehen")
     private String contactPerson;
 
-    @ManyToMany(mappedBy = "participants")
-    private List<Course> courses;
+    @OneToMany(mappedBy = "key.participant", cascade = CascadeType.ALL)
+    private List<CourseParticipant> courseParticipants;
+
+    // TODO remove
+    // @ManyToMany(mappedBy = "participants")
+    // private List<Course> courses;
 
     // TODO NiceToHave mapping with performance for ticket selling
 
@@ -54,6 +59,7 @@ public class Participant extends Person implements Serializable {
     @ManyToMany(mappedBy = "siblings")
     private Set<Participant> siblingsReverse = new HashSet<Participant>();
 
+    @Transient
     private String tempSiblings;
 
     public String getEmergencyNumber() {
@@ -72,13 +78,12 @@ public class Participant extends Person implements Serializable {
         this.contactPerson = contactPerson;
     }
 
-    @JsonIgnore
-    public List<Course> getCourses() {
-        return courses;
+    public List<CourseParticipant> getCourseParticipants() {
+        return courseParticipants;
     }
 
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
+    public void setCourseParticipants(List<CourseParticipant> courseParticipants) {
+        this.courseParticipants = courseParticipants;
     }
 
     @JsonIgnore

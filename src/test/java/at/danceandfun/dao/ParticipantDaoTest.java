@@ -18,8 +18,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import at.danceandfun.entity.Address;
+import at.danceandfun.entity.Course;
+import at.danceandfun.entity.CourseParticipant;
+import at.danceandfun.entity.CourseParticipantID;
 import at.danceandfun.entity.Participant;
+import at.danceandfun.enumeration.Duration;
 
 @Transactional
 @ContextConfiguration("classpath:test/test-context.xml")
@@ -28,29 +31,25 @@ public class ParticipantDaoTest {
 
     @Autowired
     private DaoBaseImpl<Participant> participantDao;
+    @Autowired
+    private DaoBaseImpl<Course> courseDao;
 
-    /*
-     * Testing generic methods. only one time necessary. don't repeat in other
-     * entities.
-     */
-
-    @Test
-    public void testSave() {
+    public static Participant getValidParticipant() {
         Participant participant = new Participant();
-        Address address = new Address();
-        address.setCity("city");
-        address.setStreet("street");
-        address.setZip(12);
-        address.setNumber(12);
-        participant.setAddress(address);
-        participant.setBirthday(new LocalDate());
+        participant.setAddress(AddressDaoTest.getValidAddress());
+        participant.setBirthday(new LocalDate().minusYears(10));
         participant.setFirstname("first");
         participant.setLastname("last");
         participant.setTelephone("123456789");
         participant.setEmail("mail@mail.com");
         participant.setEmergencyNumber("emergency");
         participant.setContactPerson("contact");
-        participantDao.save(participant);
+        return participant;
+    }
+
+    @Test
+    public void testSave() {
+        participantDao.save(getValidParticipant());
     }
 
     @Test
@@ -106,7 +105,24 @@ public class ParticipantDaoTest {
         criterions.add(Restrictions.eq("enabled", true));
         assertThat(participantDao.getListByCriterions(criterions).isEmpty(),
                 is(false));
-
     }
 
+    @Test
+    public void testCourseParticipantRelation() {
+        Course course = CourseDaoTest.getValidCourse();
+        courseDao.save(course);
+
+        Participant participant = getValidParticipant();
+        CourseParticipant courseParticipant = new CourseParticipant();
+        courseParticipant.setDuration(Duration.YEAR);
+        CourseParticipantID key = new CourseParticipantID();
+        key.setParticipant(participant);
+        key.setCourse(course);
+        courseParticipant.setKey(key);
+        List<CourseParticipant> courseParticipants = new ArrayList<CourseParticipant>();
+        courseParticipants.add(courseParticipant);
+        participant.setCourseParticipants(courseParticipants);
+
+        participantDao.save(participant);
+    }
 }

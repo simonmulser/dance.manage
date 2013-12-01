@@ -20,7 +20,7 @@
 					<c:forEach items="${participantsByNumberOfCourses}"
 						var="participant" varStatus="loop">
 						<tr>
-							<td>${participant.courses.size()}</td>
+							<td>${participant.courseParticipants.size()}</td>
 							<td>${participant.lastname}</td>
 							<td>${participant.firstname}</td>
 						</tr>
@@ -56,9 +56,9 @@
 								</c:forEach>)
 								</c:if>
 							</td>
-							<td><c:forEach items="${participant.courses}" var="course"
+							<td><c:forEach items="${participant.courseParticipants}" var="courseParticipant"
 									varStatus="loop">
-                                ${course.name}
+                                ${courseParticipant.key.course.name}
                                 ${!loop.last ? ', ' : ''}
                                 </c:forEach></td>
 						</tr>
@@ -87,7 +87,7 @@
 							<td>${course.name}</td>
 							<td>${course.ageGroup}</td>
 							<td>${course.level}</td>
-							<td>${course.participants.size()}</td>
+							<td>${course.courseParticipants.size()}</td>
 							<td>${course.estimatedSpectators}</td>
 							<td>${course.amountPerformances}</td>
 						</tr>

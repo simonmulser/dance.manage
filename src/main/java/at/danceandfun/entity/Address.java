@@ -1,6 +1,5 @@
 package at.danceandfun.entity;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -20,12 +19,12 @@ import org.springframework.format.annotation.NumberFormat.Style;
 
 @Entity
 @Table(name = "ADDRESS")
-public class Address implements Serializable {
+public class Address extends EntityBase {
 
     /**
      * 
      */
-    private static final long serialVersionUID = 6848318736740069349L;
+    private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "A_ID")

@@ -44,12 +44,7 @@ public class ParticipantManagerTest {
                 is(notNullValue()));
     }
 
-    @Test
-    public void testLoadUserByUsername() {
-        assertThat(participantManager.loadUserByUsername("franz@mail.com"),
-                is(notNullValue()));
-    }
-
+    @SuppressWarnings("unchecked")
     @Test
     public void searchForSiblings() {
         Participant actualParticipant = participantManager.get(3);

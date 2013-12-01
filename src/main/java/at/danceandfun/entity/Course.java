@@ -1,6 +1,5 @@
 package at.danceandfun.entity;
 
-import java.io.Serializable;
 import java.sql.Time;
 import java.util.List;
 
@@ -10,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -23,12 +21,12 @@ import at.danceandfun.enumeration.WeekDay;
 
 @Entity
 @Table(name = "COURSE")
-public class Course implements Serializable {
+public class Course extends EntityBase {
 
     /**
      * 
      */
-    private static final long serialVersionUID = 6088131134219471148L;
+    private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "C_ID")
@@ -41,8 +39,11 @@ public class Course implements Serializable {
     @Column(name = "DURATION")
     private Integer duration;
 
-    @Column(name = "PRICE")
-    private Double price;
+    @Column(name = "SEMESTERPRICE")
+    private Double semesterPrice;
+
+    @Column(name = "YEARPRICE")
+    private Double yearPrice;
 
     @Column(name = "WEEKDAY")
     private WeekDay weekday;
@@ -83,12 +84,17 @@ public class Course implements Serializable {
     @ManyToMany(mappedBy = "courses")
     private List<Performance> performances;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(name = "COURSE_PARTICIPANT", joinColumns = { @JoinColumn(name = "C_ID") }, inverseJoinColumns = { @JoinColumn(name = "P_ID") })
-    private List<Participant> participants;
+    // TODO remove
+    // @ManyToMany(cascade = { CascadeType.ALL })
+    // @JoinTable(name = "COURSE_PARTICIPANT", joinColumns = { @JoinColumn(name
+    // = "C_ID") }, inverseJoinColumns = { @JoinColumn(name = "P_ID") })
+    // private List<Participant> participants;
 
     @OneToMany(mappedBy = "key.course", cascade = CascadeType.ALL)
     private List<Position> positions;
+
+    @OneToMany(mappedBy = "key.course", cascade = CascadeType.ALL)
+    private List<CourseParticipant> courseParticipants;
 
     public Integer getCid() {
         return cid;
@@ -106,12 +112,20 @@ public class Course implements Serializable {
         this.duration = duration;
     }
 
-    public Double getPrice() {
-        return price;
+    public Double getSemesterPrice() {
+        return semesterPrice;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setSemesterPrice(Double semesterPrice) {
+        this.semesterPrice = semesterPrice;
+    }
+
+    public Double getYearPrice() {
+        return yearPrice;
+    }
+
+    public void setYearPrice(Double yearPrice) {
+        this.yearPrice = yearPrice;
     }
 
     public WeekDay getWeekday() {
@@ -210,12 +224,12 @@ public class Course implements Serializable {
         this.performances = performances;
     }
 
-    public List<Participant> getParticipants() {
-        return participants;
+    public List<CourseParticipant> getCourseParticipants() {
+        return courseParticipants;
     }
 
-    public void setParticipants(List<Participant> participants) {
-        this.participants = participants;
+    public void setCourseParticipants(List<CourseParticipant> courseParticipants) {
+        this.courseParticipants = courseParticipants;
     }
 
     public List<Position> getPositions() {
