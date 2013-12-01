@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import at.danceandfun.dao.DaoBaseImpl;
+import at.danceandfun.entity.Course;
 import at.danceandfun.entity.Style;
 import at.danceandfun.entity.Teacher;
 
@@ -34,6 +35,24 @@ public class StyleManagerImpl extends ManagerBaseImpl<Style> implements
                 Criterion rest2 = Restrictions.eq("sid", s.getSid());
                 criteria.add(Restrictions.not(rest2));
             }
+        }
+        List<Style> styles = mainDao.getListByCriteria(criteria);
+        return styles;
+    }
+
+    public List searchForStyles(Course actualCourse, String query) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Style.class);
+
+        Criterion rest1 = Restrictions.like("name", query + "%");
+        criteria.add(rest1);
+
+        criteria.add(Restrictions.eq("enabled", true));
+
+        if (!(actualCourse.getCid() == null)
+                && !(actualCourse.getStyle().getSid() == null)) {
+            Criterion rest2 = Restrictions.eq("sid", actualCourse.getStyle()
+                    .getSid());
+            criteria.add(Restrictions.not(rest2));
         }
         List<Style> styles = mainDao.getListByCriteria(criteria);
         return styles;

@@ -1305,11 +1305,11 @@ color: #333;
 	padding-right: 10px;
 }
 
-#showSiblings, #showCourses, #showStyles{
+#showSiblings, #showCourses, #showStyles, #showTeacher{
 	margin-top:10px;
 }
 
-.siblingTag, .courseTag, .styleTag {
+.siblingTag, .courseTag, .styleTag, .teacherTag {
 	color: white;
 	border: 1px solid;
 	border-color: #D66C04;

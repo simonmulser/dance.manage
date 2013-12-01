@@ -78,6 +78,10 @@ public class EditTeacherController {
                     if (Integer.parseInt(s) < 0) {
                         // TODO: was passiert mit Course?
                         teacher.getCourses().remove(actualCourse);
+
+                        actualCourse.setTeacher(null);
+                        courseManager.update(actualCourse);
+
                     } else if (!teacher.getCourses().contains(actualCourse)) {
                         logger.debug("Neuen Kurs hinzufügen");
 
@@ -174,6 +178,10 @@ public class EditTeacherController {
         }
         if (teacher.getCourses().size() > 0) {
             // TODO: P_ID bleibt in Course derzeit enthalten
+            for (Course c : teacher.getCourses()) {
+                c.setTeacher(null);
+                courseManager.update(c);
+            }
             teacher.setCourses(new ArrayList<Course>());
         }
 

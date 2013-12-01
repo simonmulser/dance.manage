@@ -191,9 +191,6 @@
 			<div class="form-actions">
 				<input type="submit" value="<spring:message code="label.save"/>"
 					class="btn btn-primary" />
-				<button class="btn">
-					<spring:message code="label.cancel" />
-				</button>
 			</div>
 
 		</form:form>

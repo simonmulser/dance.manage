@@ -91,10 +91,8 @@ public class EditParticipantController {
                             .parseInt(s)));
 
                     if (Integer.parseInt(s) < 0) {
-                        // actualCourse.getParticipants().remove(participant);
                         participant.getCourses().remove(actualCourse);
                         participantManager.update(participant);
-                        // courseManager.update(actualCourse);
                     } else if (!participant.getCourses().contains(actualCourse)) {
                         logger.debug("Neuen Kurs hinzufügen");
                         participant.getCourses().add(actualCourse);
