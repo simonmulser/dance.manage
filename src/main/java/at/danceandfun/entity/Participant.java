@@ -18,9 +18,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 
+import at.danceandfun.enumeration.PatternConstants;
 import at.danceandfun.role.RoleParticipant;
 
 @Entity
@@ -34,12 +34,10 @@ public class Participant extends Person implements Serializable {
     private static final long serialVersionUID = 8277820405941269587L;
 
     @Column(name = "EMERGENCYNUMBER")
-    @NotEmpty
     private String emergencyNumber;
 
     @Column(name = "CONTACTPERSON")
-    @NotEmpty
-    @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]*$", message = "darf nur aus Buchstaben bestehen")
+    @Pattern(regexp = PatternConstants.CHARACTER_PATTERN_CONTACT, message = "{pattern.characters}")
     private String contactPerson;
 
     @ManyToMany(mappedBy = "participants")

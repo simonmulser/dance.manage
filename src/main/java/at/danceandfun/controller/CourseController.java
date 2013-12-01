@@ -1,5 +1,6 @@
 package at.danceandfun.controller;
 
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
@@ -22,16 +23,29 @@ public class CourseController {
 
     private static Logger logger = Logger.getLogger(CourseController.class);
 
+    private boolean editTrue = false;
+
     @Autowired
     private CourseManager courseManager;
 
     private Course course = new Course();
 
+    @PostConstruct
+    public void init() {
+        course = new Course();
+    }
+
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String listCourses(ModelMap map) {
         logger.debug("LIST course with id " + course.getCid());
+
+        if (!editTrue) {
+            course = new Course();
+        }
+
         map.addAttribute("course", course);
         map.addAttribute("courseList", courseManager.getEnabledList());
+        editTrue = false;
         return "admin/courseView";
     }
 
@@ -74,6 +88,7 @@ public class CourseController {
     public String editCourse(@PathVariable("cid") Integer cid) {
         logger.debug("Edit Course with id " + cid);
         course = courseManager.get(cid);
+        editTrue = true;
         return "redirect:/admin/course";
     }
 

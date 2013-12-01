@@ -2,6 +2,7 @@ package at.danceandfun.controller;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
@@ -28,18 +29,31 @@ public class EditParticipantController {
     private static Logger logger = Logger
             .getLogger(EditParticipantController.class);
 
+    private boolean editTrue = false;
+
+
     @Autowired
     private ParticipantManager participantManager;
     @Autowired
     private AddressManager addressManager;
 
-    private Participant participant = new Participant();
+    private Participant participant;
+
+    @PostConstruct
+    public void init() {
+        participant = new Participant();
+    }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String listParticipants(ModelMap map) {
         logger.debug("LIST Participant with id " + participant.getPid());
+        
+        if (!editTrue) {
+            participant = new Participant();
+        }
         map.addAttribute("participant", participant);
         map.addAttribute("participantList", participantManager.getEnabledList());
+        editTrue = false;
 
         return "admin/editParticipantList";
     }
@@ -54,6 +68,7 @@ public class EditParticipantController {
                     result);
             redirectAttributes.addFlashAttribute("participant", participant);
             this.participant = participant;
+            editTrue = true;
             return "redirect:/admin/participant";
 
         } else {
@@ -99,6 +114,7 @@ public class EditParticipantController {
     public String editParticipant(@PathVariable("pid") Integer pid) {
         logger.debug("Edit Participant with id " + pid);
         participant = participantManager.get(pid);
+        editTrue = true;
 
         // TODO: getSiblings --> lazy Load?
         if (participantManager.get(pid).getSiblings().size() > 0) {

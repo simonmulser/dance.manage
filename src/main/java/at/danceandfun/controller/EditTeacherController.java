@@ -1,5 +1,6 @@
 package at.danceandfun.controller;
 
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
@@ -24,19 +25,30 @@ public class EditTeacherController {
     private static Logger logger = Logger
             .getLogger(EditTeacherController.class);
 
+    private boolean editTrue = false;
+
     @Autowired
     private TeacherManager teacherManager;
     @Autowired
     private AddressManager addressManager;
 
-    private Teacher teacher = new Teacher();
+    private Teacher teacher;
+
+    @PostConstruct
+    public void init() {
+        teacher = new Teacher();
+    }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String listTeachers(ModelMap map) {
         logger.debug("LIST Teacher with id " + teacher.getPid());
+
+        if (!editTrue) {
+            teacher = new Teacher();
+        }
         map.addAttribute("teacher", teacher);
         map.addAttribute("teacherList", teacherManager.getEnabledList());
-
+        editTrue = false;
         return "admin/editTeacherList";
     }
 
@@ -78,6 +90,7 @@ public class EditTeacherController {
     public String editTeacher(@PathVariable("pid") Integer pid) {
         logger.debug("Edit Teacher with id " + pid);
         this.teacher = teacherManager.get(pid);
+        editTrue = true;
         return "redirect:/admin/teacher";
     }
 

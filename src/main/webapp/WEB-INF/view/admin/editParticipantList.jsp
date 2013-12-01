@@ -8,8 +8,9 @@
 <dmtags:base title="Kursteilnehmer" activesection="participants">
 
 	<dmtags:widget title="Kursteilnehmer" icon="icon-user">
+		<c:url var="addURL" value='participant/add' />
 		<spring:message code="help.participant" />
-		<form:form method="post" action="participant/add"
+		<form:form method="post" action="${addURL}"
 			commandName="participant" class="form-horizontal">
 
 			<form:input path="pid" type="hidden" />

@@ -23,12 +23,13 @@ import javax.validation.constraints.Size;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Type;
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import at.danceandfun.enumeration.PatternConstants;
 
 /**
  * @author simon
@@ -55,17 +56,17 @@ public abstract class Person implements Serializable, UserDetails {
 
     @Column(name = "FIRSTNAME")
     @NotEmpty
-    @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]*$", message = "darf nur aus Buchstaben bestehen")
+    @Pattern(regexp = PatternConstants.CHARACTER_PATTERN, message = "{pattern.characters}")
     private String firstname;
 
     @Column(name = "LASTNAME")
     @NotEmpty
-    @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]*$", message = "darf nur aus Buchstaben bestehen")
+    @Pattern(regexp = PatternConstants.CHARACTER_PATTERN, message = "{pattern.characters}")
     private String lastname;
 
     @Column(name = "EMAIL")
     @NotEmpty
-    @Email
+    @Pattern(regexp = PatternConstants.EMAIL_PATTERN, message = "{pattern.email}")
     private String email;
 
     @Column(name = "TELEPHONE")
