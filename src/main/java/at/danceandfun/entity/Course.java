@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.joda.time.Years;
+
 import at.danceandfun.enumeration.AgeGroup;
 import at.danceandfun.enumeration.CourseLevel;
 import at.danceandfun.enumeration.SpectatorAmount;
@@ -65,6 +67,9 @@ public class Course extends EntityBase {
 
     @Column(name = "LEVEL")
     private CourseLevel level;
+
+    @Column(name = "YEAR")
+    private Years year;
 
     @OneToMany(mappedBy = "course")
     private List<Rating> ratings;
@@ -126,6 +131,14 @@ public class Course extends EntityBase {
 
     public void setYearPrice(Double yearPrice) {
         this.yearPrice = yearPrice;
+    }
+
+    public Years getYear() {
+        return year;
+    }
+
+    public void setYear(Years year) {
+        this.year = year;
     }
 
     public WeekDay getWeekday() {
