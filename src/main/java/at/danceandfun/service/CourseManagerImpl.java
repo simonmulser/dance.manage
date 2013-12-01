@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import at.danceandfun.dao.DaoBaseImpl;
 import at.danceandfun.entity.Course;
 import at.danceandfun.entity.Participant;
+import at.danceandfun.entity.Teacher;
 
 @Service
 public class CourseManagerImpl extends ManagerBaseImpl<Course> implements
@@ -31,6 +32,24 @@ public class CourseManagerImpl extends ManagerBaseImpl<Course> implements
 
         if (!(actualParticipant.getPid() == null)) {
             for (Course c : actualParticipant.getCourses()) {
+                Criterion rest2 = Restrictions.eq("cid", c.getCid());
+                criteria.add(Restrictions.not(rest2));
+            }
+        }
+        List<Course> courses = mainDao.getListByCriteria(criteria);
+        return courses;
+    }
+
+    public List searchForCourses(Teacher actualTeacher, String query) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Course.class);
+
+        Criterion rest1 = Restrictions.like("name", query + "%");
+        criteria.add(rest1);
+
+        criteria.add(Restrictions.eq("enabled", true));
+
+        if (!(actualTeacher.getPid() == null)) {
+            for (Course c : actualTeacher.getCourses()) {
                 Criterion rest2 = Restrictions.eq("cid", c.getCid());
                 criteria.add(Restrictions.not(rest2));
             }

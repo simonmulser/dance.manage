@@ -70,15 +70,15 @@ public class Course implements Serializable {
     @OneToMany(mappedBy = "course")
     private List<Rating> ratings = new ArrayList<Rating>();
 
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.ALL })
     @JoinColumn(name = "A_ID")
     private Address address;
 
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.ALL })
     @JoinColumn(name = "P_ID")
     private Teacher teacher;
 
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.ALL })
     @JoinColumn(name = "S_ID")
     private Style style;
 
@@ -88,7 +88,7 @@ public class Course implements Serializable {
     @ManyToMany(mappedBy = "courses")
     private List<Participant> participants = new ArrayList<Participant>();
 
-    @OneToMany(mappedBy = "key.course", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "key.course")
     private List<Position> positions = new ArrayList<Position>();
 
     public Integer getCid() {

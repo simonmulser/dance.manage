@@ -55,8 +55,10 @@ public class Participant extends Person implements Serializable {
     @ManyToMany(mappedBy = "siblings")
     private Set<Participant> siblingsReverse = new HashSet<Participant>();
 
+    @Column(name = "TEMP_SIBLINGS")
     private String tempSiblings;
 
+    @Column(name = "TEMP_COURSES")
     private String tempCourses;
 
     public String getEmergencyNumber() {

@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -33,6 +36,15 @@ public class Teacher extends Person implements Serializable {
     @Column(name = "SALARY")
     private Double salary;
 
+    @Column(name = "COMMENT")
+    private String comment;
+
+    @Column(name = "TEMP_STYLES")
+    private String tempStyles;
+
+    @Column(name = "TEMP_COURSES")
+    private String tempCourses;
+
     /*
      * @Column(name = "ENGAGEMENTDATE")
      * 
@@ -43,7 +55,8 @@ public class Teacher extends Person implements Serializable {
     @OneToMany(mappedBy = "teacher")
     private List<Course> courses = new ArrayList<Course>();
 
-    @ManyToMany(mappedBy = "teachers")
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(name = "STYLE_TEACHER", joinColumns = { @JoinColumn(name = "P_ID") }, inverseJoinColumns = { @JoinColumn(name = "S_ID") })
     private List<Style> styles = new ArrayList<Style>();
 
     public String getSvnr() {
@@ -84,6 +97,30 @@ public class Teacher extends Person implements Serializable {
 
     public void setStyles(List<Style> styles) {
         this.styles = styles;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getTempStyles() {
+        return tempStyles;
+    }
+
+    public void setTempStyles(String tempStyles) {
+        this.tempStyles = tempStyles;
+    }
+
+    public String getTempCourses() {
+        return tempCourses;
+    }
+
+    public void setTempCourses(String tempCourses) {
+        this.tempCourses = tempCourses;
     }
 
     @Override
