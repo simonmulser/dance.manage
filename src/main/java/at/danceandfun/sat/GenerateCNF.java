@@ -20,9 +20,6 @@ import at.danceandfun.entity.Performance;
 
 public class GenerateCNF {
 
-    private final String cnfName = "restrictions.cnf";
-    private final Charset encoding = StandardCharsets.UTF_8;
-    private ArrayList<int[]> modelList;
     private int numberOfCourses;
     private int numberOfSlots;
     private int numberOfPlays;
@@ -31,6 +28,13 @@ public class GenerateCNF {
     private List<Course> originalOrderOfCourses;
     private List<int[]> clauses;
 
+    /**
+     * @precondition An amount of minimal 3 courses as input.
+     * @param courses
+     * @return Generate a list of all plays, which contain
+     * all courses and take notice of the restrictions.
+     * @throws IOException
+     */
     public Map<Integer, Performance> generatePerformance(List<Course> courses)
             throws IOException {
         originalOrderOfCourses = courses;
@@ -39,11 +43,12 @@ public class GenerateCNF {
         Map<Integer, Performance> plan;
         int[] solution;
 
-        // Anzahl der verschiedenen Stile und verfügbare Timeslots in der
-        // Aufführung
-        // Zur Zeit muss die Anzahl der Kurse durch 3 (Anzahl der Aufführungen)
-        // teilbar sein.
-        // Z.B. 12 Kurse, 3 Aufführungen = 4 Slots
+        /* Anzahl der verschiedenen Stile und verfügbare Timeslots in der
+         Aufführung
+         Zur Zeit muss die Anzahl der Kurse durch 3 (Anzahl der Aufführungen)
+         teilbar sein.
+         Z.B. 12 Kurse, 3 Aufführungen = 4 Slots
+         */
         numberOfCourses = originalOrderOfCourses.size();
         numberOfPlays = 3;
         numberOfSlots = originalOrderOfCourses.size() / numberOfPlays;
@@ -53,22 +58,37 @@ public class GenerateCNF {
         addNotTwoOfAKind(originalOrderOfCourses, numberOfCourses,
                 numberOfSlots, numberOfPlays);
 
-        solution = executeSingleSAT(cnfName);
-        plan = mapping(solution, originalOrderOfCourses);
+        solution = executeSingleSAT();
+        plan = backMapping(solution, originalOrderOfCourses);
 
         return plan;
     }
 
-    // Mappt die Kurse in der Form XYYZZ
-    // X = Aufführung (1 .. 3)
-    // YY = Timeslot (01 .. 99)
-    // ZZ = Kurs (01 .. 99)
-    // Beispiel: Kurs 4 tanzt im 12. Timeslot der 1. Aufführung
-    // 11204
-    private int variable(int play, int timeslot, int course) {
+    /**
+     * @precondition Give over the the right amount of plays, 
+     * time slots and courses.
+     * @example maps the courses in the following layout: XYYZZ,
+     * X stands for the plays (1-3), YY for the time slots (01-99)
+     * and ZZ stands for the courses (01-99). If course 4 dances 
+     * in the 12th time slot in the first play its 11204.
+     * @param play
+     * @param timeslot
+     * @param course
+     * @return information in the syntax/view of SAT solver
+     */
+    private int buildMappingVariable(int play, int timeslot, int course) {
         return (play * 10000) + (timeslot * 100) + course;
     }
 
+    /**
+     * @summary This methods adds the basic restriction, which says,
+     * that each time slot needs one course and that every course has
+     * to be used.
+     * @param courses
+     * @param k
+     * @param t
+     * @param p
+     */
     private void addBasicRestrictions(List<Course> courses, int k, int t,
  int p) {
         List<Integer> tempList = new ArrayList<Integer>();
@@ -82,10 +102,10 @@ public class GenerateCNF {
             for (int j = 1; j <= t; j++) {
                 tempList = new ArrayList<Integer>();
                 for (int l = 1; l <= k; l++) {
-                    tempList.add(variable(i, j, l));
+                    tempList.add(buildMappingVariable(i, j, l));
 
                 }
-                clauses.add(convert(tempList));
+                clauses.add(convertToIntegerArray(tempList));
             }
         }
 
@@ -98,9 +118,9 @@ public class GenerateCNF {
             for (int j = 1 + (k / 3 * (i - 1)); j <= k / 3 * i; j++) {
                 tempList = new ArrayList<Integer>();
                 for (int l = 1; l <= t; l++) {
-                    tempList.add(variable(i, l, j));
+                    tempList.add(buildMappingVariable(i, l, j));
                 }
-                clauses.add(convert(tempList));
+                clauses.add(convertToIntegerArray(tempList));
             }
         }
 
@@ -116,15 +136,23 @@ public class GenerateCNF {
             for (int j = 1; j <= t; j++) {
                 for (int l = 1; l < k; l++) {
                     for (int m = 1; m <= k - l; m++) {
-                        int[] temp = { -variable(i, j, l),
-                                -variable(i, j, l + m) };
+                        int[] temp = { -buildMappingVariable(i, j, l),
+                                -buildMappingVariable(i, j, l + m) };
                         clauses.add(temp);
                     }
                 }
             }
         }
     }
-
+    
+    /**
+     * @summary This method adds the restriction, which says, that two courses
+     * of the same kind, are not allowed to stand behind one another.
+     * @param courses
+     * @param k
+     * @param t
+     * @param p
+     */
     private void addNotTwoOfAKind(List<Course> courses, int k, int t, int p) {
         List<Integer> tempList = new ArrayList<Integer>();
         Course tempCourse;
@@ -148,9 +176,9 @@ public class GenerateCNF {
                     if (tempStyle.equals("Ballet")) {
                         if (lastBallet != 0) {
                             tempList = new ArrayList<Integer>();
-                            tempList.add(-variable(i, j, l));
-                            tempList.add(-variable(i, j + 1, lastBallet));
-                            clauses.add(convert(tempList));
+                            tempList.add(-buildMappingVariable(i, j, l));
+                            tempList.add(-buildMappingVariable(i, j + 1, lastBallet));
+                            clauses.add(convertToIntegerArray(tempList));
                             lastBallet = l;
                         }
                     }
@@ -158,19 +186,31 @@ public class GenerateCNF {
             }
         }
     }
+    
+    /**
+     * @summary Converts the list into a Integer Array, which 
+     * is necessary to fill the SAT Solver.
+     * @param list
+     * @return
+     */
+    private int[] convertToIntegerArray(List<Integer> list) {
+        int[] intArray = new int[list.size()];
 
-    private int[] convert(List<Integer> list) {
-        int size = list.size();
-        int[] intArray = new int[size];
-
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < list.size(); i++) {
             intArray[i] = list.get(i).intValue();
         }
 
         return intArray;
     }
-
-    private Map<Integer, Performance> mapping(int[] solution,
+    
+    /**
+     * @summary Maps back the Integer values to the original
+     * expressions like play, course or time slot.
+     * @param solution
+     * @param courses
+     * @return
+     */
+    private Map<Integer, Performance> backMapping(int[] solution,
             List<Course> courses) {
         Map<Integer, Performance> plan = new HashMap<Integer, Performance>();
         Performance p1 = new Performance();
@@ -220,12 +260,16 @@ public class GenerateCNF {
 
         return plan;
     }
-
-    private int[] executeSingleSAT(String fileName) {
+    
+    /**
+     * @summary Execution of the SAT Solver, finding of solutions.
+     * @return
+     */
+    private int[] executeSingleSAT() {
         solver = SolverFactory.newDefault();
         solver.setTimeout(3600); // 1 hour timeout
 
-        solver.newVar(variable(numberOfPlays, numberOfSlots, numberOfCourses));
+        solver.newVar(buildMappingVariable(numberOfPlays, numberOfSlots, numberOfCourses));
         solver.setExpectedNumberOfClauses(clauses.size());
 
         for (int[] cur : clauses) {
