@@ -61,6 +61,9 @@ public class Teacher extends Person {
     @JoinTable(name = "STYLE_TEACHER", joinColumns = { @JoinColumn(name = "P_ID") }, inverseJoinColumns = { @JoinColumn(name = "S_ID") })
     private List<Style> styles = new ArrayList<Style>();
 
+    public Teacher() {
+    }
+
     public String getSvnr() {
         return svnr;
     }

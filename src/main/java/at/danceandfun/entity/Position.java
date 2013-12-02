@@ -25,6 +25,9 @@ public class Position extends EntityBase {
     @Column(name = "AMOUNT")
     private String amount;
 
+    public Position() {
+    }
+
     @EmbeddedId
     public PositionID getKey() {
         return key;

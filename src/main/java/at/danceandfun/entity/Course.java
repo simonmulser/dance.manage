@@ -97,6 +97,9 @@ public class Course extends EntityBase {
     @OneToMany(mappedBy = "key.course")
     private List<CourseParticipant> courseParticipants;
 
+    public Course() {
+    }
+
     public Integer getCid() {
         return cid;
     }

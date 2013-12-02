@@ -64,6 +64,9 @@ public class Participant extends Person {
     @Column(name = "TEMP_COURSES")
     private String tempCourses;
 
+    public Participant() {
+    }
+
     public String getEmergencyNumber() {
         return emergencyNumber;
     }

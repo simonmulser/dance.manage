@@ -22,6 +22,9 @@ public class Parent extends Person {
      */
     private static final long serialVersionUID = 1L;
 
+    public Parent() {
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();

@@ -16,6 +16,9 @@ public class CourseParticipantID implements Serializable {
     private Course course;
     private Participant participant;
 
+    public CourseParticipantID() {
+    }
+
     @ManyToOne(fetch = FetchType.LAZY)
     public Course getCourse() {
         return course;

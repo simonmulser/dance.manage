@@ -30,6 +30,9 @@ public class CourseParticipant extends EntityBase {
     @Column(name = "ENABLED")
     private boolean enabled;
 
+    public CourseParticipant() {
+    }
+
     @EmbeddedId
     public CourseParticipantID getKey() {
         return key;

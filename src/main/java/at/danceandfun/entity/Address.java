@@ -71,6 +71,9 @@ public class Address extends EntityBase {
     @OneToMany(mappedBy = "address")
     private List<Course> courses = new ArrayList<Course>();
 
+    public Address() {
+    }
+
     public Integer getAid() {
         return aid;
     }

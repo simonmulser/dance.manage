@@ -39,6 +39,9 @@ public class Style extends EntityBase {
     @ManyToMany(mappedBy = "styles")
     private List<Teacher> teachers = new ArrayList<Teacher>();
 
+    public Style() {
+    }
+
     public Integer getSid() {
         return sid;
     }

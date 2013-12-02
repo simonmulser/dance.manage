@@ -44,6 +44,9 @@ public class Rating extends EntityBase {
     @JoinColumn(name = "C_ID")
     private Course course;
 
+    public Rating() {
+    }
+
     public Integer getRid() {
         return rid;
     }
