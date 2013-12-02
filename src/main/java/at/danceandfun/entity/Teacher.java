@@ -44,6 +44,9 @@ public class Teacher extends Person {
     @ManyToMany(mappedBy = "teachers")
     private List<Style> styles;
 
+    public Teacher() {
+    }
+
     public String getSvnr() {
         return svnr;
     }

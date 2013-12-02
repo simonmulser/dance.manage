@@ -2,7 +2,6 @@ package at.danceandfun.dao;
 
 import java.sql.Time;
 
-import org.joda.time.Years;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,7 @@ public class CourseDaoTest {
         course.setName("course");
         course.setSemesterPrice(80.0);
         course.setYearPrice(140.0);
-        course.setYear(Years.years(2012));
+        // course.setYear(Years.years(2012));
         course.setTime(new Time(0));
         return course;
     }

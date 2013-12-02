@@ -62,6 +62,9 @@ public class Participant extends Person {
     @Transient
     private String tempSiblings;
 
+    public Participant() {
+    }
+
     public String getEmergencyNumber() {
         return emergencyNumber;
     }

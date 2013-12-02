@@ -37,6 +37,9 @@ public class Style extends EntityBase {
     @JoinTable(name = "STYLE_TEACHER", joinColumns = { @JoinColumn(name = "S_ID") }, inverseJoinColumns = { @JoinColumn(name = "P_ID") })
     private List<Teacher> teachers;
 
+    public Style() {
+    }
+
     public Integer getSid() {
         return sid;
     }

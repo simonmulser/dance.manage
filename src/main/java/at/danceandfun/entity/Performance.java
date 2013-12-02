@@ -47,6 +47,9 @@ public class Performance extends EntityBase {
 
     // TODO NiceToHave mapping with person/participant for ticket selling
 
+    public Performance() {
+    }
+
     public Integer getPerid() {
         return perid;
     }

@@ -94,6 +94,9 @@ public abstract class Person extends EntityBase implements UserDetails {
     @OneToMany(mappedBy = "owner")
     private List<Invoice> invoices;
 
+    public Person() {
+    }
+
     public Integer getPid() {
         return pid;
     }

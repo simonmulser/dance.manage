@@ -43,6 +43,9 @@ public class Invoice extends EntityBase {
     @OneToMany(mappedBy = "key.invoice", cascade = CascadeType.ALL)
     private List<Position> positions;
 
+    public Invoice() {
+    }
+
     public Integer getIid() {
         return iid;
     }

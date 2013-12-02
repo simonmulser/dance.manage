@@ -27,6 +27,9 @@ public class CourseParticipant extends EntityBase {
     @Column(name = "DURATION")
     private Duration duration;
 
+    public CourseParticipant() {
+    }
+
     @EmbeddedId
     public CourseParticipantID getKey() {
         return key;

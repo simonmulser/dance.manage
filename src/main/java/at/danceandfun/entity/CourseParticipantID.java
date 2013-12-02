@@ -15,6 +15,9 @@ public class CourseParticipantID implements Serializable {
     private Course course;
     private Participant participant;
 
+    public CourseParticipantID() {
+    }
+
     @ManyToOne
     public Course getCourse() {
         return course;
