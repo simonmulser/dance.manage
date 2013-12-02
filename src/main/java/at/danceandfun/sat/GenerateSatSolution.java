@@ -1,8 +1,6 @@
 package at.danceandfun.sat;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +16,7 @@ import org.sat4j.specs.TimeoutException;
 import at.danceandfun.entity.Course;
 import at.danceandfun.entity.Performance;
 
-public class GenerateCNF {
+public class GenerateSatSolution {
 
     private int numberOfCourses;
     private int numberOfSlots;
@@ -43,11 +41,10 @@ public class GenerateCNF {
         Map<Integer, Performance> plan;
         int[] solution;
 
-        /* Anzahl der verschiedenen Stile und verfügbare Timeslots in der
-         Aufführung
-         Zur Zeit muss die Anzahl der Kurse durch 3 (Anzahl der Aufführungen)
-         teilbar sein.
-         Z.B. 12 Kurse, 3 Aufführungen = 4 Slots
+        /*
+         * Anzahl der verschiedenen Stile und verfügbare Timeslots in der
+         * Aufführung Zur Zeit muss die Anzahl der Kurse durch 3 (Anzahl der
+         * Aufführungen) teilbar sein. Z.B. 12 Kurse, 3 Aufführungen = 4 Slots
          */
         numberOfCourses = originalOrderOfCourses.size();
         numberOfPlays = 3;
@@ -155,9 +152,16 @@ public class GenerateCNF {
      */
     private void addNotTwoOfAKind(List<Course> courses, int k, int t, int p) {
         List<Integer> tempList = new ArrayList<Integer>();
-        Course tempCourse;
-        String tempStyle;
-        int lastBallet = 0;
+        List<Integer> listBallets = new ArrayList<Integer>();
+
+        for (int i = 0; i < courses.size(); i++) {
+            if (courses.get(i).getStyle().getName().equals("Ballet")) {
+                listBallets.add(i + 1);
+            }
+        }
+        System.out.println("TEST------------------------");
+        System.out.println(listBallets.toString());
+        System.out.println("TEST------------------------");
 
         // Der nächste Slot darf nicht den selben Stil beinhalten (nur fuer
         // Ballett relevant)
@@ -169,17 +173,15 @@ public class GenerateCNF {
         // (-Vi1 v -Vj1)
         for (int i = 1; i <= p; i++) {
             for (int j = 1; j < t; j++) {
-                lastBallet = 0;
-                for (int l = 1; l <= k; l++) {
-                    tempCourse = courses.get(l - 1);
-                    tempStyle = tempCourse.getStyle().getName();
-                    if (tempStyle.equals("Ballet")) {
-                        if (lastBallet != 0) {
-                            tempList = new ArrayList<Integer>();
-                            tempList.add(-buildMappingVariable(i, j, l));
-                            tempList.add(-buildMappingVariable(i, j + 1, lastBallet));
+                for (int l = 0; l < listBallets.size(); l++) {
+                    int currentBallet = listBallets.get(l);
+                    for (int m : listBallets) {
+                        if (currentBallet != m) {
+                            tempList.clear();
+                            tempList.add(-buildMappingVariable(i, j,
+                                    currentBallet));
+                            tempList.add(-buildMappingVariable(i, j + 1, m));
                             clauses.add(convertToIntegerArray(tempList));
-                            lastBallet = l;
                         }
                     }
                 }

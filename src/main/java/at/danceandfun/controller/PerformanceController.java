@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import at.danceandfun.entity.Course;
 import at.danceandfun.entity.Performance;
-import at.danceandfun.sat.GenerateCNF;
+import at.danceandfun.sat.GenerateSatSolution;
 import at.danceandfun.service.CourseManager;
 import at.danceandfun.service.PerformanceManager;
 
@@ -54,7 +54,7 @@ public class PerformanceController {
         List<Course> courses = courseManager.getEnabledList();
         Collections.shuffle(courses);
 
-        GenerateCNF sat = new GenerateCNF();
+        GenerateSatSolution sat = new GenerateSatSolution();
         try {
             plan = sat.generatePerformance(courses);
         } catch (IOException e) {
