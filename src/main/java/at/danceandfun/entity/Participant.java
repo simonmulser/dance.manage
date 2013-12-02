@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -43,12 +44,8 @@ public class Participant extends Person {
     @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]*$", message = "darf nur aus Buchstaben bestehen")
     private String contactPerson;
 
-    @OneToMany(mappedBy = "key.participant", cascade = CascadeType.ALL)
-    private List<CourseParticipant> courseParticipants;
-
-    // TODO remove
-    // @ManyToMany(mappedBy = "participants")
-    // private List<Course> courses;
+    @OneToMany(mappedBy = "key.participant", fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+    private List<CourseParticipant> courseParticipants = new ArrayList<CourseParticipant>();
 
     // TODO NiceToHave mapping with performance for ticket selling
 
@@ -60,7 +57,12 @@ public class Participant extends Person {
     private Set<Participant> siblingsReverse = new HashSet<Participant>();
 
     @Transient
+    @Column(name = "TEMP_SIBLINGS")
     private String tempSiblings;
+
+    @Transient
+    @Column(name = "TEMP_COURSES")
+    private String tempCourses;
 
     public String getEmergencyNumber() {
         return emergencyNumber;
@@ -78,12 +80,22 @@ public class Participant extends Person {
         this.contactPerson = contactPerson;
     }
 
+    @JsonIgnore
     public List<CourseParticipant> getCourseParticipants() {
         return courseParticipants;
     }
 
     public void setCourseParticipants(List<CourseParticipant> courseParticipants) {
         this.courseParticipants = courseParticipants;
+    }
+
+    public CourseParticipant getCourseById(Course course) {
+        for (CourseParticipant cp : courseParticipants) {
+            if (cp.getKey().getCourse().getCid() == course.getCid()) {
+                return cp;
+            }
+        }
+        return null;
     }
 
     @JsonIgnore
@@ -104,6 +116,15 @@ public class Participant extends Person {
         this.tempSiblings = tempSiblings;
     }
 
+    public String getTempCourses() {
+        return this.tempCourses;
+    }
+
+    public void setTempCourses(String tempCourses) {
+        this.tempCourses = tempCourses;
+    }
+
+    @JsonIgnore
     public Set<Participant> getReverseSiblings() {
         return this.siblingsReverse;
     }

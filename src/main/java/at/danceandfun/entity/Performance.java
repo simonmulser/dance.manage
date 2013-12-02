@@ -1,5 +1,6 @@
 package at.danceandfun.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -43,7 +44,7 @@ public class Performance extends EntityBase {
 
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(name = "COURSE_PERFORMANCE", joinColumns = { @JoinColumn(name = "PER_ID") }, inverseJoinColumns = { @JoinColumn(name = "C_ID") })
-    private List<Course> courses;
+    private List<Course> courses = new ArrayList<Course>();
 
     // TODO NiceToHave mapping with person/participant for ticket selling
 

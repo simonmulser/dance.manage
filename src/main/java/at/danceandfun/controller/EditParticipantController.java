@@ -1,5 +1,7 @@
 package at.danceandfun.controller;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -17,8 +19,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import at.danceandfun.entity.Course;
+import at.danceandfun.entity.CourseParticipant;
+import at.danceandfun.entity.CourseParticipantID;
 import at.danceandfun.entity.Participant;
 import at.danceandfun.service.AddressManager;
+import at.danceandfun.service.CourseManager;
+import at.danceandfun.service.CourseParticipantManager;
 import at.danceandfun.service.ParticipantManager;
 
 @Controller
@@ -32,6 +39,10 @@ public class EditParticipantController {
     private ParticipantManager participantManager;
     @Autowired
     private AddressManager addressManager;
+    @Autowired
+    private CourseManager courseManager;
+    @Autowired
+    private CourseParticipantManager courseParticipantManager;
 
     private Participant participant = new Participant();
 
@@ -69,10 +80,43 @@ public class EditParticipantController {
                     if (Integer.parseInt(s) < 0) {
                         actualParticipant.getSiblings().remove(participant);
                         participant.getSiblings().remove(actualParticipant);
-                        logger.debug("Kann ich den Sibling speichern?");
+                        participantManager.update(participant);
                         participantManager.update(actualParticipant);
-                    } else {
+                    } else if (!participant.getSiblings().contains(
+                            actualParticipant)) {
                         participant.getSiblings().add(actualParticipant);
+                    }
+                }
+            }
+
+            if (!participant.getTempCourses().equals("")) {
+                if (participant.getPid() != null) {
+                    participant.setCourseParticipants(participantManager.get(
+                            participant.getPid()).getCourseParticipants());
+                }
+                String[] courses = participant.getTempCourses().split(";");
+                for (String s : courses) {
+                    Course actualCourse = courseManager.get(Math.abs(Integer
+                            .parseInt(s)));
+
+                    if (Integer.parseInt(s) < 0) {
+                        if (participant.getCourseById(actualCourse) != null) {
+                            CourseParticipant deleteCP = participant
+                                    .getCourseById(actualCourse);
+                            participant.getCourseParticipants()
+                                    .remove(deleteCP);
+                            deleteCP.setEnabled(false);
+                            courseParticipantManager.update(deleteCP);
+                        }
+                    } else if (participant.getCourseById(actualCourse) == null) {
+                        logger.debug("Neuen Kurs hinzufügen");
+                        CourseParticipant newCP = new CourseParticipant();
+                        CourseParticipantID newCPID = new CourseParticipantID();
+                        newCPID.setCourse(actualCourse);
+                        newCPID.setParticipant(participant);
+                        newCP.setKey(newCPID);
+                        newCP.setEnabled(true);
+                        participant.getCourseParticipants().add(newCP);
                     }
                 }
             }
@@ -100,13 +144,25 @@ public class EditParticipantController {
         logger.debug("Edit Participant with id " + pid);
         participant = participantManager.get(pid);
 
-        // TODO: getSiblings --> lazy Load?
         if (participantManager.get(pid).getSiblings().size() > 0) {
             String actualSiblings = "";
             for (Participant p : participant.getSiblings()) {
                 actualSiblings += p.getPid().toString() + ";";
             }
             participant.setTempSiblings(actualSiblings);
+        }
+
+        if (participantManager.get(pid).getCourseParticipants().size() > 0) {
+            String actualCourses = "";
+            for (CourseParticipant cp : participantManager.get(pid)
+                    .getCourseParticipants()) {
+                if (cp.isEnabled()) {
+                    Course actualCourse = cp.getKey().getCourse();
+                    actualCourses += actualCourse.getCid().toString() + ";";
+                }
+
+            }
+            participant.setTempCourses(actualCourses);
         }
 
         return "redirect:/admin/participant";
@@ -117,9 +173,25 @@ public class EditParticipantController {
         logger.debug("Delete Participant with id " + pid);
         participant = participantManager.get(pid);
         participant.setEnabled(false);
+        if (participant.getSiblings().size() > 0) {
+            for (Participant p : participant.getSiblings()) {
+                p.getSiblings().remove(participant);
+                participantManager.update(p);
+            }
+            participant.setSiblings(new HashSet<Participant>());
+        }
+        if (participant.getCourseParticipants().size() > 0) {
+            for (CourseParticipant cp : participant.getCourseParticipants()) {
+                cp.setEnabled(false);
+                courseParticipantManager.update(cp);
+            }
+            participant
+                    .setCourseParticipants(new ArrayList<CourseParticipant>());
+        }
+
         participantManager.update(participant);
         participant = new Participant();
-        return "redirect:/participant";
+        return "redirect:/admin/participant";
     }
 
     @RequestMapping(value = "/getSiblings", method = RequestMethod.GET)
@@ -128,6 +200,14 @@ public class EditParticipantController {
         logger.debug("Entered :" + query);
 
         return participantManager.searchForSiblings(participant, query);
+    }
+
+    @RequestMapping(value = "/getCourses", method = RequestMethod.GET)
+    public @ResponseBody
+    List getCourses(@RequestParam("term") String query) {
+        logger.debug("Entered coursname:" + query);
+
+        return courseManager.searchForCourses(participant, query);
     }
 
     public void setParticipantManager(ParticipantManager participantManager) {

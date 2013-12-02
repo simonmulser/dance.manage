@@ -4,13 +4,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import at.danceandfun.role.RoleTeacher;
@@ -31,6 +36,17 @@ public class Teacher extends Person {
     @Column(name = "SALARY")
     private Double salary;
 
+    @Column(name = "COMMENT")
+    private String comment;
+
+    @Transient
+    @Column(name = "TEMP_STYLES")
+    private String tempStyles;
+
+    @Transient
+    @Column(name = "TEMP_COURSES")
+    private String tempCourses;
+
     /*
      * @Column(name = "ENGAGEMENTDATE")
      * 
@@ -39,10 +55,11 @@ public class Teacher extends Person {
      * DateTime engagementDate;
      */
     @OneToMany(mappedBy = "teacher")
-    private List<Course> courses;
+    private List<Course> courses = new ArrayList<Course>();
 
-    @ManyToMany(mappedBy = "teachers")
-    private List<Style> styles;
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(name = "STYLE_TEACHER", joinColumns = { @JoinColumn(name = "P_ID") }, inverseJoinColumns = { @JoinColumn(name = "S_ID") })
+    private List<Style> styles = new ArrayList<Style>();
 
     public String getSvnr() {
         return svnr;
@@ -67,6 +84,7 @@ public class Teacher extends Person {
      * this.engagementDate = engagementDate; }
      */
 
+    @JsonIgnore
     public List<Course> getCourses() {
         return courses;
     }
@@ -81,6 +99,30 @@ public class Teacher extends Person {
 
     public void setStyles(List<Style> styles) {
         this.styles = styles;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getTempStyles() {
+        return tempStyles;
+    }
+
+    public void setTempStyles(String tempStyles) {
+        this.tempStyles = tempStyles;
+    }
+
+    public String getTempCourses() {
+        return tempCourses;
+    }
+
+    public void setTempCourses(String tempCourses) {
+        this.tempCourses = tempCourses;
     }
 
     @Override

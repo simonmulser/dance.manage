@@ -1,5 +1,6 @@
 package at.danceandfun.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -62,13 +63,13 @@ public class Address extends EntityBase {
     private boolean enabled;
 
     @OneToMany(mappedBy = "address")
-    private List<Performance> performances;
+    private List<Performance> performances = new ArrayList<Performance>();
 
     @OneToMany(mappedBy = "address")
-    private List<Person> persons;
+    private List<Person> persons = new ArrayList<Person>();
 
     @OneToMany(mappedBy = "address")
-    private List<Course> courses;
+    private List<Course> courses = new ArrayList<Course>();
 
     public Integer getAid() {
         return aid;
@@ -134,6 +135,7 @@ public class Address extends EntityBase {
         this.enabled = enabled;
     }
 
+    @JsonIgnore
     public List<Performance> getPerformances() {
         return performances;
     }
@@ -151,6 +153,7 @@ public class Address extends EntityBase {
         this.persons = persons;
     }
 
+    @JsonIgnore
     public List<Course> getCourses() {
         return courses;
     }
