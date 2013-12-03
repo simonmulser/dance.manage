@@ -18,6 +18,7 @@ import at.danceandfun.entity.Performance;
 import at.danceandfun.sat.GenerateSatSolution;
 import at.danceandfun.service.CourseManager;
 import at.danceandfun.service.PerformanceManager;
+import at.danceandfund.exception.SatException;
 
 @Controller
 @RequestMapping(value = "/performance")
@@ -52,13 +53,21 @@ public class PerformanceController {
         logger.debug("BUILD performance");
         Map<Integer, Performance> plan = new HashMap<Integer, Performance>();
         List<Course> courses = courseManager.getEnabledList();
-        Collections.shuffle(courses);
+        // Collections.shuffle(courses);
 
         GenerateSatSolution sat = new GenerateSatSolution();
+
+        while (true) {
         try {
-            plan = sat.generatePerformance(courses);
-        } catch (IOException e) {
-            e.printStackTrace();
+                plan = sat.generatePerformance(courses);
+                break;
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SatException s) {
+                System.out.println(s.getMessage());
+                Collections.shuffle(courses);
+                continue;
+            }
         }
 
         tempPerformance1 = plan.get(1);

@@ -15,6 +15,7 @@ import org.sat4j.specs.TimeoutException;
 
 import at.danceandfun.entity.Course;
 import at.danceandfun.entity.Performance;
+import at.danceandfund.exception.SatException;
 
 public class GenerateSatSolution {
 
@@ -34,7 +35,7 @@ public class GenerateSatSolution {
      * @throws IOException
      */
     public Map<Integer, Performance> generatePerformance(List<Course> courses)
-            throws IOException {
+            throws IOException, SatException {
         originalOrderOfCourses = courses;
         performance = new Performance();
         clauses = new ArrayList<int[]>();
@@ -86,8 +87,7 @@ public class GenerateSatSolution {
      * @param t
      * @param p
      */
-    private void addBasicRestrictions(List<Course> courses, int k, int t,
- int p) {
+    private void addBasicRestrictions(List<Course> courses, int k, int t, int p) {
         List<Integer> tempList = new ArrayList<Integer>();
 
         // Jedem Slot muss mindests ein Kurs zugewiesen werden
@@ -97,7 +97,7 @@ public class GenerateSatSolution {
         // (Vi1 v Vi2 v Vi3 ..)
         for (int i = 1; i <= p; i++) {
             for (int j = 1; j <= t; j++) {
-                tempList = new ArrayList<Integer>();
+                tempList.clear();
                 for (int l = 1; l <= k; l++) {
                     tempList.add(buildMappingVariable(i, j, l));
 
@@ -113,7 +113,7 @@ public class GenerateSatSolution {
         // (V1i v V2i v V3i ..)
         for (int i = 1; i <= p; i++) {
             for (int j = 1 + (k / 3 * (i - 1)); j <= k / 3 * i; j++) {
-                tempList = new ArrayList<Integer>();
+                tempList.clear();
                 for (int l = 1; l <= t; l++) {
                     tempList.add(buildMappingVariable(i, l, j));
                 }
@@ -150,7 +150,8 @@ public class GenerateSatSolution {
      * @param t
      * @param p
      */
-    private void addNotTwoOfAKind(List<Course> courses, int k, int t, int p) {
+    private void addNotTwoOfAKind(List<Course> courses, int k, int t, int p)
+            throws SatException {
         List<Integer> tempList = new ArrayList<Integer>();
         List<Integer> listBallets = new ArrayList<Integer>();
 
@@ -159,9 +160,10 @@ public class GenerateSatSolution {
                 listBallets.add(i + 1);
             }
         }
-        System.out.println("TEST------------------------");
-        System.out.println(listBallets.toString());
-        System.out.println("TEST------------------------");
+        if ((listBallets.get(listBallets.size() - 1) - listBallets.get(0)) < numberOfSlots) {
+            throw new SatException(
+                    "Too many Ballets in one Performance! Reshuffle!");
+        }
 
         // Der nächste Slot darf nicht den selben Stil beinhalten (nur fuer
         // Ballett relevant)
@@ -271,7 +273,8 @@ public class GenerateSatSolution {
         solver = SolverFactory.newDefault();
         solver.setTimeout(3600); // 1 hour timeout
 
-        solver.newVar(buildMappingVariable(numberOfPlays, numberOfSlots, numberOfCourses));
+        solver.newVar(buildMappingVariable(numberOfPlays, numberOfSlots,
+                numberOfCourses));
         solver.setExpectedNumberOfClauses(clauses.size());
 
         for (int[] cur : clauses) {
