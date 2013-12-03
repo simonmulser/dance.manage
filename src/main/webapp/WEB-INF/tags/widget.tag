@@ -12,12 +12,17 @@
 	<c:when test="${style eq 'table'}">
 		<c:set var="widgetStyle" value="widget widget-table action-table" />
 	</c:when>
+	<c:when test="${style eq 'nopad'}">
+		<c:set var="widgetStyle" value="widget widget-nopad" />
+	</c:when>
 </c:choose>
 
 <div class="${widgetStyle}">
 	<div class="widget-header">
 		<i class="${icon}"></i>
-		<h3><spring:message code="${title}" /></h3>
+		<h3>
+			<spring:message code="${title}" />
+		</h3>
 	</div>
 	<!-- /widget-header -->
 	<div class="widget-content">

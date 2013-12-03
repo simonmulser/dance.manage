@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
@@ -71,7 +72,7 @@
 
 
 
-	<dmtags:widget title="widget.courses" icon="icon-list">
+	<dmtags:widget title="widget.courses" style="nopad" icon="icon-list">
 		<div id='calendar'></div>
 	</dmtags:widget>
 
@@ -123,7 +124,7 @@ var courseData = [
 	varStatus="loop">
 	        {
               title: '${courseParticipant.key.course.name}',
-              start: '${courseParticipant.key.course.time}',
+              start: 'T<fmt:formatDate value="${courseParticipant.key.course.time}" pattern="HH:mm" />',
             },
 </c:forEach>
 ];
