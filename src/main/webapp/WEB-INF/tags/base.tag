@@ -4,12 +4,13 @@
 <%@attribute name="title" required="true" type="java.lang.String"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@attribute name="activesection" required="true" type="java.lang.String"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
-<title>${title}</title>
+<title><spring:message code="${title}" /></title>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">

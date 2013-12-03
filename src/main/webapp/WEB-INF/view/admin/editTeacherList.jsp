@@ -5,134 +5,18 @@
 <%@taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 
-<dmtags:base title="Lehrer" activesection="teacher">
+<dmtags:base title="nav.teachers" activesection="teacher">
 
-	<dmtags:widget title="Lehrer" icon="icon-user">
+	<dmtags:widget title="widget.teachers" icon="icon-user">
 		<spring:message code="help.teacher" />
 		<form:form method="post" action="teacher/add" commandName="teacher"
 			class="form-horizontal">
 
-			<form:input path="pid" type="hidden" />
-			<form:input path="enabled" type="hidden" />
-			<form:input path="address.aid" type="hidden" />
+            <dmtags:personForm />
 
-			<div class="control-group">
-				<form:label path="firstname" class="control-label">
-					<spring:message code="label.firstname" />*
-				</form:label>
-				<div class="span6">
-					<form:input path="firstname" />
-				</div>
-				<form:errors path="firstname" cssClass="error" />
-			</div>
-			<div class="control-group">
-				<form:label path="lastname" class="control-label">
-					<spring:message code="label.lastname" />*
-				</form:label>
-				<div class="span6">
-					<form:input path="lastname" />
-				</div>
-				<form:errors path="lastname" cssClass="error" />
-			</div>
-			<div class="control-group">
-				<form:label path="email" class="control-label">
-					<spring:message code="label.email" />*
-				</form:label>
-				<div class="span6">
-					<form:input path="email" />
-				</div>
-				<form:errors path="email" cssClass="error" />
-			</div>
-			<div class="control-group">
-				<form:label path="telephone" class="control-label">
-					<spring:message code="label.telephone" />*
-				</form:label>
-				<div class="span6">
-					<form:input path="telephone" />
-				</div>
-				<form:errors path="telephone" cssClass="error" />
-			</div>
-			<div class="control-group">
-				<form:label path="birthday" class="control-label">
-					<spring:message code="label.birthday" />*
-				</form:label>
-				<div class="span6">
-					<form:input path="birthday" />
-				</div>
-				<form:errors path="birthday" cssClass="error" />
-			</div>
-			<div class="control-group">
-				<form:label path="svnr" class="control-label">
-					<spring:message code="label.svnr" />*
-				</form:label>
-				<div class="span6">
-					<form:input path="svnr" />
-				</div>
-				<form:errors path="svnr" cssClass="error" />
-			</div>
-			<div class="control-group">
-				<form:label path="salary" class="control-label">
-					<spring:message code="label.salary" />*
-				</form:label>
-				<div class="span6">
-					<form:input path="salary" />
-				</div>
-				<form:errors path="salary" cssClass="error" />
-			</div>
-			<div class="control-group">
-				<form:label path="address.street" class="control-label">
-					<spring:message code="label.street" />*
-				</form:label>
-				<div class="span6">
-					<form:input path="address.street" />
-				</div>
-				<form:errors path="address.street" cssClass="error" />
-			</div>
-			<div class="control-group">
-				<form:label path="address.number" class="control-label">
-					<spring:message code="label.number" />*
-				</form:label>
-				<div class="span6">
-					<form:input path="address.number" />
-				</div>
-				<form:errors path="address.number" cssClass="error" />
-			</div>
-			<div class="control-group">
-				<form:label path="address.stair" class="control-label">
-					<spring:message code="label.stair" />
-				</form:label>
-				<div class="span6">
-					<form:input path="address.stair" />
-				</div>
-				<form:errors path="address.stair" cssClass="error" />
-			</div>
-			<div class="control-group">
-				<form:label path="address.door" class="control-label">
-					<spring:message code="label.door" />
-				</form:label>
-				<div class="span6">
-					<form:input path="address.door" />
-				</div>
-				<form:errors path="address.door" cssClass="error" />
-			</div>
-			<div class="control-group">
-				<form:label path="address.zip" class="control-label">
-					<spring:message code="label.zip" />*
-				</form:label>
-				<div class="span6">
-					<form:input path="address.zip" />
-				</div>
-				<form:errors path="address.zip" cssClass="error" />
-			</div>
-			<div class="control-group">
-				<form:label path="address.city" class="control-label">
-					<spring:message code="label.city" />*
-				</form:label>
-				<div class="span6">
-					<form:input path="address.city" />
-				</div>
-				<form:errors path="address.city" cssClass="error" />
-			</div>
+            <dmtags:teacherForm />
+            
+            <dmtags:addressForm />
 			
 			<div id="find_keyword" class="control-group">
 				<form:label path="tempStyles" class="control-label">
@@ -193,7 +77,7 @@
 		</form:form>
 	</dmtags:widget>
 	<c:if test="${!empty teacherList}">
-		<dmtags:widget title="Übersicht" style="table" icon="icon-list">
+		<dmtags:widget title="widget.overview" style="table" icon="icon-list">
 			<table class="table table-striped table-bordered">
 				<tr>
 					<th><spring:message code="label.name" /></th>

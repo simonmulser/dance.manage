@@ -5,9 +5,9 @@
 <%@taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 
-<dmtags:base title="Kurse" activesection="courses">
+<dmtags:base title="nav.courses" activesection="courses">
 
-	<dmtags:widget icon="icon-calendar" title="Kurs">
+	<dmtags:widget icon="icon-calendar" title="widget.courses">
 		<spring:message code="help.course" />
 		<form:form method="post" action="course/add" commandName="course"
 			class="form-horizontal">
@@ -156,7 +156,8 @@
 			</div>
 		</form:form>
 	</dmtags:widget>
-	<dmtags:widget title="Übersicht" style="table" icon="icon-list">
+	
+	<dmtags:widget title="widget.overview" style="table" icon="icon-list">
 		<c:if test="${!empty courseList}">
 			<table class="table table-striped table-bordered">
 				<thead>
