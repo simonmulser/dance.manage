@@ -80,6 +80,15 @@
 				<form:errors path="salary" cssClass="error" />
 			</div>
 			<div class="control-group">
+				<form:label path="engagementDate" class="control-label">
+					<spring:message code="label.engagementDate" />
+				</form:label>
+				<div class="span6">
+					<form:input path="engagementDate" />
+				</div>
+				<form:errors path="engagementDate" cssClass="error" />
+			</div>
+			<div class="control-group">
 				<form:label path="address.street" class="control-label">
 					<spring:message code="label.street" />*
 				</form:label>
@@ -150,6 +159,7 @@
 				<th><spring:message code="label.birthday" /></th>
 				<th><spring:message code="label.svnr" /></th>
 				<th><spring:message code="label.salary" /></th>
+				<th><spring:message code="label.engagementDate" /></th>
 				<th><spring:message code="label.street" /></th>
 				<th><spring:message code="label.zip" /></th>
 				<th><spring:message code="label.city" /></th>
@@ -163,9 +173,11 @@
 					<td>${teacher.email}</td>
 					<td>${teacher.telephone}</td>
 					<td><joda:format value="${teacher.birthday}"
-									pattern="dd.MM.yyyy" /></td></td>
+									pattern="dd.MM.yyyy" /></td>
 					<td>${teacher.svnr}</td>
 					<td>&euro;${teacher.salary}</td>
+					<td><joda:format value="${teacher.engagementDate}"
+									pattern="dd.MM.yyyy" /></td>
 					<c:if test="${!empty teacher.address}">
 						<td>${teacher.address.street}&nbsp;
 							${teacher.address.number}/${teacher.address.stair}/${teacher.address.door}</td>

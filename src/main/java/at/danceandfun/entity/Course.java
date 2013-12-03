@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import at.danceandfun.enumeration.AgeGroup;
+import at.danceandfun.enumeration.CourseDuration;
 import at.danceandfun.enumeration.CourseLevel;
 import at.danceandfun.enumeration.SpectatorAmount;
 import at.danceandfun.enumeration.WeekDay;
@@ -39,7 +40,7 @@ public class Course implements Serializable {
     private String name;
 
     @Column(name = "DURATION")
-    private Integer duration;
+    private int duration;
 
     @Column(name = "PRICE")
     private Double price;
@@ -98,12 +99,12 @@ public class Course implements Serializable {
         this.cid = cid;
     }
 
-    public Integer getDuration() {
-        return duration;
+    public CourseDuration getDuration() {
+        return CourseDuration.parse(this.duration);
     }
 
-    public void setDuration(Integer duration) {
-        this.duration = duration;
+    public void setDuration(CourseDuration duration) {
+        this.duration = duration.getValue();
     }
 
     public Double getPrice() {

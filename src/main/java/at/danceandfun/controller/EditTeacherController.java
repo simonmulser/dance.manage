@@ -63,7 +63,7 @@ public class EditTeacherController {
                     result);
             redirectAttributes.addFlashAttribute("teacher", teacher);
             this.teacher = teacher;
-            return "redirect:/teacher";
+            return "redirect:/admin/teacher";
         } else {
             logger.debug("ADD Teacher with id " + teacher.getPid());
             teacher.setEnabled(true);

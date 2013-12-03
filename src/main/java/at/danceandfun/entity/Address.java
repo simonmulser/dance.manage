@@ -18,6 +18,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
+import at.danceandfun.enumeration.PatternConstants;
+
 @Entity
 @Table(name = "ADDRESS")
 public class Address implements Serializable {
@@ -35,7 +37,7 @@ public class Address implements Serializable {
     @Column(name = "STREET")
     @NotEmpty
     @NumberFormat(style = Style.NUMBER)
-    @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]*$", message = "{pattern.characters}")
+    @Pattern(regexp = PatternConstants.CITY_PATTERN, message = "{pattern.characters}")
     private String street;
 
     @Column(name = "NUMBER")
@@ -56,7 +58,7 @@ public class Address implements Serializable {
 
     @Column(name = "CITY")
     @NotEmpty
-    @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]*$", message = "{pattern.characters}")
+    @Pattern(regexp = PatternConstants.CITY_PATTERN, message = "{pattern.characters}")
     private String city;
 
     @Column(name = "ENABLED")
@@ -158,6 +160,10 @@ public class Address implements Serializable {
 
     public void setCourses(List<Course> courses) {
         this.courses = courses;
+    }
+
+    public String toString() {
+        return street + " " + number;
     }
 
     @Override

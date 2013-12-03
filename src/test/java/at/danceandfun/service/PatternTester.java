@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.is;
 
 import org.junit.Test;
 
+import at.danceandfun.enumeration.CourseDuration;
 import at.danceandfun.enumeration.PatternConstants;
 
 public class PatternTester {
@@ -36,7 +37,7 @@ public class PatternTester {
         assertThat("Max!?".matches(PatternConstants.CHARACTER_PATTERN),
                 is(false));
     }
-    
+
     @Test
     public void testContactPersonPattern() {
         assertThat(
@@ -118,4 +119,23 @@ public class PatternTester {
                 is(false));
     }
 
+    @Test
+    public void testCityPattern() {
+        assertThat("Wien".matches(PatternConstants.CITY_PATTERN), is(true));
+        assertThat("München".matches(PatternConstants.CITY_PATTERN), is(true));
+        assertThat("St. Peter".matches(PatternConstants.CITY_PATTERN), is(true));
+        assertThat("Hall in Tirol".matches(PatternConstants.CITY_PATTERN),
+                is(true));
+        assertThat("New York-City".matches(PatternConstants.CITY_PATTERN),
+                is(true));
+        assertThat("New York ".matches(PatternConstants.CITY_PATTERN),
+                is(false));
+        assertThat("Hall-".matches(PatternConstants.CITY_PATTERN), is(false));
+
+    }
+
+    @Test
+    public void testEnumValue() {
+        System.out.println(CourseDuration.FIFTY);
+    }
 }

@@ -12,6 +12,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+import org.joda.time.LocalDate;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 
 import at.danceandfun.role.RoleTeacher;
@@ -32,13 +35,11 @@ public class Teacher extends Person implements Serializable {
     @Column(name = "SALARY")
     private Double salary;
 
-    /*
-     * @Column(name = "ENGAGEMENTDATE")
-     * 
-     * @Type(type =
-     * "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime") private
-     * DateTime engagementDate;
-     */
+    @Column(name = "ENGAGEMENTDATE")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+    @DateTimeFormat(pattern = "dd.MM.yyyy")
+    private LocalDate engagementDate;
+
     @OneToMany(mappedBy = "teacher")
     private List<Course> courses;
 
@@ -61,12 +62,14 @@ public class Teacher extends Person implements Serializable {
         this.salary = salary;
     }
 
-    /*
-     * public DateTime getEngagementDate() { return engagementDate; }
-     * 
-     * public void setEngagementDate(DateTime engagementDate) {
-     * this.engagementDate = engagementDate; }
-     */
+
+    public LocalDate getEngagementDate() {
+        return engagementDate;
+    }
+
+    public void setEngagementDate(LocalDate engagementDate) {
+        this.engagementDate = engagementDate;
+    }
 
     public List<Course> getCourses() {
         return courses;

@@ -49,7 +49,7 @@ public class ParticipantDaoTest {
         participant.setTelephone("123456789");
         participant.setEmail("mail@mail.com");
         participant.setEmergencyNumber("emergency");
-        participant.setContactPerson("contact");
+        participant.setContactPerson("contact person");
         participantDao.save(participant);
     }
 

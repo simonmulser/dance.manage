@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import at.danceandfun.entity.Course;
+import at.danceandfun.service.AddressManager;
 import at.danceandfun.service.CourseManager;
 
 @Controller
@@ -27,6 +28,9 @@ public class CourseController {
 
     @Autowired
     private CourseManager courseManager;
+
+    @Autowired
+    private AddressManager addressManager;
 
     private Course course = new Course();
 
@@ -45,6 +49,7 @@ public class CourseController {
 
         map.addAttribute("course", course);
         map.addAttribute("courseList", courseManager.getEnabledList());
+        map.addAttribute("addressList", addressManager.getStudioAddresses());
         editTrue = false;
         return "admin/courseView";
     }
@@ -61,15 +66,10 @@ public class CourseController {
                     result);
             redirectAttributes.addFlashAttribute("course", course);
             this.course = course;
-            return "redirect:/course";
+            return "redirect:/admin/course";
         } else {
             logger.debug("ADD Course with id " + course.getCid());
             course.setEnabled(true);
-
-            /*
-             * if (course.getAddress().getAid() == null) {
-             * addressManager.save(course.getAddress()); }
-             */
 
             if (course.getCid() == null) {
                 logger.debug("New course");

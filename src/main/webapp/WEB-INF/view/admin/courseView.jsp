@@ -8,8 +8,9 @@
 <dmtags:base title="Kurse" activesection="courses">
 
 	<dmtags:widget icon="icon-calendar" title="Kurs">
+		<c:url var="addURL" value='course/add' />	
 		<spring:message code="help.course" />
-		<form:form method="post" action="course/add" commandName="course"
+		<form:form method="post" action="${addURL}" commandName="course"
 			class="form-horizontal">
 			<form:input path="cid" type="hidden" />
 			<form:input path="enabled" type="hidden" />
@@ -23,11 +24,23 @@
 				<form:errors path="name" cssClass="error" />
 			</div>
 			<div class="control-group">
+				<form:label path="address" class="control-label">
+					<spring:message code="label.coursePlace" />*
+				</form:label>
+				<div class="span6">
+					<form:radiobuttons path="address" items="${addressList}"  />
+				</div>
+				<form:errors path="address" cssClass="error" />
+			</div>
+			<div class="control-group">
 				<form:label path="duration" class="control-label">
 					<spring:message code="label.courseduration" />*
 				</form:label>
 				<div class="span6">
-					<form:input path="duration" />
+					<form:select path="duration">
+						<form:option value="NONE" label="--- Select ---" />
+						<form:options items="${CourseDuration}" />
+					</form:select>	
 				</div>
 				<form:errors path="duration" cssClass="error" />
 			</div>
@@ -107,8 +120,11 @@
 				<form:errors path="level" cssClass="error" />
 			</div>
 			<div class="form-actions">
-				<input type="submit"
-					value="<spring:message code="label.save"/>" class="btn btn-primary" />
+				<input type="submit" value="<spring:message code="label.save"/>"
+					class="btn btn-primary" />
+				<button class="btn">
+					<spring:message code="label.cancel" />
+				</button>
 			</div>
 		</form:form>
 	</dmtags:widget>
