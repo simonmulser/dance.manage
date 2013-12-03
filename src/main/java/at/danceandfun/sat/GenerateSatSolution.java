@@ -160,10 +160,29 @@ public class GenerateSatSolution {
                 listBallets.add(i + 1);
             }
         }
-        if ((listBallets.get(listBallets.size() - 1) - listBallets.get(0)) < numberOfSlots) {
-            throw new SatException(
-                    "Too many Ballets in one Performance! Reshuffle!");
+
+        int countBallets;
+        for (int i = 0; i < numberOfPlays; i++) {
+            countBallets = 0;
+            for (int j = 1; j <= numberOfSlots; j++) {
+                for (int ballet : listBallets) {
+                    if (ballet == i * numberOfSlots + j) {
+                        countBallets++;
+                        System.out.println("Ballett: " + ballet);
+                    }
+                }
+            }
+            System.out.println(countBallets);
+            if (countBallets * 2 - 1 > numberOfSlots) {
+                throw new SatException(
+                        "Too many Ballets in one Performance! Had to reshuffle!");
+            }
+
         }
+
+        System.out.println("----------------------");
+        System.out.println(listBallets.toString());
+        System.out.println("----------------------");
 
         // Der nächste Slot darf nicht den selben Stil beinhalten (nur fuer
         // Ballett relevant)
