@@ -1,6 +1,5 @@
 package at.danceandfun.entity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -16,12 +15,15 @@ import at.danceandfun.role.RoleSuperUser;
 @Entity
 @Table(name = "SUPERUSER")
 @PrimaryKeyJoinColumn(name = "P_ID")
-public class SuperUser extends Person implements Serializable {
+public class SuperUser extends Person {
 
     /**
      * 
      */
-    private static final long serialVersionUID = -1264262897688787556L;
+    private static final long serialVersionUID = 1L;
+
+    public SuperUser() {
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

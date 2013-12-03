@@ -1,6 +1,6 @@
 package at.danceandfun.entity;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -42,12 +42,12 @@ import at.danceandfun.enumeration.PatternConstants;
 @Entity
 @Table(name = "PERSON")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Person implements Serializable, UserDetails {
+public abstract class Person extends EntityBase implements UserDetails {
 
     /**
      * 
      */
-    private static final long serialVersionUID = -2343963120328915547L;
+    private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "P_ID")
@@ -94,7 +94,10 @@ public abstract class Person implements Serializable, UserDetails {
     private Address address;
 
     @OneToMany(mappedBy = "owner")
-    private List<Invoice> invoices;
+    private List<Invoice> invoices = new ArrayList<Invoice>();
+
+    public Person() {
+    }
 
     public Integer getPid() {
         return pid;

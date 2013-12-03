@@ -1,5 +1,7 @@
 package at.danceandfun.controller;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
@@ -12,11 +14,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import at.danceandfun.entity.Course;
+import at.danceandfun.entity.Style;
+import at.danceandfun.entity.Teacher;
 import at.danceandfun.service.AddressManager;
 import at.danceandfun.service.CourseManager;
+import at.danceandfun.service.StyleManager;
+import at.danceandfun.service.TeacherManager;
 
 @Controller
 @RequestMapping(value = "admin/course")
@@ -28,6 +36,10 @@ public class CourseController {
 
     @Autowired
     private CourseManager courseManager;
+    @Autowired
+    private StyleManager styleManager;
+    @Autowired
+    private TeacherManager teacherManager;
 
     @Autowired
     private AddressManager addressManager;
@@ -70,6 +82,32 @@ public class CourseController {
         } else {
             logger.debug("ADD Course with id " + course.getCid());
             course.setEnabled(true);
+            /*
+             * if (course.getAddress().getAid() == null) {
+             * addressManager.save(course.getAddress()); }
+             */
+
+            if (!(course.getTeacher().getPid() == null)) {
+                logger.debug("Teacher neu setzen mit pid: "
+                        + course.getTeacher().getPid());
+                Teacher newTeacher = teacherManager.get(course.getTeacher()
+                        .getPid());
+                course.setTeacher(newTeacher);
+            } else {
+                logger.debug("Teacher ist null: "
+                        + course.getTeacher().getPid());
+                course.setTeacher(null);
+            }
+
+            if (!(course.getStyle().getSid() == null)) {
+                logger.debug("Style neu setzen mit pid: "
+                        + course.getStyle().getSid());
+                Style newStyle = styleManager.get(course.getStyle().getSid());
+                course.setStyle(newStyle);
+            } else {
+                logger.debug("Style ist null: " + course.getStyle().getSid());
+                course.setStyle(null);
+            }
 
             if (course.getCid() == null) {
                 logger.debug("New course");
@@ -100,6 +138,22 @@ public class CourseController {
         courseManager.update(course);
         course = new Course();
         return "redirect:/admin/course";
+    }
+
+    @RequestMapping(value = "/getStyles", method = RequestMethod.GET)
+    public @ResponseBody
+    List getStyles(@RequestParam("term") String query) {
+        logger.debug("Entered :" + query);
+
+        return styleManager.searchForStyles(course, query);
+    }
+
+    @RequestMapping(value = "/getTeachers", method = RequestMethod.GET)
+    public @ResponseBody
+    List getTeachers(@RequestParam("term") String query) {
+        logger.debug("Entered :" + query);
+
+        return teacherManager.searchForTeachers(course, query);
     }
 
     public void setCourseManager(CourseManager courseManager) {

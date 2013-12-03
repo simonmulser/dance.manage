@@ -1,17 +1,21 @@
 package at.danceandfun.entity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -22,12 +26,12 @@ import at.danceandfun.role.RoleTeacher;
 @Entity
 @Table(name = "TEACHER")
 @PrimaryKeyJoinColumn(name = "P_ID")
-public class Teacher extends Person implements Serializable {
+public class Teacher extends Person {
 
     /**
      * 
      */
-    private static final long serialVersionUID = -3696904570909388688L;
+    private static final long serialVersionUID = 1L;
 
     @Column(name = "SVNR")
     private String svnr;
@@ -40,11 +44,26 @@ public class Teacher extends Person implements Serializable {
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     private LocalDate engagementDate;
 
-    @OneToMany(mappedBy = "teacher")
-    private List<Course> courses;
+    @Column(name = "COMMENT")
+    private String comment;
 
-    @ManyToMany(mappedBy = "teachers")
-    private List<Style> styles;
+    @Transient
+    @Column(name = "TEMP_STYLES")
+    private String tempStyles;
+
+    @Transient
+    @Column(name = "TEMP_COURSES")
+    private String tempCourses;
+
+    @OneToMany(mappedBy = "teacher")
+    private List<Course> courses = new ArrayList<Course>();
+
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(name = "STYLE_TEACHER", joinColumns = { @JoinColumn(name = "P_ID") }, inverseJoinColumns = { @JoinColumn(name = "S_ID") })
+    private List<Style> styles = new ArrayList<Style>();
+
+    public Teacher() {
+    }
 
     public String getSvnr() {
         return svnr;
@@ -71,6 +90,7 @@ public class Teacher extends Person implements Serializable {
         this.engagementDate = engagementDate;
     }
 
+    @JsonIgnore
     public List<Course> getCourses() {
         return courses;
     }
@@ -85,6 +105,30 @@ public class Teacher extends Person implements Serializable {
 
     public void setStyles(List<Style> styles) {
         this.styles = styles;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getTempStyles() {
+        return tempStyles;
+    }
+
+    public void setTempStyles(String tempStyles) {
+        this.tempStyles = tempStyles;
+    }
+
+    public String getTempCourses() {
+        return tempCourses;
+    }
+
+    public void setTempCourses(String tempCourses) {
+        this.tempCourses = tempCourses;
     }
 
     @Override

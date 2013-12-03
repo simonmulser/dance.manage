@@ -1,6 +1,6 @@
 package at.danceandfun.entity;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -18,12 +18,12 @@ import org.joda.time.DateTime;
 
 @Entity
 @Table(name = "INVOICE")
-public class Invoice implements Serializable {
+public class Invoice extends EntityBase {
 
     /**
      * 
      */
-    private static final long serialVersionUID = -3488842415714301558L;
+    private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "I_ID")
@@ -42,7 +42,10 @@ public class Invoice implements Serializable {
     private Person owner;
 
     @OneToMany(mappedBy = "key.invoice", cascade = CascadeType.ALL)
-    private List<Position> positions;
+    private List<Position> positions = new ArrayList<Position>();
+
+    public Invoice() {
+    }
 
     public Integer getIid() {
         return iid;

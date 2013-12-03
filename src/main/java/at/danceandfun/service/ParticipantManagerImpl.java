@@ -8,8 +8,6 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,10 +29,12 @@ public class ParticipantManagerImpl extends ManagerBaseImpl<Participant>
 
     @Override
     public List<Participant> getParticipantsByNumberOfCourses() {
+        logger.info("getParticipantsByNumberOfCourses");
         return mainDao
                 .getQueryResults("select p"
                         + " from Participant as p"
-                        + " inner join p.courses group by p.pid, p.enabled, p.firstname, p.lastname, p.address, p.telephone, p.password, p.email, p.birthday"
+                        + " inner join p.courseParticipants as cp inner join cp.key.course as c"
+                        + " group by p.pid, p.enabled, p.firstname, p.lastname, p.address, p.telephone, p.password, p.email, p.birthday, p.created, p.updated"
                         + " order by count(p.id) desc, p.lastname, p.firstname");
 
     }
@@ -49,28 +49,8 @@ public class ParticipantManagerImpl extends ManagerBaseImpl<Participant>
 
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) {
-        DetachedCriteria criteria = DetachedCriteria
-                .forClass(Participant.class);
-        criteria.add(Restrictions.eq("email", username));
-        criteria.add(Restrictions.eq("enabled", true));
-
-        logger.debug("getByUsername username=" + username);
-
-        List<Participant> participants = mainDao.getListByCriteria(criteria);
-        if (participants.size() != 1) {
-            logger.debug("no user found. length of retrieved list="
-                    + participants.size());
-            throw new UsernameNotFoundException("no user found with username="
-                    + username);
-        }
-        logger.debug("user found. password="
-                + participants.get(0).getPassword());
-        return participants.get(0);
-    }
-
-    public List searchForSiblings(Participant actualParticipant, String query) {
+    public List<Participant> searchForSiblings(Participant actualParticipant,
+            String query) {
         DetachedCriteria criteria = DetachedCriteria
                 .forClass(Participant.class);
 
@@ -89,7 +69,6 @@ public class ParticipantManagerImpl extends ManagerBaseImpl<Participant>
                 criteria.add(Restrictions.not(rest4));
             }
         }
-        List<Participant> siblings = mainDao.getListByCriteria(criteria);
-        return siblings;
+        return mainDao.getListByCriteria(criteria);
     }
 }
