@@ -32,7 +32,8 @@
 			</dmtags:widget>
 		</c:when>
 		<c:otherwise>
-			<dmtags:widget title="widget.courses" style="noTable" icon="icon-list">
+			<dmtags:widget title="widget.courses" style="noTable"
+				icon="icon-list">
 				<spring:message code="participant.noCourses" />
 			</dmtags:widget>
 		</c:otherwise>
@@ -41,14 +42,17 @@
 	<div class="table">
 		<div class="widget-header">
 			<i class="icon-list"></i>
-			<h3><spring:message code="widget.accountInfo"/></h3>
-			<a href="<c:url value='/participant/edit' />"><button type="submit" class="btn btn-primary">Edit</button></a>
+			<h3>
+				<spring:message code="widget.accountInfo" />
+			</h3>
+			<a href="<c:url value='/participant/edit' />"><button
+					type="submit" class="btn btn-primary">Edit</button></a>
 		</div>
 		<!-- /widget-header -->
 		<div class="widget-content">
 			<table class="table table-striped table-bordered">
 				<thead />
-				<dmtags:personInformation/>
+				<dmtags:personInformation />
 				<tr>
 					<td><spring:message code="label.emergencyNumber" /></td>
 					<td>${user.emergencyNumber}</td>
@@ -57,13 +61,23 @@
 					<td><spring:message code="label.contactPerson" /></td>
 					<td>${user.contactPerson}</td>
 				</tr>
-				
+
 				<dmtags:addressInformation />
 			</table>
 		</div>
 		<!-- /widget-content -->
 	</div>
 	<!-- /widget -->
+
+
+
+	<dmtags:widget title="widget.courses" icon="icon-list">
+		<div id='calendar'></div>
+	</dmtags:widget>
+
+
+
+
 	<c:choose>
 		<c:when test="${user.siblings.size() gt 0}">
 
@@ -81,7 +95,8 @@
 			</dmtags:widget>
 		</c:when>
 		<c:otherwise>
-			<dmtags:widget title="widget.courses" style="noTable" icon="icon-list">
+			<dmtags:widget title="widget.courses" style="noTable"
+				icon="icon-list">
 				<spring:message code="participant.noSiblings" />
 			</dmtags:widget>
 		</c:otherwise>
@@ -101,3 +116,48 @@
 		</c:otherwise>
 	</c:choose>
 </dmtags:base>
+
+<script>
+var courseData = [
+<c:forEach items="${user.courseParticipants}" var="courseParticipant"
+	varStatus="loop">
+	        {
+              title: '${courseParticipant.key.course.name}',
+              start: '${courseParticipant.key.course.time}',
+            },
+</c:forEach>
+];
+
+$(document).ready(function() {
+    var date = new Date();
+    var d = date.getDate();
+    var m = date.getMonth();
+    var y = date.getFullYear();
+    var calendar = $('#calendar').fullCalendar({
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'month,agendaWeek,agendaDay'
+      },
+      selectable: true,
+      selectHelper: true,
+      select: function(start, end, allDay) {
+        var title = prompt('Event Title:');
+        if (title) {
+          calendar.fullCalendar('renderEvent',
+            {
+              title: title,
+              start: start,
+              end: end,
+              allDay: allDay
+            },
+            true // make the event "stick"
+          );
+        }
+        calendar.fullCalendar('unselect');
+      },
+      editable: true,
+      events: courseData,
+    });
+  });
+</script>
