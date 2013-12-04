@@ -21,7 +21,7 @@ import at.danceandfun.service.PerformanceManager;
 import at.danceandfund.exception.SatException;
 
 @Controller
-@RequestMapping(value = "/performance")
+@RequestMapping(value = "admin/performance")
 public class PerformanceController {
 
     private static Logger logger = Logger
@@ -45,7 +45,7 @@ public class PerformanceController {
         map.addAttribute("performanceList2", tempPerformance2.getCourses());
         map.addAttribute("performanceList3", tempPerformance3.getCourses());
 
-        return "performanceView";
+        return "admin/performanceView";
     }
 
     @RequestMapping(value = "/build", method = RequestMethod.POST)
@@ -78,7 +78,7 @@ public class PerformanceController {
         performanceManager.save(tempPerformance3);
         performance = new Performance();
 
-        return "redirect:/performance";
+        return "redirect:/admin/performance";
     }
 
     public void setPerformanceManager(PerformanceManager performanceManager) {

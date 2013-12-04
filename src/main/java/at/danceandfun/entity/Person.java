@@ -1,6 +1,7 @@
 package at.danceandfun.entity;
 
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -17,6 +18,7 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -25,6 +27,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
@@ -38,12 +41,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 @Table(name = "PERSON")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Person implements Serializable, UserDetails {
+public abstract class Person extends EntityBase implements UserDetails {
 
     /**
      * 
      */
-    private static final long serialVersionUID = -2343963120328915547L;
+    private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "P_ID")
@@ -52,10 +55,12 @@ public abstract class Person implements Serializable, UserDetails {
 
     @Column(name = "FIRSTNAME")
     @NotEmpty
+    @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]*$", message = "darf nur aus Buchstaben bestehen")
     private String firstname;
 
     @Column(name = "LASTNAME")
     @NotEmpty
+    @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]*$", message = "darf nur aus Buchstaben bestehen")
     private String lastname;
 
     @Column(name = "EMAIL")
@@ -88,7 +93,10 @@ public abstract class Person implements Serializable, UserDetails {
     private Address address;
 
     @OneToMany(mappedBy = "owner")
-    private List<Invoice> invoices;
+    private List<Invoice> invoices = new ArrayList<Invoice>();
+
+    public Person() {
+    }
 
     public Integer getPid() {
         return pid;
@@ -175,7 +183,6 @@ public abstract class Person implements Serializable, UserDetails {
 
     @Override
     public String getUsername() {
-        // TODO change to mail or something
         return email;
     }
 
@@ -230,6 +237,11 @@ public abstract class Person implements Serializable, UserDetails {
         }
 
         return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
     }
 
 }

@@ -11,10 +11,10 @@
  table th, table td { overflow: hidden; }
 </style>
 
-<dmtags:base title="Aufführungen" activesection="performances">
+<dmtags:base title="nav.performances" activesection="performances">
 	
 
-	<dmtags:widget title="Plan erstellen" icon="icon-camera">
+	<dmtags:widget title="widget.createPlan" icon="icon-camera">
 		<form:form method="post" action="performance/build"
 			commandName="performance" class="form-horizontal">
 			<div>
@@ -32,7 +32,7 @@
 	</dmtags:widget>
 	
 	<c:if test="${!empty performanceList1}">
-	<dmtags:widget title="Aufführungsplan" style="table" icon="icon-list">
+	<dmtags:widget title="widget.plan" style="table" icon="icon-list">
 			<table class="table table-striped table-bordered">
 				<thead>
 					<tr>

@@ -4,10 +4,10 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 
-<dmtags:base title="Listen" activesection="statistics">
+<dmtags:base title="nav.lists" activesection="statistics">
 
 	<c:if test="${!empty participantsByNumberOfCourses}">
-		<dmtags:widget title="Liste" style="table" icon="icon-list">
+		<dmtags:widget title="widget.list" style="table" icon="icon-list">
 			<table class="table table-striped table-bordered">
 				<thead>
 					<tr>
@@ -20,7 +20,7 @@
 					<c:forEach items="${participantsByNumberOfCourses}"
 						var="participant" varStatus="loop">
 						<tr>
-							<td>${participant.courses.size()}</td>
+							<td>${participant.courseParticipants.size()}</td>
 							<td>${participant.lastname}</td>
 							<td>${participant.firstname}</td>
 						</tr>
@@ -31,7 +31,7 @@
 	</c:if>
 
 	<c:if test="${!empty participantsByNumberOfSiblings}">
-		<dmtags:widget title="Teilnehmer" style="table" icon="icon-list">
+		<dmtags:widget title="widget.participants" style="table" icon="icon-list">
 			<table class="table table-striped table-bordered">
 				<thead>
 					<tr>
@@ -56,9 +56,9 @@
 								</c:forEach>)
 								</c:if>
 							</td>
-							<td><c:forEach items="${participant.courses}" var="course"
+							<td><c:forEach items="${participant.courseParticipants}" var="courseParticipant"
 									varStatus="loop">
-                                ${course.name}
+                                ${courseParticipant.key.course.name}
                                 ${!loop.last ? ', ' : ''}
                                 </c:forEach></td>
 						</tr>
@@ -69,7 +69,7 @@
 	</c:if>
 
 	<c:if test="${!empty courses}">
-		<dmtags:widget title="Kursinformation" style="table" icon="icon-list">
+		<dmtags:widget title="widget.courseInformation" style="table" icon="icon-list">
 			<table class="table table-striped table-bordered">
 				<thead>
 					<tr>
@@ -87,7 +87,7 @@
 							<td>${course.name}</td>
 							<td>${course.ageGroup}</td>
 							<td>${course.level}</td>
-							<td>${course.participants.size()}</td>
+							<td>${course.courseParticipants.size()}</td>
 							<td>${course.estimatedSpectators}</td>
 							<td>${course.amountPerformances}</td>
 						</tr>

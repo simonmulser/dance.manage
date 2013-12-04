@@ -9,17 +9,36 @@ http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
     <http pattern="/login" security="none" />
-    <http pattern="/css/**" security="none"/>
-    <http pattern="/font/**" security="none"/>
-    <http pattern="/img/**" security="none"/>
-    <http pattern="/js/**" security="none"/>
+    <http pattern="/css/**" security="none" />
+    <http pattern="/font/**" security="none" />
+    <http pattern="/img/**" security="none" />
+    <http pattern="/js/**" security="none" />
+
     <http>
-        <intercept-url pattern='/**' access='ROLE_USER' />
-        <intercept-url pattern='/admin/**' access='ROLE_USER' />
-        <form-login login-page='/login' default-target-url='/admin'
-            always-use-default-target='true' authentication-failure-url="/login" />
+        <intercept-url pattern='/admin/**' access='ROLE_ADMIN' />
+        <intercept-url pattern='/participant/**' access='ROLE_PARTICIPANT' />
+        <intercept-url pattern='/teacher/**' access='ROLE_TEACHER'/>
+        <intercept-url pattern='/parent/**' access='ROLE_PARENT' />
+        <form-login login-page='/login' default-target-url='/default'
+            always-use-default-target='true' authentication-failure-url="/login?auth=fail" />
         <logout invalidate-session="true" logout-success-url="/login" />
     </http>
+
+    <beans:bean id="roleVoter"
+        class="org.springframework.security.access.vote.RoleHierarchyVoter">
+        <beans:constructor-arg ref="roleHierarchy" />
+    </beans:bean>
+    <beans:bean id="roleHierarchy"
+        class="org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl">
+        <beans:property name="hierarchy">
+            <beans:value>
+                ROLE_SUPERUSER > ROLE_PARTICIPANT
+                ROLE_SUPERUSER > ROLE_TEACHER
+                ROLE_SUPERUSER > ROLE_PARENT
+                ROLE_SUPERUSER > ROLE_ADMIN
+            </beans:value>
+        </beans:property>
+    </beans:bean>
 
     <authentication-manager alias="authenticationManager">
         <authentication-provider ref="daoAuthenticationProvider" />
@@ -27,11 +46,28 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
     <beans:bean id="daoAuthenticationProvider"
         class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
-        <beans:property name="userDetailsService" ref="participantManagerImpl" />
+        <beans:property name="userDetailsService" ref="personManagerImpl" />
         <beans:property name="passwordEncoder" ref="passwordEncoder" />
     </beans:bean>
 
     <beans:bean id="passwordEncoder"
         class="org.springframework.security.crypto.password.StandardPasswordEncoder" />
+
+    <beans:bean id="exceptionTranslationFilter"
+        class="org.springframework.security.web.access.ExceptionTranslationFilter">
+        <beans:property name="authenticationEntryPoint"
+            ref="authenticationEntryPoint" />
+        <beans:property name="accessDeniedHandler" ref="accessDeniedHandler" />
+    </beans:bean>
+
+    <beans:bean id="authenticationEntryPoint"
+        class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+        <beans:property name="loginFormUrl" value="/login" />
+    </beans:bean>
+
+    <beans:bean id="accessDeniedHandler"
+        class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
+        <beans:property name="errorPage" value="/accessDenied" />
+    </beans:bean>
 
 </beans:beans>

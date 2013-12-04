@@ -1,6 +1,6 @@
 package at.danceandfun.entity;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -19,12 +20,12 @@ import org.springframework.format.annotation.NumberFormat.Style;
 
 @Entity
 @Table(name = "ADDRESS")
-public class Address implements Serializable {
+public class Address extends EntityBase {
 
     /**
      * 
      */
-    private static final long serialVersionUID = 6848318736740069349L;
+    private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "A_ID")
@@ -34,43 +35,44 @@ public class Address implements Serializable {
     @Column(name = "STREET")
     @NotEmpty
     @NumberFormat(style = Style.NUMBER)
+    @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]*$", message = "darf nur aus Buchstaben bestehen")
     private String street;
 
     @Column(name = "NUMBER")
     @NotNull
     @Min(1)
-    @NumberFormat(style = Style.NUMBER)
     private Integer number;
 
     @Column(name = "STAIR")
-    @NumberFormat(style = Style.NUMBER)
     private Integer stair;
 
     @Column(name = "DOOR")
-    @NumberFormat(style = Style.NUMBER)
     private Integer door;
 
     @Column(name = "ZIP")
     @NotNull
     @Min(1)
-    @NumberFormat(style = Style.NUMBER)
     private Integer zip;
 
     @Column(name = "CITY")
     @NotEmpty
+    @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]*$", message = "darf nur aus Buchstaben bestehen")
     private String city;
 
     @Column(name = "ENABLED")
     private boolean enabled;
 
     @OneToMany(mappedBy = "address")
-    private List<Performance> performances;
+    private List<Performance> performances = new ArrayList<Performance>();
 
     @OneToMany(mappedBy = "address")
-    private List<Person> persons;
+    private List<Person> persons = new ArrayList<Person>();
 
     @OneToMany(mappedBy = "address")
-    private List<Course> courses;
+    private List<Course> courses = new ArrayList<Course>();
+
+    public Address() {
+    }
 
     public Integer getAid() {
         return aid;
@@ -136,6 +138,7 @@ public class Address implements Serializable {
         this.enabled = enabled;
     }
 
+    @JsonIgnore
     public List<Performance> getPerformances() {
         return performances;
     }
@@ -153,6 +156,7 @@ public class Address implements Serializable {
         this.persons = persons;
     }
 
+    @JsonIgnore
     public List<Course> getCourses() {
         return courses;
     }

@@ -13,11 +13,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="courseDao" class="at.danceandfun.dao.DaoBaseImpl">
         <property name="classz" value="at.danceandfun.entity.Course" />
     </bean>
+    <bean id="courseParticipantDao" class="at.danceandfun.dao.DaoBaseImpl">
+        <property name="classz" value="at.danceandfun.entity.CourseParticipant" />
+    </bean>
     <bean id="invoiceDao" class="at.danceandfun.dao.DaoBaseImpl">
         <property name="classz" value="at.danceandfun.entity.Invoice" />
     </bean>
-    <bean id="managementDao" class="at.danceandfun.dao.DaoBaseImpl">
-        <property name="classz" value="at.danceandfun.entity.Management" />
+    <bean id="adminDao" class="at.danceandfun.dao.DaoBaseImpl">
+        <property name="classz" value="at.danceandfun.entity.Admin" />
+    </bean>
+    <bean id="superUserDao" class="at.danceandfun.dao.DaoBaseImpl">
+        <property name="classz" value="at.danceandfun.entity.SuperUser" />
     </bean>
     <bean id="parentDao" class="at.danceandfun.dao.DaoBaseImpl">
         <property name="classz" value="at.danceandfun.entity.Parent" />

@@ -23,12 +23,12 @@
 										code="nav.help" /></a></li>
 						</ul></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"><i class="icon-user"></i> Erika Muster
+						data-toggle="dropdown"><i class="icon-user"></i> Management
 							<b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a href="javascript:;"><spring:message
 										code="nav.profile" /></a></li>
-							<li><a href="<c:url value='j_spring_security_logout' />"><spring:message
+							<li><a href="<c:url value='/j_spring_security_logout' />"><spring:message
 										code="nav.logout" /></a></li>
 						</ul></li>
 				</ul>
@@ -52,18 +52,18 @@
 			<ul class="mainnav">
 				<li
 					<c:if test="${activesection eq 'dashboard'}">class="active"</c:if>><a
-					href="dashboard"><i class="icon-dashboard"></i><span><spring:message
+					href="/dancemanage/admin"><i class="icon-dashboard"></i><span><spring:message
 								code="nav.dashboard" /></span> </a></li>
 				<li <c:if test="${activesection eq 'courses'}">class="active"</c:if>><a
-					href="course"><i class="icon-calendar"></i><span><spring:message
+					href="/dancemanage/admin/course"><i class="icon-calendar"></i><span><spring:message
 								code="nav.courses" /></span> </a></li>
 				<li
 					<c:if test="${activesection eq 'invoices'}">class="active"</c:if>><a
-					href="invoice"><i class="icon-envelope"></i><span><spring:message
+					href="/dancemanage/admin/invoice"><i class="icon-envelope"></i><span><spring:message
 								code="nav.invoices" /></span> </a></li>
 				<li
 					<c:if test="${activesection eq 'statistics'}">class="active"</c:if>><a
-					href="lists"><i class="icon-bar-chart"></i><span><spring:message
+					href="/dancemanage/admin/lists"><i class="icon-bar-chart"></i><span><spring:message
 								code="nav.statistics" /></span> </a></li>
 				<li
 					class="<c:if test="${activesection eq 'participants' or activesection eq 'teachers'}">active</c:if> dropdown"><a
@@ -72,12 +72,12 @@
 								code="nav.persons" /></span> <b class="caret"></b>
 				</a>
 					<ul class="dropdown-menu">
-						<li><a href="participant"><spring:message
+						<li><a href="/dancemanage/admin/participant"><spring:message
 									code="nav.participants" /></a></li>
-						<li><a href="teacher"><spring:message code="nav.teachers" /></a></li>
+						<li><a href="/dancemanage/admin/teacher"><spring:message code="nav.teachers" /></a></li>
 					</ul></li>
 				<li <c:if test="${activesection eq 'performances'}">class="active"</c:if>><a
-					href="performance"><i class="icon-camera"></i><span><spring:message
+					href="/dancemanage/performance"><i class="icon-camera"></i><span><spring:message
 								code="nav.performances" /></span> </a></li>
 			</ul>
 		</div>

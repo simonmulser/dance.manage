@@ -1,27 +1,26 @@
 package at.danceandfun.entity;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 @Entity
 @Table(name = "STYLE")
-public class Style implements Serializable {
+public class Style extends EntityBase {
 
     /**
      * 
      */
-    private static final long serialVersionUID = -3370722147282080437L;
+    private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "S_ID")
@@ -31,12 +30,17 @@ public class Style implements Serializable {
     @Column(name = "NAME")
     private String name;
 
-    @OneToMany(mappedBy = "style")
-    private List<Course> courses;
+    @Column(name = "ENABLED")
+    private boolean enabled;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(name = "STYLE_TEACHER", joinColumns = { @JoinColumn(name = "S_ID") }, inverseJoinColumns = { @JoinColumn(name = "P_ID") })
-    private List<Teacher> teachers;
+    @OneToMany(mappedBy = "style")
+    private List<Course> courses = new ArrayList<Course>();
+
+    @ManyToMany(mappedBy = "styles")
+    private List<Teacher> teachers = new ArrayList<Teacher>();
+
+    public Style() {
+    }
 
     public Integer getSid() {
         return sid;
@@ -54,6 +58,7 @@ public class Style implements Serializable {
         this.name = name;
     }
 
+    @JsonIgnore
     public List<Course> getCourses() {
         return courses;
     }
@@ -62,12 +67,43 @@ public class Style implements Serializable {
         this.courses = courses;
     }
 
+    @JsonIgnore
     public List<Teacher> getTeachers() {
         return teachers;
     }
 
     public void setTeachers(List<Teacher> teachers) {
         this.teachers = teachers;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((sid == null) ? 0 : sid.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Style other = (Style) obj;
+        if (sid == null) {
+            if (other.sid != null) {
+                return false;
+            }
+        } else if (!sid.equals(other.sid)) {
+            return false;
+        }
+        return true;
     }
 
 }

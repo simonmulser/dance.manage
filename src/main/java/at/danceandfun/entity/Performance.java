@@ -1,6 +1,6 @@
 package at.danceandfun.entity;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -19,7 +19,7 @@ import org.joda.time.DateTime;
 
 @Entity
 @Table(name = "PERFORMANCE")
-public class Performance implements Serializable {
+public class Performance extends EntityBase {
 
     /**
      * 
@@ -44,9 +44,12 @@ public class Performance implements Serializable {
 
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(name = "COURSE_PERFORMANCE", joinColumns = { @JoinColumn(name = "PER_ID") }, inverseJoinColumns = { @JoinColumn(name = "C_ID") })
-    private List<Course> courses;
+    private List<Course> courses = new ArrayList<Course>();
 
     // TODO NiceToHave mapping with person/participant for ticket selling
+
+    public Performance() {
+    }
 
     public Integer getPerid() {
         return perid;

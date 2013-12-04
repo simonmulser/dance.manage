@@ -1,6 +1,5 @@
 package at.danceandfun.entity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -11,23 +10,36 @@ import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
 
-import at.danceandfun.role.RoleUser;
+import at.danceandfun.role.RoleParent;
 
 @Entity
 @Table(name = "PARENT")
 @PrimaryKeyJoinColumn(name = "P_ID")
-public class Parent extends Person implements Serializable {
+public class Parent extends Person {
 
     /**
      * 
      */
-    private static final long serialVersionUID = -3719714853566965163L;
+    private static final long serialVersionUID = 1L;
+
+    public Parent() {
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
-        auth.add(new RoleUser());
+        auth.add(new RoleParent());
         return auth;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 
 }

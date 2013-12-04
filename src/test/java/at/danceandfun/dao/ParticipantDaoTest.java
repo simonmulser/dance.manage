@@ -4,7 +4,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
+import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +18,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import at.danceandfun.entity.Course;
+import at.danceandfun.entity.CourseParticipant;
+import at.danceandfun.entity.CourseParticipantID;
 import at.danceandfun.entity.Participant;
+import at.danceandfun.enumeration.Duration;
 
 @Transactional
 @ContextConfiguration("classpath:test/test-context.xml")
@@ -21,16 +31,25 @@ public class ParticipantDaoTest {
 
     @Autowired
     private DaoBaseImpl<Participant> participantDao;
+    @Autowired
+    private DaoBaseImpl<Course> courseDao;
 
-    /*
-     * Testing generic methods. only one time necessary. don't repeat in other
-     * entities.
-     */
+    public static Participant getValidParticipant() {
+        Participant participant = new Participant();
+        participant.setAddress(AddressDaoTest.getValidAddress());
+        participant.setBirthday(new LocalDate().minusYears(10));
+        participant.setFirstname("first");
+        participant.setLastname("last");
+        participant.setTelephone("123456789");
+        participant.setEmail("mail@mail.com");
+        participant.setEmergencyNumber("emergency");
+        participant.setContactPerson("contact");
+        return participant;
+    }
 
     @Test
     public void testSave() {
-        Participant participant = new Participant();
-        participantDao.save(participant);
+        participantDao.save(getValidParticipant());
     }
 
     @Test
@@ -77,5 +96,33 @@ public class ParticipantDaoTest {
                 .forClass(Participant.class);
         assertThat(participantDao.getListByCriteria(criteria, 0, 1).isEmpty(),
                 is(false));
+    }
+
+    @Test
+    public void testListByCriterions() {
+        List<Criterion> criterions = new ArrayList<Criterion>();
+
+        criterions.add(Restrictions.eq("enabled", true));
+        assertThat(participantDao.getListByCriterions(criterions).isEmpty(),
+                is(false));
+    }
+
+    @Test
+    public void testCourseParticipantRelation() {
+        Course course = CourseDaoTest.getValidCourse();
+        courseDao.save(course);
+
+        Participant participant = getValidParticipant();
+        CourseParticipant courseParticipant = new CourseParticipant();
+        courseParticipant.setDuration(Duration.YEAR);
+        CourseParticipantID key = new CourseParticipantID();
+        key.setParticipant(participant);
+        key.setCourse(course);
+        courseParticipant.setKey(key);
+        List<CourseParticipant> courseParticipants = new ArrayList<CourseParticipant>();
+        courseParticipants.add(courseParticipant);
+        participant.setCourseParticipants(courseParticipants);
+
+        participantDao.save(participant);
     }
 }

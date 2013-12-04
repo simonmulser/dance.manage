@@ -1,6 +1,5 @@
 package at.danceandfun.entity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -10,36 +9,43 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.Pattern;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 
-import at.danceandfun.role.RoleAdmin;
-import at.danceandfun.role.RoleUser;
+import at.danceandfun.role.RoleParticipant;
 
 @Entity
 @Table(name = "PARTICIPANT")
 @PrimaryKeyJoinColumn(name = "P_ID")
-public class Participant extends Person implements Serializable {
+public class Participant extends Person {
 
     /**
      * 
      */
-    private static final long serialVersionUID = 8277820405941269587L;
+    private static final long serialVersionUID = 1L;
 
     @Column(name = "EMERGENCYNUMBER")
+    @NotEmpty
     private String emergencyNumber;
 
     @Column(name = "CONTACTPERSON")
+    @NotEmpty
+    @Pattern(regexp = "^[A-Za-zäöüÄÖÜ]*$", message = "darf nur aus Buchstaben bestehen")
     private String contactPerson;
 
-    @ManyToMany(mappedBy = "participants")
-    private List<Course> courses;
+    @OneToMany(mappedBy = "key.participant", fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+    private List<CourseParticipant> courseParticipants = new ArrayList<CourseParticipant>();
 
     // TODO NiceToHave mapping with performance for ticket selling
 
@@ -50,7 +56,16 @@ public class Participant extends Person implements Serializable {
     @ManyToMany(mappedBy = "siblings")
     private Set<Participant> siblingsReverse = new HashSet<Participant>();
 
+    @Transient
+    @Column(name = "TEMP_SIBLINGS")
     private String tempSiblings;
+
+    @Transient
+    @Column(name = "TEMP_COURSES")
+    private String tempCourses;
+
+    public Participant() {
+    }
 
     public String getEmergencyNumber() {
         return emergencyNumber;
@@ -69,12 +84,21 @@ public class Participant extends Person implements Serializable {
     }
 
     @JsonIgnore
-    public List<Course> getCourses() {
-        return courses;
+    public List<CourseParticipant> getCourseParticipants() {
+        return courseParticipants;
     }
 
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
+    public void setCourseParticipants(List<CourseParticipant> courseParticipants) {
+        this.courseParticipants = courseParticipants;
+    }
+
+    public CourseParticipant getCourseById(Course course) {
+        for (CourseParticipant cp : courseParticipants) {
+            if (cp.getKey().getCourse().getCid() == course.getCid()) {
+                return cp;
+            }
+        }
+        return null;
     }
 
     @JsonIgnore
@@ -95,6 +119,15 @@ public class Participant extends Person implements Serializable {
         this.tempSiblings = tempSiblings;
     }
 
+    public String getTempCourses() {
+        return this.tempCourses;
+    }
+
+    public void setTempCourses(String tempCourses) {
+        this.tempCourses = tempCourses;
+    }
+
+    @JsonIgnore
     public Set<Participant> getReverseSiblings() {
         return this.siblingsReverse;
     }
@@ -102,8 +135,7 @@ public class Participant extends Person implements Serializable {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
-        auth.add(new RoleUser());
-        auth.add(new RoleAdmin());
+        auth.add(new RoleParticipant());
         return auth;
     }
 
@@ -114,7 +146,6 @@ public class Participant extends Person implements Serializable {
 
     @Override
     public int hashCode() {
-        // TODO Auto-generated method stub
         return super.hashCode();
     }
 }

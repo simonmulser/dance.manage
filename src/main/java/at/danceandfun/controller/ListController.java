@@ -13,7 +13,7 @@ import at.danceandfun.service.ParticipantManager;
 
 @Controller
 @Transactional
-@RequestMapping(value = "/lists")
+@RequestMapping(value = "admin/lists")
 public class ListController {
 
     private static Logger logger = Logger.getLogger(ListController.class);
@@ -32,6 +32,6 @@ public class ListController {
         map.addAttribute("participantsByNumberOfSiblings",
                 participantManager.getParticipantsByNumberOfSiblings());
         map.addAttribute("courses", courseManager.getEnabledList());
-        return "listView";
+        return "admin/listView";
     }
 }

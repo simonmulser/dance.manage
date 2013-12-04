@@ -3,6 +3,7 @@ package at.danceandfun.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 
 public interface DaoBase<T> {
@@ -21,5 +22,9 @@ public interface DaoBase<T> {
             int offset, int size);
 
     public List<T> getQueryResults(String query);
+
+    public List<T> getListByCriterions(List<Criterion> criterions);
+
+    public Class<T> getInjectedClass();
 
 }

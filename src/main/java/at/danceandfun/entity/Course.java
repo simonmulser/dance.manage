@@ -1,20 +1,22 @@
 package at.danceandfun.entity;
 
-import java.io.Serializable;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import at.danceandfun.enumeration.AgeGroup;
 import at.danceandfun.enumeration.CourseLevel;
@@ -23,12 +25,12 @@ import at.danceandfun.enumeration.WeekDay;
 
 @Entity
 @Table(name = "COURSE")
-public class Course implements Serializable {
+public class Course extends EntityBase {
 
     /**
      * 
      */
-    private static final long serialVersionUID = 6088131134219471148L;
+    private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "C_ID")
@@ -41,8 +43,11 @@ public class Course implements Serializable {
     @Column(name = "DURATION")
     private Integer duration;
 
-    @Column(name = "PRICE")
-    private Double price;
+    @Column(name = "SEMESTERPRICE")
+    private Double semesterPrice;
+
+    @Column(name = "YEARPRICE")
+    private Double yearPrice;
 
     @Column(name = "WEEKDAY")
     private WeekDay weekday;
@@ -65,30 +70,35 @@ public class Course implements Serializable {
     @Column(name = "LEVEL")
     private CourseLevel level;
 
-    @OneToMany(mappedBy = "course")
-    private List<Rating> ratings;
+    @Column(name = "YEAR")
+    private Integer year;
 
-    @ManyToOne
+    @OneToMany(mappedBy = "course")
+    private List<Rating> ratings = new ArrayList<Rating>();
+
+    @ManyToOne(cascade = { CascadeType.ALL })
     @JoinColumn(name = "A_ID")
     private Address address;
 
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.ALL })
     @JoinColumn(name = "P_ID")
     private Teacher teacher;
 
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.ALL })
     @JoinColumn(name = "S_ID")
     private Style style;
 
     @ManyToMany(mappedBy = "courses")
-    private List<Performance> performances;
+    private List<Performance> performances = new ArrayList<Performance>();
 
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(name = "COURSE_PARTICIPANT", joinColumns = { @JoinColumn(name = "C_ID") }, inverseJoinColumns = { @JoinColumn(name = "P_ID") })
-    private List<Participant> participants;
+    @OneToMany(mappedBy = "key.course", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    private List<Position> positions = new ArrayList<Position>();
 
-    @OneToMany(mappedBy = "key.course", cascade = CascadeType.ALL)
-    private List<Position> positions;
+    @OneToMany(mappedBy = "key.course")
+    private List<CourseParticipant> courseParticipants;
+
+    public Course() {
+    }
 
     public Integer getCid() {
         return cid;
@@ -106,12 +116,28 @@ public class Course implements Serializable {
         this.duration = duration;
     }
 
-    public Double getPrice() {
-        return price;
+    public Double getSemesterPrice() {
+        return semesterPrice;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setSemesterPrice(Double semesterPrice) {
+        this.semesterPrice = semesterPrice;
+    }
+
+    public Double getYearPrice() {
+        return yearPrice;
+    }
+
+    public void setYearPrice(Double yearPrice) {
+        this.yearPrice = yearPrice;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
     }
 
     public WeekDay getWeekday() {
@@ -202,6 +228,7 @@ public class Course implements Serializable {
         this.style = style;
     }
 
+    @JsonIgnore
     public List<Performance> getPerformances() {
         return performances;
     }
@@ -210,14 +237,16 @@ public class Course implements Serializable {
         this.performances = performances;
     }
 
-    public List<Participant> getParticipants() {
-        return participants;
+    @JsonIgnore
+    public List<CourseParticipant> getCourseParticipants() {
+        return courseParticipants;
     }
 
-    public void setParticipants(List<Participant> participants) {
-        this.participants = participants;
+    public void setCourseParticipants(List<CourseParticipant> courseParticipants) {
+        this.courseParticipants = courseParticipants;
     }
 
+    @JsonIgnore
     public List<Position> getPositions() {
         return positions;
     }
@@ -237,4 +266,35 @@ public class Course implements Serializable {
     public String toString() {
         return "ID: " + cid + "NAME: " + name;
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((cid == null) ? 0 : cid.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Course other = (Course) obj;
+        if (cid == null) {
+            if (other.cid != null) {
+                return false;
+            }
+        } else if (!cid.equals(other.cid)) {
+            return false;
+        }
+        return true;
+    }
+
 }

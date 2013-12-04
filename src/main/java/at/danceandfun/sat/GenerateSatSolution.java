@@ -51,9 +51,9 @@ public class GenerateSatSolution {
         numberOfPlays = 3;
         numberOfSlots = originalOrderOfCourses.size() / numberOfPlays;
 
-        addBasicRestrictions(originalOrderOfCourses, numberOfCourses,
-                numberOfSlots, numberOfPlays);
         addNotTwoOfAKind(originalOrderOfCourses, numberOfCourses,
+                numberOfSlots, numberOfPlays);
+        addBasicRestrictions(originalOrderOfCourses, numberOfCourses,
                 numberOfSlots, numberOfPlays);
 
         solution = executeSingleSAT();
@@ -179,10 +179,6 @@ public class GenerateSatSolution {
             }
 
         }
-
-        System.out.println("----------------------");
-        System.out.println(listBallets.toString());
-        System.out.println("----------------------");
 
         // Der nächste Slot darf nicht den selben Stil beinhalten (nur fuer
         // Ballett relevant)
