@@ -5,7 +5,7 @@
 <%@taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 
-<dmtags:base title="nav.editProfile" activesection="participants">
+<dmtags:base title="nav.editProfile" activesection="dashboard" >
 
 	<dmtags:widget title="widget.accountInfo" icon="icon-user">
 		<form:form method="post" action="edit"

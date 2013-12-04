@@ -3,7 +3,9 @@
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 <%@attribute name="title" required="true" type="java.lang.String"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@attribute name="activesection" required="true" type="java.lang.String"%>
+<%@attribute name="activesection" required="true"
+	type="java.lang.String"%>
+
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <!DOCTYPE html>
@@ -15,7 +17,8 @@
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link href="<c:url value="/css/bootstrap.min.css"/>" rel="stylesheet">
-<link href="<c:url value="/css/bootstrap-responsive.min.css"/>" rel="stylesheet">
+<link href="<c:url value="/css/bootstrap-responsive.min.css"/>"
+	rel="stylesheet">
 <link
 	href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600"
 	rel="stylesheet">
@@ -27,8 +30,8 @@
 <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    
-    
+
+
 </head>
 <body>
 	<dmtags:navigation activesection="${activesection}"/>
@@ -78,7 +81,7 @@
 	<script src="<c:url value="/js/chart.min.js" />" type="text/javascript"></script>
 	<script src="<c:url value="/js/bootstrap.js" />"></script>
 	<script src="<c:url value="/js/base.js" />"></script>
-	
+
 	<script>
 		var doughnutData = [ {
 			value : 30,
