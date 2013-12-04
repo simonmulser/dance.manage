@@ -3,6 +3,9 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@attribute name="activesection" required="true"
 	type="java.lang.String"%>
+<%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
+
+<dmtags:upperNavigation />
 
 <div class="navbar navbar-fixed-top">
 	<div class="navbar-inner">
@@ -23,8 +26,8 @@
 										code="nav.help" /></a></li>
 						</ul></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"><i class="icon-user"></i> ${user.firstname} <b
-							class="caret"></b></a>
+						data-toggle="dropdown"><i class="icon-user"></i>
+							${user.firstname} <b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a href="<c:url value="${editProfileLink}" />"><spring:message
 										code="nav.editProfile" /></a></li>

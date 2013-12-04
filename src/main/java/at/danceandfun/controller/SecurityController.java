@@ -17,9 +17,9 @@ import at.danceandfun.entity.SuperUser;
 import at.danceandfun.entity.Teacher;
 
 @Controller
-public class DefaultController {
+public class SecurityController {
 
-    private static Logger logger = Logger.getLogger(DefaultController.class);
+    private static Logger logger = Logger.getLogger(SecurityController.class);
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(ModelMap map) {
@@ -67,12 +67,18 @@ public class DefaultController {
             session.setAttribute("editProfileLink", "todo");
             return "redirect:/admin";
         }
+
         if (session != null) {
             session.invalidate();
         }
         SecurityContextHolder.clearContext();
         logger.error("role does not exists. redirect to login!");
-        // TODO: log user out! he is in a role which not exists
         return "redirect:/login";
+    }
+
+    @RequestMapping(value = "/accessDenied", method = RequestMethod.GET)
+    public String accessDenied() {
+        logger.info("accessDenied");
+        return "accessDenied";
     }
 }
