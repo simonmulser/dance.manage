@@ -23,11 +23,11 @@
 										code="nav.help" /></a></li>
 						</ul></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"><i class="icon-user"></i> Management
-							<b class="caret"></b></a>
+						data-toggle="dropdown"><i class="icon-user"></i> ${user.firstname} <b
+							class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="javascript:;"><spring:message
-										code="nav.profile" /></a></li>
+							<li><a href="<c:url value="${editProfileLink}" />"><spring:message
+										code="nav.editProfile" /></a></li>
 							<li><a href="<c:url value='/j_spring_security_logout' />"><spring:message
 										code="nav.logout" /></a></li>
 						</ul></li>
@@ -74,9 +74,11 @@
 					<ul class="dropdown-menu">
 						<li><a href="/dancemanage/admin/participant"><spring:message
 									code="nav.participants" /></a></li>
-						<li><a href="/dancemanage/admin/teacher"><spring:message code="nav.teachers" /></a></li>
+						<li><a href="/dancemanage/admin/teacher"><spring:message
+									code="nav.teachers" /></a></li>
 					</ul></li>
-				<li <c:if test="${activesection eq 'performances'}">class="active"</c:if>><a
+				<li
+					<c:if test="${activesection eq 'performances'}">class="active"</c:if>><a
 					href="/dancemanage/performance"><i class="icon-camera"></i><span><spring:message
 								code="nav.performances" /></span> </a></li>
 			</ul>
