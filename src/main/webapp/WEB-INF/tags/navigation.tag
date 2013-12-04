@@ -77,7 +77,7 @@
 						<li><a href="/dancemanage/admin/teacher"><spring:message code="nav.teachers" /></a></li>
 					</ul></li>
 				<li <c:if test="${activesection eq 'performances'}">class="active"</c:if>><a
-					href="/dancemanage/performance"><i class="icon-camera"></i><span><spring:message
+					href="/dancemanage/admin/performance"><i class="icon-camera"></i><span><spring:message
 								code="nav.performances" /></span> </a></li>
 			</ul>
 		</div>
