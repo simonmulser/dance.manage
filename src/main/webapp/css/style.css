@@ -1330,9 +1330,6 @@ color: #333;
 [displayTag]
 */
 
-.displaytag th.sorted {    
-        background-color: orange;
-}
 
 .displaytag th a, .displaytag th a:visited {
         color: black;
@@ -1351,15 +1348,15 @@ color: #333;
 }
 
 .displaytag th.sortable a {
-        background-image: url(arrow_off.png);
+        background-image: url(../img/arrow_off.png);
 }
 
 .displaytag th.order1 a {
-        background-image: url(arrow_down.png);
+        background-image: url(../img/arrow_down.png);
 }
 
 .displaytag th.order2 a {
-        background-image: url(arrow_up.png);
+        background-image: url(../img/arrow_up.png);
 }
 
 
@@ -1383,23 +1380,8 @@ color: #333;
         background-repeat: no-repeat;
 }
 
-.displaytag span.csv {
-        background-image: url(ico_file_csv.png);
-        background-repeat: no-repeat;
-}
-
-.displaytag span.xml {
-        background-image: url(ico_file_xml.png);
-        background-repeat: no-repeat;
-}
-
 .displaytag span.pdf {
         background-image: url(ico_file_pdf.png);
-        background-repeat: no-repeat;
-}
-
-.displaytag span.rtf {
-        background-image: url(ico_file_rtf.png);
         background-repeat: no-repeat;
 }
 
