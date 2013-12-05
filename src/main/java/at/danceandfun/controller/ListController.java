@@ -33,5 +33,7 @@ public class ListController {
                 participantManager.getParticipantsByNumberOfSiblings());
         map.addAttribute("courses", courseManager.getEnabledList());
         return "admin/listView";
+
     }
+
 }

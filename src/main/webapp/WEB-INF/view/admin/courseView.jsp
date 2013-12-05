@@ -194,18 +194,40 @@
 							<td>${course.style.name}</td>
 							<td><a href="course/edit/${course.cid}"><spring:message
 										code="label.edit" /></a> &nbsp; <a
-								href="course/delete/${course.cid}"><spring:message
+								href="course/delete/${course.cid}" id="openDialog"><spring:message
 										code="label.delete" /></a></td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
+			<div id="dialog-confirm" title="<spring:message code="delete.title" />">
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><spring:message code="delete.course" /></p>
+</div>
 		</c:if>
 	</dmtags:widget>
 
 </dmtags:base>
 <script type="text/javascript">
 	$('i').tooltip();
+	$( "#openDialog" ).click(function() {
+	      $( "#dialog-confirm" ).dialog( "open" );
+	      return false;
+	    });
+	$( "#dialog-confirm" ).dialog({
+		  autoOpen:false,
+	      resizable: false,
+	      modal: true,
+	      buttons: {
+	        "OK": function() {
+	        document.location = $("#openDialog").attr("href");
+	        
+	          $( this ).dialog( "close" );
+	        },
+	        Cancel: function() {
+	          $( this ).dialog( "close" );
+	        }
+	      }
+	    });
 	$(document)
 			.ready(
 					function() {

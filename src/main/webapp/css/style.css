@@ -1326,3 +1326,102 @@ color: #333;
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff9f00', endColorstr='#ff8106',GradientType=0 ) !important; /* IE6-9 */
 }
 
+/*-------------------------------------------------------------------
+[displayTag]
+*/
+
+.displaytag th.sorted {    
+        background-color: orange;
+}
+
+.displaytag th a, .displaytag th a:visited {
+        color: black;
+}
+
+.displaytag th a:hover {
+        text-decoration: underline;
+        color: black;
+}
+
+.displaytag th.sorted a, .displaytag th.sortable a {
+        background-position: right;
+        background-repeat: no-repeat;
+        display: block;
+        width: 100%;
+}
+
+.displaytag th.sortable a {
+        background-image: url(arrow_off.png);
+}
+
+.displaytag th.order1 a {
+        background-image: url(arrow_down.png);
+}
+
+.displaytag th.order2 a {
+        background-image: url(arrow_up.png);
+}
+
+
+.displaytag div.exportlinks {
+        background-color: #eee;
+        border: 1px dotted #999;
+        padding: 2px 4px 2px 4px;
+        margin: 2px 0 10px 0;
+        width: 95%;
+}
+
+.displaytag span.export {
+        padding: 0 4px 1px 20px;
+        display: inline;
+        display: inline-block;
+        cursor: pointer;
+}
+
+.displaytag span.excel {
+        background-image: url(ico_file_excel.png);
+        background-repeat: no-repeat;
+}
+
+.displaytag span.csv {
+        background-image: url(ico_file_csv.png);
+        background-repeat: no-repeat;
+}
+
+.displaytag span.xml {
+        background-image: url(ico_file_xml.png);
+        background-repeat: no-repeat;
+}
+
+.displaytag span.pdf {
+        background-image: url(ico_file_pdf.png);
+        background-repeat: no-repeat;
+}
+
+.displaytag span.rtf {
+        background-image: url(ico_file_rtf.png);
+        background-repeat: no-repeat;
+}
+
+span.pagebanner {
+        background-color: #eee;
+        padding: 2px 4px 2px 4px;
+        width: 35%;
+        margin-top: 10px;
+        display: block;
+        border-bottom: none;
+        margin: 0 auto;
+        text-align:center;
+}
+
+span.pagelinks {
+        background-color: #eee;
+        padding: 2px 4px 2px 4px;
+        width: 35%;
+        display: block;
+        border-top: none;
+        margin-bottom: -5px;
+        margin: 0 auto;
+        text-align:center;
+}
+

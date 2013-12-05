@@ -65,9 +65,13 @@
 					href="/dancemanage/admin/invoice"><i class="icon-envelope"></i><span><spring:message
 								code="nav.invoices" /></span> </a></li>
 				<li
+					<c:if test="${activesection eq 'lists'}">class="active"</c:if>><a
+					href="/dancemanage/admin/lists"><i class="icon-list"></i><span><spring:message
+								code="nav.lists" /></span> </a></li>
+				<li
 					<c:if test="${activesection eq 'statistics'}">class="active"</c:if>><a
-					href="/dancemanage/admin/lists"><i class="icon-bar-chart"></i><span><spring:message
-								code="nav.statistics" /></span> </a></li>
+					href="/dancemanage/admin/statistics"><i class="icon-bar-chart"></i><span><spring:message
+								code="nav.statistics" /></span> </a></li>				
 				<li
 					class="<c:if test="${activesection eq 'participants' or activesection eq 'teachers'}">active</c:if> dropdown"><a
 					href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">

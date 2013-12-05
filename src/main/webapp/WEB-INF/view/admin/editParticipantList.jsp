@@ -142,18 +142,46 @@
 							</c:choose>
 							<td><a href="participant/edit/${emp.pid}"><spring:message
 										code="label.edit" /></a> &nbsp; <a
-								href="participant/delete/${emp.pid}"><spring:message
+								href="participant/delete/${emp.pid}" id="openDialog"><spring:message
 										code="label.delete" /></a></td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
+			<div id="dialog-confirm" title="<spring:message code="delete.title" />">
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><spring:message code="delete.participant" /></p>
+</div>
 		</dmtags:widget>
 	</c:if>
 
 </dmtags:base>
 <script type="text/javascript">
 	$('i').tooltip();
+	$( "#openDialog" ).click(function() {
+	      $( "#dialog-confirm" ).dialog( "open" );
+	      return false;
+	    });
+	$( "#dialog-confirm" ).dialog({
+		  autoOpen:false,
+	      resizable: false,
+	      modal: true,
+	      buttons: {
+	        "OK": function() {
+	        document.location = $("#openDialog").attr("href");
+	        
+	          $( this ).dialog( "close" );
+	        },
+	        Cancel: function() {
+	          $( this ).dialog( "close" );
+	        }
+	      }
+	    });
+	$( "#datepicker" ).datepicker({
+		showOn: "button",
+	    buttonImage: "/dancemanage/css/ui/images/calendar.gif",
+	    buttonImageOnly: true,
+	    dateFormat: "dd.mm.yy"
+	});
 	$(document)
 			.ready(
 					function() {
