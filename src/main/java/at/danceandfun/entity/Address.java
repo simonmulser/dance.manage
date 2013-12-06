@@ -18,7 +18,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
-import at.danceandfun.enumeration.PatternConstants;
+import at.danceandfun.util.PatternConstants;
 
 @Entity
 @Table(name = "ADDRESS")

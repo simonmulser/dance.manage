@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -24,6 +25,7 @@ public class Style extends EntityBase {
 
     @Id
     @Column(name = "S_ID")
+    @NotNull
     @GeneratedValue
     private Integer sid;
 

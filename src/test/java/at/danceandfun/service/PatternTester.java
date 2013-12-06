@@ -5,8 +5,7 @@ import static org.hamcrest.Matchers.is;
 
 import org.junit.Test;
 
-import at.danceandfun.enumeration.CourseDuration;
-import at.danceandfun.enumeration.PatternConstants;
+import at.danceandfun.util.PatternConstants;
 
 public class PatternTester {
 
@@ -132,10 +131,5 @@ public class PatternTester {
                 is(false));
         assertThat("Hall-".matches(PatternConstants.CITY_PATTERN), is(false));
 
-    }
-
-    @Test
-    public void testEnumValue() {
-        System.out.println(CourseDuration.FIFTY);
     }
 }

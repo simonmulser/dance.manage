@@ -22,8 +22,8 @@ import javax.validation.constraints.Pattern;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
-import at.danceandfun.enumeration.PatternConstants;
 import at.danceandfun.role.RoleParticipant;
+import at.danceandfun.util.PatternConstants;
 
 @Entity
 @Table(name = "PARTICIPANT")

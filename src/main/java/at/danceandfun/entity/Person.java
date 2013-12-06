@@ -25,11 +25,10 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.LocalDate;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import at.danceandfun.enumeration.PatternConstants;
+import at.danceandfun.util.PatternConstants;
 
 /**
  * @author simon
@@ -71,7 +70,7 @@ public abstract class Person extends EntityBase implements UserDetails {
 
     @Column(name = "TELEPHONE")
     @NotEmpty
-    @Size(min = 9)
+    @Size(min = 9, message = "{size.person.telephone}")
     private String telephone;
 
     @Column(name = "PASSWORD")
@@ -80,7 +79,6 @@ public abstract class Person extends EntityBase implements UserDetails {
     @Column(name = "BIRTHDAY")
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
     @NotNull
-    @DateTimeFormat(pattern = "dd.MM.yyyy")
     @Past
     private LocalDate birthday;
 

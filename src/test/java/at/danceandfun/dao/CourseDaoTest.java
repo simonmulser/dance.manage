@@ -1,7 +1,6 @@
 package at.danceandfun.dao;
 
-import java.sql.Time;
-
+import org.joda.time.LocalTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,7 @@ public class CourseDaoTest {
         course.setSemesterPrice(80.0);
         course.setYearPrice(140.0);
         course.setYear(2012);
-        course.setTime(new Time(0));
+        course.setTime(new LocalTime());
         return course;
     }
 

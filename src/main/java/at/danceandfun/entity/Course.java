@@ -1,6 +1,5 @@
 package at.danceandfun.entity;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,14 +14,21 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.joda.time.LocalTime;
 
 import at.danceandfun.enumeration.AgeGroup;
 import at.danceandfun.enumeration.CourseDuration;
 import at.danceandfun.enumeration.CourseLevel;
 import at.danceandfun.enumeration.SpectatorAmount;
 import at.danceandfun.enumeration.WeekDay;
+import at.danceandfun.util.PatternConstants;
 
 @Entity
 @Table(name = "COURSE")
@@ -39,28 +45,36 @@ public class Course extends EntityBase {
     private Integer cid;
 
     @Column(name = "NAME")
+    @NotEmpty
+    @Pattern(regexp = PatternConstants.CHARACTER_NUMBER_PATTERN, message = "{pattern.characters}")
     private String name;
 
     @Column(name = "DURATION")
-    private int duration;
+    @NotNull
+    private Integer duration;
 
     @Column(name = "SEMESTERPRICE")
+    @NotNull
     private Double semesterPrice;
 
     @Column(name = "YEARPRICE")
+    @NotNull
     private Double yearPrice;
 
     @Column(name = "WEEKDAY")
-    private WeekDay weekday;
+    @NotNull
+    private Integer weekday;
 
     @Column(name = "TIME")
-    private Time time;
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalTime")
+    @NotNull
+    private LocalTime time;
 
     @Column(name = "ESTIMATED_SPECTATORS")
-    private SpectatorAmount estimatedSpectators;
+    private Integer estimatedSpectators;
 
     @Column(name = "AGEGROUP")
-    private AgeGroup ageGroup;
+    private Integer ageGroup;
 
     @Column(name = "AMOUNT_PERFORMANCES")
     private Integer amountPerformances;
@@ -69,7 +83,7 @@ public class Course extends EntityBase {
     private boolean enabled;
 
     @Column(name = "LEVEL")
-    private CourseLevel level;
+    private Integer level;
 
     @Column(name = "YEAR")
     private Integer year;
@@ -79,6 +93,7 @@ public class Course extends EntityBase {
 
     @ManyToOne(cascade = { CascadeType.ALL })
     @JoinColumn(name = "A_ID")
+    @NotNull
     private Address address;
 
     @ManyToOne(cascade = { CascadeType.ALL })
@@ -87,6 +102,8 @@ public class Course extends EntityBase {
 
     @ManyToOne(cascade = { CascadeType.ALL })
     @JoinColumn(name = "S_ID")
+    @NotNull
+    @Valid
     private Style style;
 
     @ManyToMany(mappedBy = "courses")
@@ -142,35 +159,35 @@ public class Course extends EntityBase {
     }
 
     public WeekDay getWeekday() {
-        return weekday;
+        return WeekDay.parse(this.weekday);
     }
 
     public void setWeekday(WeekDay weekday) {
-        this.weekday = weekday;
+        this.weekday = weekday.getValue();
     }
 
-    public Time getTime() {
+    public LocalTime getTime() {
         return time;
     }
 
-    public void setTime(Time time) {
+    public void setTime(LocalTime time) {
         this.time = time;
     }
 
     public SpectatorAmount getEstimatedSpectators() {
-        return estimatedSpectators;
+        return SpectatorAmount.parse(this.estimatedSpectators);
     }
 
     public void setEstimatedSpectators(SpectatorAmount estimatedSpectators) {
-        this.estimatedSpectators = estimatedSpectators;
+        this.estimatedSpectators = estimatedSpectators.getValue();
     }
 
     public AgeGroup getAgeGroup() {
-        return ageGroup;
+        return AgeGroup.parse(this.ageGroup);
     }
 
     public void setAgeGroup(AgeGroup ageGroup) {
-        this.ageGroup = ageGroup;
+        this.ageGroup = ageGroup.getValue();
     }
 
     public Integer getAmountPerformances() {
@@ -190,11 +207,11 @@ public class Course extends EntityBase {
     }
 
     public CourseLevel getLevel() {
-        return level;
+        return CourseLevel.parse(this.level);
     }
 
     public void setLevel(CourseLevel level) {
-        this.level = level;
+        this.level = level.getValue();
     }
 
     public List<Rating> getRatings() {
@@ -208,7 +225,7 @@ public class Course extends EntityBase {
     public Address getAddress() {
         return address;
     }
-
+    
     public void setAddress(Address address) {
         this.address = address;
     }

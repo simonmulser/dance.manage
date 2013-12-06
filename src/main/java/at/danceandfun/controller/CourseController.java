@@ -71,54 +71,53 @@ public class CourseController {
             @ModelAttribute(value = "course") @Valid Course course,
             BindingResult result, RedirectAttributes redirectAttributes) {
         logger.debug("ADD Course with id " + course.getCid());
-
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute(
                     "org.springframework.validation.BindingResult.course",
                     result);
             redirectAttributes.addFlashAttribute("course", course);
             this.course = course;
+            editTrue = true;
             return "redirect:/admin/course";
-        } else {
-            logger.debug("ADD Course with id " + course.getCid());
-            course.setEnabled(true);
-            /*
-             * if (course.getAddress().getAid() == null) {
-             * addressManager.save(course.getAddress()); }
-             */
-
-            if (!(course.getTeacher().getPid() == null)) {
-                logger.debug("Teacher neu setzen mit pid: "
-                        + course.getTeacher().getPid());
-                Teacher newTeacher = teacherManager.get(course.getTeacher()
-                        .getPid());
-                course.setTeacher(newTeacher);
-            } else {
-                logger.debug("Teacher ist null: "
-                        + course.getTeacher().getPid());
-                course.setTeacher(null);
-            }
-
-            if (!(course.getStyle().getSid() == null)) {
-                logger.debug("Style neu setzen mit pid: "
-                        + course.getStyle().getSid());
-                Style newStyle = styleManager.get(course.getStyle().getSid());
-                course.setStyle(newStyle);
-            } else {
-                logger.debug("Style ist null: " + course.getStyle().getSid());
-                course.setStyle(null);
-            }
-
-            if (course.getCid() == null) {
-                logger.debug("New course");
-                courseManager.save(course);
-            } else {
-                logger.debug("Update course");
-                courseManager.update(course);
-                logger.debug("Finished updating course");
-            }
-            this.course = new Course();
         }
+        logger.debug("ADD Course with id " + course.getCid());
+        course.setEnabled(true);
+
+        if (!(course.getAddress().getAid() == null)) {
+            logger.debug("SET address to course with id: "
+                    + course.getAddress().getAid());
+            course.setAddress(addressManager.get(course.getAddress().getAid()));
+        }
+
+        if (!(course.getTeacher().getPid() == null)) {
+            logger.debug("Teacher neu setzen mit pid: "
+                    + course.getTeacher().getPid());
+            Teacher newTeacher = teacherManager.get(course.getTeacher()
+                    .getPid());
+            course.setTeacher(newTeacher);
+        } else {
+            logger.debug("Teacher ist null: "
+                    + course.getTeacher().getPid());
+            course.setTeacher(null);
+        }
+
+        if (!(course.getStyle().getSid() == null)) {
+            logger.debug("Style neu setzen mit pid: "
+                    + course.getStyle().getSid());
+            Style newStyle = styleManager.get(course.getStyle().getSid());
+            course.setStyle(newStyle);
+        }
+
+        if (course.getCid() == null) {
+            logger.debug("New course");
+            courseManager.save(course);
+        } else {
+            logger.debug("Update course");
+            courseManager.update(course);
+            logger.debug("Finished updating course");
+        }
+        this.course = new Course();
+
         return "redirect:/admin/course";
     }
 

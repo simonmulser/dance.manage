@@ -17,6 +17,7 @@ import javax.persistence.Transient;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
@@ -34,6 +35,7 @@ public class Teacher extends Person {
     private static final long serialVersionUID = 1L;
 
     @Column(name = "SVNR")
+    @NotEmpty
     private String svnr;
 
     @Column(name = "SALARY")

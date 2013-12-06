@@ -28,7 +28,7 @@
 					<spring:message code="label.coursePlace" />*
 				</form:label>
 				<div class="span6">
-					<form:radiobuttons path="address" items="${addressList}"  />
+					<form:radiobuttons path="address.aid" items="${addressList}" itemValue="aid"  />
 				</div>
 				<form:errors path="address" cssClass="error" />
 			</div>
@@ -38,7 +38,6 @@
 				</form:label>
 				<div class="span6">
 					<form:select path="duration">
-						<form:option value="NONE" label="--- Select ---" />
 						<form:options items="${CourseDuration}" />
 					</form:select>	
 				</div>
@@ -68,7 +67,6 @@
 				</form:label>
 				<div class="span6">
 					<form:select path="weekday">
-						<form:option value="NONE" label="--- Select ---" />
 						<form:options items="${WeekDay}" />
 					</form:select>
 				</div>
@@ -85,11 +83,10 @@
 			</div>
 			<div class="control-group">
 				<form:label path="estimatedSpectators" class="control-label">
-					<spring:message code="label.estimatedSpectators" />*
+					<spring:message code="label.estimatedSpectators" />
 				</form:label>
 				<div class="span6">
 					<form:select path="estimatedSpectators">
-						<form:option value="NONE" label="--- Select ---" />
 						<form:options items="${SpectatorAmount}" />
 					</form:select>
 				</div>
@@ -97,11 +94,10 @@
 			</div>
 			<div class="control-group">
 				<form:label path="ageGroup" class="control-label">
-					<spring:message code="label.ageGroup" />*
+					<spring:message code="label.ageGroup" />
 				</form:label>
 				<div class="span6">
 					<form:select path="ageGroup">
-						<form:option value="NONE" label="--- Select ---" />
 						<form:options items="${AgeGroup}" />
 					</form:select>
 				</div>
@@ -109,7 +105,7 @@
 			</div>
 			<div class="control-group">
 				<form:label path="amountPerformances" class="control-label">
-					<spring:message code="label.amountPerformances" />*
+					<spring:message code="label.amountPerformances" />
 				</form:label>
 				<div class="span6">
 					<form:input path="amountPerformances" />
@@ -118,11 +114,10 @@
 			</div>
 			<div class="control-group">
 				<form:label path="level" class="control-label">
-					<spring:message code="label.courselevel" />*
+					<spring:message code="label.courselevel" />
 				</form:label>
 				<div class="span6">
 					<form:select path="level">
-						<form:option value="NONE" label="--- Select ---" />
 						<form:options items="${CourseLevel}" />
 					</form:select>
 				</div>
@@ -131,7 +126,7 @@
 
 			<div id="find_keyword" class="control-group">
 				<form:label path="style.sid" class="control-label">
-					<spring:message code="label.styles" />
+					<spring:message code="label.styles" />*
 				</form:label>
 				<div class="ui-widget span6">
 					<input id="stylesQuery" type="text" value="" /><i
@@ -144,6 +139,7 @@
 					</div>
 					<form:input path="style.sid" id="styleSid" type="hidden" />
 				</div>
+				<form:errors path="style.sid" cssClass="error" />
 			</div>
 
 			<div id="find_keyword" class="control-group">
@@ -166,12 +162,9 @@
 			<div class="form-actions">
 				<input type="submit" value="<spring:message code="label.save"/>"
 					class="btn btn-primary" />
-<<<<<<< HEAD
 				<button class="btn">
 					<spring:message code="label.cancel" />
 				</button>
-=======
->>>>>>> 60d2f101e709e1846a0e586210dce820f4c22890
 			</div>
 		</form:form>
 	</dmtags:widget>
@@ -203,7 +196,8 @@
 							<td>${course.semesterPrice}</td>
 							<td>${course.yearPrice}</td>
 							<td>${course.weekday}</td>
-							<td>${course.time}</td>
+							<td><joda:format value="${course.time}"
+									pattern="HH:mm" /></td>
 							<td>${course.estimatedSpectators}</td>
 							<td>${course.ageGroup}</td>
 							<td>${course.amountPerformances}</td>
