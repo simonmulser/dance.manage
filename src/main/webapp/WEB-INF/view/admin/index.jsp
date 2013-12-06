@@ -5,5 +5,5 @@
 <%@taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 
-<dmtags:base title="Admin" activesection="dashboard">
+<dmtags:base title="nav.adminArea" activesection="dashboard">
 </dmtags:base>

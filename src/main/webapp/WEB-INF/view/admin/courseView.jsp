@@ -5,10 +5,9 @@
 <%@taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 
-<dmtags:base title="Kurse" activesection="courses">
+<dmtags:base title="nav.courses" activesection="courses">
 
-	<dmtags:widget icon="icon-calendar" title="Kurs">
-		<c:url var="addURL" value='course/add' />	
+	<dmtags:widget icon="icon-calendar" title="widget.courses">
 		<spring:message code="help.course" />
 		<form:form method="post" action="${addURL}" commandName="course"
 			class="form-horizontal">
@@ -168,7 +167,8 @@
 			</div>
 		</form:form>
 	</dmtags:widget>
-	<dmtags:widget title="Übersicht" style="table" icon="icon-list">
+	
+	<dmtags:widget title="widget.overview" style="table" icon="icon-list">
 		<c:if test="${!empty courseList}">
 			<table class="table table-striped table-bordered">
 				<thead>
@@ -206,18 +206,40 @@
 							<td>${course.style.name}</td>
 							<td><a href="course/edit/${course.cid}"><spring:message
 										code="label.edit" /></a> &nbsp; <a
-								href="course/delete/${course.cid}"><spring:message
+								href="course/delete/${course.cid}" id="openDialog"><spring:message
 										code="label.delete" /></a></td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
+			<div id="dialog-confirm" title="<spring:message code="delete.title" />">
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><spring:message code="delete.course" /></p>
+</div>
 		</c:if>
 	</dmtags:widget>
 
 </dmtags:base>
 <script type="text/javascript">
 	$('i').tooltip();
+	$( "#openDialog" ).click(function() {
+	      $( "#dialog-confirm" ).dialog( "open" );
+	      return false;
+	    });
+	$( "#dialog-confirm" ).dialog({
+		  autoOpen:false,
+	      resizable: false,
+	      modal: true,
+	      buttons: {
+	        "OK": function() {
+	        document.location = $("#openDialog").attr("href");
+	        
+	          $( this ).dialog( "close" );
+	        },
+	        Cancel: function() {
+	          $( this ).dialog( "close" );
+	        }
+	      }
+	    });
 	$(document)
 			.ready(
 					function() {

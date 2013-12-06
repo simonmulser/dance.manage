@@ -3,6 +3,9 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@attribute name="activesection" required="true"
 	type="java.lang.String"%>
+<%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
+
+<dmtags:upperNavigation />
 
 <div class="navbar navbar-fixed-top">
 	<div class="navbar-inner">
@@ -23,11 +26,11 @@
 										code="nav.help" /></a></li>
 						</ul></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"><i class="icon-user"></i> Management
-							<b class="caret"></b></a>
+						data-toggle="dropdown"><i class="icon-user"></i>
+							${user.firstname} <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="javascript:;"><spring:message
-										code="nav.profile" /></a></li>
+							<li><a href="<c:url value="${editProfileLink}" />"><spring:message
+										code="nav.editProfile" /></a></li>
 							<li><a href="<c:url value='/j_spring_security_logout' />"><spring:message
 										code="nav.logout" /></a></li>
 						</ul></li>
@@ -62,9 +65,13 @@
 					href="/dancemanage/admin/invoice"><i class="icon-envelope"></i><span><spring:message
 								code="nav.invoices" /></span> </a></li>
 				<li
+					<c:if test="${activesection eq 'lists'}">class="active"</c:if>><a
+					href="/dancemanage/admin/lists"><i class="icon-list"></i><span><spring:message
+								code="nav.lists" /></span> </a></li>
+				<li
 					<c:if test="${activesection eq 'statistics'}">class="active"</c:if>><a
-					href="/dancemanage/admin/lists"><i class="icon-bar-chart"></i><span><spring:message
-								code="nav.statistics" /></span> </a></li>
+					href="/dancemanage/admin/statistics"><i class="icon-bar-chart"></i><span><spring:message
+								code="nav.statistics" /></span> </a></li>				
 				<li
 					class="<c:if test="${activesection eq 'participants' or activesection eq 'teachers'}">active</c:if> dropdown"><a
 					href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
@@ -74,9 +81,11 @@
 					<ul class="dropdown-menu">
 						<li><a href="/dancemanage/admin/participant"><spring:message
 									code="nav.participants" /></a></li>
-						<li><a href="/dancemanage/admin/teacher"><spring:message code="nav.teachers" /></a></li>
+						<li><a href="/dancemanage/admin/teacher"><spring:message
+									code="nav.teachers" /></a></li>
 					</ul></li>
-				<li <c:if test="${activesection eq 'performances'}">class="active"</c:if>><a
+				<li
+					<c:if test="${activesection eq 'performances'}">class="active"</c:if>><a
 					href="/dancemanage/performance"><i class="icon-camera"></i><span><spring:message
 								code="nav.performances" /></span> </a></li>
 			</ul>

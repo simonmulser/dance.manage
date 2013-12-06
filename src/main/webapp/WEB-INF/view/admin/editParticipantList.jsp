@@ -5,148 +5,18 @@
 <%@taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 
-<dmtags:base title="Kursteilnehmer" activesection="participants">
+<dmtags:base title="nav.courseParticipants" activesection="participants">
 
-	<dmtags:widget title="Kursteilnehmer" icon="icon-user">
-		<c:url var="addURL" value='participant/add' />
+	<dmtags:widget title="widget.courseParticipants" icon="icon-user">
 		<spring:message code="help.participant" />
 		<form:form method="post" action="${addURL}"
 			commandName="participant" class="form-horizontal">
 
-			<form:input path="pid" type="hidden" />
-			<form:input path="enabled" type="hidden" />
-			<form:input path="address.aid" type="hidden" />
+			<dmtags:personForm />
 
-			<div class="control-group">
-				<form:label path="firstname" class="control-label">
-					<spring:message code="label.firstname" />*
-				</form:label>
-				<div class="span6">
-					<form:input path="firstname" />
-				</div>
-				<form:errors path="firstname" cssClass="error" />
-			</div>
+			<dmtags:participantForm />
 
-			<div class="control-group">
-				<form:label path="lastname" class="control-label">
-					<spring:message code="label.lastname" />*
-				</form:label>
-				<div class="span6">
-					<form:input path="lastname" />
-				</div>
-				<form:errors path="lastname" cssClass="error" />
-			</div>
-
-			<div class="control-group">
-				<form:label path="email" class="control-label">
-					<spring:message code="label.email" />*
-				</form:label>
-				<div class="span6">
-					<form:input path="email" />
-				</div>
-				<form:errors path="email" cssClass="error" />
-			</div>
-
-			<div class="control-group">
-				<form:label path="telephone" class="control-label">
-					<spring:message code="label.telephone" />*
-				</form:label>
-				<div class="span6">
-					<form:input path="telephone" />
-				</div>
-				<form:errors path="telephone" cssClass="error" />
-			</div>
-
-			<div class="control-group">
-				<form:label path="birthday" class="control-label">
-					<spring:message code="label.birthday" />*
-				</form:label>
-				<div class="span6">
-					<form:input path="birthday" />
-				</div>
-				<form:errors path="birthday" cssClass="error" />
-			</div>
-
-			<div class="control-group">
-				<form:label path="contactPerson" class="control-label">
-					<spring:message code="label.contactPerson" />
-				</form:label>
-				<div class="span6">
-					<form:input path="contactPerson" />
-				</div>
-				<form:errors path="contactPerson" cssClass="error" />
-			</div>
-
-			<div class="control-group">
-				<form:label path="emergencyNumber" class="control-label">
-					<spring:message code="label.emergencyNumber" />
-				</form:label>
-				<div class="span6">
-					<form:input path="emergencyNumber" />
-				</div>
-				<form:errors path="emergencyNumber" cssClass="error" />
-			</div>
-
-			<div class="control-group">
-				<form:label path="address.street" class="control-label">
-					<spring:message code="label.street" />*
-				</form:label>
-				<div class="span6">
-					<form:input path="address.street" />
-				</div>
-				<form:errors path="address.street" cssClass="error" />
-			</div>
-
-			<div class="control-group">
-				<form:label path="address.number" class="control-label">
-					<spring:message code="label.number" />*
-				</form:label>
-				<div class="span6">
-					<form:input path="address.number" />
-				</div>
-				<form:errors path="address.number" cssClass="error" />
-			</div>
-
-			<div class="control-group">
-				<form:label path="address.stair" class="control-label">
-					<spring:message code="label.stair" />
-				</form:label>
-				<div class="span6">
-					<form:input path="address.stair" />
-				</div>
-				<form:errors path="address.stair" cssClass="error" />
-			</div>
-
-			<div class="control-group">
-				<form:label path="address.door" class="control-label">
-					<spring:message code="label.door" />
-				</form:label>
-				<div class="span6">
-					<form:input path="address.door" />
-				</div>
-				<form:errors path="address.door" cssClass="error" />
-			</div>
-
-			<div class="control-group">
-				<form:label path="address.zip" class="control-label">
-					<spring:message code="label.zip" />*
-				</form:label>
-				<div class="span6">
-					<form:input path="address.zip" />
-				</div>
-				<form:errors path="address.zip" cssClass="error" />
-			</div>
-
-			<div class="control-group">
-				<form:label path="address.city" class="control-label">
-					<spring:message code="label.city" />*
-				</form:label>
-				<div class="span6">
-					<form:input path="address.city" />
-				</div>
-				<form:errors path="address.city" cssClass="error" />
-			</div>
-
+			<dmtags:addressForm />
 
 			<div id="find_keyword" class="control-group">
 				<form:label path="tempSiblings" class="control-label">
@@ -167,7 +37,7 @@
 
 				<form:input path="tempSiblings" id="tempSiblings" type="hidden" />
 			</div>
-			
+
 			<div id="find_keyword" class="control-group">
 				<form:label path="tempCourses" class="control-label">
 					<spring:message code="label.courses" />
@@ -177,11 +47,13 @@
 						title="<spring:message code='help.searchCourse' />"
 						class="inline-tooltip icon icon-question-sign"></i>
 					<div id="showCourses">
-						<c:forEach items="${participant.courseParticipants}" var="courseParticipant">
+						<c:forEach items="${participant.courseParticipants}"
+							var="courseParticipant">
 							<c:if test="${courseParticipant.enabled}">
-							<span class="courseTag">${courseParticipant.key.course.name}&nbsp;<i
-								id="${courseParticipant.key.course.cid}" class="icon icon-remove"></i></span>
-								</c:if>
+								<span class="courseTag">${courseParticipant.key.course.name}&nbsp;<i
+									id="${courseParticipant.key.course.cid}"
+									class="icon icon-remove"></i></span>
+							</c:if>
 						</c:forEach>
 						<span id="selectedCourses"> </span>
 					</div>
@@ -200,7 +72,7 @@
 	</dmtags:widget>
 
 	<c:if test="${!empty participantList}">
-		<dmtags:widget title="Übersicht" style="table" icon="icon-list">
+		<dmtags:widget title="widget.overview" style="table" icon="icon-list">
 			<table class="table table-striped table-bordered">
 				<thead>
 					<tr>
@@ -255,8 +127,8 @@
 							</c:choose>
 							<c:choose>
 								<c:when test="${!empty emp.courseParticipants}">
-									<td><c:forEach items="${emp.courseParticipants}" var="courseParticipant"
-											varStatus="loop">
+									<td><c:forEach items="${emp.courseParticipants}"
+											var="courseParticipant" varStatus="loop">
 											<c:if test="${courseParticipant.enabled}">
 											${courseParticipant.key.course.name}
 											</c:if>
@@ -270,18 +142,46 @@
 							</c:choose>
 							<td><a href="participant/edit/${emp.pid}"><spring:message
 										code="label.edit" /></a> &nbsp; <a
-								href="participant/delete/${emp.pid}"><spring:message
+								href="participant/delete/${emp.pid}" id="openDialog"><spring:message
 										code="label.delete" /></a></td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
+			<div id="dialog-confirm" title="<spring:message code="delete.title" />">
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><spring:message code="delete.participant" /></p>
+</div>
 		</dmtags:widget>
 	</c:if>
 
 </dmtags:base>
 <script type="text/javascript">
 	$('i').tooltip();
+	$( "#openDialog" ).click(function() {
+	      $( "#dialog-confirm" ).dialog( "open" );
+	      return false;
+	    });
+	$( "#dialog-confirm" ).dialog({
+		  autoOpen:false,
+	      resizable: false,
+	      modal: true,
+	      buttons: {
+	        "OK": function() {
+	        document.location = $("#openDialog").attr("href");
+	        
+	          $( this ).dialog( "close" );
+	        },
+	        Cancel: function() {
+	          $( this ).dialog( "close" );
+	        }
+	      }
+	    });
+	$( "#datepicker" ).datepicker({
+		showOn: "button",
+	    buttonImage: "/dancemanage/css/ui/images/calendar.gif",
+	    buttonImageOnly: true,
+	    dateFormat: "dd.mm.yy"
+	});
 	$(document)
 			.ready(
 					function() {
