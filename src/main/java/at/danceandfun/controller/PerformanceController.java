@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import at.danceandfun.entity.Course;
+import at.danceandfun.entity.Participant;
 import at.danceandfun.entity.Performance;
 import at.danceandfun.sat.GenerateSatSolution;
 import at.danceandfun.service.CourseManager;
+import at.danceandfun.service.ParticipantManager;
 import at.danceandfun.service.PerformanceManager;
 import at.danceandfund.exception.SatException;
 
@@ -31,6 +33,8 @@ public class PerformanceController {
     private PerformanceManager performanceManager;
     @Autowired
     private CourseManager courseManager;
+    @Autowired
+    private ParticipantManager participantManager;
 
     private Performance performance = new Performance();
     private Performance tempPerformance1 = new Performance();
@@ -53,13 +57,14 @@ public class PerformanceController {
         logger.debug("BUILD performance");
         Map<Integer, Performance> plan = new HashMap<Integer, Performance>();
         List<Course> courses = courseManager.getEnabledList();
+        List<Participant> participantList = participantManager.getEnabledList();
         // Collections.shuffle(courses);
 
         GenerateSatSolution sat = new GenerateSatSolution();
 
         while (true) {
         try {
-                plan = sat.generatePerformance(courses);
+                plan = sat.generatePerformance(courses, participantList);
                 break;
             } catch (IOException e) {
                 e.printStackTrace();

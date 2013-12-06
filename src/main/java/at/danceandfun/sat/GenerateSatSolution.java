@@ -14,6 +14,8 @@ import org.sat4j.specs.ISolver;
 import org.sat4j.specs.TimeoutException;
 
 import at.danceandfun.entity.Course;
+import at.danceandfun.entity.CourseParticipant;
+import at.danceandfun.entity.Participant;
 import at.danceandfun.entity.Performance;
 import at.danceandfund.exception.SatException;
 
@@ -25,6 +27,7 @@ public class GenerateSatSolution {
     private ISolver solver;
     private Performance performance;
     private List<Course> originalOrderOfCourses;
+    private List<Participant> participantList;
     private List<int[]> clauses;
 
     /**
@@ -34,10 +37,12 @@ public class GenerateSatSolution {
      * all courses and take notice of the restrictions.
      * @throws IOException
      */
-    public Map<Integer, Performance> generatePerformance(List<Course> courses)
+    public Map<Integer, Performance> generatePerformance(List<Course> courses,
+            List<Participant> participantList)
             throws IOException, SatException {
         originalOrderOfCourses = courses;
         performance = new Performance();
+        this.participantList = participantList;
         clauses = new ArrayList<int[]>();
         Map<Integer, Performance> plan;
         int[] solution;
@@ -53,6 +58,8 @@ public class GenerateSatSolution {
 
         addNotTwoOfAKind(originalOrderOfCourses, numberOfCourses,
                 numberOfSlots, numberOfPlays);
+        add2SlotBrake(courses, participantList, numberOfCourses, numberOfSlots,
+                numberOfPlays);
         addBasicRestrictions(originalOrderOfCourses, numberOfCourses,
                 numberOfSlots, numberOfPlays);
 
@@ -168,7 +175,6 @@ public class GenerateSatSolution {
                 for (int ballet : listBallets) {
                     if (ballet == i * numberOfSlots + j) {
                         countBallets++;
-                        System.out.println("Ballett: " + ballet);
                     }
                 }
             }
@@ -204,6 +210,101 @@ public class GenerateSatSolution {
                 }
             }
         }
+    }
+    
+    /**
+     * @summary This methods adds the restriction, which says,
+     * that if a participants dances in more than 1 course, there must be at least 2 breaks in between.
+     * @param courses
+     * @param participants
+     * @param k
+     * @param t
+     * @param p
+     */
+    private void add2SlotBrake(List<Course> courses,
+            List<Participant> participants, int k, int t, int p)
+            throws SatException {
+        List<Integer> tempList = new ArrayList<Integer>();
+        List<Integer> idList = new ArrayList<Integer>();
+        Participant currentParticipant;
+
+        for (int i = 0; i < participants.size(); i++) {
+            if (participants.get(i).getCourseParticipants().size() > 1) {
+                idList.add(i);
+            }
+        }
+
+        for (int id : idList) {
+        	List<Integer> courseIDList = new ArrayList<Integer>();
+    		currentParticipant = participants.get(id);
+    		
+    		for (CourseParticipant currentCP: currentParticipant.getCourseParticipants()) {
+    			for (int i = 0; i < courses.size(); i++) {
+    				if (courses.get(i).equals(currentCP.getKey().getCourse())) {
+    					courseIDList.add(i+1);
+    				}
+    			}
+    		}
+    		
+    		int countCourses;
+            for (int i = 0; i < numberOfPlays; i++) {
+            	countCourses = 0;
+                for (int j = 1; j <= numberOfSlots; j++) {
+                    for (int courseID : courseIDList) {
+                        if (courseID == i * numberOfSlots + j) {
+                        	countCourses++;
+                        }
+                    }
+                }
+                if (countCourses > (numberOfSlots-1)/3) {
+                    throw new SatException(
+                            "At least one participant dances at too many courses! Had to reshuffle!");
+                }
+
+            }
+        }
+        
+        
+        
+        for (int id : idList) {
+        	List<Integer> courseIDList = new ArrayList<Integer>();
+    		currentParticipant = participants.get(id);
+    		
+    		for (CourseParticipant currentCP: currentParticipant.getCourseParticipants()) {
+    			for (int i = 0; i < courses.size(); i++) {
+    				if (courses.get(i).equals(currentCP.getKey().getCourse())) {
+    					courseIDList.add(i+1);
+    				}
+    			}
+    		}
+    		
+    		for (int i = 1; i <= p; i++) {
+    			for (int j = 1; j < t; j++) {
+    				for (int l = 0; l < courseIDList.size(); l++) {
+                        int currentCourse = courseIDList.get(l);
+                        for (int m : courseIDList) {
+                            if (currentCourse != m) {
+                                tempList.clear();
+                                tempList.add(-buildMappingVariable(i, j,
+                                		currentCourse));
+                                tempList.add(-buildMappingVariable(i, j + 1, m));
+                                clauses.add(convertToIntegerArray(tempList));
+                                if (j<t-1) {
+                                	tempList.clear();
+                                	tempList.add(-buildMappingVariable(i, j,
+                                			currentCourse));
+                                	tempList.add(-buildMappingVariable(i, j + 2, m));
+                                	clauses.add(convertToIntegerArray(tempList));
+                                }
+                            }
+                        }
+                    }
+    			}
+    		}
+
+    		
+    	}
+
     }
     
     /**
