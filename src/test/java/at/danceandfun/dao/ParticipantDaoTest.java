@@ -31,6 +31,7 @@ public class ParticipantDaoTest {
 
     @Autowired
     private DaoBaseImpl<Participant> participantDao;
+
     @Autowired
     private DaoBaseImpl<Course> courseDao;
 
@@ -109,20 +110,21 @@ public class ParticipantDaoTest {
 
     @Test
     public void testCourseParticipantRelation() {
-        Course course = CourseDaoTest.getValidCourse();
-        courseDao.save(course);
-
-        Participant participant = getValidParticipant();
-        CourseParticipant courseParticipant = new CourseParticipant();
-        courseParticipant.setDuration(Duration.YEAR);
-        CourseParticipantID key = new CourseParticipantID();
-        key.setParticipant(participant);
-        key.setCourse(course);
-        courseParticipant.setKey(key);
-        List<CourseParticipant> courseParticipants = new ArrayList<CourseParticipant>();
-        courseParticipants.add(courseParticipant);
-        participant.setCourseParticipants(courseParticipants);
-
-        participantDao.save(participant);
+        Course course = courseDao.get(1);
+        if (course != null) {
+            Participant participant = getValidParticipant();
+            CourseParticipant courseParticipant = new CourseParticipant();
+            courseParticipant.setDuration(Duration.YEAR);
+            CourseParticipantID key = new CourseParticipantID();
+            key.setParticipant(participant);
+            key.setCourse(course);
+            courseParticipant.setKey(key);
+            List<CourseParticipant> courseParticipants = new ArrayList<CourseParticipant>();
+            courseParticipants.add(courseParticipant);
+            participant.setCourseParticipants(courseParticipants);
+            participantDao.save(participant);
+        } else {
+            fail("database empty");
+        }
     }
 }

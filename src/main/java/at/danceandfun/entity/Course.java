@@ -113,7 +113,7 @@ public class Course extends EntityBase {
     private List<Position> positions = new ArrayList<Position>();
 
     @OneToMany(mappedBy = "key.course")
-    private List<CourseParticipant> courseParticipants;
+    private List<CourseParticipant> courseParticipants = new ArrayList<CourseParticipant>();
 
     public Course() {
     }

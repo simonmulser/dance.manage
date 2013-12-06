@@ -97,7 +97,7 @@ public class TeacherDaoTest {
     @Test
     public void testTeacherCourseRelation() {
         Course course = CourseDaoTest.getValidCourse();
-        courseDao.save(course);
+        courseDao.update(course);
 
         Teacher teacher = getValidTeacher();
         course.setTeacher(teacher);
@@ -106,7 +106,7 @@ public class TeacherDaoTest {
         courses.add(course);
         teacher.setCourses(courses);
 
-        teacherDao.save(teacher);
+        teacherDao.update(teacher);
     }
 
     @Test

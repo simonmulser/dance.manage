@@ -31,10 +31,10 @@ import at.danceandfun.service.ParticipantManager;
 
 @Controller
 @RequestMapping(value = "admin/participant")
-public class EditParticipantController {
+public class ParticipantController {
 
     private static Logger logger = Logger
-            .getLogger(EditParticipantController.class);
+            .getLogger(ParticipantController.class);
 
     private boolean editTrue = false;
 
@@ -66,7 +66,7 @@ public class EditParticipantController {
         map.addAttribute("participantList", participantManager.getEnabledList());
         editTrue = false;
 
-        return "admin/editParticipantList";
+        return "admin/participantView";
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)

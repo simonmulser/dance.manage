@@ -9,7 +9,7 @@
 
 	<dmtags:widget title="widget.courseParticipants" icon="icon-user">
 		<spring:message code="help.participant" />
-		<form:form method="post" action="${addURL}"
+		<form:form method="post" action="participant/add"
 			commandName="participant" class="form-horizontal">
 
 			<dmtags:personForm />

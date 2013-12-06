@@ -16,7 +16,7 @@
 </div>
 <div class="control-group">
 	<form:label path="salary" class="control-label">
-		<spring:message code="label.salary" />*
+		<spring:message code="label.salary" />
                 </form:label>
 	<div class="span6">
 		<form:input path="salary" />

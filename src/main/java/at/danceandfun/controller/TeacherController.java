@@ -29,10 +29,10 @@ import at.danceandfun.service.TeacherManager;
 
 @Controller
 @RequestMapping(value = "admin/teacher")
-public class EditTeacherController {
+public class TeacherController {
 
     private static Logger logger = Logger
-            .getLogger(EditTeacherController.class);
+            .getLogger(TeacherController.class);
 
     private boolean editTrue = false;
 
@@ -62,7 +62,7 @@ public class EditTeacherController {
         map.addAttribute("teacher", teacher);
         map.addAttribute("teacherList", teacherManager.getEnabledList());
         editTrue = false;
-        return "admin/editTeacherList";
+        return "admin/teacherView";
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
@@ -76,6 +76,7 @@ public class EditTeacherController {
                     result);
             redirectAttributes.addFlashAttribute("teacher", teacher);
             this.teacher = teacher;
+            editTrue = true;
             return "redirect:/admin/teacher";
         } else {
             logger.debug("ADD Teacher with id " + teacher.getPid());

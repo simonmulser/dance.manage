@@ -40,7 +40,6 @@ public class CourseController {
     private StyleManager styleManager;
     @Autowired
     private TeacherManager teacherManager;
-
     @Autowired
     private AddressManager addressManager;
 

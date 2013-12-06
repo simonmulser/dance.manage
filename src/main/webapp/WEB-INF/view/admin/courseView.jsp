@@ -9,7 +9,7 @@
 
 	<dmtags:widget icon="icon-calendar" title="widget.courses">
 		<spring:message code="help.course" />
-		<form:form method="post" action="${addURL}" commandName="course"
+		<form:form method="post" action="course/add" commandName="course"
 			class="form-horizontal">
 			<form:input path="cid" type="hidden" />
 			<form:input path="enabled" type="hidden" />
