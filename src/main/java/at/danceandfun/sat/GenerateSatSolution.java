@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.SolverFactory;
@@ -26,56 +27,78 @@ public class GenerateSatSolution {
     private int numberOfPlays;
     private ISolver solver;
     private Performance performance;
-    private List<Course> originalOrderOfCourses;
+    private List<Course> newOrderOfCourses;
     private List<Participant> participantList;
     private List<int[]> clauses;
 
     /**
      * @precondition An amount of minimal 3 courses as input.
      * @param courses
-     * @return Generate a list of all plays, which contain
-     * all courses and take notice of the restrictions.
+     * @return Generate a list of all plays, which contain all courses and take
+     *         notice of the restrictions.
      * @throws IOException
      */
     public Map<Integer, Performance> generatePerformance(List<Course> courses,
-            List<Participant> participantList)
-            throws IOException, SatException {
-        originalOrderOfCourses = courses;
+            List<Participant> participantList) throws IOException, SatException {
+        newOrderOfCourses = new ArrayList<Course>();
         performance = new Performance();
         this.participantList = participantList;
         clauses = new ArrayList<int[]>();
         Map<Integer, Performance> plan;
         int[] solution;
 
+        List<Course> helpList = new ArrayList<Course>();
+
+        Random r = new Random();
+
+        for (Course c : courses) {
+            if (c.getAmountPerformances() == 3) {
+                helpList.add(c);
+            } else {
+                newOrderOfCourses.add(c);
+                if (c.getAmountPerformances() == 2) {
+                    newOrderOfCourses.add(r.nextInt(newOrderOfCourses.size()),
+                            c);
+                }
+            }
+        }
+
+        for (Course c : helpList) {
+            newOrderOfCourses.add(c);
+            newOrderOfCourses.add(newOrderOfCourses.size() / 3, c);
+            newOrderOfCourses.add(newOrderOfCourses.size() / 3 * 2, c);
+        }
+
         /*
          * Anzahl der verschiedenen Stile und verfügbare Timeslots in der
          * Aufführung Zur Zeit muss die Anzahl der Kurse durch 3 (Anzahl der
          * Aufführungen) teilbar sein. Z.B. 12 Kurse, 3 Aufführungen = 4 Slots
          */
-        numberOfCourses = originalOrderOfCourses.size();
+        numberOfCourses = newOrderOfCourses.size();
         numberOfPlays = 3;
-        numberOfSlots = originalOrderOfCourses.size() / numberOfPlays;
+        numberOfSlots = newOrderOfCourses.size() / numberOfPlays;
 
-        addNotTwoOfAKind(originalOrderOfCourses, numberOfCourses,
-                numberOfSlots, numberOfPlays);
-        add2SlotBrake(courses, participantList, numberOfCourses, numberOfSlots,
+        addAdvancedAtTheEnd(newOrderOfCourses, numberOfSlots);
+        // addNotTwoOfAKind(newOrderOfCourses, numberOfCourses, numberOfSlots,
+        // numberOfPlays);
+        // add2SlotBrake(newOrderOfCourses, participantList, numberOfCourses,
+        // numberOfSlots, numberOfPlays);
+        addBasicRestrictions(newOrderOfCourses, numberOfCourses, numberOfSlots,
                 numberOfPlays);
-        addBasicRestrictions(originalOrderOfCourses, numberOfCourses,
-                numberOfSlots, numberOfPlays);
 
         solution = executeSingleSAT();
-        plan = backMapping(solution, originalOrderOfCourses);
+        plan = backMapping(solution, newOrderOfCourses);
 
         return plan;
     }
 
     /**
-     * @precondition Give over the the right amount of plays, 
-     * time slots and courses.
-     * @example maps the courses in the following layout: XYYZZ,
-     * X stands for the plays (1-3), YY for the time slots (01-99)
-     * and ZZ stands for the courses (01-99). If course 4 dances 
-     * in the 12th time slot in the first play its 11204.
+     * @precondition Give over the the right amount of plays, time slots and
+     *               courses.
+     * @example maps the courses in the following layout: XYYZZ, X stands for
+     *          the plays (1-3), YY for the time slots (01-99) and ZZ stands for
+     *          the courses (01-99). If course 4 dances in the 12th time slot in
+     *          the first play its 11204.
      * @param play
      * @param timeslot
      * @param course
@@ -86,9 +109,8 @@ public class GenerateSatSolution {
     }
 
     /**
-     * @summary This methods adds the basic restriction, which says,
-     * that each time slot needs one course and that every course has
-     * to be used.
+     * @summary This methods adds the basic restriction, which says, that each
+     *          time slot needs one course and that every course has to be used.
      * @param courses
      * @param k
      * @param t
@@ -102,16 +124,16 @@ public class GenerateSatSolution {
         // Vi = Einzelne Slots
         // 1,2,3 .. = Kurse
         // (Vi1 v Vi2 v Vi3 ..)
-        for (int i = 1; i <= p; i++) {
-            for (int j = 1; j <= t; j++) {
-                tempList.clear();
-                for (int l = 1; l <= k; l++) {
-                    tempList.add(buildMappingVariable(i, j, l));
-
-                }
-                clauses.add(convertToIntegerArray(tempList));
-            }
-        }
+        // for (int i = 1; i <= p; i++) {
+        // for (int j = 1; j <= t; j++) {
+        // tempList.clear();
+        // for (int l = 1; l <= k; l++) {
+        // tempList.add(buildMappingVariable(i, j, l));
+        //
+        // }
+        // clauses.add(convertToIntegerArray(tempList));
+        // }
+        // }
 
         // Jeder Kurs muss verwendet werden
         // v = Logisches ODER
@@ -148,10 +170,10 @@ public class GenerateSatSolution {
             }
         }
     }
-    
+
     /**
      * @summary This method adds the restriction, which says, that two courses
-     * of the same kind, are not allowed to stand behind one another.
+     *          of the same kind, are not allowed to stand behind one another.
      * @param courses
      * @param k
      * @param t
@@ -211,10 +233,11 @@ public class GenerateSatSolution {
             }
         }
     }
-    
+
     /**
-     * @summary This methods adds the restriction, which says,
-     * that if a participants dances in more than 1 course, there must be at least 2 breaks in between.
+     * @summary This methods adds the restriction, which says, that if a
+     *          participants dances in more than 1 course, there must be at
+     *          least 2 breaks in between.
      * @param courses
      * @param participants
      * @param k
@@ -235,81 +258,122 @@ public class GenerateSatSolution {
         }
 
         for (int id : idList) {
-        	List<Integer> courseIDList = new ArrayList<Integer>();
-    		currentParticipant = participants.get(id);
-    		
-    		for (CourseParticipant currentCP: currentParticipant.getCourseParticipants()) {
-    			for (int i = 0; i < courses.size(); i++) {
-    				if (courses.get(i).equals(currentCP.getKey().getCourse())) {
-    					courseIDList.add(i+1);
-    				}
-    			}
-    		}
-    		
-    		int countCourses;
+            List<Integer> courseIDList = new ArrayList<Integer>();
+            currentParticipant = participants.get(id);
+
+            for (CourseParticipant currentCP : currentParticipant
+                    .getCourseParticipants()) {
+                for (int i = 0; i < courses.size(); i++) {
+                    if (courses.get(i).equals(currentCP.getKey().getCourse())) {
+                        courseIDList.add(i + 1);
+                    }
+                }
+            }
+
+            int countCourses;
             for (int i = 0; i < numberOfPlays; i++) {
-            	countCourses = 0;
+                countCourses = 0;
                 for (int j = 1; j <= numberOfSlots; j++) {
                     for (int courseID : courseIDList) {
                         if (courseID == i * numberOfSlots + j) {
-                        	countCourses++;
+                            countCourses++;
                         }
                     }
                 }
-                if (countCourses > (numberOfSlots-1)/3) {
+                if (countCourses > (numberOfSlots - 1) / 3) {
                     throw new SatException(
                             "At least one participant dances at too many courses! Had to reshuffle!");
                 }
 
             }
         }
-        
-        
-        
+
         for (int id : idList) {
-        	List<Integer> courseIDList = new ArrayList<Integer>();
-    		currentParticipant = participants.get(id);
-    		
-    		for (CourseParticipant currentCP: currentParticipant.getCourseParticipants()) {
-    			for (int i = 0; i < courses.size(); i++) {
-    				if (courses.get(i).equals(currentCP.getKey().getCourse())) {
-    					courseIDList.add(i+1);
-    				}
-    			}
-    		}
-    		
-    		for (int i = 1; i <= p; i++) {
-    			for (int j = 1; j < t; j++) {
-    				for (int l = 0; l < courseIDList.size(); l++) {
+            List<Integer> courseIDList = new ArrayList<Integer>();
+            currentParticipant = participants.get(id);
+
+            for (CourseParticipant currentCP : currentParticipant
+                    .getCourseParticipants()) {
+                for (int i = 0; i < courses.size(); i++) {
+                    if (courses.get(i).equals(currentCP.getKey().getCourse())) {
+                        courseIDList.add(i + 1);
+                    }
+                }
+            }
+
+            for (int i = 1; i <= p; i++) {
+                for (int j = 1; j < t; j++) {
+                    for (int l = 0; l < courseIDList.size(); l++) {
                         int currentCourse = courseIDList.get(l);
                         for (int m : courseIDList) {
                             if (currentCourse != m) {
                                 tempList.clear();
                                 tempList.add(-buildMappingVariable(i, j,
-                                		currentCourse));
+                                        currentCourse));
                                 tempList.add(-buildMappingVariable(i, j + 1, m));
                                 clauses.add(convertToIntegerArray(tempList));
-                                if (j<t-1) {
-                                	tempList.clear();
-                                	tempList.add(-buildMappingVariable(i, j,
-                                			currentCourse));
-                                	tempList.add(-buildMappingVariable(i, j + 2, m));
-                                	clauses.add(convertToIntegerArray(tempList));
+                                if (j < t - 1) {
+                                    tempList.clear();
+                                    tempList.add(-buildMappingVariable(i, j,
+                                            currentCourse));
+                                    tempList.add(-buildMappingVariable(i,
+                                            j + 2, m));
+                                    clauses.add(convertToIntegerArray(tempList));
                                 }
                             }
                         }
                     }
-    			}
-    		}
+                }
+            }
 
-    		
-    	}
+        }
 
     }
-    
+
     /**
-     * @summary Converts the list into a Integer Array, which 
-     * is necessary to fill the SAT Solver.
+     * @summary This methods puts the courses who are dancing in all 3
+     *          performances at the end of each performance
+     * @param courses
+     * @param t
+     */
+    private void addAdvancedAtTheEnd(List<Course> courses, int t) {
+        Map<String, int[]> usedCourses = new HashMap<String, int[]>();
+        int movedCourses = 0;
+
+        /*
+         * positions: int 1 = in welche aufführung der jeweilige kurs gemappt
+         * werden soll. int 2 = an die wievielte stelle im timeslot der kurs
+         * soll. 0 -> 20-0. erster kurs der gemappt wurde. beim wert 1 -> 20-1
+         * wird der kurs auf den vorletzten kurs gemappt etc.
+         */
+        for (int i = 0; i < courses.size(); i++) {
+            Course tempCourse = courses.get(i);
+
+            if (tempCourse.getAmountPerformances() == 3) {
+                if (usedCourses.containsKey(tempCourse.getName())) {
+                    int[] positions = usedCourses.get(tempCourse.getName());
+                    positions[0] += 1;
+                    int[] temp = { buildMappingVariable(positions[0], t
+                            - positions[1], i + 1) };
+                    clauses.add(temp);
+                    usedCourses.put(tempCourse.getName(), positions);
+
+                } else {
+                    int[] temp = { buildMappingVariable(1, t - movedCourses,
+                            i + 1) };
+                    clauses.add(temp);
+                    int[] positions = { 1, movedCourses };
+                    usedCourses.put(tempCourse.getName(), positions);
+                    movedCourses++;
+                }
+            }
+        }
+
+    }
+
+    /**
+     * @summary Converts the list into a Integer Array, which is necessary to
+     *          fill the SAT Solver.
      * @param list
      * @return
      */
@@ -322,10 +386,10 @@ public class GenerateSatSolution {
 
         return intArray;
     }
-    
+
     /**
-     * @summary Maps back the Integer values to the original
-     * expressions like play, course or time slot.
+     * @summary Maps back the Integer values to the original expressions like
+     *          play, course or time slot.
      * @param solution
      * @param courses
      * @return
@@ -341,7 +405,7 @@ public class GenerateSatSolution {
         List<Course> list3 = new ArrayList<Course>();
         int perf;
         int course;
-        
+
         for (int i : solution) {
             if (i > 0) {
                 String temp = Integer.toString(i);
@@ -369,7 +433,7 @@ public class GenerateSatSolution {
                 }
             }
         }
-        
+
         p1.setCourses(list1);
         p2.setCourses(list2);
         p3.setCourses(list3);
@@ -380,7 +444,7 @@ public class GenerateSatSolution {
 
         return plan;
     }
-    
+
     /**
      * @summary Execution of the SAT Solver, finding of solutions.
      * @return
