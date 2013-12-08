@@ -46,6 +46,7 @@ public class GenerateSatSolution {
         clauses = new ArrayList<int[]>();
         Map<Integer, Performance> plan;
         int[] solution;
+        int movedCourses;
 
         List<Course> helpList = new ArrayList<Course>();
 
@@ -78,11 +79,11 @@ public class GenerateSatSolution {
         numberOfPlays = 3;
         numberOfSlots = newOrderOfCourses.size() / numberOfPlays;
 
-        addAdvancedAtTheEnd(newOrderOfCourses, numberOfSlots);
-        // addNotTwoOfAKind(newOrderOfCourses, numberOfCourses, numberOfSlots,
-        // numberOfPlays);
-        // add2SlotBrake(newOrderOfCourses, participantList, numberOfCourses,
-        // numberOfSlots, numberOfPlays);
+        movedCourses = addAdvancedAtTheEnd(newOrderOfCourses, numberOfSlots);
+        addNotTwoOfAKind(newOrderOfCourses, numberOfCourses, numberOfSlots,
+                numberOfPlays, movedCourses);
+        add2SlotBrake(newOrderOfCourses, participantList, numberOfCourses,
+                numberOfSlots, numberOfPlays);
         addBasicRestrictions(newOrderOfCourses, numberOfCourses, numberOfSlots,
                 numberOfPlays);
 
@@ -179,8 +180,8 @@ public class GenerateSatSolution {
      * @param t
      * @param p
      */
-    private void addNotTwoOfAKind(List<Course> courses, int k, int t, int p)
-            throws SatException {
+    private void addNotTwoOfAKind(List<Course> courses, int k, int t, int p,
+            int movedCourses) throws SatException {
         List<Integer> tempList = new ArrayList<Integer>();
         List<Integer> listBallets = new ArrayList<Integer>();
 
@@ -201,7 +202,7 @@ public class GenerateSatSolution {
                 }
             }
             System.out.println(countBallets);
-            if (countBallets * 2 - 1 > numberOfSlots) {
+            if (countBallets * 2 - 1 > numberOfSlots - movedCourses) {
                 throw new SatException(
                         "Too many Ballets in one Performance! Had to reshuffle!");
             }
@@ -336,7 +337,7 @@ public class GenerateSatSolution {
      * @param courses
      * @param t
      */
-    private void addAdvancedAtTheEnd(List<Course> courses, int t) {
+    private int addAdvancedAtTheEnd(List<Course> courses, int t) {
         Map<String, int[]> usedCourses = new HashMap<String, int[]>();
         int movedCourses = 0;
 
@@ -368,6 +369,7 @@ public class GenerateSatSolution {
                 }
             }
         }
+        return movedCourses;
 
     }
 
