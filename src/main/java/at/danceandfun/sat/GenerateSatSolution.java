@@ -18,6 +18,7 @@ import at.danceandfun.entity.Course;
 import at.danceandfun.entity.CourseParticipant;
 import at.danceandfun.entity.Participant;
 import at.danceandfun.entity.Performance;
+import at.danceandfun.entity.Style;
 import at.danceandfund.exception.SatException;
 
 public class GenerateSatSolution {
@@ -27,9 +28,11 @@ public class GenerateSatSolution {
     private int numberOfPlays;
     private ISolver solver;
     private Performance performance;
+    private Course dummyCourse;
     private List<Course> newOrderOfCourses;
     private List<Participant> participantList;
     private List<int[]> clauses;
+    private int dummies;
 
     /**
      * @precondition An amount of minimal 3 courses as input.
@@ -47,6 +50,8 @@ public class GenerateSatSolution {
         Map<Integer, Performance> plan;
         int[] solution;
         int movedCourses;
+        dummyCourse = generateDummyCourse();
+        dummies = 0;
 
         List<Course> helpList = new ArrayList<Course>();
 
@@ -70,14 +75,18 @@ public class GenerateSatSolution {
             newOrderOfCourses.add(newOrderOfCourses.size() / 3 * 2, c);
         }
 
-        /*
-         * Anzahl der verschiedenen Stile und verfügbare Timeslots in der
-         * Aufführung Zur Zeit muss die Anzahl der Kurse durch 3 (Anzahl der
-         * Aufführungen) teilbar sein. Z.B. 12 Kurse, 3 Aufführungen = 4 Slots
-         */
-        numberOfCourses = newOrderOfCourses.size();
         numberOfPlays = 3;
+
+        for (int i = 0; i < newOrderOfCourses.size() % numberOfPlays; i++) {
+            newOrderOfCourses.add(((newOrderOfCourses.size() / 3) + 1)
+                    * (2 - i), dummyCourse);
+            dummies++;
+        }
+
+        numberOfCourses = newOrderOfCourses.size();
         numberOfSlots = newOrderOfCourses.size() / numberOfPlays;
+
+        addDummyClauses(newOrderOfCourses);
 
         movedCourses = addAdvancedAtTheEnd(newOrderOfCourses, numberOfSlots);
         addNotTwoOfAKind(newOrderOfCourses, numberOfCourses, numberOfSlots,
@@ -110,7 +119,7 @@ public class GenerateSatSolution {
     }
 
     /**
-     * @summary This methods adds the basic restriction, which says, that each
+     * @summary This method adds the basic restriction, which says, that each
      *          time slot needs one course and that every course has to be used.
      * @param courses
      * @param k
@@ -236,7 +245,7 @@ public class GenerateSatSolution {
     }
 
     /**
-     * @summary This methods adds the restriction, which says, that if a
+     * @summary This method adds the restriction, which says, that if a
      *          participants dances in more than 1 course, there must be at
      *          least 2 breaks in between.
      * @param courses
@@ -332,7 +341,7 @@ public class GenerateSatSolution {
     }
 
     /**
-     * @summary This methods puts the courses who are dancing in all 3
+     * @summary This method puts the courses who are dancing in all 3
      *          performances at the end of each performance
      * @param courses
      * @param t
@@ -484,4 +493,46 @@ public class GenerateSatSolution {
         return null;
     }
 
+    /**
+     * @summary This method creates a dummy course to fill empty slots
+     */
+    private Course generateDummyCourse() {
+        dummyCourse = new Course();
+        Style dummyStyle = new Style();
+        dummyStyle.setName(" ");
+        dummyCourse.setName(" ");
+        dummyCourse.setStyle(dummyStyle);
+        dummyCourse.setAmountPerformances(0);
+        dummyCourse.setEnabled(true);
+
+        return dummyCourse;
+    }
+
+    /**
+     * @summary This method sets the dummy courses to beginning of the
+     *          performance
+     * @param courses
+     */
+    private void addDummyClauses(List<Course> courses) {
+        int foundDummies = 0;
+
+        if (dummies > 0) {
+            for (int i = courses.size() - 1; i >= 0; i--) {
+                if (courses.get(i).getName().equals(" ")) {
+                    if (foundDummies == 0) {
+                        int[] temp = { buildMappingVariable(3, 1, i + 1) };
+                        clauses.add(temp);
+                        foundDummies++;
+                    } else if (foundDummies == 1) {
+                        int[] temp = { buildMappingVariable(2, 1, i + 1) };
+                        clauses.add(temp);
+                        foundDummies++;
+                    }
+                }
+                if (foundDummies == dummies) {
+                    break;
+                }
+            }
+        }
+    }
 }
