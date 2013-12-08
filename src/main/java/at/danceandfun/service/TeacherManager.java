@@ -7,5 +7,5 @@ import at.danceandfun.entity.Teacher;
 
 public interface TeacherManager extends ManagerBase<Teacher> {
 
-    public List searchForTeachers(Course actualCourse, String query);
+    public List<Teacher> searchForTeachers(Course actualCourse, String query);
 }

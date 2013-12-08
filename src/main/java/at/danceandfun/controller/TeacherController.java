@@ -31,8 +31,7 @@ import at.danceandfun.service.TeacherManager;
 @RequestMapping(value = "admin/teacher")
 public class TeacherController {
 
-    private static Logger logger = Logger
-            .getLogger(TeacherController.class);
+    private static Logger logger = Logger.getLogger(TeacherController.class);
 
     private boolean editTrue = false;
 
@@ -206,7 +205,7 @@ public class TeacherController {
 
     @RequestMapping(value = "/getStyles", method = RequestMethod.GET)
     public @ResponseBody
-    List getStyles(@RequestParam("term") String query) {
+    List<Style> getStyles(@RequestParam("term") String query) {
         logger.debug("Entered :" + query);
 
         return styleManager.searchForStyles(teacher, query);
@@ -214,7 +213,7 @@ public class TeacherController {
 
     @RequestMapping(value = "/getCourses", method = RequestMethod.GET)
     public @ResponseBody
-    List getCourses(@RequestParam("term") String query) {
+    List<Course> getCourses(@RequestParam("term") String query) {
         logger.debug("Entered coursname:" + query);
 
         return courseManager.searchForCourses(teacher, query);

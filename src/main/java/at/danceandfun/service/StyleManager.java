@@ -8,7 +8,7 @@ import at.danceandfun.entity.Teacher;
 
 public interface StyleManager extends ManagerBase<Style> {
 
-    public List searchForStyles(Teacher actualTeacher, String query);
+    public List<Style> searchForStyles(Teacher actualTeacher, String query);
 
-    public List searchForStyles(Course actualCourse, String query);
+    public List<Style> searchForStyles(Course actualCourse, String query);
 }
