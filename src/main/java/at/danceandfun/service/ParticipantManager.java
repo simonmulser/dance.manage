@@ -10,5 +10,6 @@ public interface ParticipantManager extends ManagerBase<Participant> {
 
     public List<Participant> getParticipantsByNumberOfSiblings();
 
-    public List searchForSiblings(Participant actualParticipant, String query);
+    public List<Participant> searchForSiblings(Participant actualParticipant,
+            String query);
 }

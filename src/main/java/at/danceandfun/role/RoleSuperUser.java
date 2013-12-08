@@ -7,7 +7,7 @@ public class RoleSuperUser implements GrantedAuthority {
     /**
      * 
      */
-    private static final long serialVersionUID = 1472341919260465400L;
+    private static final long serialVersionUID = 1L;
 
     @Override
     public String getAuthority() {

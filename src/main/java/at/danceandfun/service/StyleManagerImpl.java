@@ -22,7 +22,7 @@ public class StyleManagerImpl extends ManagerBaseImpl<Style> implements
         setMainDao(styleDao);
     }
 
-    public List searchForStyles(Teacher actualTeacher, String query) {
+    public List<Style> searchForStyles(Teacher actualTeacher, String query) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Style.class);
 
         Criterion rest1 = Restrictions.like("name", query + "%");
@@ -40,7 +40,7 @@ public class StyleManagerImpl extends ManagerBaseImpl<Style> implements
         return styles;
     }
 
-    public List searchForStyles(Course actualCourse, String query) {
+    public List<Style> searchForStyles(Course actualCourse, String query) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Style.class);
 
         Criterion rest1 = Restrictions.like("name", query + "%");

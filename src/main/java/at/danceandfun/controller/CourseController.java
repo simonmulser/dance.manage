@@ -95,8 +95,7 @@ public class CourseController {
                     .getPid());
             course.setTeacher(newTeacher);
         } else {
-            logger.debug("Teacher ist null: "
-                    + course.getTeacher().getPid());
+            logger.debug("Teacher ist null: " + course.getTeacher().getPid());
             course.setTeacher(null);
         }
 
@@ -140,7 +139,7 @@ public class CourseController {
 
     @RequestMapping(value = "/getStyles", method = RequestMethod.GET)
     public @ResponseBody
-    List getStyles(@RequestParam("term") String query) {
+    List<Style> getStyles(@RequestParam("term") String query) {
         logger.debug("Entered :" + query);
 
         return styleManager.searchForStyles(course, query);
@@ -148,7 +147,7 @@ public class CourseController {
 
     @RequestMapping(value = "/getTeachers", method = RequestMethod.GET)
     public @ResponseBody
-    List getTeachers(@RequestParam("term") String query) {
+    List<Teacher> getTeachers(@RequestParam("term") String query) {
         logger.debug("Entered :" + query);
 
         return teacherManager.searchForTeachers(course, query);
