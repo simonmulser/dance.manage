@@ -3,6 +3,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
+<%@taglib uri="http://displaytag.sf.net" prefix="display"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 
 <dmtags:base title="nav.courses" activesection="courses">
@@ -27,7 +28,8 @@
 					<spring:message code="label.coursePlace" />*
 				</form:label>
 				<div class="span6">
-					<form:radiobuttons path="address.aid" items="${addressList}" itemValue="aid"  />
+					<form:radiobuttons path="address.aid" items="${addressList}"
+						itemValue="aid" />
 				</div>
 				<form:errors path="address" cssClass="error" />
 			</div>
@@ -38,7 +40,7 @@
 				<div class="span6">
 					<form:select path="duration">
 						<form:options items="${CourseDuration}" />
-					</form:select>	
+					</form:select>
 				</div>
 				<form:errors path="duration" cssClass="error" />
 			</div>
@@ -133,7 +135,8 @@
 						class="inline-tooltip icon icon-question-sign"></i>
 					<div id="showStyles">
 						<c:if test="${!empty course.style.sid }">
-							<span class="styleTag">${course.style.name}&nbsp;<i class="icon icon-remove"></i></span>
+							<span class="styleTag">${course.style.name}&nbsp;<i
+								class="icon icon-remove"></i></span>
 						</c:if>
 					</div>
 					<form:input path="style.sid" id="styleSid" type="hidden" />
@@ -151,7 +154,8 @@
 						class="inline-tooltip icon icon-question-sign"></i>
 					<div id="showTeacher">
 						<c:if test="${!empty course.teacher.pid }">
-							<span class="teacherTag">${course.teacher.firstname}&nbsp;${course.teacher.lastname}&nbsp;<i class="icon icon-remove"></i></span>
+							<span class="teacherTag">${course.teacher.firstname}&nbsp;${course.teacher.lastname}&nbsp;<i
+								class="icon icon-remove"></i></span>
 						</c:if>
 					</div>
 					<form:input path="teacher.pid" id="teacherPid" type="hidden" />
@@ -167,79 +171,80 @@
 			</div>
 		</form:form>
 	</dmtags:widget>
-	
+
 	<dmtags:widget title="widget.overview" style="table" icon="icon-list">
 		<c:if test="${!empty courseList}">
-			<table class="table table-striped table-bordered">
-				<thead>
-					<tr>
-						<th><spring:message code="label.coursename" /></th>
-						<th><spring:message code="label.courseduration" /></th>
-						<th><spring:message code="label.semesterPrice" /></th>
-						<th><spring:message code="label.yearPrice" /></th>
-						<th><spring:message code="label.courseweekday" /></th>
-						<th><spring:message code="label.coursetime" /></th>
-						<th><spring:message code="label.estimatedSpectators" /></th>
-						<th><spring:message code="label.ageGroup" /></th>
-						<th><spring:message code="label.amountPerformances" /></th>
-						<th><spring:message code="label.courselevel" /></th>
-						<th><spring:message code="label.teacher" /></th>
-						<th><spring:message code="label.style" /></th>
-						<th>&nbsp;</th>
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach items="${courseList}" var="course">
-						<tr>
-							<td>${course.name}</td>
-							<td>${course.duration}</td>
-							<td>${course.semesterPrice}</td>
-							<td>${course.yearPrice}</td>
-							<td>${course.weekday}</td>
-							<td><joda:format value="${course.time}"
-									pattern="HH:mm" /></td>
-							<td>${course.estimatedSpectators}</td>
-							<td>${course.ageGroup}</td>
-							<td>${course.amountPerformances}</td>
-							<td>${course.level}</td>
-							<td>${course.teacher.firstname}&nbsp;${course.teacher.lastname}</td>
-							<td>${course.style.name}</td>
-							<td><a href="course/edit/${course.cid}"><spring:message
-										code="label.edit" /></a> &nbsp; <a
-								href="course/delete/${course.cid}" id="openDialog"><spring:message
-										code="label.delete" /></a></td>
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
-			<div id="dialog-confirm" title="<spring:message code="delete.title" />">
-  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><spring:message code="delete.course" /></p>
-</div>
+
+			<display:table name="courseList" id="course"
+				class="table table-striped table-bordered displaytag" pagesize="15"
+				requestURI="/admin/course" defaultsort="1">
+				<display:column sortable="true" titleKey="label.coursename">
+					<c:out value="${course.name}" />
+				</display:column>
+				<display:column sortable="true" titleKey="label.semesterPrice">
+					&euro; <c:out value="${course.semesterPrice}" />
+				</display:column>
+				<display:column sortable="true" titleKey="label.yearPrice">
+					&euro; <c:out value="${course.yearPrice}" />
+				</display:column>
+				<display:column sortable="true" titleKey="label.courseweekday">
+					<c:out value="${course.weekday}," />&nbsp;
+					<joda:format value="${course.time}"
+									pattern="HH:mm" />
+				</display:column>
+				<display:column sortable="true" titleKey="label.courseduration">
+					<c:out value="${course.duration}" />
+				</display:column>
+				<display:column sortable="true" titleKey="label.estimatedSpectators">
+					<c:out value="${course.estimatedSpectators}" />
+				</display:column>
+				<display:column sortable="true" titleKey="label.amountPerformances">
+					<c:out value="${course.amountPerformances}" />
+				</display:column>
+				<display:column sortable="true" titleKey="label.teacher">
+					<c:out value="${course.teacher.firstname}" />
+				</display:column>
+				<display:column>
+					<c:set var="cid" value="${course.cid}" />
+					<a href="course/edit/${cid}"><spring:message code="label.edit" /></a><br /> 
+					<a href="course/delete/${cid}" class="openDialog"><spring:message code="label.delete" /></a>
+				</display:column>
+			</display:table>
+
+
+			<div id="dialog-confirm"
+				title="<spring:message code="delete.title" />">
+				<p>
+					<span class="ui-icon ui-icon-alert"
+						style="float: left; margin: 0 7px 20px 0;"></span>
+					<spring:message code="delete.course" />
+				</p>
+			</div>
 		</c:if>
 	</dmtags:widget>
 
 </dmtags:base>
 <script type="text/javascript">
 	$('i').tooltip();
-	$( "#openDialog" ).click(function() {
-	      $( "#dialog-confirm" ).dialog( "open" );
-	      return false;
-	    });
-	$( "#dialog-confirm" ).dialog({
-		  autoOpen:false,
-	      resizable: false,
-	      modal: true,
-	      buttons: {
-	        "OK": function() {
-	        document.location = $("#openDialog").attr("href");
-	        
-	          $( this ).dialog( "close" );
-	        },
-	        Cancel: function() {
-	          $( this ).dialog( "close" );
-	        }
-	      }
-	    });
+	$(".openDialog").click(function() {
+		$("#dialog-confirm").dialog("open");
+		return false;
+	});
+	$("#dialog-confirm").dialog({
+		autoOpen : false,
+		resizable : false,
+		modal : true,
+		buttons : {
+			"OK" : function() {
+				document.location = $(".openDialog").attr("href");
+
+				$(this).dialog("close");
+			},
+			Cancel : function() {
+				$(this).dialog("close");
+			}
+		}
+	});
 	$(document)
 			.ready(
 					function() {
