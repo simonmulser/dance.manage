@@ -6,6 +6,7 @@
 <%@taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%-- <%@ page import="org.joda.time.*" %> --%>
 
 <dmtags:base title="nav.home" activesection="dashboard">
 	<c:choose>
@@ -72,9 +73,9 @@
 
 
 
-	<dmtags:widget title="widget.courses" style="nopad" icon="icon-list">
-		<div id='calendar'></div>
-	</dmtags:widget>
+<%-- 	<dmtags:widget title="widget.courses" style="nopad" icon="icon-list"> --%>
+<!-- 		<div id='calendar'></div> -->
+<%-- 	</dmtags:widget> --%>
 
 
 
@@ -117,14 +118,22 @@
 		</c:otherwise>
 	</c:choose>
 </dmtags:base>
-
 <script>
+
+
+<%-- <% --%>
+// 	int weekDay = (Integer)pageContext.getAttribute("courseParticipant.key.course.weekday");
+// 	LocalDate now = new LocalDate();
+// 	LocalDate weekDayDate = now.withDayOfWeek(weekDay);
+// 	pageContext.setAttribute("weekDayDate", weekDayDate);
+<%-- %> --%>
+
 var courseData = [
 <c:forEach items="${user.courseParticipants}" var="courseParticipant"
 	varStatus="loop">
 	        {
               title: '${courseParticipant.key.course.name}',
-              start: 'T<fmt:formatDate value="${courseParticipant.key.course.time}" pattern="HH:mm" />',
+              start: 'T<joda:format value="${courseParticipant.key.course.time}" pattern="HH:mm" />',
             },
 </c:forEach>
 ];
@@ -136,12 +145,19 @@ $(document).ready(function() {
     var y = date.getFullYear();
     var calendar = $('#calendar').fullCalendar({
       header: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'month,agendaWeek,agendaDay'
+        left: '',
+        center: '',
+        right: '',
       },
       selectable: true,
       selectHelper: true,
+      defaultView: 'agendaWeek',
+      allDaySlot: false,
+      axisFormat: 'HH:mm',
+      minTime: 10,
+      firstHour: 12,
+      firstDay: 1,
+      columnFormat: 'dddd',
       select: function(start, end, allDay) {
         var title = prompt('Event Title:');
         if (title) {
