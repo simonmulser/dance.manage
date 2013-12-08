@@ -86,10 +86,10 @@
 					<c:forEach items="${courses}" var="course">
 						<tr>
 							<td>${course.name}</td>
-							<td>${course.ageGroup}</td>
-							<td>${course.level}</td>
+							<td><spring:message code="${course.ageGroup.i18nIdentifier}" /></td>
+							<td><spring:message code="${course.level.i18nIdentifier}" /></td>
 							<td>${course.courseParticipants.size()}</td>
-							<td>${course.estimatedSpectators}</td>
+							<td><spring:message code="${course.estimatedSpectators.i18nIdentifier}" /></td>
 							<td>${course.amountPerformances}</td>
 						</tr>
 					</c:forEach>

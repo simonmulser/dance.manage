@@ -37,7 +37,7 @@
 				</form:label>
 				<div class="span6">
 					<form:select path="duration">
-						<form:options items="${CourseDuration}" />
+						<form:options items="${CourseDuration}" itemValue="value" itemLabel="label" />
 					</form:select>	
 				</div>
 				<form:errors path="duration" cssClass="error" />
@@ -66,7 +66,7 @@
 				</form:label>
 				<div class="span6">
 					<form:select path="weekday">
-						<form:options items="${WeekDay}" />
+						<form:options items="${WeekDay}" itemValue="value" itemLabel="label" />
 					</form:select>
 				</div>
 				<form:errors path="weekday" cssClass="error" />
@@ -86,7 +86,7 @@
 				</form:label>
 				<div class="span6">
 					<form:select path="estimatedSpectators">
-						<form:options items="${SpectatorAmount}" />
+						<form:options items="${SpectatorAmount}" itemValue="value" itemLabel="label"/>
 					</form:select>
 				</div>
 				<form:errors path="estimatedSpectators" cssClass="error" />
@@ -97,7 +97,7 @@
 				</form:label>
 				<div class="span6">
 					<form:select path="ageGroup">
-						<form:options items="${AgeGroup}" />
+						<form:options items="${AgeGroup}" itemValue="value" itemLabel="label"/>
 					</form:select>
 				</div>
 				<form:errors path="ageGroup" cssClass="error" />
@@ -117,7 +117,7 @@
 				</form:label>
 				<div class="span6">
 					<form:select path="level">
-						<form:options items="${CourseLevel}" />
+						<form:options items="${CourseLevel}" itemValue="value" itemLabel="label"/>
 					</form:select>
 				</div>
 				<form:errors path="level" cssClass="error" />
@@ -192,16 +192,16 @@
 					<c:forEach items="${courseList}" var="course">
 						<tr>
 							<td>${course.name}</td>
-							<td>${course.duration}</td>
+							<td><spring:message code="${course.duration.i18nIdentifier}" /></td>
 							<td>${course.semesterPrice}</td>
 							<td>${course.yearPrice}</td>
-							<td>${course.weekday}</td>
+							<td><spring:message code="${course.weekday.i18nIdentifier}" /></td>
 							<td><joda:format value="${course.time}"
 									pattern="HH:mm" /></td>
-							<td>${course.estimatedSpectators}</td>
-							<td>${course.ageGroup}</td>
+							<td><spring:message code="${course.estimatedSpectators.i18nIdentifier}" /></td>
+							<td><spring:message code="${course.ageGroup.i18nIdentifier}" /></td>
 							<td>${course.amountPerformances}</td>
-							<td>${course.level}</td>
+							<td><spring:message code="${course.level.i18nIdentifier}" /></td>
 							<td>${course.teacher.firstname}&nbsp;${course.teacher.lastname}</td>
 							<td>${course.style.name}</td>
 							<td><a href="course/edit/${course.cid}"><spring:message

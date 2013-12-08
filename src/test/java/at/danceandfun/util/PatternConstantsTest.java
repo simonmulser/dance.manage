@@ -1,4 +1,4 @@
-package at.danceandfun.service;
+package at.danceandfun.util;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import at.danceandfun.util.PatternConstants;
 
-public class PatternTester {
+public class PatternConstantsTest {
 
     @Test
     public void testNamePattern() {

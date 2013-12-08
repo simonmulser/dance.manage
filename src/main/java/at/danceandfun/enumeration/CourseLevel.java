@@ -1,5 +1,11 @@
 package at.danceandfun.enumeration;
 
+import java.util.Locale;
+
+import org.springframework.context.i18n.LocaleContextHolder;
+
+import at.danceandfun.util.AppContext;
+
 public enum CourseLevel {
     BEGINNER(0), INTERMEDIATE(1), ADVANCED(2);
 
@@ -22,5 +28,16 @@ public enum CourseLevel {
             }
         }
         return courseLevel;
+    }
+
+    public String getLabel() {
+        Locale locale = LocaleContextHolder.getLocale();
+        return AppContext.getApplicationContext().getMessage(
+                getI18nIdentifier(), null, locale);
+    }
+
+    public String getI18nIdentifier() {
+        return this.getClass().getSimpleName().toLowerCase() + "."
+                + parse(value).name().toLowerCase();
     }
 }

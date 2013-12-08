@@ -67,6 +67,8 @@
         <property name="defaultEncoding" value="UTF-8"></property>
     </bean>
     
+    <bean id="contextApplicationContextProvider" class="at.danceandfun.util.ApplicationContextProvider" />
+    
     <import resource="classpath:dao.xml" />
     
 </beans>
