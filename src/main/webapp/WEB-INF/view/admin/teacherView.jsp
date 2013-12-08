@@ -83,40 +83,23 @@
 					<th><spring:message code="label.name" /></th>
 					<th><spring:message code="label.email" /></th>
 					<th><spring:message code="label.telephone" /></th>
-					<th><spring:message code="label.birthday" /></th>
 					<th><spring:message code="label.svnr" /></th>
 					<th><spring:message code="label.salary" /></th>
 					<th><spring:message code="label.engagementDate" /></th>
-					<th><spring:message code="label.street" /></th>
-					<th><spring:message code="label.zip" /></th>
-					<th><spring:message code="label.city" /></th>
+					<th><spring:message code="label.styles" /></th>
+					<th><spring:message code="label.courses" /></th>
 					<th>&nbsp;</th>
 				</tr>
 
 				<c:forEach items="${teacherList}" var="teacher">
 					<tr>
-						<td>${teacher.lastname}&nbsp;${teacher.firstname}</td>
+						<td>${teacher.firstname}&nbsp;${teacher.lastname}</td>
 						<td>${teacher.email}</td>
 						<td>${teacher.telephone}</td>
-						<td><joda:format value="${teacher.birthday}"
-								pattern="dd.MM.yyyy" /></td>
 						<td>${teacher.svnr}</td>
 						<td>&euro;${teacher.salary}</td>
 						<td><joda:format value="${teacher.engagementDate}"
 								pattern="dd.MM.yyyy" /></td>
-						<c:choose>
-							<c:when test="${!empty teacher.address}">
-								<td>${teacher.address.street}&nbsp;
-									${teacher.address.number}/${teacher.address.stair}/${teacher.address.door}</td>
-								<td>${teacher.address.zip}</td>
-								<td>${teacher.address.city}</td>
-							</c:when>
-							<c:otherwise>
-								<td></td>
-								<td></td>
-								<td></td>
-							</c:otherwise>
-						</c:choose>
 						<c:choose>
 							<c:when test="${!empty teacher.styles}">
 								<td><c:forEach items="${teacher.styles}" var="style"
@@ -142,8 +125,8 @@
 							</c:otherwise>
 						</c:choose>
 						<td><a href="teacher/edit/${teacher.pid}"><spring:message
-									code="label.edit" /></a></td>
-						<td><a href="teacher/delete/${teacher.pid}" id="openDialog"><spring:message
+									code="label.edit" /></a><br />
+						<a href="teacher/delete/${teacher.pid}" class="openDialog"><spring:message
 									code="label.delete" /></a></td>
 					</tr>
 				</c:forEach>
@@ -156,7 +139,7 @@
 </dmtags:base>
 <script type="text/javascript">
 	$('i').tooltip();
-	$( "#openDialog" ).click(function() {
+	$( ".openDialog" ).click(function() {
 	      $( "#dialog-confirm" ).dialog( "open" );
 	      return false;
 	    });
@@ -166,7 +149,7 @@
 	      modal: true,
 	      buttons: {
 	        "OK": function() {
-	        document.location = $("#openDialog").attr("href");
+	        document.location = $(".openDialog").attr("href");
 	        
 	          $( this ).dialog( "close" );
 	        },
