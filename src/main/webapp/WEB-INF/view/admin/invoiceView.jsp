@@ -6,6 +6,10 @@
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 
 <dmtags:base title="nav.invoices" activesection="invoices">
-	<dmtags:widget icon="icon-envelope" title="widget.courses">
+	<dmtags:widget icon="icon-envelope" title="widget.invoices">
+		<spring:message code="help.invoice" />
+	</dmtags:widget>
+	<dmtags:widget title="widget.overview" style="table" icon="icon-list">
+		
 	</dmtags:widget>
 </dmtags:base>

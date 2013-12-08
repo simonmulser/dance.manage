@@ -43,7 +43,7 @@ public class CourseController {
     @Autowired
     private AddressManager addressManager;
 
-    private Course course = new Course();
+    private Course course;
 
     @PostConstruct
     public void init() {
