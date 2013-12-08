@@ -40,7 +40,7 @@ public class TeacherManagerTest {
 
         Course actualCourse = courseManager.get(2);
         List<Teacher> possibleTeachers = teacherManager.searchForTeachers(
-                actualCourse, "Jul");
+                actualCourse, "Cari");
 
         assertThat(possibleTeachers.get(0), is(notNullValue()));
     }
