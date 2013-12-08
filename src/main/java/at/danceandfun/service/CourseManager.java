@@ -8,7 +8,8 @@ import at.danceandfun.entity.Teacher;
 
 public interface CourseManager extends ManagerBase<Course> {
 
-    public List searchForCourses(Participant actualParticipant, String query);
+    public List<Course> searchForCourses(Participant actualParticipant,
+            String query);
 
-    public List searchForCourses(Teacher actualTeacher, String query);
+    public List<Course> searchForCourses(Teacher actualTeacher, String query);
 }

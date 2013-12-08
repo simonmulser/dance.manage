@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 
 @Entity
 @Table(name = "INVOICE")
@@ -30,12 +30,12 @@ public class Invoice extends EntityBase {
     @GeneratedValue
     private Integer iid;
 
-    @Column(name = "DATE")
+    @Column(name = "DATETIME")
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
-    private DateTime date;
+    private LocalDateTime invoiceDateTime;
 
-    @Column(name = "CANCELED")
-    private boolean canceled;
+    @Column(name = "ENABLED")
+    private boolean enabled;
 
     @ManyToOne
     @JoinColumn(name = "P_ID")
@@ -55,20 +55,20 @@ public class Invoice extends EntityBase {
         this.iid = iid;
     }
 
-    public DateTime getDate() {
-        return date;
+    public LocalDateTime getDate() {
+        return invoiceDateTime;
     }
 
-    public void setDate(DateTime date) {
-        this.date = date;
+    public void setDate(LocalDateTime date) {
+        this.invoiceDateTime = date;
     }
 
-    public boolean isCanceled() {
-        return canceled;
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setCanceled(boolean canceled) {
-        this.canceled = canceled;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public Person getOwner() {

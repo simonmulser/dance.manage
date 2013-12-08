@@ -11,8 +11,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "POSITION")
 @AssociationOverrides({
-        @AssociationOverride(name = "key.invoice", joinColumns = @JoinColumn(name = "INVOICE_ID")),
-        @AssociationOverride(name = "key.course", joinColumns = @JoinColumn(name = "COURSE_ID")) })
+        @AssociationOverride(name = "key.invoice", joinColumns = @JoinColumn(name = "I_ID")),
+        @AssociationOverride(name = "key.course", joinColumns = @JoinColumn(name = "C_ID")) })
 public class Position extends EntityBase {
 
     /**

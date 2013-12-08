@@ -7,7 +7,7 @@ public class RoleParent implements GrantedAuthority {
     /**
      * 
      */
-    private static final long serialVersionUID = -4184308166366598483L;
+    private static final long serialVersionUID = 1L;
 
     @Override
     public String getAuthority() {

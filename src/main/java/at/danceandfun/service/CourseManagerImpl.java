@@ -23,7 +23,8 @@ public class CourseManagerImpl extends ManagerBaseImpl<Course> implements
         setMainDao(courseDao);
     }
 
-    public List searchForCourses(Participant actualParticipant, String query) {
+    public List<Course> searchForCourses(Participant actualParticipant,
+            String query) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Course.class);
 
         Criterion rest1 = Restrictions.like("name", query + "%");
@@ -44,7 +45,7 @@ public class CourseManagerImpl extends ManagerBaseImpl<Course> implements
         return courses;
     }
 
-    public List searchForCourses(Teacher actualTeacher, String query) {
+    public List<Course> searchForCourses(Teacher actualTeacher, String query) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Course.class);
 
         Criterion rest1 = Restrictions.like("name", query + "%");

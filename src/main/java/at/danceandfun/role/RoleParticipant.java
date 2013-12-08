@@ -7,7 +7,7 @@ public class RoleParticipant implements GrantedAuthority {
     /**
      * 
      */
-    private static final long serialVersionUID = 5848435287479058926L;
+    private static final long serialVersionUID = 1L;
 
     @Override
     public String getAuthority() {

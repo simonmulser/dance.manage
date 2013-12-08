@@ -38,7 +38,6 @@ public class ParticipantController {
 
     private boolean editTrue = false;
 
-
     @Autowired
     private ParticipantManager participantManager;
     @Autowired
@@ -58,7 +57,7 @@ public class ParticipantController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String listParticipants(ModelMap map) {
         logger.debug("LIST Participant with id " + participant.getPid());
-        
+
         if (!editTrue) {
             participant = new Participant();
         }
@@ -212,7 +211,7 @@ public class ParticipantController {
 
     @RequestMapping(value = "/getSiblings", method = RequestMethod.GET)
     public @ResponseBody
-    List getSiblings(@RequestParam("term") String query) {
+    List<Participant> getSiblings(@RequestParam("term") String query) {
         logger.debug("Entered :" + query);
 
         return participantManager.searchForSiblings(participant, query);
@@ -220,7 +219,7 @@ public class ParticipantController {
 
     @RequestMapping(value = "/getCourses", method = RequestMethod.GET)
     public @ResponseBody
-    List getCourses(@RequestParam("term") String query) {
+    List<Course> getCourses(@RequestParam("term") String query) {
         logger.debug("Entered coursname:" + query);
 
         return courseManager.searchForCourses(participant, query);

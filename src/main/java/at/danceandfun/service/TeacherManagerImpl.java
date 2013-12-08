@@ -21,7 +21,7 @@ public class TeacherManagerImpl extends ManagerBaseImpl<Teacher> implements
         setMainDao(teacherDao);
     }
 
-    public List searchForTeachers(Course actualCourse, String query) {
+    public List<Teacher> searchForTeachers(Course actualCourse, String query) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Teacher.class);
 
         Criterion rest1 = Restrictions.like("firstname", query + "%");

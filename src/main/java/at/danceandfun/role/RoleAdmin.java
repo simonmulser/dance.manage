@@ -7,7 +7,7 @@ public class RoleAdmin implements GrantedAuthority {
     /**
      * 
      */
-    private static final long serialVersionUID = 8950152444737081757L;
+    private static final long serialVersionUID = 1L;
 
     @Override
     public String getAuthority() {
