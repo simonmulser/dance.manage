@@ -8,7 +8,6 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <dmtags:base title="nav.home" activesection="dashboard">
-${name} ${editProfileLink}
 	<c:choose>
 		<c:when test="${user.courseParticipants.size() gt 0}">
 			<dmtags:widget title="widget.courses" style="table" icon="icon-list">

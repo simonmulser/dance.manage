@@ -36,35 +36,35 @@ public class SecurityController {
             Admin admin = (Admin) SecurityContextHolder.getContext()
                     .getAuthentication().getPrincipal();
             session.setAttribute("user", admin);
-            session.setAttribute("editProfileLink", "todo");
+            session.setAttribute("editProfileLink", "#");
             return "redirect:/admin";
         }
         if (request.isUserInRole("ROLE_PARTICIPANT")) {
             Participant participant = (Participant) SecurityContextHolder
                     .getContext().getAuthentication().getPrincipal();
             session.setAttribute("user", participant);
-            session.setAttribute("editProfileLink", "todo");
+            session.setAttribute("editProfileLink", "/participant/edit");
             return "redirect:/participant";
         }
         if (request.isUserInRole("ROLE_PARENT")) {
             Parent parent = (Parent) SecurityContextHolder.getContext()
                     .getAuthentication().getPrincipal();
             session.setAttribute("user", parent);
-            session.setAttribute("editProfileLink", "todo");
+            session.setAttribute("editProfileLink", "#");
             return "redirect:/parent";
         }
         if (request.isUserInRole("ROLE_TEACHER")) {
             Teacher teacher = (Teacher) SecurityContextHolder.getContext()
                     .getAuthentication().getPrincipal();
             session.setAttribute("user", teacher);
-            session.setAttribute("editProfileLink", "todo");
+            session.setAttribute("editProfileLink", "#");
             return "redirect:/teacher";
         }
         if (request.isUserInRole("ROLE_SUPERUSER")) {
             SuperUser superUser = (SuperUser) SecurityContextHolder
                     .getContext().getAuthentication().getPrincipal();
             session.setAttribute("user", superUser);
-            session.setAttribute("editProfileLink", "todo");
+            session.setAttribute("editProfileLink", "#");
             return "redirect:/admin";
         }
 
