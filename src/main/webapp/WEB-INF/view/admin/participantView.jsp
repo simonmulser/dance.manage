@@ -80,7 +80,7 @@
 			<display:table name="participantList" id="row"
 				class="table table-striped table-bordered displaytag" pagesize="15"
 				requestURI="/admin/participant" defaultsort="1">
-				<display:column sortable="true" titleKey="label.name">
+				<display:column sortable="true" titleKey="label.name" class="colName">
 					<c:out value="${row.firstname} ${row.lastname}" />
 				</display:column>
 				<display:column sortable="true" titleKey="label.email">
@@ -89,14 +89,11 @@
 				<display:column sortable="true" titleKey="label.telephone">
 					<c:out value="${row.telephone}" />
 				</display:column>
-				<display:column sortable="true" titleKey="label.birthday">
+				<display:column sortable="true" titleKey="label.birthday" class="colBirthday">
 					<joda:format value="${row.birthday}" pattern="dd.MM.yyyy" />
 				</display:column>
-				<display:column sortable="true" titleKey="label.contactPerson">
-					<c:out value="${row.contactPerson}" />
-				</display:column>
-				<display:column sortable="true" titleKey="label.emergencyNumber">
-					<c:out value="${row.emergencyNumber}" />
+				<display:column sortable="true" titleKey="label.contactPerson" class="colContact">
+					<c:out value="${row.contactPerson}, ${row.emergencyNumber}" /> 
 				</display:column>
 				<display:column sortable="true" titleKey="label.street">
 					<c:out
@@ -105,7 +102,7 @@
 				<display:column sortable="true" titleKey="label.zip">
 					<c:out value="${row.address.zip}" />
 				</display:column>
-				<display:column sortable="true" titleKey="label.city">
+				<display:column sortable="true" titleKey="label.city" class="colCity">
 					<c:out value="${row.address.city}" />
 				</display:column>
 				<display:column titleKey="label.siblings">
