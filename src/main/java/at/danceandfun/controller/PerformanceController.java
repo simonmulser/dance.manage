@@ -14,10 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import at.danceandfun.entity.Course;
+import at.danceandfun.entity.Participant;
 import at.danceandfun.entity.Performance;
-import at.danceandfun.sat.GenerateCNF;
+import at.danceandfun.sat.GenerateSatSolution;
 import at.danceandfun.service.CourseManager;
+import at.danceandfun.service.ParticipantManager;
 import at.danceandfun.service.PerformanceManager;
+import at.danceandfund.exception.SatException;
 
 @Controller
 @RequestMapping(value = "admin/performance")
@@ -30,6 +33,8 @@ public class PerformanceController {
     private PerformanceManager performanceManager;
     @Autowired
     private CourseManager courseManager;
+    @Autowired
+    private ParticipantManager participantManager;
 
     private Performance performance = new Performance();
     private Performance tempPerformance1 = new Performance();
@@ -52,21 +57,30 @@ public class PerformanceController {
         logger.debug("BUILD performance");
         Map<Integer, Performance> plan = new HashMap<Integer, Performance>();
         List<Course> courses = courseManager.getEnabledList();
-        Collections.shuffle(courses);
+        List<Participant> participantList = participantManager.getEnabledList();
+        // Collections.shuffle(courses);
 
-        GenerateCNF sat = new GenerateCNF();
-        try {
-            plan = sat.generatePerformance(courses);
-        } catch (IOException e) {
-            e.printStackTrace();
+        GenerateSatSolution sat = new GenerateSatSolution();
+
+        while (true) {
+            try {
+                plan = sat.generatePerformance(courses, participantList);
+                break;
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SatException s) {
+                System.out.println(s.getMessage());
+                Collections.shuffle(courses);
+                continue;
+            }
         }
 
         tempPerformance1 = plan.get(1);
         tempPerformance2 = plan.get(2);
         tempPerformance3 = plan.get(3);
-        performanceManager.save(tempPerformance1);
-        performanceManager.save(tempPerformance2);
-        performanceManager.save(tempPerformance3);
+        // performanceManager.save(tempPerformance1);
+        // performanceManager.save(tempPerformance2);
+        // performanceManager.save(tempPerformance3);
         performance = new Performance();
 
         return "redirect:/admin/performance";
