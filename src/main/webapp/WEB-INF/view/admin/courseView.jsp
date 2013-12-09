@@ -39,7 +39,7 @@
 				</form:label>
 				<div class="span6">
 					<form:select path="duration">
-						<form:options items="${CourseDuration}" itemValue="value" itemLabel="label" />
+						<form:options items="${CourseDuration}"  itemLabel="label" />
 					</form:select>	
 				</div>
 				<form:errors path="duration" cssClass="error" />
@@ -68,7 +68,7 @@
 				</form:label>
 				<div class="span6">
 					<form:select path="weekday">
-						<form:options items="${WeekDay}" itemValue="value" itemLabel="label" />
+						<form:options items="${WeekDay}" itemLabel="label" />
 					</form:select>
 				</div>
 				<form:errors path="weekday" cssClass="error" />
@@ -88,7 +88,7 @@
 				</form:label>
 				<div class="span6">
 					<form:select path="estimatedSpectators">
-						<form:options items="${SpectatorAmount}" itemValue="value" itemLabel="label"/>
+						<form:options items="${SpectatorAmount}" itemLabel="label"/>
 					</form:select>
 				</div>
 				<form:errors path="estimatedSpectators" cssClass="error" />
@@ -99,7 +99,7 @@
 				</form:label>
 				<div class="span6">
 					<form:select path="ageGroup">
-						<form:options items="${AgeGroup}" itemValue="value" itemLabel="label"/>
+						<form:options items="${AgeGroup}" itemLabel="label"/>
 					</form:select>
 				</div>
 				<form:errors path="ageGroup" cssClass="error" />
@@ -119,7 +119,7 @@
 				</form:label>
 				<div class="span6">
 					<form:select path="level">
-						<form:options items="${CourseLevel}" itemValue="value" itemLabel="label"/>
+						<form:options items="${CourseLevel}" itemLabel="label"/>
 					</form:select>
 				</div>
 				<form:errors path="level" cssClass="error" />
