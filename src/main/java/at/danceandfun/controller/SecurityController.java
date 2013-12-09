@@ -36,6 +36,7 @@ public class SecurityController {
             Admin admin = (Admin) SecurityContextHolder.getContext()
                     .getAuthentication().getPrincipal();
             session.setAttribute("user", admin);
+            session.setAttribute("userType", "admin");
             session.setAttribute("editProfileLink", "#");
             return "redirect:/admin";
         }
@@ -43,6 +44,7 @@ public class SecurityController {
             Participant participant = (Participant) SecurityContextHolder
                     .getContext().getAuthentication().getPrincipal();
             session.setAttribute("user", participant);
+            session.setAttribute("userType", "participant");
             session.setAttribute("editProfileLink", "/participant/edit");
             return "redirect:/participant";
         }
@@ -50,6 +52,7 @@ public class SecurityController {
             Parent parent = (Parent) SecurityContextHolder.getContext()
                     .getAuthentication().getPrincipal();
             session.setAttribute("user", parent);
+            session.setAttribute("userType", "parent");
             session.setAttribute("editProfileLink", "#");
             return "redirect:/parent";
         }
@@ -57,6 +60,7 @@ public class SecurityController {
             Teacher teacher = (Teacher) SecurityContextHolder.getContext()
                     .getAuthentication().getPrincipal();
             session.setAttribute("user", teacher);
+            session.setAttribute("userType", "teacher");
             session.setAttribute("editProfileLink", "#");
             return "redirect:/teacher";
         }
@@ -64,6 +68,7 @@ public class SecurityController {
             SuperUser superUser = (SuperUser) SecurityContextHolder
                     .getContext().getAuthentication().getPrincipal();
             session.setAttribute("user", superUser);
+            session.setAttribute("userType", "superUser");
             session.setAttribute("editProfileLink", "#");
             return "redirect:/admin";
         }

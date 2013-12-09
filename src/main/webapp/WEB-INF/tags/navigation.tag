@@ -6,7 +6,6 @@
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 
 <dmtags:upperNavigation />
-
 <div class="navbar navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container">
@@ -53,41 +52,51 @@
 	<div class="subnavbar-inner">
 		<div class="container">
 			<ul class="mainnav">
-				<li
-					<c:if test="${activesection eq 'dashboard'}">class="active"</c:if>><a
-					href="/dancemanage/admin"><i class="icon-dashboard"></i><span><spring:message
-								code="nav.dashboard" /></span> </a></li>
-				<li <c:if test="${activesection eq 'courses'}">class="active"</c:if>><a
-					href="/dancemanage/admin/course"><i class="icon-calendar"></i><span><spring:message
-								code="nav.courses" /></span> </a></li>
-				<li
-					<c:if test="${activesection eq 'invoices'}">class="active"</c:if>><a
-					href="/dancemanage/admin/invoice"><i class="icon-envelope"></i><span><spring:message
-								code="nav.invoices" /></span> </a></li>
-				<li
-					<c:if test="${activesection eq 'lists'}">class="active"</c:if>><a
-					href="/dancemanage/admin/lists"><i class="icon-list"></i><span><spring:message
-								code="nav.lists" /></span> </a></li>
-				<li
-					<c:if test="${activesection eq 'statistics'}">class="active"</c:if>><a
-					href="/dancemanage/admin/statistics"><i class="icon-bar-chart"></i><span><spring:message
-								code="nav.statistics" /></span> </a></li>				
-				<li
-					class="<c:if test="${activesection eq 'participants' or activesection eq 'teachers'}">active</c:if> dropdown"><a
-					href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
-						<i class="icon-user"></i><span><spring:message
-								code="nav.persons" /></span> <b class="caret"></b>
-				</a>
-					<ul class="dropdown-menu">
-						<li><a href="/dancemanage/admin/participant"><spring:message
-									code="nav.participants" /></a></li>
-						<li><a href="/dancemanage/admin/teacher"><spring:message
-									code="nav.teachers" /></a></li>
-					</ul></li>
+				<c:if test="${userType eq 'admin'}">
 
-				<li <c:if test="${activesection eq 'performances'}">class="active"</c:if>><a
-					href="/dancemanage/admin/performance"><i class="icon-camera"></i><span><spring:message
-								code="nav.performances" /></span> </a></li>
+					<li
+						<c:if test="${activesection eq 'dashboard'}">class="active"</c:if>><a
+						href="/dancemanage/admin"><i class="icon-dashboard"></i><span><spring:message
+									code="nav.dashboard" /></span> </a></li>
+					<li
+						<c:if test="${activesection eq 'courses'}">class="active"</c:if>><a
+						href="/dancemanage/admin/course"><i class="icon-calendar"></i><span><spring:message
+									code="nav.courses" /></span> </a></li>
+					<li
+						<c:if test="${activesection eq 'invoices'}">class="active"</c:if>><a
+						href="/dancemanage/admin/invoice"><i class="icon-envelope"></i><span><spring:message
+									code="nav.invoices" /></span> </a></li>
+					<li <c:if test="${activesection eq 'lists'}">class="active"</c:if>><a
+						href="/dancemanage/admin/lists"><i class="icon-list"></i><span><spring:message
+									code="nav.lists" /></span> </a></li>
+					<li
+						<c:if test="${activesection eq 'statistics'}">class="active"</c:if>><a
+						href="/dancemanage/admin/statistics"><i class="icon-bar-chart"></i><span><spring:message
+									code="nav.statistics" /></span> </a></li>
+					<li
+						class="<c:if test="${activesection eq 'participants' or activesection eq 'teachers'}">active</c:if> dropdown"><a
+						href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="icon-user"></i><span><spring:message
+									code="nav.persons" /></span> <b class="caret"></b>
+					</a>
+						<ul class="dropdown-menu">
+							<li><a href="/dancemanage/admin/participant"><spring:message
+										code="nav.participants" /></a></li>
+							<li><a href="/dancemanage/admin/teacher"><spring:message
+										code="nav.teachers" /></a></li>
+						</ul></li>
+
+					<li
+						<c:if test="${activesection eq 'performances'}">class="active"</c:if>><a
+						href="/dancemanage/admin/performance"><i class="icon-camera"></i><span><spring:message
+									code="nav.performances" /></span> </a></li>
+				</c:if>
+				<c:if test="${userType eq 'participant'}">
+					<li
+						<c:if test="${activesection eq 'dashboard'}">class="active"</c:if>><a
+						href="/dancemanage/participant"><i class="icon-dashboard"></i><span><spring:message
+									code="nav.dashboard" /></span> </a></li>
+				</c:if>
 			</ul>
 		</div>
 		<!-- /container -->

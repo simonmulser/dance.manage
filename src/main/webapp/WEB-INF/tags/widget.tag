@@ -21,7 +21,7 @@
 	<div class="widget-header">
 		<i class="${icon}"></i>
 		<h3>
-			<spring:message code="${title}" />
+			${title}
 		</h3>
 	</div>
 	<!-- /widget-header -->
