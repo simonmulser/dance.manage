@@ -73,11 +73,9 @@
 
 
 
-<%-- 	<dmtags:widget title="widget.courses" style="nopad" icon="icon-list"> --%>
-<!-- 		<div id='calendar'></div> -->
-<%-- 	</dmtags:widget> --%>
-
-
+	<dmtags:widget title="widget.courses" style="nopad" icon="icon-calendar">
+		<div id='calendar'></div>
+	</dmtags:widget>
 
 
 	<c:choose>
@@ -121,36 +119,27 @@
 <script>
 
 
-<%-- <% --%>
-// 	int weekDay = (Integer)pageContext.getAttribute("courseParticipant.key.course.weekday");
-// 	LocalDate now = new LocalDate();
-// 	LocalDate weekDayDate = now.withDayOfWeek(weekDay);
-// 	pageContext.setAttribute("weekDayDate", weekDayDate);
-<%-- %> --%>
-
-var courseData = [
-<c:forEach items="${user.courseParticipants}" var="courseParticipant"
-	varStatus="loop">
-	        {
-              title: '${courseParticipant.key.course.name}',
-              start: 'T<joda:format value="${courseParticipant.key.course.time}" pattern="HH:mm" />',
-            },
-</c:forEach>
-];
 
 $(document).ready(function() {
-    var date = new Date();
-    var d = date.getDate();
-    var m = date.getMonth();
-    var y = date.getFullYear();
+	var courseData = [
+	<c:forEach items="${user.courseParticipants}" var="courseParticipant"
+		varStatus="loop">
+		        {
+	              title: '${courseParticipant.key.course.name}',
+	              start: '<joda:format value="${courseParticipant.key.course.getStartDateTimeCurrentWeekRepresentation()}" pattern="yyyy-MM-dd HH:mm:ss" />',
+	              end: '<joda:format value="${courseParticipant.key.course.getEndDateTimeCurrentWeekRepresentation()}" pattern="yyyy-MM-dd HH:mm:ss" />',
+	              allDay: false,
+	              color: '#FF8106',
+		        },
+	</c:forEach>
+	];
+	
     var calendar = $('#calendar').fullCalendar({
       header: {
         left: '',
         center: '',
         right: '',
       },
-      selectable: true,
-      selectHelper: true,
       defaultView: 'agendaWeek',
       allDaySlot: false,
       axisFormat: 'HH:mm',
@@ -158,22 +147,7 @@ $(document).ready(function() {
       firstHour: 12,
       firstDay: 1,
       columnFormat: 'dddd',
-      select: function(start, end, allDay) {
-        var title = prompt('Event Title:');
-        if (title) {
-          calendar.fullCalendar('renderEvent',
-            {
-              title: title,
-              start: start,
-              end: end,
-              allDay: allDay
-            },
-            true // make the event "stick"
-          );
-        }
-        calendar.fullCalendar('unselect');
-      },
-      editable: true,
+      editable: false,
       events: courseData,
     });
   });

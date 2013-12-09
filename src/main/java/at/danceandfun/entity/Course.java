@@ -21,6 +21,7 @@ import javax.validation.constraints.Pattern;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 
 import at.danceandfun.enumeration.AgeGroup;
@@ -28,6 +29,7 @@ import at.danceandfun.enumeration.CourseDuration;
 import at.danceandfun.enumeration.CourseLevel;
 import at.danceandfun.enumeration.SpectatorAmount;
 import at.danceandfun.enumeration.WeekDay;
+import at.danceandfun.util.Helpers;
 import at.danceandfun.util.PatternConstants;
 
 @Entity
@@ -198,6 +200,14 @@ public class Course extends EntityBase {
         this.amountPerformances = amountPerformances;
     }
 
+    public DateTime getStartDateTimeCurrentWeekRepresentation() {
+        return Helpers.getCourseStartDateTimeCurrentWeekRepresentation(this);
+    }
+    
+    public DateTime getEndDateTimeCurrentWeekRepresentation() {
+        return Helpers.getCourseEndDateTimeCurrentWeekRepresentation(this);
+    }
+
     public boolean isEnabled() {
         return enabled;
     }
@@ -225,7 +235,7 @@ public class Course extends EntityBase {
     public Address getAddress() {
         return address;
     }
-    
+
     public void setAddress(Address address) {
         this.address = address;
     }
