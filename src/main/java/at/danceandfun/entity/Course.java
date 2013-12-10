@@ -17,10 +17,10 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Type;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 
@@ -47,7 +47,7 @@ public class Course extends EntityBase {
     private Integer cid;
 
     @Column(name = "NAME")
-    @NotEmpty
+    @Size(min = 3, message = "{size.min.three}")
     @Pattern(regexp = PatternConstants.CHARACTER_NUMBER_PATTERN, message = "{pattern.characters}")
     private String name;
 
