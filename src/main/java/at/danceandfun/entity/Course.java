@@ -22,6 +22,7 @@ import javax.validation.constraints.Size;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.ScriptAssert;
 import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 
@@ -35,6 +36,7 @@ import at.danceandfun.util.PatternConstants;
 
 @Entity
 @Table(name = "COURSE")
+@ScriptAssert(lang = "javascript", script = "_this.semesterPrice <= _this.yearPrice", message = "{course.price.assertion}")
 public class Course extends EntityBase {
 
     /**
@@ -60,7 +62,7 @@ public class Course extends EntityBase {
     @NotNull
     @Min(value = 1, message = "{min.values.positive}")
     private Double semesterPrice;
-
+    
     @Column(name = "YEARPRICE")
     @NotNull
     @Min(value = 1, message = "{min.values.positive}")

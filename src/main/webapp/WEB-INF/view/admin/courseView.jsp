@@ -65,6 +65,7 @@
 						<form:input path="yearPrice" />
 					</div>
 					<form:errors path="yearPrice" cssClass="error" />
+					<form:errors cssClass="error" />
 				</div>
 				<div class="control-group">
 					<form:label path="weekday" class="control-label">
