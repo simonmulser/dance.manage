@@ -72,7 +72,7 @@
 	<!-- /widget -->
 
 
-	<dmtags:widget title="widget.courses" style="nopad" icon="icon-calendar">
+	<dmtags:widget title="${i18nCourses}" style="nopad" icon="icon-calendar">
 		<div id='calendar'></div>
 	</dmtags:widget>
 
@@ -142,11 +142,14 @@ $(document).ready(function() {
         right: '',
       },
       defaultView: 'agendaWeek',
+      contentHeight: 450,
       allDaySlot: false,
       axisFormat: 'HH:mm',
+      timeFormat: 'HH:mm{ - HH:mm}',
       minTime: 10,
-      firstHour: 12,
+      firstHour: 15,
       firstDay: 1,
+      slotMinutes: 15,
       columnFormat: 'dddd',
       editable: false,
       events: courseData,
