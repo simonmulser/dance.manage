@@ -17,21 +17,13 @@ public class PatternConstantsTest {
                 is(true));
         assertThat("Karl Heinz".matches(PatternConstants.CHARACTER_PATTERN),
                 is(true));
-
-        assertThat("Max ".matches(PatternConstants.CHARACTER_PATTERN),
-                is(false));
-        assertThat("Max-".matches(PatternConstants.CHARACTER_PATTERN),
-                is(false));
-        assertThat("Max -".matches(PatternConstants.CHARACTER_PATTERN),
-                is(false));
-        assertThat(
-                "Max - Patrick ".matches(PatternConstants.CHARACTER_PATTERN),
-                is(false));
-        assertThat("Max-Patrick-".matches(PatternConstants.CHARACTER_PATTERN),
-                is(false));
         assertThat("Max1234".matches(PatternConstants.CHARACTER_PATTERN),
                 is(false));
         assertThat("Max!?".matches(PatternConstants.CHARACTER_PATTERN),
+                is(false));
+        assertThat(".Max".matches(PatternConstants.CHARACTER_PATTERN),
+                is(false));
+        assertThat("-Max".matches(PatternConstants.CHARACTER_PATTERN),
                 is(false));
     }
 
@@ -125,9 +117,10 @@ public class PatternConstantsTest {
                 is(true));
         assertThat("New York-City".matches(PatternConstants.CITY_PATTERN),
                 is(true));
-        assertThat("New York ".matches(PatternConstants.CITY_PATTERN),
+        assertThat("-New York-City".matches(PatternConstants.CITY_PATTERN),
                 is(false));
-        assertThat("Hall-".matches(PatternConstants.CITY_PATTERN), is(false));
+        assertThat(".New York-City".matches(PatternConstants.CITY_PATTERN),
+                is(false));
     }
 
     @Test
