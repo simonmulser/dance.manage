@@ -5,14 +5,15 @@
 <%@taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
 <%@taglib uri="http://displaytag.sf.net" prefix="display"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
-<spring:message var="i18nNavCourseParticipants"
-	code="nav.courseParticipants" />
+
 <dmtags:base title="${i18nNavCourseParticipants}"
 	activesection="participants">
 	<dmtags:span width="12">
 
 		<spring:message var="i18nWidgetCourseParticipants"
 			code="widget.courseParticipants" />
+		<spring:message var="i18nNavCourseParticipants"
+			code="nav.courseParticipants" />
 
 		<dmtags:widget title="${i18nWidgetCourseParticipants}"
 			icon="icon-user">
