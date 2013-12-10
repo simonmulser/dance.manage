@@ -1327,6 +1327,7 @@ color: #333;
 	border-color: #D66C04;
 	border-radius: 5px;
 	padding: 5px;
+	margin: 2px;
 	font-size: small;
 	background: #ff9f00 !important; /* Old browsers */
 	background: -moz-linear-gradient(top,  #ff9f00 1%, #ff8106 100%) !important; /* FF3.6+ */
