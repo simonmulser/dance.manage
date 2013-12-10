@@ -53,7 +53,7 @@ public class Address extends EntityBase {
 
     @Column(name = "ZIP")
     @NotNull
-    @Min(1)
+    @Min(value = 1000, message = "{min.address.zip}")
     private Integer zip;
 
     @Column(name = "CITY")
