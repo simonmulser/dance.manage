@@ -1326,6 +1326,15 @@ color: #333;
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff9f00', endColorstr='#ff8106',GradientType=0 ) !important; /* IE6-9 */
 }
 
+.duplicateError{
+	display:none;
+	color:#b94a48;
+}
+
+.ui-datepicker-trigger{
+	margin-left:15px;
+}
+
 /*-------------------------------------------------------------------
 [displayTag]
 */

@@ -29,6 +29,7 @@
 						<input id="stylesQuery" type="text" value="" /><i
 							title="<spring:message code='help.searchStyle' />"
 							class="inline-tooltip icon icon-question-sign"></i>
+							<div id="duplicateStyle" class="duplicateError"><spring:message code='error.duplicateStyle' /></div>
 						<div id="showStyles">
 							<c:forEach items="${teacher.styles}" var="sty">
 								<span class="styleTag">${sty.name}&nbsp;<i
@@ -50,6 +51,7 @@
 						<input id="coursesQuery" type="text" value="" /><i
 							title="<spring:message code='help.searchCourse' />"
 							class="inline-tooltip icon icon-question-sign"></i>
+							<div id="duplicateCourse" class="duplicateError"><spring:message code='error.duplicateCourse' /></div>
 						<div id="showCourses">
 							<c:forEach items="${teacher.courses}" var="cou">
 								<span class="courseTag">${cou.name}&nbsp;<i
@@ -130,8 +132,11 @@
 							</c:choose>
 							<td><a href="teacher/edit/${teacher.pid}"><spring:message
 										code="label.edit" /></a><br /> <a
-								href="teacher/delete/${teacher.pid}" class="openDialog"><spring:message
-										code="label.delete" /></a></td>
+								href="teacher/delete/${teacher.pid}" class="openDialog" id="${teacher.pid }"><spring:message
+										code="label.delete" /></a>
+										
+									<div id="deleteId" style="display:none;"></div>	
+							</td>
 						</tr>
 					</c:forEach>
 				</table>
@@ -149,7 +154,10 @@
 </dmtags:base>
 <script type="text/javascript">
 	$('i').tooltip();
+	$("#duplicateStyle").hide();
+	$("#duplicateCourse").hide();
 	$(".openDialog").click(function() {
+		$("#deleteId").text($(this).attr("id"));
 		$("#dialog-confirm").dialog("open");
 		return false;
 	});
@@ -159,7 +167,7 @@
 		modal : true,
 		buttons : {
 			"OK" : function() {
-				document.location = $(".openDialog").attr("href");
+				document.location = "teacher/delete/"+$("#deleteId").text();
 
 				$(this).dialog("close");
 			},
@@ -178,6 +186,7 @@
 			.ready(
 					function() {
 						$("#showStyles").on("click", "i", function() {
+							$("#duplicateStyle").hide();
 							var id = $(this).attr("id");
 							$(this).parent().remove();
 							$("#tempStyles").val(function(i, v) {
@@ -207,7 +216,8 @@
 																							// following property gets displayed in drop down
 																							label : item.name,
 																							// following property gets entered in the textbox
-																							value : item.sid
+																							value : item.name,
+																							sid: item.sid
 																						};
 																					}));
 																});
@@ -217,15 +227,35 @@
 											select : function(event, ui) {
 												if (ui.item) {
 													event.preventDefault();
-													$("#selectedStyles")
-															.append(
-																	"<span class='styleTag'>"
-																			+ ui.item.label
-																			+ "&nbsp;<i id='" + ui.item.value + "' class='icon icon-remove'></i></span>");
 													var input = $("#tempStyles");
-													input.val(input.val()
-															+ ui.item.value
-															+ ";");
+													var tempStyles = input.val();
+													var itemId = ui.item.sid;
+													if(tempStyles.indexOf(itemId) == -1){ //neues Element
+														$("#duplicateStyle").hide();
+														$("#selectedStyles")
+														.append(
+																"<span class='styleTag'>"
+																		+ ui.item.label
+																		+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i></span>");
+												
+														input.val(input.val() + itemId + ";");
+														
+													}else if(tempStyles.indexOf("-"+itemId) != -1){ //bereits einmal gelöscht
+														$("#duplicateStyle").hide();
+														$("#selectedStyles")
+														.append(
+																"<span class='styleTag'>"
+																		+ ui.item.label
+																		+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i></span>");
+														
+														input.val(function(i, v) {
+															return v.replace("-"+itemId + ";", itemId + ";");
+														}).val();
+
+													}else{ //bereits vorhanden
+														$("#duplicateStyle").show();
+													}	
+									
 													//$("#tagQuery").value = $("#tagQuery").defaultValue
 													var defValue = $(
 															"#stylesQuery")
@@ -243,6 +273,7 @@
 			.ready(
 					function() {
 						$("#showCourses").on("click", "i", function() {
+							$("#duplicateCourse").hide();
 							var id = $(this).attr("id");
 							$(this).parent().remove();
 							$("#tempCourses").val(function(i, v) {
@@ -272,7 +303,8 @@
 																							// following property gets displayed in drop down
 																							label : item.name,
 																							// following property gets entered in the textbox
-																							value : item.cid
+																							value : item.name,
+																							cid: item.cid
 																						};
 																					}));
 																});
@@ -282,15 +314,34 @@
 											select : function(event, ui) {
 												if (ui.item) {
 													event.preventDefault();
-													$("#selectedCourses")
-															.append(
-																	"<span class='courseTag'>"
-																			+ ui.item.label
-																			+ "&nbsp;<i id='" + ui.item.value + "' class='icon icon-remove'></i></span>");
 													var input = $("#tempCourses");
-													input.val(input.val()
-															+ ui.item.value
-															+ ";");
+													var tempCourses = input.val();
+													var itemId = ui.item.cid;
+													if(tempCourses.indexOf(itemId) == -1){ //neues Element
+														$("#duplicateCourse").hide();
+														$("#selectedCourses")
+														.append(
+																"<span class='courseTag'>"
+																		+ ui.item.label
+																		+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i></span>");
+												
+														input.val(input.val() + itemId + ";");
+														
+													}else if(tempCourses.indexOf("-"+itemId) != -1){ //bereits einmal gelöscht
+														$("#duplicateCourse").hide();
+														$("#selectedCourses")
+														.append(
+																"<span class='courseTag'>"
+																		+ ui.item.label
+																		+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i></span>");
+														
+														input.val(function(i, v) {
+															return v.replace("-"+itemId + ";", itemId + ";");
+														}).val();
+
+													}else{ //bereits vorhanden
+														$("#duplicateCourse").show();
+													}
 													//$("#tagQuery").value = $("#tagQuery").defaultValue
 													var defValue = $(
 															"#coursesQuery")

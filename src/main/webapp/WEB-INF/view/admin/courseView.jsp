@@ -215,8 +215,9 @@
 						<c:set var="cid" value="${course.cid}" />
 						<a href="course/edit/${cid}"><spring:message code="label.edit" /></a>
 						<br />
-						<a href="course/delete/${cid}" class="openDialog"><spring:message
+						<a href="course/delete/${cid}" class="openDialog" id="${cid}"><spring:message
 								code="label.delete" /></a>
+						<div id="deleteId" style="display:none;"></div>		
 					</display:column>
 				</display:table>
 
@@ -238,6 +239,7 @@
 <script type="text/javascript">
 	$('i').tooltip();
 	$(".openDialog").click(function() {
+		$("#deleteId").text($(this).attr("id"));
 		$("#dialog-confirm").dialog("open");
 		return false;
 	});
@@ -247,7 +249,8 @@
 		modal : true,
 		buttons : {
 			"OK" : function() {
-				document.location = $(".openDialog").attr("href");
+				document.location = "course/delete/"+$("#deleteId").text();
+				$("#deleteId").text("");
 
 				$(this).dialog("close");
 			},
@@ -256,6 +259,8 @@
 			}
 		}
 	});
+	
+	
 	$(document)
 			.ready(
 					function() {
