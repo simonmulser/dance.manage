@@ -8,10 +8,7 @@
 	<div class="main-inner">
 		<div class="container">
 			<div class="row">
-				<div class="span12">
-					<jsp:doBody />
-				</div>
-				<!-- /span12 -->
+				<jsp:doBody />
 			</div>
 			<!-- /row -->
 		</div>

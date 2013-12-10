@@ -4,11 +4,12 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
+
 <spring:message var="i18nEditProfile" code="nav.editProfile" />
 
 <dmtags:base title="${i18nEditProfile}" activesection="dashboard">
 	<spring:message var="i18nAccountInfo" code="widget.accountInfo" />
-
+<dmtags:span width="12">
 	<dmtags:widget title="${i18nAccountInfo}" icon="icon-user">
 		<form:form method="post" action="edit" commandName="participant"
 			class="form-horizontal">
@@ -26,5 +27,5 @@
 
 		</form:form>
 	</dmtags:widget>
-
+</dmtags:span>
 </dmtags:base>
