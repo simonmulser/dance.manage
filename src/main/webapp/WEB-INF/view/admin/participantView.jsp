@@ -27,14 +27,17 @@
 
 				<dmtags:addressForm />
 
+				
 				<div id="find_keyword" class="control-group">
 					<form:label path="tempSiblings" class="control-label">
 						<spring:message code="label.siblings" />
 					</form:label>
 					<div class="ui-widget span6">
+						
 						<input id="siblingsQuery" type="text" value="" /><i
 							title="<spring:message code='help.searchSibling' />"
 							class="inline-tooltip icon icon-question-sign"></i>
+							<div id="duplicateSibling" class="duplicateError"><spring:message code='error.duplicateSibling' /></div>
 						<div id="showSiblings">
 							<c:forEach items="${participant.siblings}" var="sib">
 								<span class="siblingTag">${sib.firstname}&nbsp;${sib.lastname}&nbsp;<i
@@ -55,6 +58,7 @@
 						<input id="coursesQuery" type="text" value="" /><i
 							title="<spring:message code='help.searchCourse' />"
 							class="inline-tooltip icon icon-question-sign"></i>
+							<div id="duplicateCourse" class="duplicateError"><spring:message code='error.duplicateCourse' /></div>
 						<div id="showCourses">
 							<c:forEach items="${participant.courseParticipants}"
 								var="courseParticipant">
@@ -106,7 +110,13 @@
 					</display:column>
 					<display:column sortable="true" titleKey="label.street">
 						<c:out
-							value="${row.address.street} ${row.address.number}/${row.address.stair}/${row.address.door}" />
+							value="${row.address.street} ${row.address.number}" />
+						<c:if test="${!empty row.address.stair}">
+							<c:out value="/${row.address.stair }" />
+						</c:if>	
+						<c:if test="${!empty row.address.door}">
+							<c:out value="/${row.address.door }" />
+						</c:if>
 					</display:column>
 					<display:column sortable="true" titleKey="label.zip">
 						<c:out value="${row.address.zip}" />
@@ -139,8 +149,9 @@
 						<a href="participant/edit/${pid}"><spring:message
 								code="label.edit" /></a>
 						<br />
-						<a href="participant/delete/${pid}" class="openDialog"><spring:message
+						<a href="participant/delete/${pid}" class="openDialog" id="${pid }"><spring:message
 								code="label.delete" /></a>
+						<div id="deleteId" style="display:none;"></div>			
 					</display:column>
 				</display:table>
 				<div id="dialog-confirm"
@@ -157,7 +168,10 @@
 </dmtags:base>
 <script type="text/javascript">
 	$('i').tooltip();
+	$("#duplicateSibling").hide();
+	$("#duplicateCourse").hide();
 	$(".openDialog").click(function() {
+		$("#deleteId").text($(this).attr("id"));
 		$("#dialog-confirm").dialog("open");
 		return false;
 	});
@@ -167,7 +181,7 @@
 		modal : true,
 		buttons : {
 			"OK" : function() {
-				document.location = $(".openDialog").attr("href");
+				document.location = "participant/delete/"+$("#deleteId").text();
 
 				$(this).dialog("close");
 			},
@@ -186,6 +200,7 @@
 			.ready(
 					function() {
 						$("#showSiblings").on("click", "i", function() {
+							$("#duplicateSibling").hide();
 							var id = $(this).attr("id");
 							$(this).parent().remove();
 							$("#tempSiblings").val(function(i, v) {
@@ -217,7 +232,10 @@
 																									+ " "
 																									+ item.lastname,
 																							// following property gets entered in the textbox
-																							value : item.pid
+																							value : item.firstname
+																							+ " "
+																							+ item.lastname,
+																							pid : item.pid
 																						};
 																					}));
 																});
@@ -227,15 +245,35 @@
 											select : function(event, ui) {
 												if (ui.item) {
 													event.preventDefault();
-													$("#selectedSiblings")
-															.append(
-																	"<span class='siblingTag'>"
-																			+ ui.item.label
-																			+ "&nbsp;<i id='" + ui.item.value + "' class='icon icon-remove'></i></span>");
 													var input = $("#tempSiblings");
-													input.val(input.val()
-															+ ui.item.value
-															+ ";");
+													var tempSiblings = input.val();
+													var itemId = ui.item.pid;
+													if(tempSiblings.indexOf(itemId) == -1){ //neues Element
+														$("#duplicateSibling").hide();
+														$("#selectedSiblings")
+														.append(
+																"<span class='siblingTag'>"
+																		+ ui.item.label
+																		+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i></span>");
+												
+														input.val(input.val() + itemId + ";");
+														
+													}else if(tempSiblings.indexOf("-"+itemId) != -1){ //bereits einmal gelöscht
+														$("#duplicateSibling").hide();
+														$("#selectedSiblings")
+														.append(
+																"<span class='siblingTag'>"
+																		+ ui.item.label
+																		+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i></span>");
+														
+														input.val(function(i, v) {
+															return v.replace("-"+itemId + ";", itemId + ";");
+														}).val();
+
+													}else{ //bereits vorhanden
+														$("#duplicateSibling").show();
+													}
+													
 													//$("#tagQuery").value = $("#tagQuery").defaultValue
 													var defValue = $(
 															"#siblingsQuery")
@@ -253,6 +291,7 @@
 			.ready(
 					function() {
 						$("#showCourses").on("click", "i", function() {
+							$("#duplicateCourse").hide();
 							var id = $(this).attr("id");
 							$(this).parent().remove();
 							$("#tempCourses").val(function(i, v) {
@@ -282,7 +321,8 @@
 																							// following property gets displayed in drop down
 																							label : item.name,
 																							// following property gets entered in the textbox
-																							value : item.cid
+																							value : item.name,
+																							cid: item.cid
 																						};
 																					}));
 																});
@@ -292,15 +332,36 @@
 											select : function(event, ui) {
 												if (ui.item) {
 													event.preventDefault();
-													$("#selectedCourses")
-															.append(
-																	"<span class='courseTag'>"
-																			+ ui.item.label
-																			+ "&nbsp;<i id='" + ui.item.value + "' class='icon icon-remove'></i></span>");
+													
 													var input = $("#tempCourses");
-													input.val(input.val()
-															+ ui.item.value
-															+ ";");
+													var tempCourses = input.val();
+													var itemId = ui.item.cid;
+													if(tempCourses.indexOf(itemId) == -1){ //neues Element
+														$("#duplicateCourse").hide();
+														$("#selectedCourses")
+														.append(
+																"<span class='courseTag'>"
+																		+ ui.item.label
+																		+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i></span>");
+												
+														input.val(input.val() + itemId + ";");
+														
+													}else if(tempCourses.indexOf("-"+itemId) != -1){ //bereits einmal gelöscht
+														$("#duplicateCourse").hide();
+														$("#selectedCourses")
+														.append(
+																"<span class='courseTag'>"
+																		+ ui.item.label
+																		+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i></span>");
+														
+														input.val(function(i, v) {
+															return v.replace("-"+itemId + ";", itemId + ";");
+														}).val();
+
+													}else{ //bereits vorhanden
+														$("#duplicateCourse").show();
+													}
+					
 													//$("#tagQuery").value = $("#tagQuery").defaultValue
 													var defValue = $(
 															"#coursesQuery")

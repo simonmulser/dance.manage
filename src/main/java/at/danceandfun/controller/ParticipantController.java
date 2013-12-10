@@ -85,6 +85,15 @@ public class ParticipantController {
             logger.debug("ADD Participant with id " + participant.getPid());
             participant.setEnabled(true);
 
+            if (participant.getAddress().getAid() == null) {
+                addressManager.save(participant.getAddress());
+            }
+
+            if (participant.getPid() == null) {
+                logger.debug("New participant");
+                participantManager.save(participant);
+            }
+
             if (!participant.getTempSiblings().equals("")) {
                 String[] siblings = participant.getTempSiblings().split(";");
                 for (String s : siblings) {
@@ -135,18 +144,10 @@ public class ParticipantController {
                 }
             }
 
-            if (participant.getAddress().getAid() == null) {
-                addressManager.save(participant.getAddress());
-            }
+            logger.debug("Update participant");
+            participantManager.update(participant);
+            logger.debug("Finished updating participant");
 
-            if (participant.getPid() == null) {
-                logger.debug("New participant");
-                participantManager.save(participant);
-            } else {
-                logger.debug("Update participant");
-                participantManager.update(participant);
-                logger.debug("Finished updating participant");
-            }
             this.participant = new Participant();
         }
         return "redirect:/admin/participant";
