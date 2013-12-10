@@ -1407,3 +1407,10 @@ span.pagelinks {
         text-align:center;
 }
 
+.displaytag .colContact, .colBirthday, .colName{
+	width:10%;
+}
+.displaytag .colCity{
+	width:7%;
+}
+

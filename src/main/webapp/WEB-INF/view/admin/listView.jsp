@@ -114,37 +114,4 @@
 		</dmtags:widget>
 	</c:if>
 
-	<c:if test="${!empty courses}">
-		<spring:message var="i18nCourseInformation"
-			code="widget.courseInformation" />
-		<dmtags:widget title="${i18nCourseInformation}" style="table"
-			icon="icon-list">
-			<table class="table table-striped table-bordered">
-				<thead>
-					<tr>
-						<th><spring:message code="label.coursename" /></th>
-						<th><spring:message code="label.ageGroup" /></th>
-						<th><spring:message code="label.level" /></th>
-						<th><spring:message code="label.amountParticipants" /></th>
-						<th><spring:message code="label.estimatedSpectators" /></th>
-						<th><spring:message code="label.amountPerformances" /></th>
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach items="${courses}" var="course">
-						<tr>
-							<td>${course.name}</td>
-							<td><spring:message code="${course.ageGroup.i18nIdentifier}" /></td>
-							<td><spring:message code="${course.level.i18nIdentifier}" /></td>
-							<td>${course.courseParticipants.size()}</td>
-							<td><spring:message
-									code="${course.estimatedSpectators.i18nIdentifier}" /></td>
-							<td>${course.amountPerformances}</td>
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
-		</dmtags:widget>
-	</c:if>
-
 </dmtags:base>
