@@ -1305,6 +1305,18 @@ color: #333;
 	padding-right: 10px;
 }
 
+.restriction-icon-good {
+	color: #15ab00;
+}
+
+.restriction-icon-medium {
+	color: #ff9f00;
+}
+
+.restriction-icon-bad {
+	color: #ff2b00;
+}
+
 #showSiblings, #showCourses, #showStyles, #showTeacher{
 	margin-top:10px;
 }

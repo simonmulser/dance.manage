@@ -15,11 +15,16 @@ table th,table td {
 	overflow: hidden;
 }
 </style>
+
 <spring:message var="i18nTitle" code="nav.performances" />
+<spring:message var="i18nCreatePlan" code="widget.createPlan" />
+<spring:message var="i18nScheduleProposal"
+	code="widget.scheduleproposal" />
+
 <dmtags:base title="${i18nTitle}" activesection="performances">
 	<dmtags:span width="12">
 
-		<spring:message var="i18nCreatePlan" code="widget.createPlan" />
+
 		<dmtags:widget title="${i18nCreatePlan}" icon="icon-camera">
 			<form:form method="post" action="performance/build"
 				commandName="performance" class="form-horizontal">
@@ -37,69 +42,104 @@ table th,table td {
 		</dmtags:widget>
 
 		<c:if test="${!empty performanceList1}">
-			<dmtags:widget title="widget.plan" style="table" icon="icon-list">
-				<table class="table table-striped table-bordered">
-					<thead>
-						<tr>
-							<th style="width: 50%"><spring:message
-									code="label.coursename" /></th>
-							<th style="width: 25%"><spring:message code="label.ageGroup" /></th>
-							<th style="width: 25%"><spring:message
-									code="label.courselevel" /></th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach items="${performanceList1}" var="course">
-							<tr>
-								<td>${course.name}</td>
-								<td>${course.ageGroup}</td>
-								<td>${course.level}</td>
-							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
+			<dmtags:widget title="${i18nScheduleProposal}" style="table"
+				icon="icon-list">
+				<br />
+				<div class="tabbable">
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="#hall1" data-toggle="tab">Saal
+								1</a></li>
+						<li><a href="#hall2" data-toggle="tab">Saal 2</a></li>
+						<li><a href="#hall3" data-toggle="tab">Saal 3</a></li>
+					</ul>
 
-				<table class="table table-striped table-bordered">
-					<thead>
-						<tr>
-							<th style="width: 50%"><spring:message
-									code="label.coursename" /></th>
-							<th style="width: 25%"><spring:message code="label.ageGroup" /></th>
-							<th style="width: 25%"><spring:message
-									code="label.courselevel" /></th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach items="${performanceList2}" var="course">
-							<tr>
-								<td>${course.name}</td>
-								<td>${course.ageGroup}</td>
-								<td>${course.level}</td>
-							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
-				<table class="table table-striped table-bordered">
-					<thead>
-						<tr>
-							<th style="width: 50%"><spring:message
-									code="label.coursename" /></th>
-							<th style="width: 25%"><spring:message code="label.ageGroup" /></th>
-							<th style="width: 25%"><spring:message
-									code="label.courselevel" /></th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach items="${performanceList3}" var="course">
-							<tr>
-								<td>${course.name}</td>
-								<td>${course.ageGroup}</td>
-								<td>${course.level}</td>
-							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
+					<div class="tab-content">
+						<div class="tab-pane active" id="hall1">
+							<table class="table table-striped table-bordered">
+								<thead>
+									<tr>
+										<th style="width: 50%"><spring:message
+												code="label.coursename" /></th>
+										<th style="width: 23%"><spring:message
+												code="label.ageGroup" /></th>
+										<th style="width: 23%"><spring:message
+												code="label.courselevel" /></th>
+										<th style="width: 4%"><i
+											title="<spring:message code='help.restriction.noconsecutiveballett' />"
+											class="inline-tooltip icon icon-question-sign"></i></th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach items="${performanceList1}" var="course">
+										<tr>
+											<td>${course.name}</td>
+											<td>${course.ageGroup}</td>
+											<td>${course.level}</td>
+											<td><i class="icon-smile restriction-icon-good"></i></td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</div>
 
+						<div class="tab-pane" id="hall2">
+							<table class="table table-striped table-bordered">
+								<thead>
+									<tr>
+										<th style="width: 50%"><spring:message
+												code="label.coursename" /></th>
+										<th style="width: 25%"><spring:message
+												code="label.ageGroup" /></th>
+										<th style="width: 25%"><spring:message
+												code="label.courselevel" /></th>
+										<th style="width: 4%"><i
+											title="<spring:message code='help.restriction.noconsecutiveballett' />"
+											class="inline-tooltip icon icon-question-sign"></i></th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach items="${performanceList2}" var="course">
+										<tr>
+											<td>${course.name}</td>
+											<td>${course.ageGroup}</td>
+											<td>${course.level}</td>
+											<td><i class="icon-smile restriction-icon-good"></i></td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</div>
+
+						<div class="tab-pane" id="hall3">
+							<table class="table table-striped table-bordered">
+								<thead>
+									<tr>
+										<th style="width: 50%"><spring:message
+												code="label.coursename" /></th>
+										<th style="width: 25%"><spring:message
+												code="label.ageGroup" /></th>
+										<th style="width: 25%"><spring:message
+												code="label.courselevel" /></th>
+										<th style="width: 4%"><i
+											title="<spring:message code='help.restriction.noconsecutiveballett' />"
+											class="inline-tooltip icon icon-question-sign"></i></th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach items="${performanceList3}" var="course">
+										<tr>
+											<td>${course.name}</td>
+											<td>${course.ageGroup}</td>
+											<td>${course.level}</td>
+											<td><i class="icon-smile restriction-icon-good"></i></td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</div>
+
+					</div>
+				</div>
 			</dmtags:widget>
 		</c:if>
 	</dmtags:span>
