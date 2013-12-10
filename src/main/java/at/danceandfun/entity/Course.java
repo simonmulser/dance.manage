@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -57,10 +58,12 @@ public class Course extends EntityBase {
 
     @Column(name = "SEMESTERPRICE")
     @NotNull
+    @Min(value = 1, message = "{min.values.positive}")
     private Double semesterPrice;
 
     @Column(name = "YEARPRICE")
     @NotNull
+    @Min(value = 1, message = "{min.values.positive}")
     private Double yearPrice;
 
     @Column(name = "WEEKDAY")
@@ -79,6 +82,7 @@ public class Course extends EntityBase {
     private Integer ageGroup;
 
     @Column(name = "AMOUNT_PERFORMANCES")
+    @Min(value = 0, message = "{min.values.positive}")
     private Integer amountPerformances;
 
     @Column(name = "ENABLED")

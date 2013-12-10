@@ -15,8 +15,6 @@ import javax.validation.constraints.Pattern;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.NumberFormat;
-import org.springframework.format.annotation.NumberFormat.Style;
 
 import at.danceandfun.util.PatternConstants;
 
@@ -36,19 +34,20 @@ public class Address extends EntityBase {
 
     @Column(name = "STREET")
     @NotEmpty
-    @NumberFormat(style = Style.NUMBER)
     @Pattern(regexp = PatternConstants.CITY_PATTERN, message = "{pattern.characters}")
     private String street;
 
     @Column(name = "NUMBER")
-    @NotNull
-    @Min(1)
-    private Integer number;
+    @NotEmpty
+    @Pattern(regexp = PatternConstants.ADDRESS_NUMBER_PATTERN, message = "{pattern.address.number")
+    private String number;
 
     @Column(name = "STAIR")
+    @Min(value = 1, message = "{min.values.positive}")
     private Integer stair;
 
     @Column(name = "DOOR")
+    @Min(value = 1, message = "{min.values.positive}")
     private Integer door;
 
     @Column(name = "ZIP")
@@ -92,11 +91,11 @@ public class Address extends EntityBase {
         this.street = street;
     }
 
-    public Integer getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 

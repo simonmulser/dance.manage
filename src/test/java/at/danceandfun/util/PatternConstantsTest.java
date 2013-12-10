@@ -5,8 +5,6 @@ import static org.hamcrest.Matchers.is;
 
 import org.junit.Test;
 
-import at.danceandfun.util.PatternConstants;
-
 public class PatternConstantsTest {
 
     @Test
@@ -130,6 +128,23 @@ public class PatternConstantsTest {
         assertThat("New York ".matches(PatternConstants.CITY_PATTERN),
                 is(false));
         assertThat("Hall-".matches(PatternConstants.CITY_PATTERN), is(false));
+    }
 
+    @Test
+    public void testAddressNumberPattern() {
+        assertThat("10".matches(PatternConstants.ADDRESS_NUMBER_PATTERN),
+                is(true));
+        assertThat("10A".matches(PatternConstants.ADDRESS_NUMBER_PATTERN),
+                is(true));
+        assertThat("10-12".matches(PatternConstants.ADDRESS_NUMBER_PATTERN),
+                is(true));
+        assertThat("10A-12".matches(PatternConstants.ADDRESS_NUMBER_PATTERN),
+                is(false));
+        assertThat("10-12-".matches(PatternConstants.ADDRESS_NUMBER_PATTERN),
+                is(false));
+        assertThat("10-12A".matches(PatternConstants.ADDRESS_NUMBER_PATTERN),
+                is(false));
+        assertThat("10ABC".matches(PatternConstants.ADDRESS_NUMBER_PATTERN),
+                is(false));
     }
 }

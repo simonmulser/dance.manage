@@ -21,7 +21,7 @@ public class AddressDaoTest {
         Address address = new Address();
         address.setCity("city");
         address.setDoor(45);
-        address.setNumber(12);
+        address.setNumber("12");
         address.setStair(5);
         address.setStreet("street");
         address.setZip(1100);
