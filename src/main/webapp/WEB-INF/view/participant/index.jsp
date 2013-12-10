@@ -9,10 +9,11 @@
 
 <spring:message var="i18nTitle" code="nav.home" />
 <dmtags:base title="${i18nTitle}" activesection="dashboard">
-    <spring:message var="i18nCourses" code="widget.courses" />
+    <spring:message var="i18nMyCourses" code="widget.mycourses" />
+    <spring:message var="i18nAgenda" code="widget.agenda" />
 	<c:choose>
 		<c:when test="${user.courseParticipants.size() gt 0}">
-			<dmtags:widget title="${i18nCourses}" style="table" icon="icon-list">
+			<dmtags:widget title="${i18nMyCourses}" style="table" icon="icon-list">
 				<table class="table table-striped table-bordered">
 					<thead>
 						<tr>
@@ -35,7 +36,7 @@
 			</dmtags:widget>
 		</c:when>
 		<c:otherwise>
-			<dmtags:widget title="${i18nCourses}" style="noTable" icon="icon-list">
+			<dmtags:widget title="${i18nMyCourses}" style="noTable" icon="icon-list">
 				<spring:message code="participant.noCourses" />
 			</dmtags:widget>
 		</c:otherwise>
@@ -43,7 +44,7 @@
 
 	<div class="table">
 		<div class="widget-header">
-			<i class="icon-list"></i>
+			<i class="icon-user"></i>
 			<h3>
 				<spring:message code="widget.accountInfo" />
 			</h3>
@@ -72,7 +73,7 @@
 	<!-- /widget -->
 
 
-	<dmtags:widget title="${i18nCourses}" style="nopad" icon="icon-calendar">
+	<dmtags:widget title="${i18nAgenda}" style="nopad" icon="icon-calendar">
 		<div id='calendar'></div>
 	</dmtags:widget>
 
@@ -105,7 +106,8 @@
     <spring:message var="i18nInvoices" code="widget.invoices" />
 	<c:choose>
 		<c:when test="${user.invoices.size() gt 0}">
-			<dmtags:widget title="${i18nInvoices}" style="table" icon="icon-list">
+		<!-- style="table" -->
+			<dmtags:widget title="${i18nInvoices}" icon="icon-envelope">
                 TODO show invoices
             </dmtags:widget>
 		</c:when>
@@ -135,7 +137,7 @@ $(document).ready(function() {
 	</c:forEach>
 	];
 	
-    var calendar = $('#calendar').fullCalendar({
+    $('#calendar').fullCalendar({
       header: {
         left: '',
         center: '',
