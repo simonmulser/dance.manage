@@ -14,15 +14,17 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Type;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 
 import at.danceandfun.role.RoleTeacher;
+import at.danceandfun.util.PatternConstants;
 
 @Entity
 @Table(name = "TEACHER")
@@ -35,7 +37,8 @@ public class Teacher extends Person {
     private static final long serialVersionUID = 1L;
 
     @Column(name = "SVNR")
-    @NotEmpty
+    @Pattern(regexp = PatternConstants.SVNR_PATTERN, message = "{pattern.svnr}")
+    @Size(min = 4, message = "{size.teacher.svnr}")
     private String svnr;
 
     @Column(name = "SALARY")

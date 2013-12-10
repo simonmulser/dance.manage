@@ -164,4 +164,14 @@ public class PatternConstantsTest {
                 "+0043680244".matches(PatternConstants.TELEPHONE_PATTERN),
                 is(false));
     }
+    
+    @Test
+    public void testSVNRPattern() {
+        assertThat("1234 1234".matches(PatternConstants.SVNR_PATTERN), is(true));
+        assertThat("1234-1234".matches(PatternConstants.SVNR_PATTERN), is(true));
+        assertThat("1234-AB34".matches(PatternConstants.SVNR_PATTERN), is(true));
+        assertThat("1234-1234-1234".matches(PatternConstants.SVNR_PATTERN),
+                is(true));
+
+    }
 }
