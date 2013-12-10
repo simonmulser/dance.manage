@@ -1,5 +1,7 @@
 package at.danceandfun.controller;
 
+import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import at.danceandfun.entity.Course;
 import at.danceandfun.entity.Participant;
 import at.danceandfun.entity.Performance;
-//import at.danceandfun.sat.GenerateSatSolution;
+import at.danceandfun.sat.GenerateSatSolution;
 import at.danceandfun.service.CourseManager;
 import at.danceandfun.service.ParticipantManager;
 import at.danceandfun.service.PerformanceManager;
+import at.danceandfund.exception.SatException;
+//import at.danceandfun.sat.GenerateSatSolution;
 
 //import at.danceandfund.exception.SatException;
 
@@ -59,15 +63,20 @@ public class PerformanceController {
         List<Participant> participantList = participantManager.getEnabledList();
         // Collections.shuffle(courses);
 
-        /*
-         * GenerateSatSolution sat = new GenerateSatSolution();
-         * 
-         * while (true) { try { plan = sat.generatePerformance(courses,
-         * participantList); break; } catch (IOException e) {
-         * e.printStackTrace(); } catch (SatException s) {
-         * System.out.println(s.getMessage()); Collections.shuffle(courses);
-         * continue; } }
-         */
+        GenerateSatSolution sat = new GenerateSatSolution();
+
+        while (true) {
+            try {
+                plan = sat.generatePerformance(courses, participantList);
+                break;
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SatException s) {
+                System.out.println(s.getMessage());
+                Collections.shuffle(courses);
+                continue;
+            }
+        }
 
         tempPerformance1 = plan.get(1);
         tempPerformance2 = plan.get(2);
