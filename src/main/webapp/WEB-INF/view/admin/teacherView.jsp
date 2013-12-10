@@ -5,8 +5,11 @@
 <%@taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 <spring:message var="i18nTitle" code="nav.teachers" />
-	<dmtags:base title="${i18nTitle}" activesection="teacher">
-<spring:message var="i18nWidgetTeachers" code="widget.teachers" />
+<dmtags:base title="${i18nTitle}" activesection="teachers">
+	<dmtags:span width="12">
+
+		<spring:message var="i18nWidgetTeachers" code="widget.teachers" />
+
 		<dmtags:widget title="${i18nWidgetTeachers}" icon="icon-user">
 			<spring:message code="help.teacher" />
 			<form:form method="post" action="teacher/add" commandName="teacher"
@@ -142,168 +145,163 @@
 				</div>
 			</dmtags:widget>
 		</c:if>
-	</dmtags:base>
-	<script type="text/javascript">
-		$('i').tooltip();
-		$(".openDialog").click(function() {
-			$("#dialog-confirm").dialog("open");
-			return false;
-		});
-		$("#dialog-confirm").dialog({
-			autoOpen : false,
-			resizable : false,
-			modal : true,
-			buttons : {
-				"OK" : function() {
-					document.location = $(".openDialog").attr("href");
+	</dmtags:span>
+</dmtags:base>
+<script type="text/javascript">
+	$('i').tooltip();
+	$(".openDialog").click(function() {
+		$("#dialog-confirm").dialog("open");
+		return false;
+	});
+	$("#dialog-confirm").dialog({
+		autoOpen : false,
+		resizable : false,
+		modal : true,
+		buttons : {
+			"OK" : function() {
+				document.location = $(".openDialog").attr("href");
 
-					$(this).dialog("close");
-				},
-				Cancel : function() {
-					$(this).dialog("close");
-				}
+				$(this).dialog("close");
+			},
+			Cancel : function() {
+				$(this).dialog("close");
 			}
-		});
-		$("#datepicker").datepicker({
-			showOn : "button",
-			buttonImage : "/dancemanage/css/ui/images/calendar.gif",
-			buttonImageOnly : true,
-			dateFormat : "dd.mm.yy"
-		});
-		$(document)
-				.ready(
-						function() {
-							$("#showStyles").on("click", "i", function() {
-								var id = $(this).attr("id");
-								$(this).parent().remove();
-								$("#tempStyles").val(function(i, v) {
-									return v.replace(id + ";", "-" + id + ";");
-								}).val();
-							});
-
-							//attach autocomplete
-							$("#stylesQuery")
-									.autocomplete(
-											{
-												minLength : 1,
-												delay : 500,
-												//define callback to format results
-												source : function(request,
-														response) {
-													$
-															.getJSON(
-																	"/dancemanage/admin/teacher/getStyles",
-																	request,
-																	function(
-																			result) {
-																		response($
-																				.map(
-																						result,
-																						function(
-																								item) {
-																							return {
-																								// following property gets displayed in drop down
-																								label : item.name,
-																								// following property gets entered in the textbox
-																								value : item.sid
-																							};
-																						}));
-																	});
-												},
-
-												//define select handler
-												select : function(event, ui) {
-													if (ui.item) {
-														event.preventDefault();
-														$("#selectedStyles")
-																.append(
-																		"<span class='styleTag'>"
-																				+ ui.item.label
-																				+ "&nbsp;<i id='" + ui.item.value + "' class='icon icon-remove'></i></span>");
-														var input = $("#tempStyles");
-														input.val(input.val()
-																+ ui.item.value
-																+ ";");
-														//$("#tagQuery").value = $("#tagQuery").defaultValue
-														var defValue = $(
-																"#stylesQuery")
-																.prop(
-																		'defaultValue');
-														$("#stylesQuery").val(
-																defValue);
-														$("#stylesQuery")
-																.blur();
-														return false;
-													}
-												}
-											});
+		}
+	});
+	$("#datepicker").datepicker({
+		showOn : "button",
+		buttonImage : "/dancemanage/css/ui/images/calendar.gif",
+		buttonImageOnly : true,
+		dateFormat : "dd.mm.yy"
+	});
+	$(document)
+			.ready(
+					function() {
+						$("#showStyles").on("click", "i", function() {
+							var id = $(this).attr("id");
+							$(this).parent().remove();
+							$("#tempStyles").val(function(i, v) {
+								return v.replace(id + ";", "-" + id + ";");
+							}).val();
 						});
-		$(document)
-				.ready(
-						function() {
-							$("#showCourses").on("click", "i", function() {
-								var id = $(this).attr("id");
-								$(this).parent().remove();
-								$("#tempCourses").val(function(i, v) {
-									return v.replace(id + ";", "-" + id + ";");
-								}).val();
-							});
 
-							//attach autocomplete
-							$("#coursesQuery")
-									.autocomplete(
-											{
-												minLength : 1,
-												delay : 500,
-												//define callback to format results
-												source : function(request,
-														response) {
-													$
-															.getJSON(
-																	"/dancemanage/admin/teacher/getCourses",
-																	request,
-																	function(
-																			result) {
-																		response($
-																				.map(
-																						result,
-																						function(
-																								item) {
-																							return {
-																								// following property gets displayed in drop down
-																								label : item.name,
-																								// following property gets entered in the textbox
-																								value : item.cid
-																							};
-																						}));
-																	});
-												},
+						//attach autocomplete
+						$("#stylesQuery")
+								.autocomplete(
+										{
+											minLength : 1,
+											delay : 500,
+											//define callback to format results
+											source : function(request, response) {
+												$
+														.getJSON(
+																"/dancemanage/admin/teacher/getStyles",
+																request,
+																function(result) {
+																	response($
+																			.map(
+																					result,
+																					function(
+																							item) {
+																						return {
+																							// following property gets displayed in drop down
+																							label : item.name,
+																							// following property gets entered in the textbox
+																							value : item.sid
+																						};
+																					}));
+																});
+											},
 
-												//define select handler
-												select : function(event, ui) {
-													if (ui.item) {
-														event.preventDefault();
-														$("#selectedCourses")
-																.append(
-																		"<span class='courseTag'>"
-																				+ ui.item.label
-																				+ "&nbsp;<i id='" + ui.item.value + "' class='icon icon-remove'></i></span>");
-														var input = $("#tempCourses");
-														input.val(input.val()
-																+ ui.item.value
-																+ ";");
-														//$("#tagQuery").value = $("#tagQuery").defaultValue
-														var defValue = $(
-																"#coursesQuery")
-																.prop(
-																		'defaultValue');
-														$("#coursesQuery").val(
-																defValue);
-														$("#coursesQuery")
-																.blur();
-														return false;
-													}
+											//define select handler
+											select : function(event, ui) {
+												if (ui.item) {
+													event.preventDefault();
+													$("#selectedStyles")
+															.append(
+																	"<span class='styleTag'>"
+																			+ ui.item.label
+																			+ "&nbsp;<i id='" + ui.item.value + "' class='icon icon-remove'></i></span>");
+													var input = $("#tempStyles");
+													input.val(input.val()
+															+ ui.item.value
+															+ ";");
+													//$("#tagQuery").value = $("#tagQuery").defaultValue
+													var defValue = $(
+															"#stylesQuery")
+															.prop(
+																	'defaultValue');
+													$("#stylesQuery").val(
+															defValue);
+													$("#stylesQuery").blur();
+													return false;
 												}
-											});
+											}
+										});
+					});
+	$(document)
+			.ready(
+					function() {
+						$("#showCourses").on("click", "i", function() {
+							var id = $(this).attr("id");
+							$(this).parent().remove();
+							$("#tempCourses").val(function(i, v) {
+								return v.replace(id + ";", "-" + id + ";");
+							}).val();
 						});
-	</script>
+
+						//attach autocomplete
+						$("#coursesQuery")
+								.autocomplete(
+										{
+											minLength : 1,
+											delay : 500,
+											//define callback to format results
+											source : function(request, response) {
+												$
+														.getJSON(
+																"/dancemanage/admin/teacher/getCourses",
+																request,
+																function(result) {
+																	response($
+																			.map(
+																					result,
+																					function(
+																							item) {
+																						return {
+																							// following property gets displayed in drop down
+																							label : item.name,
+																							// following property gets entered in the textbox
+																							value : item.cid
+																						};
+																					}));
+																});
+											},
+
+											//define select handler
+											select : function(event, ui) {
+												if (ui.item) {
+													event.preventDefault();
+													$("#selectedCourses")
+															.append(
+																	"<span class='courseTag'>"
+																			+ ui.item.label
+																			+ "&nbsp;<i id='" + ui.item.value + "' class='icon icon-remove'></i></span>");
+													var input = $("#tempCourses");
+													input.val(input.val()
+															+ ui.item.value
+															+ ";");
+													//$("#tagQuery").value = $("#tagQuery").defaultValue
+													var defValue = $(
+															"#coursesQuery")
+															.prop(
+																	'defaultValue');
+													$("#coursesQuery").val(
+															defValue);
+													$("#coursesQuery").blur();
+													return false;
+												}
+											}
+										});
+					});
+</script>

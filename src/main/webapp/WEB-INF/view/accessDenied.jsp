@@ -9,12 +9,14 @@
 <dmtags:scaffold title="${i18nTitle}">
 	<dmtags:upperNavigation />
 	<dmtags:center>
-	   <br/>
-	   <br/>
-	   <spring:message var="accessDenied" code="user.accessDenied" />
-		<dmtags:widget icon="icon-warning-sign" title="${accessDenied}">
-			<i class="shortcut-icon "></i>&nbsp;&nbsp;
+		<dmtags:span width="12">
+			<br />
+			<br />
+			<spring:message var="accessDenied" code="user.accessDenied" />
+			<dmtags:widget icon="icon-warning-sign" title="${accessDenied}">
+				<i class="shortcut-icon "></i>&nbsp;&nbsp;
 			<spring:message code="user.accessDenied" />
-		</dmtags:widget>
+			</dmtags:widget>
+		</dmtags:span>
 	</dmtags:center>
 </dmtags:scaffold>

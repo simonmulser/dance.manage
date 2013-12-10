@@ -6,4 +6,6 @@
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 
 <dmtags:base title="Parent" activesection="dashboard">
+	<dmtags:span width="12">
+	</dmtags:span>
 </dmtags:base>
