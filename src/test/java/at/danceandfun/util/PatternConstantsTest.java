@@ -147,4 +147,21 @@ public class PatternConstantsTest {
         assertThat("10ABC".matches(PatternConstants.ADDRESS_NUMBER_PATTERN),
                 is(false));
     }
+    
+    @Test
+    public void testTelephonePattern() {
+        assertThat("06801111111".matches(PatternConstants.TELEPHONE_PATTERN),
+                is(true));
+        assertThat("00436801111111".matches(PatternConstants.TELEPHONE_PATTERN),
+                is(true));
+        assertThat("+436801111111".matches(PatternConstants.TELEPHONE_PATTERN),
+                is(true));
+        assertThat("+ABC1111111".matches(PatternConstants.TELEPHONE_PATTERN),
+                is(false));
+        assertThat("0680AAAAAAA".matches(PatternConstants.TELEPHONE_PATTERN),
+                is(false));
+        assertThat(
+                "+0043680244".matches(PatternConstants.TELEPHONE_PATTERN),
+                is(false));
+    }
 }

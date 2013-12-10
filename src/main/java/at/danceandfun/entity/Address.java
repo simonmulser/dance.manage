@@ -39,7 +39,7 @@ public class Address extends EntityBase {
 
     @Column(name = "NUMBER")
     @NotEmpty
-    @Pattern(regexp = PatternConstants.ADDRESS_NUMBER_PATTERN, message = "{pattern.address.number")
+    @Pattern(regexp = PatternConstants.ADDRESS_NUMBER_PATTERN, message = "{pattern.address.number}")
     private String number;
 
     @Column(name = "STAIR")

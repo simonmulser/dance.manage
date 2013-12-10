@@ -70,6 +70,7 @@ public abstract class Person extends EntityBase implements UserDetails {
 
     @Column(name = "TELEPHONE")
     @Size(min = 9, message = "{size.person.telephone}")
+    @Pattern(regexp = PatternConstants.TELEPHONE_PATTERN, message = "{pattern.telephone}")
     private String telephone;
 
     @Column(name = "PASSWORD")
