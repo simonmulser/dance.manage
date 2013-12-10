@@ -5,10 +5,12 @@
 <%@taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
 <%@taglib uri="http://displaytag.sf.net" prefix="display"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
-
-<dmtags:base title="nav.courseParticipants" activesection="participants">
-
-	<dmtags:widget title="widget.courseParticipants" icon="icon-user">
+<spring:message var="i18nNavCourseParticipants"
+	code="nav.courseParticipants" />
+<dmtags:base title="${i18nNavCourseParticipants}" activesection="participants">
+	<spring:message var="i18nWidgetCourseParticipants"
+		code="widget.courseParticipants" />
+	<dmtags:widget title="${i18nWidgetCourseParticipants}" icon="icon-user">
 		<spring:message code="help.participant" />
 		<form:form method="post" action="participant/add"
 			commandName="participant" class="form-horizontal">
@@ -73,7 +75,8 @@
 	</dmtags:widget>
 
 	<c:if test="${!empty participantList}">
-		<dmtags:widget title="widget.overview" style="table" icon="icon-list">
+		<spring:message var="i18nOverview" code="widget.overview" />
+		<dmtags:widget title="${i18nOverview}" style="table" icon="icon-list">
 			<display:table name="participantList" id="row"
 				class="table table-striped table-bordered displaytag" pagesize="15"
 				requestURI="/admin/participant" defaultsort="1">
@@ -96,7 +99,8 @@
 					<c:out value="${row.emergencyNumber}" />
 				</display:column>
 				<display:column sortable="true" titleKey="label.street">
-					<c:out value="${row.address.street} ${row.address.number}/${row.address.stair}/${row.address.door}" />
+					<c:out
+						value="${row.address.street} ${row.address.number}/${row.address.stair}/${row.address.door}" />
 				</display:column>
 				<display:column sortable="true" titleKey="label.zip">
 					<c:out value="${row.address.zip}" />
@@ -106,8 +110,7 @@
 				</display:column>
 				<display:column titleKey="label.siblings">
 					<c:if test="${!empty row.siblings}">
-						<c:forEach items="${row.siblings}" var="sib"
-								varStatus="loop">
+						<c:forEach items="${row.siblings}" var="sib" varStatus="loop">
 								${sib.firstname}
 								${!loop.last ? ', ' : ''}
 						</c:forEach>
@@ -116,8 +119,8 @@
 				<display:column titleKey="label.courses">
 					<c:if test="${!empty row.courseParticipants}">
 						<c:forEach items="${row.courseParticipants}"
-								var="courseParticipant" varStatus="loop">
-								<c:if test="${courseParticipant.enabled}">
+							var="courseParticipant" varStatus="loop">
+							<c:if test="${courseParticipant.enabled}">
 								${courseParticipant.key.course.name}
 								</c:if>
 								${!loop.last ? ', ' : ''}
@@ -126,8 +129,11 @@
 				</display:column>
 				<display:column>
 					<c:set var="pid" value="${row.pid}" />
-					<a href="participant/edit/${pid}"><spring:message code="label.edit" /></a><br /> 
-					<a href="participant/delete/${pid}" class="openDialog"><spring:message code="label.delete" /></a>
+					<a href="participant/edit/${pid}"><spring:message
+							code="label.edit" /></a>
+					<br />
+					<a href="participant/delete/${pid}" class="openDialog"><spring:message
+							code="label.delete" /></a>
 				</display:column>
 			</display:table>
 			<div id="dialog-confirm"

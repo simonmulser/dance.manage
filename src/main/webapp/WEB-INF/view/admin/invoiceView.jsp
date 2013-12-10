@@ -4,12 +4,14 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
-
-<dmtags:base title="nav.invoices" activesection="invoices">
-	<dmtags:widget icon="icon-envelope" title="widget.invoices">
+<spring:message var="i18nTitle" code="nav.invoices"/>
+<dmtags:base title="${i18nTitle}" activesection="invoices">
+<spring:message var="i18nInvoices" code="widget.invoices"/>
+	<dmtags:widget icon="icon-envelope" title="${i18nInvoices}">
 		<spring:message code="help.invoice" />
 	</dmtags:widget>
-	<dmtags:widget title="widget.overview" style="table" icon="icon-list">
+<spring:message var="i18nOverview" code="widget.overview"/>
+	<dmtags:widget title="${i18nOverview}" style="table" icon="icon-list">
 		
 	</dmtags:widget>
 </dmtags:base>

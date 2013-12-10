@@ -6,9 +6,10 @@
 <%@taglib uri="http://displaytag.sf.net" prefix="display"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 
-<dmtags:base title="nav.courses" activesection="courses">
-
-	<dmtags:widget icon="icon-calendar" title="widget.courses">
+<spring:message var="i18nNavTitle" code="nav.courses" />
+<dmtags:base title="${i18nNavTitle}" activesection="courses">
+	<spring:message var="i18nWidgetTitle" code="widget.courses" />
+	<dmtags:widget icon="icon-calendar" title="${i18nWidgetTitle}">
 		<spring:message code="help.course" />
 		<form:form method="post" action="course/add" commandName="course"
 			class="form-horizontal">
@@ -39,8 +40,8 @@
 				</form:label>
 				<div class="span6">
 					<form:select path="duration">
-						<form:options items="${CourseDuration}"  itemLabel="label" />
-					</form:select>	
+						<form:options items="${CourseDuration}" itemLabel="label" />
+					</form:select>
 				</div>
 				<form:errors path="duration" cssClass="error" />
 			</div>
@@ -88,7 +89,7 @@
 				</form:label>
 				<div class="span6">
 					<form:select path="estimatedSpectators">
-						<form:options items="${SpectatorAmount}" itemLabel="label"/>
+						<form:options items="${SpectatorAmount}" itemLabel="label" />
 					</form:select>
 				</div>
 				<form:errors path="estimatedSpectators" cssClass="error" />
@@ -99,7 +100,7 @@
 				</form:label>
 				<div class="span6">
 					<form:select path="ageGroup">
-						<form:options items="${AgeGroup}" itemLabel="label"/>
+						<form:options items="${AgeGroup}" itemLabel="label" />
 					</form:select>
 				</div>
 				<form:errors path="ageGroup" cssClass="error" />
@@ -119,7 +120,7 @@
 				</form:label>
 				<div class="span6">
 					<form:select path="level">
-						<form:options items="${CourseLevel}" itemLabel="label"/>
+						<form:options items="${CourseLevel}" itemLabel="label" />
 					</form:select>
 				</div>
 				<form:errors path="level" cssClass="error" />
@@ -172,7 +173,8 @@
 		</form:form>
 	</dmtags:widget>
 
-	<dmtags:widget title="widget.overview" style="table" icon="icon-list">
+	<spring:message var="i18nOverview" code="widget.overview" />
+	<dmtags:widget title="${i18nOverview}" style="table" icon="icon-list">
 		<c:if test="${!empty courseList}">
 
 			<display:table name="courseList" id="course"
@@ -188,9 +190,8 @@
 					&euro; <c:out value="${course.yearPrice}" />
 				</display:column>
 				<display:column sortable="true" titleKey="label.courseweekday">
-					<spring:message code="${course.weekday.i18nIdentifier}"/>,&nbsp;
-					<joda:format value="${course.time}"
-									pattern="HH:mm" />
+					<spring:message code="${course.weekday.i18nIdentifier}" />,&nbsp;
+					<joda:format value="${course.time}" pattern="HH:mm" />
 				</display:column>
 				<display:column sortable="true" titleKey="label.courseduration">
 					<spring:message code="${course.duration.i18nIdentifier}" />
@@ -206,8 +207,10 @@
 				</display:column>
 				<display:column>
 					<c:set var="cid" value="${course.cid}" />
-					<a href="course/edit/${cid}"><spring:message code="label.edit" /></a><br /> 
-					<a href="course/delete/${cid}" class="openDialog"><spring:message code="label.delete" /></a>
+					<a href="course/edit/${cid}"><spring:message code="label.edit" /></a>
+					<br />
+					<a href="course/delete/${cid}" class="openDialog"><spring:message
+							code="label.delete" /></a>
 				</display:column>
 			</display:table>
 

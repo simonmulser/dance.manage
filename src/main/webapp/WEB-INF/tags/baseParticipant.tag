@@ -9,7 +9,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <dmtags:scaffold title="${title}">
 
-<dmtags:navigation activesection="${activesection}"/>
+<dmtags:navigationParticipant activesection="${activesection}"/>
 
 	<dmtags:center>
 		<jsp:doBody />

@@ -6,12 +6,13 @@
 <%@taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<%-- <%@ page import="org.joda.time.*" %> --%>
 
-<dmtags:base title="nav.home" activesection="dashboard">
+<spring:message var="i18nTitle" code="nav.home" />
+<dmtags:base title="${i18nTitle}" activesection="dashboard">
+    <spring:message var="i18nCourses" code="widget.courses" />
 	<c:choose>
 		<c:when test="${user.courseParticipants.size() gt 0}">
-			<dmtags:widget title="widget.courses" style="table" icon="icon-list">
+			<dmtags:widget title="${i18nCourses}" style="table" icon="icon-list">
 				<table class="table table-striped table-bordered">
 					<thead>
 						<tr>
@@ -34,8 +35,7 @@
 			</dmtags:widget>
 		</c:when>
 		<c:otherwise>
-			<dmtags:widget title="widget.courses" style="noTable"
-				icon="icon-list">
+			<dmtags:widget title="${i18nCourses}" style="noTable" icon="icon-list">
 				<spring:message code="participant.noCourses" />
 			</dmtags:widget>
 		</c:otherwise>
@@ -72,16 +72,15 @@
 	<!-- /widget -->
 
 
-
 	<dmtags:widget title="widget.courses" style="nopad" icon="icon-calendar">
 		<div id='calendar'></div>
 	</dmtags:widget>
 
 
+	<spring:message var="i18nSiblings" code="widget.siblings" />
 	<c:choose>
 		<c:when test="${user.siblings.size() gt 0}">
-
-			<dmtags:widget title="widget.siblings" style="table" icon="icon-list">
+			<dmtags:widget title="${i18nSiblings}" style="table" icon="icon-list">
 				<table class="table table-striped table-bordered">
 					<thead />
 					<tbody>
@@ -95,21 +94,23 @@
 			</dmtags:widget>
 		</c:when>
 		<c:otherwise>
-			<dmtags:widget title="widget.courses" style="noTable"
+
+			<dmtags:widget title="${i18nSiblings}" style="noTable"
 				icon="icon-list">
 				<spring:message code="participant.noSiblings" />
 			</dmtags:widget>
 		</c:otherwise>
 	</c:choose>
-
+	
+    <spring:message var="i18nInvoices" code="widget.invoices" />
 	<c:choose>
 		<c:when test="${user.invoices.size() gt 0}">
-			<dmtags:widget title="widget.invoices" style="table" icon="icon-list">
+			<dmtags:widget title="${i18nInvoices}" style="table" icon="icon-list">
                 TODO show invoices
             </dmtags:widget>
 		</c:when>
 		<c:otherwise>
-			<dmtags:widget title="widget.invoices" style="noTable"
+			<dmtags:widget title="${i18nInvoices}" style="noTable"
 				icon="icon-list">
 				<spring:message code="user.noInvoices" />
 			</dmtags:widget>

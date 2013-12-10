@@ -6,8 +6,11 @@
 <%@taglib uri="http://displaytag.sf.net" prefix="display"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 
-<dmtags:base title="nav.lists" activesection="lists">
-	<dmtags:widget title="widget.performanceInformation" style="table"
+<spring:message var="i18nTitle" code="nav.lists" />
+<dmtags:base title="${i18nTitle}" activesection="lists">
+	<spring:message var="i18nPerformanceInformation"
+		code="widget.performanceInformation" />
+	<dmtags:widget title="${i18nPerformanceInformation}" style="table"
 		icon="icon-list">
 		<display:table name="courses" id="course"
 			class="table table-striped table-bordered displaytag" pagesize="15"
@@ -35,7 +38,9 @@
 	</dmtags:widget>
 
 	<c:if test="${!empty participantsByNumberOfCourses}">
-		<dmtags:widget title="widget.participantCourseAmount" style="table"
+		<spring:message var="i18nParticipantCourseAmount"
+			code="widget.participantCourseAmount" />
+		<dmtags:widget title="${i18nParticipantCourseAmount}" style="table"
 			icon="icon-list">
 			<table class="table table-striped table-bordered">
 				<thead>
@@ -66,9 +71,10 @@
 			</table>
 		</dmtags:widget>
 	</c:if>
-
 	<c:if test="${!empty participantsByNumberOfSiblings}">
-		<dmtags:widget title="widget.siblingRelationships" style="table"
+		<spring:message var="i18nSiblingRelationships"
+			code="widget.siblingRelationships" />
+		<dmtags:widget title="${i18nSiblingRelationships}" style="table"
 			icon="icon-list">
 			<table class="table table-striped table-bordered">
 				<thead>
@@ -107,9 +113,11 @@
 			</table>
 		</dmtags:widget>
 	</c:if>
-                        
+
 	<c:if test="${!empty courses}">
-		<dmtags:widget title="widget.courseInformation" style="table"
+		<spring:message var="i18nCourseInformation"
+			code="widget.courseInformation" />
+		<dmtags:widget title="${i18nCourseInformation}" style="table"
 			icon="icon-list">
 			<table class="table table-striped table-bordered">
 				<thead>

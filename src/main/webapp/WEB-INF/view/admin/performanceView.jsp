@@ -10,11 +10,11 @@
  table { table-layout: fixed; }
  table th, table td { overflow: hidden; }
 </style>
-
-<dmtags:base title="nav.performances" activesection="performances">
+<spring:message var="i18nTitle" code="nav.performances" />
+<dmtags:base title="${i18nTitle}" activesection="performances">
 	
-
-	<dmtags:widget title="widget.createPlan" icon="icon-camera">
+<spring:message var="i18nCreatePlan" code="widget.createPlan" />
+	<dmtags:widget title="${i18nCreatePlan}" icon="icon-camera">
 		<form:form method="post" action="performance/build"
 			commandName="performance" class="form-horizontal">
 			<div>
