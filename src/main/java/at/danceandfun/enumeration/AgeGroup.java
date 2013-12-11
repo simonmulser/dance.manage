@@ -7,7 +7,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import at.danceandfun.util.AppContext;
 
 public enum AgeGroup {
-    SMALL(0), MEDIUM(1), BIG(2);
+    SMALL(0), MEDIUM(1), BIG(2), PAUSE(3);
 
     private Integer value;
 

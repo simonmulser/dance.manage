@@ -73,8 +73,8 @@ table th,table td {
 									<c:forEach items="${performanceList1}" var="course">
 										<tr>
 											<td>${course.name}</td>
-											<td>${course.ageGroup}</td>
-											<td>${course.level}</td>
+											<td><spring:message code ="${course.ageGroup.i18nIdentifier}" /></td>
+											<td><spring:message code ="${course.level.i18nIdentifier}" /></td>
 											<td><i class="icon-smile restriction-icon-good"></i></td>
 										</tr>
 									</c:forEach>
@@ -101,8 +101,8 @@ table th,table td {
 									<c:forEach items="${performanceList2}" var="course">
 										<tr>
 											<td>${course.name}</td>
-											<td>${course.ageGroup}</td>
-											<td>${course.level}</td>
+											<td><spring:message code ="${course.ageGroup.i18nIdentifier}" /></td>
+											<td><spring:message code ="${course.level.i18nIdentifier}" /></td>
 											<td><i class="icon-smile restriction-icon-good"></i></td>
 										</tr>
 									</c:forEach>
@@ -129,8 +129,8 @@ table th,table td {
 									<c:forEach items="${performanceList3}" var="course">
 										<tr>
 											<td>${course.name}</td>
-											<td>${course.ageGroup}</td>
-											<td>${course.level}</td>
+											<td><spring:message code ="${course.ageGroup.i18nIdentifier}" /></td>
+											<td><spring:message code ="${course.level.i18nIdentifier}" /></td>
 											<td><i class="icon-smile restriction-icon-good"></i></td>
 										</tr>
 									</c:forEach>

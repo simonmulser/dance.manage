@@ -19,6 +19,8 @@ import at.danceandfun.entity.CourseParticipant;
 import at.danceandfun.entity.Participant;
 import at.danceandfun.entity.Performance;
 import at.danceandfun.entity.Style;
+import at.danceandfun.enumeration.AgeGroup;
+import at.danceandfun.enumeration.CourseLevel;
 import at.danceandfund.exception.SatException;
 
 public class GenerateSatSolution {
@@ -507,10 +509,12 @@ public class GenerateSatSolution {
         // address.setCity("Platzhalter");
         // address.setZip(10);
         // address.setNumber(10);
-        dummyCourse.setName(" ");
+        dummyCourse.setName("-");
         dummyCourse.setStyle(dummyStyle);
-        dummyCourse.setAmountPerformances(0);
+        dummyCourse.setAmountPerformances(1);
         dummyCourse.setEnabled(true);
+        dummyCourse.setLevel(CourseLevel.PAUSE);
+        dummyCourse.setAgeGroup(AgeGroup.PAUSE);
         // dummyCourse.setAddress(address);
         // dummyCourse.setDuration(CourseDuration.FIFTY);
         // dummyCourse.setSemesterPrice(10.0);
@@ -529,7 +533,7 @@ public class GenerateSatSolution {
 
         if (dummies > 0) {
             for (int i = courses.size() - 1; i >= 0; i--) {
-                if (courses.get(i).getName().equals(" ")) {
+                if (courses.get(i).getName().equals("-")) {
                     if (foundDummies == 0) {
                         int[] temp = { buildMappingVariable(3, 1, i + 1) };
                         clauses.add(temp);
