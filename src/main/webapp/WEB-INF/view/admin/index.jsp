@@ -146,19 +146,19 @@
 	<dmtags:span width="6">
 		<dmtags:widget icon="icon-bookmark" title="${i18nWidgetShortcuts}">
 			<div class="shortcuts">
-				<a href="javascript:;" class="shortcut"><i
+				<a href="admin/participant" class="shortcut"><i
 					class="shortcut-icon icon-user"></i><span class="shortcut-label">${i18nSCNewParticipant}</span>
-				</a><a href="javascript:;" class="shortcut"><i
+				</a><a href="admin/invoice" class="shortcut"><i
 					class="shortcut-icon icon-envelope"></i><span
 					class="shortcut-label">${i18nSCNewInvoice}</span> </a><a
-					href="javascript:;" class="shortcut"><i
+					href="admin/course" class="shortcut"><i
 					class="shortcut-icon icon-calendar"></i> <span
 					class="shortcut-label">${i18nSCNewCourse}</span> </a><a
-					href="javascript:;" class="shortcut"> <i
+					href="admin/performance" class="shortcut"> <i
 					class="shortcut-icon icon-camera"></i><span class="shortcut-label">${i18nSCEditPerformance}</span>
-				</a><a href="javascript:;" class="shortcut"><i
+				</a><a href="admin/course" class="shortcut"><i
 					class="shortcut-icon icon-list"></i><span class="shortcut-label">${i18nSCCourseList}</span>
-				</a><a href="javascript:;" class="shortcut"><i
+				</a><a href="admin/statistics" class="shortcut"><i
 					class="shortcut-icon icon-signal"></i><span class="shortcut-label">${i18nSCDailyStats}</span>
 				</a><a href="javascript:;" class="shortcut"><i
 					class="shortcut-icon icon-comment"></i> <span
