@@ -11,7 +11,8 @@
 		<spring:message var="i18nWidgetTeachers" code="widget.teachers" />
 
 		<dmtags:widget title="${i18nWidgetTeachers}" icon="icon-user">
-			<spring:message code="help.teacher" />
+			<spring:message code="help.teacher" /><br />
+			<spring:message code="help.required" />
 			<form:form method="post" action="teacher/add" commandName="teacher"
 				class="form-horizontal">
 

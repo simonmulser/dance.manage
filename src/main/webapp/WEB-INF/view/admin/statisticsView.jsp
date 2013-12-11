@@ -8,7 +8,7 @@
 <dmtags:base title="${i18nStatistics}" activesection="statistics">
 	<dmtags:span width="12">
 
-		<spring:message var="i18nList" code="widget.list" />
+		<spring:message var="i18nList" code="widget.statistic" />
 
 		<dmtags:widget title="${i18nList}" style="table" icon="icon-bar-chart">
 			<display:table name="statistics" id="row"
