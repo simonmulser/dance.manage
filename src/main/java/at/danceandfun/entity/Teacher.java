@@ -53,12 +53,16 @@ public class Teacher extends Person {
     private String comment;
 
     @Transient
-    @Column(name = "TEMP_STYLES")
     private String tempStyles;
 
     @Transient
-    @Column(name = "TEMP_COURSES")
     private String tempCourses;
+
+    @Transient
+    private String tempStyleNames;
+
+    @Transient
+    private String tempCourseNames;
 
     @OneToMany(mappedBy = "teacher")
     private List<Course> courses = new ArrayList<Course>();
@@ -85,7 +89,6 @@ public class Teacher extends Person {
     public void setSalary(Double salary) {
         this.salary = salary;
     }
-
 
     public LocalDate getEngagementDate() {
         return engagementDate;
@@ -134,6 +137,22 @@ public class Teacher extends Person {
 
     public void setTempCourses(String tempCourses) {
         this.tempCourses = tempCourses;
+    }
+
+    public String getTempStyleNames() {
+        return tempStyleNames;
+    }
+
+    public void setTempStyleNames(String tempStyleNames) {
+        this.tempStyleNames = tempStyleNames;
+    }
+
+    public String getTempCourseNames() {
+        return tempCourseNames;
+    }
+
+    public void setTempCourseNames(String tempCourseNames) {
+        this.tempCourseNames = tempCourseNames;
     }
 
     @Override

@@ -30,16 +30,18 @@
 							title="<spring:message code='help.searchStyle' />"
 							class="inline-tooltip icon icon-question-sign"></i>
 							<div id="duplicateStyle" class="duplicateError"><spring:message code='error.duplicateStyle' /></div>
-						<div id="showStyles">
+						<div id="showStyles">							
+							<span id="selectedStyles">
 							<c:forEach items="${teacher.styles}" var="sty">
 								<span class="styleTag">${sty.name}&nbsp;<i
 									id="${sty.sid}" class="icon icon-remove"></i></span>
 							</c:forEach>
-							<span id="selectedStyles"> </span>
+							 </span>
 						</div>
 					</div>
 
 					<form:input path="tempStyles" id="tempStyles" type="hidden" />
+					<form:input path="tempStyleNames" id="tempStyleNames" type="hidden" />
 				</div>
 
 
@@ -52,16 +54,18 @@
 							title="<spring:message code='help.searchCourse' />"
 							class="inline-tooltip icon icon-question-sign"></i>
 							<div id="duplicateCourse" class="duplicateError"><spring:message code='error.duplicateCourse' /></div>
-						<div id="showCourses">
+						<div id="showCourses">							
+							<span id="selectedCourses">
 							<c:forEach items="${teacher.courses}" var="cou">
 								<span class="courseTag">${cou.name}&nbsp;<i
 									id="${cou.cid}" class="icon icon-remove"></i></span>
 							</c:forEach>
-							<span id="selectedCourses"> </span>
+							 </span>
 						</div>
 					</div>
 
 					<form:input path="tempCourses" id="tempCourses" type="hidden" />
+					<form:input path="tempCourseNames" id="tempCourseNames" type="hidden" />
 				</div>
 
 				<div class="control-group">
@@ -103,7 +107,7 @@
 							<td>${teacher.email}</td>
 							<td>${teacher.telephone}</td>
 							<td>${teacher.svnr}</td>
-							<td>&euro;${teacher.salary}</td>
+							<td><c:if test="${!empty teacher.salary }">&euro;</c:if>${teacher.salary}</td>
 							<td><joda:format value="${teacher.engagementDate}"
 									pattern="dd.MM.yyyy" /></td>
 							<c:choose>
@@ -122,8 +126,10 @@
 								<c:when test="${!empty teacher.courses}">
 									<td><c:forEach items="${teacher.courses}" var="cou"
 											varStatus="loop">
+											<c:if test="${cou.enabled }">
 											${cou.name}
-											${!loop.last ? ', ' : ''}
+											
+											${!loop.last ? ', ' : ''}</c:if>
 										</c:forEach></td>
 								</c:when>
 								<c:otherwise>
@@ -156,6 +162,7 @@
 	$('i').tooltip();
 	$("#duplicateStyle").hide();
 	$("#duplicateCourse").hide();
+	
 	$(".openDialog").click(function() {
 		$("#deleteId").text($(this).attr("id"));
 		$("#dialog-confirm").dialog("open");
@@ -176,21 +183,56 @@
 			}
 		}
 	});
+	
 	$("#datepicker").datepicker({
 		showOn : "button",
 		buttonImage : "/dancemanage/css/ui/images/calendar.gif",
 		buttonImageOnly : true,
 		dateFormat : "dd.mm.yy"
 	});
+	
+	$(document).on("saveStyleCourse",function(){ //damit Styles und Courses erhalten bleiben
+		if($("#tempStyleNames").val() != ''){
+			$("#selectedStyles").empty();
+			var styles = $("#tempStyleNames").val().split(";");
+			var i;
+			for(i=0; i<styles.length-1; i++){
+				var parts = styles[i].split(",");
+				$("#selectedStyles").append("<span class='styleTag'>"
+						+ parts[0]
+						+ "&nbsp;<i id='" + parts[1] + "' class='icon icon-remove'></i><span style='display:none;'>" + parts[0] + "</span></span>");
+			}
+			
+		}
+	
+		if($("#tempCourseNames").val() != ''){
+			$("#selectedCourses").empty();
+			var courses = $("#tempCourseNames").val().split(";");
+			var i;
+			for(i=0; i<courses.length-1; i++){
+				var parts = courses[i].split(",");
+				$("#selectedCourses").append("<span class='courseTag'>"
+						+ parts[0]
+						+ "&nbsp;<i id='" + parts[1] + "' class='icon icon-remove'></i><span style='display:none;'>" + parts[0] + "</span></span>");
+			}
+			
+		}
+	});
+	$(document).trigger("saveStyleCourse", [""]);
+	
 	$(document)
 			.ready(
 					function() {
 						$("#showStyles").on("click", "i", function() {
 							$("#duplicateStyle").hide();
 							var id = $(this).attr("id");
+							var styleName = $(this).siblings("span").text();
 							$(this).parent().remove();
 							$("#tempStyles").val(function(i, v) {
 								return v.replace(id + ";", "-" + id + ";");
+							}).val();
+							$("#tempStyleNames").val(function(i, v) {
+								return v.replace(styleName + ","+id+";", "");
 							}).val();
 						});
 
@@ -228,17 +270,17 @@
 												if (ui.item) {
 													event.preventDefault();
 													var input = $("#tempStyles");
+													var inputName = $("#tempStyleNames");
 													var tempStyles = input.val();
 													var itemId = ui.item.sid;
 													if(tempStyles.indexOf(itemId) == -1){ //neues Element
 														$("#duplicateStyle").hide();
-														$("#selectedStyles")
-														.append(
-																"<span class='styleTag'>"
+														$("#selectedStyles").append("<span class='styleTag'>"
 																		+ ui.item.label
-																		+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i></span>");
+																		+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i><span style='display:none;'>" + ui.item.label + "</span></span>");
 												
 														input.val(input.val() + itemId + ";");
+														inputName.val(inputName.val() + ui.item.label + "," + itemId + ";");
 														
 													}else if(tempStyles.indexOf("-"+itemId) != -1){ //bereits einmal gelöscht
 														$("#duplicateStyle").hide();
@@ -246,23 +288,19 @@
 														.append(
 																"<span class='styleTag'>"
 																		+ ui.item.label
-																		+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i></span>");
+																		+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i><span style='display:none;'>" + ui.item.label + "</span></span>");
 														
 														input.val(function(i, v) {
 															return v.replace("-"+itemId + ";", itemId + ";");
 														}).val();
+														inputName.val(inputName.val() + ui.item.label + "," + itemId + ";");
 
 													}else{ //bereits vorhanden
 														$("#duplicateStyle").show();
 													}	
 									
-													//$("#tagQuery").value = $("#tagQuery").defaultValue
-													var defValue = $(
-															"#stylesQuery")
-															.prop(
-																	'defaultValue');
-													$("#stylesQuery").val(
-															defValue);
+													var defValue = $("#stylesQuery").prop('defaultValue');
+													$("#stylesQuery").val(defValue);
 													$("#stylesQuery").blur();
 													return false;
 												}
@@ -270,89 +308,90 @@
 										});
 					});
 	$(document)
-			.ready(
-					function() {
-						$("#showCourses").on("click", "i", function() {
-							$("#duplicateCourse").hide();
-							var id = $(this).attr("id");
-							$(this).parent().remove();
-							$("#tempCourses").val(function(i, v) {
-								return v.replace(id + ";", "-" + id + ";");
-							}).val();
-						});
+	.ready(
+			function() {
+				$("#showCourses").on("click", "i", function() {
+					$("#duplicateCourse").hide();
+					var id = $(this).attr("id");
+					var courseName = $(this).siblings("span").text();
+					$(this).parent().remove();
+					$("#tempCourses").val(function(i, v) {
+						return v.replace(id + ";", "-" + id + ";");
+					}).val();
+					$("#tempCourseNames").val(function(i, v) {
+						return v.replace(courseName + ","+id+";", "");
+					}).val();
+				});
 
-						//attach autocomplete
-						$("#coursesQuery")
-								.autocomplete(
-										{
-											minLength : 1,
-											delay : 500,
-											//define callback to format results
-											source : function(request, response) {
-												$
-														.getJSON(
-																"/dancemanage/admin/teacher/getCourses",
-																request,
-																function(result) {
-																	response($
-																			.map(
-																					result,
-																					function(
-																							item) {
-																						return {
-																							// following property gets displayed in drop down
-																							label : item.name,
-																							// following property gets entered in the textbox
-																							value : item.name,
-																							cid: item.cid
-																						};
-																					}));
-																});
-											},
+				$("#coursesQuery")
+						.autocomplete(
+								{
+									minLength : 1,
+									delay : 500,
+									source : function(request, response) {
+										$
+												.getJSON(
+														"/dancemanage/admin/teacher/getCourses",
+														request,
+														function(result) {
+															response($
+																	.map(
+																			result,
+																			function(
+																					item) {
+																				return {
+																					label : item.name,
+																					value : item.name,
+																					cid: item.cid
+																				};
+																			}));
+														});
+									},
 
-											//define select handler
-											select : function(event, ui) {
-												if (ui.item) {
-													event.preventDefault();
-													var input = $("#tempCourses");
-													var tempCourses = input.val();
-													var itemId = ui.item.cid;
-													if(tempCourses.indexOf(itemId) == -1){ //neues Element
-														$("#duplicateCourse").hide();
-														$("#selectedCourses")
-														.append(
-																"<span class='courseTag'>"
-																		+ ui.item.label
-																		+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i></span>");
+									select : function(event, ui) {
+										if (ui.item) {
+											event.preventDefault();
+											
+											var input = $("#tempCourses");
+											var inputName = $("#tempCourseNames");
+											var tempCourses = input.val();
+											var itemId = ui.item.cid;
+											if(tempCourses.indexOf(itemId) == -1){ //neues Element
+												$("#duplicateCourse").hide();
+												$("#selectedCourses")
+												.append(
+														"<span class='courseTag'>"
+																+ ui.item.label
+																+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i><span style='display:none;'>" + ui.item.label + "</span></span>");
+										
+												input.val(input.val() + itemId + ";");
+												inputName.val(inputName.val() + ui.item.label + "," + itemId + ";");
 												
-														input.val(input.val() + itemId + ";");
-														
-													}else if(tempCourses.indexOf("-"+itemId) != -1){ //bereits einmal gelöscht
-														$("#duplicateCourse").hide();
-														$("#selectedCourses")
-														.append(
-																"<span class='courseTag'>"
-																		+ ui.item.label
-																		+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i></span>");
-														
-														input.val(function(i, v) {
-															return v.replace("-"+itemId + ";", itemId + ";");
-														}).val();
+											}else if(tempCourses.indexOf("-"+itemId) != -1){ //bereits einmal gelöscht
+												$("#duplicateCourse").hide();
+												$("#selectedCourses")
+												.append(
+														"<span class='courseTag'>"
+																+ ui.item.label
+																+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i><span style='display:none;'>" + ui.item.label + "</span></span>");
+												
+												input.val(function(i, v) {
+													return v.replace("-"+itemId + ";", itemId + ";");
+												}).val();
+												inputName.val(inputName.val() + ui.item.label + "," + itemId + ";");
 
-													}else{ //bereits vorhanden
-														$("#duplicateCourse").show();
-													}
-													//$("#tagQuery").value = $("#tagQuery").defaultValue
-													var defValue = $(
-															"#coursesQuery")
-															.prop(
-																	'defaultValue');
-													$("#coursesQuery").val(
-															defValue);
-													$("#coursesQuery").blur();
-													return false;
-												}
+											}else{ //bereits vorhanden
+												$("#duplicateCourse").show();
 											}
-										});
-					});
+
+											
+			
+											var defValue = $("#coursesQuery").prop('defaultValue');
+											$("#coursesQuery").val(defValue);
+											$("#coursesQuery").blur();
+											return false;
+										}
+									}
+								});
+			});
 </script>

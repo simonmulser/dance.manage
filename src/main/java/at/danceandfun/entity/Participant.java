@@ -55,12 +55,16 @@ public class Participant extends Person {
     private Set<Participant> siblingsReverse = new HashSet<Participant>();
 
     @Transient
-    @Column(name = "TEMP_SIBLINGS")
     private String tempSiblings;
 
     @Transient
-    @Column(name = "TEMP_COURSES")
+    private String tempSiblingNames;
+
+    @Transient
     private String tempCourses;
+
+    @Transient
+    private String tempCourseNames;
 
     public Participant() {
     }
@@ -123,6 +127,22 @@ public class Participant extends Person {
 
     public void setTempCourses(String tempCourses) {
         this.tempCourses = tempCourses;
+    }
+
+    public String getTempSiblingNames() {
+        return tempSiblingNames;
+    }
+
+    public void setTempSiblingNames(String tempSiblingNames) {
+        this.tempSiblingNames = tempSiblingNames;
+    }
+
+    public String getTempCourseNames() {
+        return tempCourseNames;
+    }
+
+    public void setTempCourseNames(String tempCourseNames) {
+        this.tempCourseNames = tempCourseNames;
     }
 
     @JsonIgnore

@@ -162,23 +162,31 @@ public class ParticipantController {
 
         if (participantManager.get(pid).getSiblings().size() > 0) {
             String actualSiblings = "";
+            String actualSiblingNames = "";
             for (Participant p : participant.getSiblings()) {
                 actualSiblings += p.getPid().toString() + ";";
+                actualSiblingNames += p.getFirstname() + " " + p.getLastname()
+                        + "," + p.getPid().toString() + ";";
             }
             participant.setTempSiblings(actualSiblings);
+            participant.setTempSiblingNames(actualSiblingNames);
         }
 
         if (participantManager.get(pid).getCourseParticipants().size() > 0) {
             String actualCourses = "";
+            String actualCourseNames = "";
             for (CourseParticipant cp : participantManager.get(pid)
                     .getCourseParticipants()) {
                 if (cp.isEnabled()) {
                     Course actualCourse = cp.getKey().getCourse();
                     actualCourses += actualCourse.getCid().toString() + ";";
+                    actualCourseNames += actualCourse.getName() + ","
+                            + actualCourse.getCid().toString() + ";";
                 }
 
             }
             participant.setTempCourses(actualCourses);
+            participant.setTempCourseNames(actualCourseNames);
         }
 
         return "redirect:/admin/participant";

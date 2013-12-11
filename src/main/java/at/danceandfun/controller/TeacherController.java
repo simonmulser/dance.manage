@@ -159,18 +159,26 @@ public class TeacherController {
 
         if (teacherManager.get(pid).getStyles().size() > 0) {
             String actualStyles = "";
+            String actualStyleNames = "";
             for (Style s : teacher.getStyles()) {
                 actualStyles += s.getSid().toString() + ";";
+                actualStyleNames += s.getName() + "," + s.getSid().toString()
+                        + ";";
             }
             teacher.setTempStyles(actualStyles);
+            teacher.setTempStyleNames(actualStyleNames);
         }
 
         if (teacherManager.get(pid).getCourses().size() > 0) {
             String actualCourses = "";
+            String actualCourseNames = "";
             for (Course c : teacher.getCourses()) {
                 actualCourses += c.getCid().toString() + ";";
+                actualCourseNames += c.getName() + "," + c.getCid().toString()
+                        + ";";
             }
             teacher.setTempCourses(actualCourses);
+            teacher.setTempCourseNames(actualCourseNames);
         }
 
         return "redirect:/admin/teacher";
