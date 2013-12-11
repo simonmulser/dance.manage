@@ -51,7 +51,7 @@ public class Course extends EntityBase {
 
     @Column(name = "NAME")
     @Size(min = 3, message = "{size.min}")
-    @Pattern(regexp = PatternConstants.CHARACTER_NUMBER_PATTERN, message = "{pattern.characters}")
+    @Pattern(regexp = PatternConstants.CHARACTER_NUMBER_PATTERN, message = "{pattern.characters.numbers}")
     private String name;
 
     @Column(name = "DURATION")

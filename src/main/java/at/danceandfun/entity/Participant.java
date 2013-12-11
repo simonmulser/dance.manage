@@ -39,7 +39,7 @@ public class Participant extends Person {
     private String emergencyNumber;
 
     @Column(name = "CONTACTPERSON")
-    @Pattern(regexp = PatternConstants.CHARACTER_PATTERN_CONTACT, message = "{pattern.characters}")
+    @Pattern(regexp = PatternConstants.CHARACTER_PATTERN_CONTACT, message = "{pattern.contactperson}")
     private String contactPerson;
 
     @OneToMany(mappedBy = "key.participant", fetch = FetchType.LAZY, cascade = { CascadeType.ALL })

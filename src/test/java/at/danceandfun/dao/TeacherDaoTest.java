@@ -43,7 +43,7 @@ public class TeacherDaoTest {
         teacher.setTelephone("123456789");
         teacher.setEmail("mail@mail.com");
         teacher.setSalary(400.50);
-        teacher.setSvnr("1020120690");
+        teacher.setSvnr("1020");
         return teacher;
     }
 

@@ -35,7 +35,7 @@ public class Address extends EntityBase {
 
     @Column(name = "STREET")
     @Size(min = 3, message = "{size.min}")
-    @Pattern(regexp = PatternConstants.CITY_PATTERN, message = "{pattern.characters}")
+    @Pattern(regexp = PatternConstants.CITY_PATTERN, message = "{pattern.characters.city}")
     private String street;
 
     @Column(name = "NUMBER")
@@ -58,7 +58,7 @@ public class Address extends EntityBase {
 
     @Column(name = "CITY")
     @Size(min = 3, message = "{size.min}")
-    @Pattern(regexp = PatternConstants.CITY_PATTERN, message = "{pattern.characters}")
+    @Pattern(regexp = PatternConstants.CITY_PATTERN, message = "{pattern.characters.city}")
     private String city;
 
     @Column(name = "ENABLED")
