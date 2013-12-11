@@ -39,15 +39,18 @@
 							class="inline-tooltip icon icon-question-sign"></i>
 							<div id="duplicateSibling" class="duplicateError"><spring:message code='error.duplicateSibling' /></div>
 						<div id="showSiblings">
+							
+							<span id="selectedSiblings">
 							<c:forEach items="${participant.siblings}" var="sib">
 								<span class="siblingTag">${sib.firstname}&nbsp;${sib.lastname}&nbsp;<i
 									id="${sib.pid}" class="icon icon-remove"></i></span>
 							</c:forEach>
-							<span id="selectedSiblings"> </span>
+							 </span>
 						</div>
 					</div>
 
 					<form:input path="tempSiblings" id="tempSiblings" type="hidden" />
+					<form:input path="tempSiblingNames" id="tempSiblingNames" type="hidden" />
 				</div>
 
 				<div id="find_keyword" class="control-group">
@@ -60,7 +63,9 @@
 							class="inline-tooltip icon icon-question-sign"></i>
 							<div id="duplicateCourse" class="duplicateError"><spring:message code='error.duplicateCourse' /></div>
 						<div id="showCourses">
-							<c:forEach items="${participant.courseParticipants}"
+							
+							<span id="selectedCourses">
+								<c:forEach items="${participant.courseParticipants}"
 								var="courseParticipant">
 								<c:if test="${courseParticipant.enabled}">
 									<span class="courseTag">${courseParticipant.key.course.name}&nbsp;<i
@@ -68,11 +73,12 @@
 										class="icon icon-remove"></i></span>
 								</c:if>
 							</c:forEach>
-							<span id="selectedCourses"> </span>
+							 </span>
 						</div>
 					</div>
 
 					<form:input path="tempCourses" id="tempCourses" type="hidden" />
+					<form:input path="tempCourseNames" id="tempCourseNames" type="hidden" />
 				</div>
 
 
@@ -168,9 +174,10 @@
 </dmtags:base>
 <script type="text/javascript">
 	$('i').tooltip();
-	$("#duplicateSibling").hide();
+	$("#duplicateSibling").hide(); //keine doppelten Elemente hinzufügen
 	$("#duplicateCourse").hide();
-	$(".openDialog").click(function() {
+	
+	$(".openDialog").click(function() { //Löschen rückbestätigen
 		$("#deleteId").text($(this).attr("id"));
 		$("#dialog-confirm").dialog("open");
 		return false;
@@ -190,31 +197,64 @@
 			}
 		}
 	});
+	
 	$("#datepicker").datepicker({
 		showOn : "button",
 		buttonImage : "/dancemanage/css/ui/images/calendar.gif",
 		buttonImageOnly : true,
 		dateFormat : "dd.mm.yy"
 	});
+	
+	$(document).on("saveSiblingCourse",function(){ //damit Siblings und Courses erhalten bleiben
+		if($("#tempSiblingNames").val() != ''){
+			$("#selectedSiblings").empty();
+			var siblings = $("#tempSiblingNames").val().split(";");
+			var i;
+			for(i=0; i<siblings.length-1; i++){
+				var parts = siblings[i].split(",");
+				$("#selectedSiblings").append("<span class='siblingTag'>"
+						+ parts[0]
+						+ "&nbsp;<i id='" + parts[1] + "' class='icon icon-remove'></i><span style='display:none;'>" + parts[0] + "</span></span>");
+			}
+			
+		}
+	
+		if($("#tempCourseNames").val() != ''){
+			$("#selectedCourses").empty();
+			var courses = $("#tempCourseNames").val().split(";");
+			var i;
+			for(i=0; i<courses.length-1; i++){
+				var parts = courses[i].split(",");
+				$("#selectedCourses").append("<span class='courseTag'>"
+						+ parts[0]
+						+ "&nbsp;<i id='" + parts[1] + "' class='icon icon-remove'></i><span style='display:none;'>" + parts[0] + "</span></span>");
+			}
+			
+		}
+	});
+	$(document).trigger("saveSiblingCourse", [""]);
+	
 	$(document)
 			.ready(
 					function() {
-						$("#showSiblings").on("click", "i", function() {
+						$("#showSiblings").on("click", "i", function() { //Geschwisterkind löschen
 							$("#duplicateSibling").hide();
 							var id = $(this).attr("id");
+							var siblingName = $(this).siblings("span").text();
 							$(this).parent().remove();
 							$("#tempSiblings").val(function(i, v) {
 								return v.replace(id + ";", "-" + id + ";");
 							}).val();
+							$("#tempSiblingNames").val(function(i, v) {
+								return v.replace(siblingName + ","+id+";", "");
+							}).val();
 						});
 
-						//attach autocomplete
 						$("#siblingsQuery")
 								.autocomplete(
 										{
 											minLength : 1,
 											delay : 500,
-											//define callback to format results
 											source : function(request, response) {
 												$
 														.getJSON(
@@ -227,36 +267,35 @@
 																					function(
 																							item) {
 																						return {
-																							// following property gets displayed in drop down
 																							label : item.firstname
 																									+ " "
 																									+ item.lastname,
-																							// following property gets entered in the textbox
 																							value : item.firstname
-																							+ " "
-																							+ item.lastname,
-																							pid : item.pid
+																									+ " "
+																									+ item.lastname,
+																							pid : item.pid,
+																							firstname: item.firstname,
+																							lastname: item.lastname
 																						};
 																					}));
 																});
 											},
 
-											//define select handler
 											select : function(event, ui) {
 												if (ui.item) {
 													event.preventDefault();
 													var input = $("#tempSiblings");
+													var inputName = $("#tempSiblingNames");
 													var tempSiblings = input.val();
 													var itemId = ui.item.pid;
 													if(tempSiblings.indexOf(itemId) == -1){ //neues Element
 														$("#duplicateSibling").hide();
-														$("#selectedSiblings")
-														.append(
-																"<span class='siblingTag'>"
+														$("#selectedSiblings").append("<span class='siblingTag'>"
 																		+ ui.item.label
-																		+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i></span>");
+																		+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i><span style='display:none;'>" + ui.item.label + "</span></span>");
 												
 														input.val(input.val() + itemId + ";");
+														inputName.val(inputName.val() + ui.item.firstname + " " + ui.item.lastname + "," + ui.item.pid + ";");
 														
 													}else if(tempSiblings.indexOf("-"+itemId) != -1){ //bereits einmal gelöscht
 														$("#duplicateSibling").hide();
@@ -264,24 +303,21 @@
 														.append(
 																"<span class='siblingTag'>"
 																		+ ui.item.label
-																		+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i></span>");
+																		+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i><span style='display:none;'>" + ui.item.firstname + " " + ui.item.lastname + "</span></span>");
 														
 														input.val(function(i, v) {
 															return v.replace("-"+itemId + ";", itemId + ";");
 														}).val();
+														inputName.val(inputName.val() + ui.item.firstname + " " + ui.item.lastname + "," + ui.item.pid + ";");
 
 													}else{ //bereits vorhanden
 														$("#duplicateSibling").show();
 													}
-													
-													//$("#tagQuery").value = $("#tagQuery").defaultValue
-													var defValue = $(
-															"#siblingsQuery")
-															.prop(
-																	'defaultValue');
-													$("#siblingsQuery").val(
-															defValue);
+
+													var defValue = $("#siblingsQuery").prop('defaultValue');
+													$("#siblingsQuery").val(defValue);
 													$("#siblingsQuery").blur();
+													
 													return false;
 												}
 											}
@@ -293,19 +329,21 @@
 						$("#showCourses").on("click", "i", function() {
 							$("#duplicateCourse").hide();
 							var id = $(this).attr("id");
+							var courseName = $(this).siblings("span").text();
 							$(this).parent().remove();
 							$("#tempCourses").val(function(i, v) {
 								return v.replace(id + ";", "-" + id + ";");
 							}).val();
+							$("#tempCourseNames").val(function(i, v) {
+								return v.replace(courseName + ","+id+";", "");
+							}).val();
 						});
 
-						//attach autocomplete
 						$("#coursesQuery")
 								.autocomplete(
 										{
 											minLength : 1,
 											delay : 500,
-											//define callback to format results
 											source : function(request, response) {
 												$
 														.getJSON(
@@ -318,9 +356,7 @@
 																					function(
 																							item) {
 																						return {
-																							// following property gets displayed in drop down
 																							label : item.name,
-																							// following property gets entered in the textbox
 																							value : item.name,
 																							cid: item.cid
 																						};
@@ -328,12 +364,12 @@
 																});
 											},
 
-											//define select handler
 											select : function(event, ui) {
 												if (ui.item) {
 													event.preventDefault();
 													
 													var input = $("#tempCourses");
+													var inputName = $("#tempCourseNames");
 													var tempCourses = input.val();
 													var itemId = ui.item.cid;
 													if(tempCourses.indexOf(itemId) == -1){ //neues Element
@@ -342,9 +378,10 @@
 														.append(
 																"<span class='courseTag'>"
 																		+ ui.item.label
-																		+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i></span>");
+																		+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i><span style='display:none;'>" + ui.item.label + "</span></span>");
 												
 														input.val(input.val() + itemId + ";");
+														inputName.val(inputName.val() + ui.item.label + "," + itemId + ";");
 														
 													}else if(tempCourses.indexOf("-"+itemId) != -1){ //bereits einmal gelöscht
 														$("#duplicateCourse").hide();
@@ -352,23 +389,21 @@
 														.append(
 																"<span class='courseTag'>"
 																		+ ui.item.label
-																		+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i></span>");
+																		+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i><span style='display:none;'>" + ui.item.label + "</span></span>");
 														
 														input.val(function(i, v) {
 															return v.replace("-"+itemId + ";", itemId + ";");
 														}).val();
+														inputName.val(inputName.val() + ui.item.label + "," + itemId + ";");
 
 													}else{ //bereits vorhanden
 														$("#duplicateCourse").show();
 													}
+
+													
 					
-													//$("#tagQuery").value = $("#tagQuery").defaultValue
-													var defValue = $(
-															"#coursesQuery")
-															.prop(
-																	'defaultValue');
-													$("#coursesQuery").val(
-															defValue);
+													var defValue = $("#coursesQuery").prop('defaultValue');
+													$("#coursesQuery").val(defValue);
 													$("#coursesQuery").blur();
 													return false;
 												}

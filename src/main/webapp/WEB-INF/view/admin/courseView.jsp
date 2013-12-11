@@ -145,6 +145,7 @@
 							</c:if>
 						</div>
 						<form:input path="style.sid" id="styleSid" type="hidden" />
+						<form:input path="style.name" id="styleName" type="hidden" />
 					</div>
 					<form:errors path="style.sid" cssClass="error" />
 				</div>
@@ -164,6 +165,8 @@
 							</c:if>
 						</div>
 						<form:input path="teacher.pid" id="teacherPid" type="hidden" />
+						<form:input path="teacher.firstname" id="teacherFirst" type="hidden" />
+						<form:input path="teacher.lastname" id="teacherLast" type="hidden" />
 					</div>
 				</div>
 
@@ -238,7 +241,24 @@
 
 <script type="text/javascript">
 	$('i').tooltip();
-	$(".openDialog").click(function() {
+	$(document).on("saveStyleTeacher",function(){ //damit Stil und Teacher erhalten bleiben
+		if($("#styleSid").val() != ''){
+			$("#showStyles").empty();
+			$("#showStyles").append("<span class='styleTag'>"
+							+ $("#styleName").val()
+							+ "&nbsp;<i class='icon icon-remove'></i></span>");
+		}
+	
+		if($("#teacherPid").val() != ''){
+			$("#showTeacher").empty();
+			$("#showTeacher").append("<span class='teacherTag'>"
+							+ $("#teacherFirst").val() + "&nbsp;" + $("#teacherLast").val()
+							+ "&nbsp;<i class='icon icon-remove'></i></span>");
+		}
+	});
+	$(document).trigger("saveStyleTeacher", [""]);
+	
+	$(".openDialog").click(function() { // Rückbestätigung bei Löschen 
 		$("#deleteId").text($(this).attr("id"));
 		$("#dialog-confirm").dialog("open");
 		return false;
@@ -260,16 +280,14 @@
 		}
 	});
 	
-	
 	$(document)
 			.ready(
 					function() {
-						$("#showStyles").on("click", "i", function() {
+						$("#showStyles").on("click", "i", function() { //Stil löschen
 							$(this).parent().remove();
 							$("#styleSid").val(null);
 						});
 
-						//attach autocomplete
 						$("#stylesQuery")
 								.autocomplete(
 										{
@@ -288,36 +306,29 @@
 																					function(
 																							item) {
 																						return {
-																							// following property gets displayed in drop down
 																							label : item.name,
-																							// following property gets entered in the textbox
-																							value : item.sid
+																							value : item.name,
+																							sid: item.sid
 																						};
 																					}));
 																});
 											},
 
-											//define select handler
 											select : function(event, ui) {
 												if (ui.item) {
 													event.preventDefault();
 													$("#showStyles").empty();
-													$("#showStyles")
-															.append(
-																	"<span class='styleTag'>"
+													$("#styleName").empty();
+													$("#showStyles").append("<span class='styleTag'>"
 																			+ ui.item.label
 																			+ "&nbsp;<i class='icon icon-remove'></i></span>");
-
-													var input = $("#styleSid");
-													input.val(ui.item.value);
-													//$("#tagQuery").value = $("#tagQuery").defaultValue
-													var defValue = $(
-															"#stylesQuery")
-															.prop(
-																	'defaultValue');
-													$("#stylesQuery").val(
-															defValue);
+													$("#styleName").val(ui.item.label);
+													$("#styleSid").val(ui.item.sid);
+													
+													var defValue = $("#stylesQuery").prop('defaultValue');
+													$("#stylesQuery").val(defValue);
 													$("#stylesQuery").blur();
+													
 													return false;
 												}
 											}
@@ -326,19 +337,16 @@
 	$(document)
 			.ready(
 					function() {
-						$("#showTeacher").on("click", "i", function() {
-							var id = $(this).attr("id");
+						$("#showTeacher").on("click", "i", function() { //Lehrer löschen
 							$(this).parent().remove();
 							$("#teacherPid").val(null);
 						});
 
-						//attach autocomplete
 						$("#teacherQuery")
 								.autocomplete(
 										{
 											minLength : 1,
 											delay : 500,
-											//define callback to format results
 											source : function(request, response) {
 												$
 														.getJSON(
@@ -351,18 +359,20 @@
 																					function(
 																							item) {
 																						return {
-																							// following property gets displayed in drop down
 																							label : item.firstname
 																									+ " "
 																									+ item.lastname,
-																							// following property gets entered in the textbox
-																							value : item.pid
+																							value : item.firstname
+																									+ " "
+																									+ item.lastname,
+																							pid: item.pid,
+																							first: item.firstname,
+																							last: item.lastname
 																						};
 																					}));
 																});
 											},
 
-											//define select handler
 											select : function(event, ui) {
 												if (ui.item) {
 													event.preventDefault();
@@ -372,15 +382,12 @@
 																	"<span class='teacherTag'>"
 																			+ ui.item.label
 																			+ "&nbsp;<i class='icon icon-remove'></i></span>");
-													var input = $("#teacherPid");
-													input.val(ui.item.value);
-													//$("#tagQuery").value = $("#tagQuery").defaultValue
-													var defValue = $(
-															"#teacherQuery")
-															.prop(
-																	'defaultValue');
-													$("#teacherQuery").val(
-															defValue);
+													$("#teacherPid").val(ui.item.pid);
+													$("#teacherFirst").val(ui.item.first);
+													$("#teacherLast").val(ui.item.last);
+													
+													var defValue = $("#teacherQuery").prop('defaultValue');
+													$("#teacherQuery").val(defValue);
 													$("#teacherQuery").blur();
 													return false;
 												}
