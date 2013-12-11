@@ -156,6 +156,7 @@ $(document).ready(function() {
         right: '',
       },
       defaultView: 'agendaWeek',
+      weekends: false,
       contentHeight: 450,
       allDaySlot: false,
       axisFormat: 'HH:mm',
