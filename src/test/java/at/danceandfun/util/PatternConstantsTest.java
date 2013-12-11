@@ -30,6 +30,9 @@ public class PatternConstantsTest {
     @Test
     public void testContactPersonPattern() {
         assertThat(
+"".matches(PatternConstants.CHARACTER_PATTERN_CONTACT),
+                is(true));
+        assertThat(
                 "Max Mustermann"
                         .matches(PatternConstants.CHARACTER_PATTERN_CONTACT),
                 is(true));
@@ -39,10 +42,6 @@ public class PatternConstantsTest {
                 is(true));
         assertThat(
                 "Max Mustermann-Friedrich"
-                        .matches(PatternConstants.CHARACTER_PATTERN_CONTACT),
-                is(true));
-        assertThat(
-                "Max Patrick Mustermann-Friedrich"
                         .matches(PatternConstants.CHARACTER_PATTERN_CONTACT),
                 is(true));
         assertThat(

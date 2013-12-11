@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -33,7 +34,7 @@ public class Address extends EntityBase {
     private Integer aid;
 
     @Column(name = "STREET")
-    @NotEmpty
+    @Size(min = 3, message = "{size.min}")
     @Pattern(regexp = PatternConstants.CITY_PATTERN, message = "{pattern.characters}")
     private String street;
 
@@ -56,7 +57,7 @@ public class Address extends EntityBase {
     private Integer zip;
 
     @Column(name = "CITY")
-    @NotEmpty
+    @Size(min = 3, message = "{size.min}")
     @Pattern(regexp = PatternConstants.CITY_PATTERN, message = "{pattern.characters}")
     private String city;
 

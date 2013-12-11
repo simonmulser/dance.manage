@@ -54,12 +54,12 @@ public abstract class Person extends EntityBase implements UserDetails {
     private Integer pid;
 
     @Column(name = "FIRSTNAME")
-    @Size(min = 3, message = "{size.min.three}")
+    @Size(min = 3, message = "{size.min}")
     @Pattern(regexp = PatternConstants.CHARACTER_PATTERN, message = "{pattern.characters}")
     private String firstname;
 
     @Column(name = "LASTNAME")
-    @Size(min = 3, message = "{size.min.three}")
+    @Size(min = 3, message = "{size.min}")
     @Pattern(regexp = PatternConstants.CHARACTER_PATTERN, message = "{pattern.characters}")
     private String lastname;
 

@@ -50,7 +50,7 @@ public class Course extends EntityBase {
     private Integer cid;
 
     @Column(name = "NAME")
-    @Size(min = 3, message = "{size.min.three}")
+    @Size(min = 3, message = "{size.min}")
     @Pattern(regexp = PatternConstants.CHARACTER_NUMBER_PATTERN, message = "{pattern.characters}")
     private String name;
 
