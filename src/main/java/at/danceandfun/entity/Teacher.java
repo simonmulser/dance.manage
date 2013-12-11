@@ -38,7 +38,7 @@ public class Teacher extends Person {
 
     @Column(name = "SVNR")
     @Pattern(regexp = PatternConstants.SVNR_PATTERN, message = "{pattern.svnr}")
-    @Size(min = 4, message = "{size.teacher.svnr}")
+    @Size(min = 4, max = 4, message = "{size.teacher.svnr}")
     private String svnr;
 
     @Column(name = "SALARY")

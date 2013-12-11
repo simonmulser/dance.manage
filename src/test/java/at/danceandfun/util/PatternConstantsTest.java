@@ -45,21 +45,6 @@ public class PatternConstantsTest {
                 "Max Patrick Mustermann-Friedrich"
                         .matches(PatternConstants.CHARACTER_PATTERN_CONTACT),
                 is(true));
-
-        assertThat("Max ".matches(PatternConstants.CHARACTER_PATTERN_CONTACT),
-                is(false));
-        assertThat("Max-".matches(PatternConstants.CHARACTER_PATTERN_CONTACT),
-                is(false));
-        assertThat("Max -".matches(PatternConstants.CHARACTER_PATTERN_CONTACT),
-                is(false));
-        assertThat(
-                "Max - Patrick "
-                        .matches(PatternConstants.CHARACTER_PATTERN_CONTACT),
-                is(false));
-        assertThat(
-                "Max-Patrick-"
-                        .matches(PatternConstants.CHARACTER_PATTERN_CONTACT),
-                is(false));
         assertThat(
                 "Max1234".matches(PatternConstants.CHARACTER_PATTERN_CONTACT),
                 is(false));
@@ -160,11 +145,9 @@ public class PatternConstantsTest {
     
     @Test
     public void testSVNRPattern() {
-        assertThat("1234 1234".matches(PatternConstants.SVNR_PATTERN), is(true));
-        assertThat("1234-1234".matches(PatternConstants.SVNR_PATTERN), is(true));
-        assertThat("1234-AB34".matches(PatternConstants.SVNR_PATTERN), is(true));
-        assertThat("1234-1234-1234".matches(PatternConstants.SVNR_PATTERN),
-                is(true));
-
+        assertThat("1234".matches(PatternConstants.SVNR_PATTERN), is(true));
+        assertThat("123A".matches(PatternConstants.SVNR_PATTERN), is(false));
+        assertThat("1234-1234".matches(PatternConstants.SVNR_PATTERN),
+                is(false));
     }
 }
