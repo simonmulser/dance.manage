@@ -39,12 +39,12 @@
 				<a class="btn btn-navbar" data-toggle="collapse"
 					data-target=".nav-collapse"> <span class="icon-bar"></span> <span
 					class="icon-bar"></span> <span class="icon-bar"></span>
-				</a> <a class="brand" href="index.html"> dance.manage </a>
+				</a> <a class="brand" href="#"> dance.manage </a>
 
 				<div class="nav-collapse">
 					<ul class="nav pull-right">
 
-						<li class=""><a href="signup" class=""> <spring:message
+						<li class=""><a href="#" class=""> <spring:message
 									code="login.noaccountquestion" />
 						</a></li>
 
