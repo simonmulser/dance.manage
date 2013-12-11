@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -42,6 +43,7 @@ public class Teacher extends Person {
     private String svnr;
 
     @Column(name = "SALARY")
+    @Min(value = 0, message = "{min.values.positive}")
     private Double salary;
 
     @Column(name = "ENGAGEMENTDATE")
