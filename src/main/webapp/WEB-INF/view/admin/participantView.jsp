@@ -17,7 +17,8 @@
 
 		<dmtags:widget title="${i18nWidgetCourseParticipants}"
 			icon="icon-user">
-			<spring:message code="help.participant" />
+			<spring:message code="help.participant" /><br />
+			<spring:message code="help.required" />
 			<form:form method="post" action="participant/add"
 				commandName="participant" class="form-horizontal">
 

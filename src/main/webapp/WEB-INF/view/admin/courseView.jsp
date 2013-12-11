@@ -13,7 +13,8 @@
 		<spring:message var="i18nWidgetTitle" code="widget.courses" />
 
 		<dmtags:widget icon="icon-calendar" title="${i18nWidgetTitle}">
-			<spring:message code="help.course" />
+			<spring:message code="help.course" /><br />
+			<spring:message code="help.required" />
 			<form:form method="post" action="course/add" commandName="course"
 				class="form-horizontal">
 				<form:input path="cid" type="hidden" />
