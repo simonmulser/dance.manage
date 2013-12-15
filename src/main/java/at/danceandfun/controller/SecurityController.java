@@ -38,6 +38,8 @@ public class SecurityController {
             session.setAttribute("user", admin);
             session.setAttribute("userType", "admin");
             session.setAttribute("editProfileLink", "#");
+            session.setAttribute("homeLink", "/admin");
+
             return "redirect:/admin";
         }
         if (request.isUserInRole("ROLE_PARTICIPANT")) {
@@ -46,6 +48,8 @@ public class SecurityController {
             session.setAttribute("user", participant);
             session.setAttribute("userType", "participant");
             session.setAttribute("editProfileLink", "/participant/edit");
+            session.setAttribute("homeLink", "/participant");
+
             return "redirect:/participant";
         }
         if (request.isUserInRole("ROLE_PARENT")) {
@@ -54,6 +58,8 @@ public class SecurityController {
             session.setAttribute("user", parent);
             session.setAttribute("userType", "parent");
             session.setAttribute("editProfileLink", "#");
+            session.setAttribute("homeLink", "#");
+
             return "redirect:/parent";
         }
         if (request.isUserInRole("ROLE_TEACHER")) {
@@ -62,6 +68,8 @@ public class SecurityController {
             session.setAttribute("user", teacher);
             session.setAttribute("userType", "teacher");
             session.setAttribute("editProfileLink", "#");
+            session.setAttribute("homeLink", "#");
+
             return "redirect:/teacher";
         }
         if (request.isUserInRole("ROLE_SUPERUSER")) {
@@ -70,6 +78,8 @@ public class SecurityController {
             session.setAttribute("user", superUser);
             session.setAttribute("userType", "superUser");
             session.setAttribute("editProfileLink", "#");
+            session.setAttribute("homeLink", "/admin");
+
             return "redirect:/admin";
         }
 
