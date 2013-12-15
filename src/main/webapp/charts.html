@@ -253,7 +253,7 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/jquery-1.7.2.js"></script>
     <script src="js/excanvas.min.js"></script>
-    <script src="js/chart.min.js" type="text/javascript"></script>
+    <script src="js/charts.js" type="text/javascript"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/base.js"></script>
     <script>
@@ -330,7 +330,10 @@ var myLine = new Chart(document.getElementById("bar-chart").getContext("2d")).Ba
 var pieData = [
 				{
 				    value: 30,
-				    color: "#F38630"
+				    color: "#F38630",
+				    label: 'HELLO',
+			        labelColor: 'black',
+			        labelFontSize: '16'
 				},
 				{
 				    value: 50,

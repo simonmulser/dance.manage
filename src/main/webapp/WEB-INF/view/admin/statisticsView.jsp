@@ -6,6 +6,7 @@
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 <spring:message var="i18nStatistics" code="nav.statistics" />
 <dmtags:base title="${i18nStatistics}" activesection="statistics">
+	<canvas id="canvas" height="450" width="450"></canvas>
 	<dmtags:span width="12">
 
 		<spring:message var="i18nList" code="widget.statistic" />
@@ -31,3 +32,35 @@
 
 	</dmtags:span>
 </dmtags:base>
+
+<script>
+function get_random_color() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.round(Math.random() * 15)];
+    }
+    return color;
+}
+
+var pieData = new Array();
+<c:forEach items="${childrenPerStyleList}" var="child">
+	var child = "${child}";
+	var childSplit = child.split(",");
+	pieData.push({
+	            value : parseInt(childSplit[1]),
+	            color : get_random_color(),
+	            label : childSplit[0],
+	            labelColor : 'black',
+	            labelFontSize : '1.4em',
+	            labelAlign : 'center'
+		
+	});
+</c:forEach>
+
+		var myChart = new Chart(document.getElementById("canvas").getContext("2d"));
+		var myPie = myChart.Pie(pieData, {
+		animationSteps: 100,
+		animationEasing: 'easeOutBounce'
+		});
+</script>
