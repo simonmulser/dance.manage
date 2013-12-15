@@ -25,14 +25,14 @@ public class DaoBaseImpl<T> implements DaoBase<T> {
     public DaoBaseImpl() {
     }
 
-    public void save(T domain) {
+    public void persist(T domain) {
         logger.debug("save");
         entityManager.persist(domain);
     }
 
-    public void update(T domain) {
+    public T merge(T domain) {
         logger.debug("update");
-        entityManager.merge(domain);
+        return entityManager.merge(domain);
     }
 
     public T get(Serializable id) {

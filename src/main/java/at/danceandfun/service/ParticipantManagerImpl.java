@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import at.danceandfun.dao.DaoBase;
 import at.danceandfun.dao.DaoBaseImpl;
+import at.danceandfun.entity.Absence;
 import at.danceandfun.entity.Participant;
 
 @Service
@@ -21,6 +23,9 @@ public class ParticipantManagerImpl extends ManagerBaseImpl<Participant>
 
     private static Logger logger = Logger
             .getLogger(ParticipantManagerImpl.class);
+
+    @Autowired
+    private DaoBase<Absence> absenceDao;
 
     @Autowired
     public void setDao(DaoBaseImpl<Participant> participantDao) {
@@ -70,5 +75,11 @@ public class ParticipantManagerImpl extends ManagerBaseImpl<Participant>
             }
         }
         return mainDao.getListByCriteria(criteria);
+    }
+
+    @Override
+    public void mergeAbsence(Absence absence) {
+        logger.info("delete absence:" + absence);
+        absenceDao.merge(absence);
     }
 }

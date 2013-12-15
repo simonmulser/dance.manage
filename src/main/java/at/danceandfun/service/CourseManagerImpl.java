@@ -22,7 +22,7 @@ public class CourseManagerImpl extends ManagerBaseImpl<Course> implements
     public void setDao(DaoBaseImpl<Course> courseDao) {
         setMainDao(courseDao);
     }
-
+    
     public List<Course> searchForCourses(Participant actualParticipant,
             String query) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Course.class);

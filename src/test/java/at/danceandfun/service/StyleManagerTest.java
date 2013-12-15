@@ -47,7 +47,6 @@ public class StyleManagerTest {
         assertThat(possibleStyles.get(0), is(notNullValue()));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void searchForCourseStyles() {
         Course actualCourse = courseManager.get(25); /* Hip Hop */

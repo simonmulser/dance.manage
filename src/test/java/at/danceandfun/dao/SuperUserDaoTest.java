@@ -37,14 +37,14 @@ public class SuperUserDaoTest {
 
     @Test
     public void testSave() {
-        superUserDao.save(getValidSuperUser());
+        superUserDao.persist(getValidSuperUser());
     }
 
     @Test
     public void testUpdate() {
         SuperUser superUser = superUserDao.getEnabledList().get(0);
         if (superUser != null) {
-            superUserDao.update(superUser);
+            superUserDao.merge(superUser);
         } else {
             fail("database is empty");
         }

@@ -44,7 +44,6 @@ public class ParticipantManagerTest {
                 is(notNullValue()));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void searchForSiblings() {
         Participant actualParticipant = participantManager.get(3);

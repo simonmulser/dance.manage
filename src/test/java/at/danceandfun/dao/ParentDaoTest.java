@@ -37,14 +37,14 @@ public class ParentDaoTest {
 
     @Test
     public void testSave() {
-        parentDao.save(getValidParent());
+        parentDao.persist(getValidParent());
     }
 
     @Test
     public void testUpdate() {
         Parent parent = parentDao.getEnabledList().get(0);
         if (parent != null) {
-            parentDao.update(parent);
+            parentDao.merge(parent);
         } else {
             fail("database is empty");
         }

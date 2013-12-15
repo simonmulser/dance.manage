@@ -45,6 +45,9 @@ public class Participant extends Person {
     @OneToMany(mappedBy = "key.participant", fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
     private List<CourseParticipant> courseParticipants = new ArrayList<CourseParticipant>();
 
+    @OneToMany(mappedBy = "key.participant", fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+    private List<Absence> absences = new ArrayList<Absence>();
+
     // TODO NiceToHave mapping with performance for ticket selling
 
     @ManyToMany(cascade = { CascadeType.ALL })
@@ -101,6 +104,14 @@ public class Participant extends Person {
             }
         }
         return null;
+    }
+
+    public List<Absence> getAbsences() {
+        return absences;
+    }
+
+    public void setAbsences(List<Absence> absences) {
+        this.absences = absences;
     }
 
     @JsonIgnore

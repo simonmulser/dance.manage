@@ -86,12 +86,12 @@ public class ParticipantController {
             participant.setEnabled(true);
 
             if (participant.getAddress().getAid() == null) {
-                addressManager.save(participant.getAddress());
+                addressManager.update(participant.getAddress());
             }
 
             if (participant.getPid() == null) {
                 logger.debug("New participant");
-                participantManager.save(participant);
+                participantManager.update(participant);
             }
 
             if (!participant.getTempSiblings().equals("")) {
@@ -103,8 +103,8 @@ public class ParticipantController {
                     if (Integer.parseInt(s) < 0) {
                         actualParticipant.getSiblings().remove(participant);
                         participant.getSiblings().remove(actualParticipant);
-                        participantManager.update(participant);
-                        participantManager.update(actualParticipant);
+                        participantManager.merge(participant);
+                        participantManager.merge(actualParticipant);
                     } else if (!participant.getSiblings().contains(
                             actualParticipant)) {
                         participant.getSiblings().add(actualParticipant);
@@ -129,7 +129,7 @@ public class ParticipantController {
                             participant.getCourseParticipants()
                                     .remove(deleteCP);
                             deleteCP.setEnabled(false);
-                            courseParticipantManager.update(deleteCP);
+                            courseParticipantManager.merge(deleteCP);
                         }
                     } else if (participant.getCourseById(actualCourse) == null) {
                         logger.debug("Neuen Kurs hinzufügen");
@@ -145,7 +145,7 @@ public class ParticipantController {
             }
 
             logger.debug("Update participant");
-            participantManager.update(participant);
+            participantManager.merge(participant);
             logger.debug("Finished updating participant");
 
             this.participant = new Participant();
@@ -200,20 +200,20 @@ public class ParticipantController {
         if (participant.getSiblings().size() > 0) {
             for (Participant p : participant.getSiblings()) {
                 p.getSiblings().remove(participant);
-                participantManager.update(p);
+                participantManager.merge(p);
             }
             participant.setSiblings(new HashSet<Participant>());
         }
         if (participant.getCourseParticipants().size() > 0) {
             for (CourseParticipant cp : participant.getCourseParticipants()) {
                 cp.setEnabled(false);
-                courseParticipantManager.update(cp);
+                courseParticipantManager.merge(cp);
             }
             participant
                     .setCourseParticipants(new ArrayList<CourseParticipant>());
         }
 
-        participantManager.update(participant);
+        participantManager.merge(participant);
         participant = new Participant();
         return "redirect:/admin/participant";
     }

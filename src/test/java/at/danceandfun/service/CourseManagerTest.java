@@ -3,7 +3,9 @@ package at.danceandfun.service;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import java.util.List;
 
@@ -15,7 +17,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import at.danceandfun.dao.DaoBase;
+import at.danceandfun.dao.CourseDaoTest;
+import at.danceandfun.dao.DaoBaseImpl;
 import at.danceandfun.entity.Course;
 import at.danceandfun.entity.Participant;
 import at.danceandfun.entity.Teacher;
@@ -29,15 +32,21 @@ public class CourseManagerTest {
 
     @Autowired
     private CourseManager courseManager;
+
     @Autowired
     private ParticipantManager participantManager;
     @Autowired
     private TeacherManager teacherManager;
 
-    @SuppressWarnings("unchecked")
-    private DaoBase<Course> dao = (DaoBase<Course>) mock(DaoBase.class);
+    @Autowired
+    private StyleManager styleManager;
 
     @SuppressWarnings("unchecked")
+    private DaoBaseImpl<Course> dao = (DaoBaseImpl<Course>) mock(DaoBaseImpl.class);
+
+    @Autowired
+    private DaoBaseImpl<Course> courseDao;
+
     @Test
     public void searchForParticipantCourses() {
         Participant actualParticipant = participantManager.get(3);
@@ -47,7 +56,6 @@ public class CourseManagerTest {
         assertThat(possibleCourses.get(0), is(notNullValue()));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void searchForTeacherCourses() {
         Teacher actualTeacher = teacherManager.get(7);
@@ -55,5 +63,14 @@ public class CourseManagerTest {
                 actualTeacher, "Ballett");
 
         assertThat(possibleCourses.get(0), is(notNullValue()));
+    }
+
+    @Test
+    public void testSaveWithSlugMocktio() {
+        ((CourseManagerImpl) courseManager).setDao(dao);
+        courseManager.update(CourseDaoTest.getValidCourse());
+
+        verify(dao).persist(any(Course.class));
+        ((CourseManagerImpl) courseManager).setDao(courseDao);
     }
 }

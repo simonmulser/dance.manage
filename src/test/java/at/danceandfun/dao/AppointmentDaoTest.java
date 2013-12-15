@@ -1,10 +1,10 @@
 package at.danceandfun.dao;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.fail;
 
-import org.joda.time.LocalDateTime;
+import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,44 +12,42 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import at.danceandfun.entity.Invoice;
+import at.danceandfun.entity.Appointment;
 
 @Transactional
 @ContextConfiguration("classpath:test/test-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
-public class InvoiceDaoTest {
+public class AppointmentDaoTest {
 
     @Autowired
-    private DaoBaseImpl<Invoice> invoiceDao;
+    private DaoBaseImpl<Appointment> appointmentDao;
 
-    public static Invoice getValidInvoice() {
-        Invoice invoice = new Invoice();
-        invoice.setOwner(ParticipantDaoTest.getValidParticipant());
-        invoice.setDate(new LocalDateTime());
-        invoice.setEnabled(true);
-        return invoice;
+    public static Appointment getValidAppointment() {
+        Appointment appointment = new Appointment();
+        appointment.setAppointmentDate(new LocalDate());
+        return appointment;
     }
 
     @Test
     public void testSave() {
-        invoiceDao.persist(getValidInvoice());
+        appointmentDao.persist(getValidAppointment());
     }
 
     @Test
     public void testUpdate() {
-        Invoice invoice = invoiceDao.get(1);
-        if (invoice != null) {
-            invoiceDao.merge(invoice);
+        Appointment appointment = appointmentDao.get(1);
+        if (appointment != null) {
+            appointmentDao.merge(appointment);
         } else {
             fail("database is empty");
         }
     }
 
     @Test
-    public void testGetInvoicePositions() {
-        Invoice invoice = invoiceDao.get(1);
-        if (invoice != null) {
-            assertThat(invoice.getPositions().isEmpty(), is(false));
+    public void testGetAbsence() {
+        Appointment appointment = appointmentDao.get(1);
+        if (appointment != null) {
+            assertThat(appointment.getAbsences().size(), greaterThan(0));
         } else {
             fail("database is empty");
         }

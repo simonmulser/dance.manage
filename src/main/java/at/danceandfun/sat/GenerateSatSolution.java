@@ -21,7 +21,7 @@ import at.danceandfun.entity.Performance;
 import at.danceandfun.entity.Style;
 import at.danceandfun.enumeration.AgeGroup;
 import at.danceandfun.enumeration.CourseLevel;
-import at.danceandfund.exception.SatException;
+import at.danceandfun.exception.SatException;
 
 public class GenerateSatSolution {
 

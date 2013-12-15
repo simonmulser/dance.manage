@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PostPersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -54,6 +56,9 @@ public class Course extends EntityBase {
     @Pattern(regexp = PatternConstants.CHARACTER_NUMBER_PATTERN, message = "{pattern.characters.numbers}")
     private String name;
 
+    @Column(name = "SLUG")
+    private String slug;
+
     @Column(name = "DURATION")
     @NotNull
     private Integer duration;
@@ -62,7 +67,7 @@ public class Course extends EntityBase {
     @NotNull
     @Min(value = 1, message = "{min.values.positive}")
     private Double semesterPrice;
-    
+
     @Column(name = "YEARPRICE")
     @NotNull
     @Min(value = 1, message = "{min.values.positive}")
@@ -122,6 +127,9 @@ public class Course extends EntityBase {
 
     @OneToMany(mappedBy = "key.course")
     private List<CourseParticipant> courseParticipants = new ArrayList<CourseParticipant>();
+
+    @OneToMany(mappedBy = "course")
+    private List<Appointment> appointments = new ArrayList<Appointment>();
 
     public Course() {
     }
@@ -209,7 +217,7 @@ public class Course extends EntityBase {
     public DateTime getStartDateTimeCurrentWeekRepresentation() {
         return Helpers.getCourseStartDateTimeCurrentWeekRepresentation(this);
     }
-    
+
     public DateTime getEndDateTimeCurrentWeekRepresentation() {
         return Helpers.getCourseEndDateTimeCurrentWeekRepresentation(this);
     }
@@ -299,6 +307,54 @@ public class Course extends EntityBase {
 
     public String toString() {
         return "ID: " + cid + "NAME: " + name;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
+
+    public void setWeekday(Integer weekday) {
+        this.weekday = weekday;
+    }
+
+    public void setEstimatedSpectators(Integer estimatedSpectators) {
+        this.estimatedSpectators = estimatedSpectators;
+    }
+
+    public void setAgeGroup(Integer ageGroup) {
+        this.ageGroup = ageGroup;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
+    @PreUpdate
+    @Override
+    public void onUpdate() {
+        slug = Helpers.toSlug(name + " " + cid);
+
+    }
+
+    @PostPersist
+    public void postCreate() {
+        slug = Helpers.toSlug(name + " " + cid);
     }
 
     @Override

@@ -34,7 +34,6 @@ public class TeacherManagerTest {
     @SuppressWarnings("unchecked")
     private DaoBase<Teacher> dao = (DaoBase<Teacher>) mock(DaoBase.class);
 
-    @SuppressWarnings("unchecked")
     @Test
     public void searchForTeachers() {
 

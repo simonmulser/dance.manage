@@ -7,10 +7,16 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 
 public interface DaoBase<T> {
+    /*
+     * Make an instance managed and persistent.
+     */
+    public void persist(T domain);
 
-    public void save(T domain);
-
-    public void update(T domain);
+    /*
+     * Merge the state of the given entity into the current persistence context.
+     * Returns the managed instance that the state was merged to.
+     */
+    public T merge(T domain);
 
     public T get(Serializable id);
 

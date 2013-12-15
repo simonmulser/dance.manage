@@ -16,12 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import at.danceandfun.entity.Course;
 import at.danceandfun.entity.Participant;
 import at.danceandfun.entity.Performance;
+import at.danceandfun.exception.SatException;
 import at.danceandfun.sat.GenerateSatSolution;
 import at.danceandfun.service.CourseManager;
 import at.danceandfun.service.ParticipantManager;
 import at.danceandfun.service.PerformanceManager;
-import at.danceandfund.exception.SatException;
-//import at.danceandfun.sat.GenerateSatSolution;
 
 //import at.danceandfund.exception.SatException;
 

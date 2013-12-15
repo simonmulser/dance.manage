@@ -92,7 +92,7 @@ public class TeacherController {
                         teacher.getCourses().remove(actualCourse);
 
                         actualCourse.setTeacher(null);
-                        courseManager.update(actualCourse);
+                        courseManager.merge(actualCourse);
 
                     } else if (!teacher.getCourses().contains(actualCourse)) {
                         logger.debug("Neuen Kurs hinzufügen");
@@ -128,22 +128,22 @@ public class TeacherController {
             }
 
             if (teacher.getAddress().getAid() == null) {
-                addressManager.save(teacher.getAddress());
+                addressManager.update(teacher.getAddress());
             }
 
             if (teacher.getPid() == null) {
                 logger.debug("New teacher");
-                teacherManager.save(teacher);
+                teacherManager.update(teacher);
 
             } else {
                 logger.debug("Update teacher");
-                teacherManager.update(teacher);
+                teacherManager.merge(teacher);
             }
 
             if (teacher.getCourses().size() > 0) {
                 for (Course c : teacher.getCourses()) {
                     c.setTeacher(teacher);
-                    courseManager.update(c);
+                    courseManager.merge(c);
                 }
             }
             this.teacher = new Teacher();
@@ -193,7 +193,7 @@ public class TeacherController {
         if (teacher.getStyles().size() > 0) {
             for (Style s : teacher.getStyles()) {
                 s.getTeachers().remove(teacher);
-                styleManager.update(s);
+                styleManager.merge(s);
             }
             teacher.setStyles(new ArrayList<Style>());
         }
@@ -201,12 +201,12 @@ public class TeacherController {
             // TODO: P_ID bleibt in Course derzeit enthalten
             for (Course c : teacher.getCourses()) {
                 c.setTeacher(null);
-                courseManager.update(c);
+                courseManager.merge(c);
             }
             teacher.setCourses(new ArrayList<Course>());
         }
 
-        teacherManager.update(teacher);
+        teacherManager.merge(teacher);
         teacher = new Teacher();
         return "redirect:/admin/teacher";
     }

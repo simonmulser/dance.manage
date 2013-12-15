@@ -1,4 +1,4 @@
-package at.danceandfund.exception;
+package at.danceandfun.exception;
 
 public class SatException extends Exception {
     

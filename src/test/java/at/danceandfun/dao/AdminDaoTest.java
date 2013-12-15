@@ -37,14 +37,14 @@ public class AdminDaoTest {
 
     @Test
     public void testSave() {
-        adminDao.save(getValidAdmin());
+        adminDao.persist(getValidAdmin());
     }
 
     @Test
     public void testUpdate() {
         Admin admin = adminDao.getEnabledList().get(0);
         if (admin != null) {
-            adminDao.update(admin);
+            adminDao.merge(admin);
         } else {
             fail("database is empty");
         }

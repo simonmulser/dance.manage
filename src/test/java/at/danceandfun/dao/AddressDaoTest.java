@@ -30,7 +30,7 @@ public class AddressDaoTest {
 
     @Test
     public void testSave() {
-        addressDao.save(getValidAddress());
+        addressDao.persist(getValidAddress());
     }
 
 }

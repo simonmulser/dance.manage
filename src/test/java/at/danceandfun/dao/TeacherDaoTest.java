@@ -49,14 +49,14 @@ public class TeacherDaoTest {
 
     @Test
     public void testSave() {
-        teacherDao.save(getValidTeacher());
+        teacherDao.persist(getValidTeacher());
     }
 
     @Test
     public void testUpdate() {
         Teacher teacher = teacherDao.get(7);
         if (teacher != null) {
-            teacherDao.update(teacher);
+            teacherDao.merge(teacher);
         } else {
             fail("database is empty");
         }
@@ -97,7 +97,7 @@ public class TeacherDaoTest {
     @Test
     public void testTeacherCourseRelation() {
         Course course = CourseDaoTest.getValidCourse();
-        courseDao.update(course);
+        courseDao.merge(course);
 
         Teacher teacher = getValidTeacher();
         course.setTeacher(teacher);
@@ -106,7 +106,7 @@ public class TeacherDaoTest {
         courses.add(course);
         teacher.setCourses(courses);
 
-        teacherDao.update(teacher);
+        teacherDao.merge(teacher);
     }
 
     @Test

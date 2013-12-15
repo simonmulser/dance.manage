@@ -55,6 +55,10 @@
 						<c:if test="${activesection eq 'dashboard'}">class="active"</c:if>><a
 						href="/dancemanage/participant"><i class="icon-dashboard"></i><span><spring:message
 									code="nav.dashboard" /></span> </a></li>
+									                   <li
+                        <c:if test="${activesection eq 'absence'}">class="active"</c:if>><a
+                        href="/dancemanage/participant/absence"><i class="icon-edit"></i><span><spring:message
+                                    code="nav.absence" /></span> </a></li>
 				</c:if>
 			</ul>
 		</div>

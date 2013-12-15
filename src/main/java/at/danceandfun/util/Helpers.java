@@ -1,11 +1,19 @@
 package at.danceandfun.util;
 
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
+import java.util.Locale;
+import java.util.regex.Pattern;
+
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
 import at.danceandfun.entity.Course;
 
 public class Helpers {
+
+    private static final Pattern NONLATIN = Pattern.compile("[^\\w-]");
+    private static final Pattern WHITESPACE = Pattern.compile("[\\s]");
 
     public static LocalDate getCurrentWeekWeekdayRepresentation(int weekDay) {
         LocalDate now = new LocalDate();
@@ -30,5 +38,12 @@ public class Helpers {
         DateTime result = getCourseStartDateTimeCurrentWeekRepresentation(course);
         result = result.plusMinutes(course.getDuration().getValue());
         return result;
+    }
+
+    public static String toSlug(String input) {
+        String nowhitespace = WHITESPACE.matcher(input).replaceAll("-");
+        String normalized = Normalizer.normalize(nowhitespace, Form.NFD);
+        String slug = NONLATIN.matcher(normalized).replaceAll("");
+        return slug.toLowerCase(Locale.ENGLISH);
     }
 }

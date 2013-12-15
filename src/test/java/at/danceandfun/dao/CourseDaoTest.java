@@ -46,7 +46,7 @@ public class CourseDaoTest {
     }
 
     @Test
-    public void testSaveCourse() {
-        courseDao.update(getValidCourse());
+    public void testUpdateCourse() {
+        courseDao.merge(getValidCourse());
     }
 }

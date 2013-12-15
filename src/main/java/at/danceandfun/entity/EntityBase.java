@@ -16,11 +16,11 @@ public abstract class EntityBase implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
+    @Column(name = "UPDATED")
+    protected Date updated;
+
     @Column(name = "CREATED")
     private Date created;
-
-    @Column(name = "UPDATED")
-    private Date updated;
 
     @PrePersist
     public void onCreate() {

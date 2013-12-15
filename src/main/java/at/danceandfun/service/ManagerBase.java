@@ -7,9 +7,9 @@ import org.hibernate.criterion.DetachedCriteria;
 
 public interface ManagerBase<T> {
 
-    public void save(T domain);
-
     public void update(T domain);
+
+    public T merge(T domain);
 
     public T get(Serializable id);
 

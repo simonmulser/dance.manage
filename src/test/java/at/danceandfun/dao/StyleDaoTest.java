@@ -26,7 +26,7 @@ public class StyleDaoTest {
 
     @Test
     public void testSave() {
-        styleDao.update(getValidStyle());
+        styleDao.merge(getValidStyle());
     }
 
 }

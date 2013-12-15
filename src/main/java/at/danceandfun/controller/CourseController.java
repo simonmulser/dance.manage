@@ -108,10 +108,10 @@ public class CourseController {
 
         if (course.getCid() == null) {
             logger.debug("New course");
-            courseManager.save(course);
+            courseManager.update(course);
         } else {
             logger.debug("Update course");
-            courseManager.update(course);
+            courseManager.merge(course);
             logger.debug("Finished updating course");
         }
         this.course = new Course();
@@ -132,7 +132,7 @@ public class CourseController {
         logger.debug("Delete Course with id " + cid);
         course = courseManager.get(cid);
         course.setEnabled(false);
-        courseManager.update(course);
+        courseManager.merge(course);
         course = new Course();
         return "redirect:/admin/course";
     }

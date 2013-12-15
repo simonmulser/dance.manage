@@ -50,14 +50,14 @@ public class ParticipantDaoTest {
 
     @Test
     public void testSave() {
-        participantDao.save(getValidParticipant());
+        participantDao.persist(getValidParticipant());
     }
 
     @Test
     public void testUpdate() {
         Participant participant = participantDao.get(1);
         if (participant != null) {
-            participantDao.update(participant);
+            participantDao.merge(participant);
         } else {
             fail("database is empty");
         }
@@ -122,7 +122,7 @@ public class ParticipantDaoTest {
             List<CourseParticipant> courseParticipants = new ArrayList<CourseParticipant>();
             courseParticipants.add(courseParticipant);
             participant.setCourseParticipants(courseParticipants);
-            participantDao.save(participant);
+            participantDao.persist(participant);
         } else {
             fail("database empty");
         }
