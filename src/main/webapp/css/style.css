@@ -1348,6 +1348,18 @@ color: #333;
 	margin-left:15px;
 }
 
+.levelLegend{
+	width:25px; 
+	height:25px; 
+	border:1px solid #ccc;	
+}
+#level2012{
+	background-color:#F2F2F2;
+}
+#level2013{
+	background-color:orange;
+}
+
 /*-------------------------------------------------------------------
 [displayTag]
 */
