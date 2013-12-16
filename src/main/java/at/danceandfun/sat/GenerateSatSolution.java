@@ -91,8 +91,8 @@ public class GenerateSatSolution {
         addDummyClauses(newOrderOfCourses);
 
         movedCourses = addAdvancedAtTheEnd(newOrderOfCourses, numberOfSlots);
-        // addNotTwoOfAKind(newOrderOfCourses, numberOfCourses, numberOfSlots,
-        // numberOfPlays, movedCourses);
+        addNotTwoOfAKind(newOrderOfCourses, numberOfCourses, numberOfSlots,
+                numberOfPlays, movedCourses);
         add2SlotBrake(newOrderOfCourses, participantList, numberOfCourses,
                 numberOfSlots, numberOfPlays);
         addBasicRestrictions(newOrderOfCourses, numberOfCourses, numberOfSlots,

@@ -88,7 +88,8 @@ public class PerformanceController {
             }
         }
 
-        SatValidator validator = new SatValidator(performancePlan);
+        SatValidator validator = new SatValidator(performancePlan,
+                participantList);
 
         Map<Integer, List<ValidatedCourse>> validatedPerformancePlan = validator
                 .validatePerformancePlan();
