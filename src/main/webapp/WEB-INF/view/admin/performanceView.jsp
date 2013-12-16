@@ -37,7 +37,6 @@ table th,table td {
 					<input type="submit" value="<spring:message code="label.create"/>"
 						class="btn btn-primary" />
 				</div>
-
 			</form:form>
 		</dmtags:widget>
 
@@ -70,12 +69,19 @@ table th,table td {
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${performanceList1}" var="course">
+									<c:forEach items="${validatedList1}" var="validatedCourse">
 										<tr>
-											<td>${course.name}</td>
-											<td><spring:message code ="${course.ageGroup.i18nIdentifier}" /></td>
-											<td><spring:message code ="${course.level.i18nIdentifier}" /></td>
-											<td><i class="icon-smile restriction-icon-good"></i></td>
+											<td>${validatedCourse.course.name}</td>
+											<td><spring:message code ="${validatedCourse.course.ageGroup.i18nIdentifier}" /></td>
+											<td><spring:message code ="${validatedCourse.course.level.i18nIdentifier}" /></td>
+											<c:choose>
+												<c:when test="${validatedCourse.balletRestriktion}">
+													<td><i class="icon-smile restriction-icon-bad"></i></td>
+												</c:when>
+												<c:otherwise>
+													<td><i class="icon-smile restriction-icon-good"></i></td>
+												</c:otherwise>
+											</c:choose>
 										</tr>
 									</c:forEach>
 								</tbody>
@@ -98,12 +104,19 @@ table th,table td {
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${performanceList2}" var="course">
+									<c:forEach items="${validatedList2}" var="validatedCourse">
 										<tr>
-											<td>${course.name}</td>
-											<td><spring:message code ="${course.ageGroup.i18nIdentifier}" /></td>
-											<td><spring:message code ="${course.level.i18nIdentifier}" /></td>
-											<td><i class="icon-smile restriction-icon-good"></i></td>
+											<td>${validatedCourse.course.name}</td>
+											<td><spring:message code ="${validatedCourse.course.ageGroup.i18nIdentifier}" /></td>
+											<td><spring:message code ="${validatedCourse.course.level.i18nIdentifier}" /></td>
+											<c:choose>
+												<c:when test="${validatedCourse.balletRestriktion}">
+													<td><i class="icon-smile restriction-icon-bad"></i></td>
+												</c:when>
+												<c:otherwise>
+													<td><i class="icon-smile restriction-icon-good"></i></td>
+												</c:otherwise>
+											</c:choose>
 										</tr>
 									</c:forEach>
 								</tbody>
@@ -126,12 +139,19 @@ table th,table td {
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${performanceList3}" var="course">
+									<c:forEach items="${validatedList3}" var="validatedCourse">
 										<tr>
-											<td>${course.name}</td>
-											<td><spring:message code ="${course.ageGroup.i18nIdentifier}" /></td>
-											<td><spring:message code ="${course.level.i18nIdentifier}" /></td>
-											<td><i class="icon-smile restriction-icon-good"></i></td>
+											<td>${validatedCourse.course.name}</td>
+											<td><spring:message code ="${validatedCourse.course.ageGroup.i18nIdentifier}" /></td>
+											<td><spring:message code ="${validatedCourse.course.level.i18nIdentifier}" /></td>
+											<c:choose>
+												<c:when test="${validatedCourse.balletRestriktion}">
+													<td><i class="icon-smile restriction-icon-bad"></i></td>
+												</c:when>
+												<c:otherwise>
+													<td><i class="icon-smile restriction-icon-good"></i></td>
+												</c:otherwise>
+											</c:choose>
 										</tr>
 									</c:forEach>
 								</tbody>
