@@ -1,6 +1,7 @@
 package at.danceandfun.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -11,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import at.danceandfun.enumeration.CourseLevel;
 import at.danceandfun.service.CourseManager;
 import at.danceandfun.service.CourseParticipantManager;
 import at.danceandfun.service.ParticipantManager;
@@ -34,20 +36,35 @@ public class StatisticsController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String showStatistics(ModelMap map) {
-        List<String> childrenPerStyleTemp = courseManager.getChildrenPerStyle(
-                styleManager.getEnabledList(),
-                courseParticipantManager.getEnabledList(), 2013);
-        List<Integer> childrenPerStyleCount = new ArrayList<Integer>();
-        List<String> childrenPerStyleList = new ArrayList<String>();
-        for (String childrenPerStyle : childrenPerStyleTemp) {
-            String[] splitResult = childrenPerStyle.split(",");
-            childrenPerStyleList.add(splitResult[0]);
-            childrenPerStyleCount.add(Integer.parseInt(splitResult[1]));
-        }
-
         map.addAttribute("statistics", courseManager.getEnabledList());
-        map.addAttribute("childrenPerStyleCount", childrenPerStyleCount);
-        map.addAttribute("childrenPerStyleList", childrenPerStyleTemp);
+
+        List<String> participantsPerStyle = courseManager
+                .getParticipantPerStyle(styleManager.getEnabledList(),
+                        courseParticipantManager.getEnabledList(), 2013);
+        map.addAttribute("participantsPerStyleList", participantsPerStyle);
+
+        List<String> courseLevels = new ArrayList<String>();
+        for (CourseLevel level : CourseLevel.values()) {
+            courseLevels.add(level.getLabel());
+        }
+        map.addAttribute("courseLevels", courseLevels);
+
+        List<Long> participantsPerLevelActualYear = courseManager
+                .getParticipantPerLevel(2013);
+        List<Long> participantsPerLevelLastYear = courseManager
+                .getParticipantPerLevel(2012);
+        if (Collections.max(participantsPerLevelActualYear) > Collections
+                .max(participantsPerLevelLastYear)) {
+            map.addAttribute("maxScale",
+                    Collections.max(participantsPerLevelActualYear));
+        } else {
+            map.addAttribute("maxScale",
+                    Collections.max(participantsPerLevelLastYear));
+        }
+        map.addAttribute("participantsPerLevelActualYear",
+                participantsPerLevelActualYear);
+        map.addAttribute("participantsPerLevelLastYear",
+                participantsPerLevelLastYear);
         return "admin/statisticsView";
     }
 }

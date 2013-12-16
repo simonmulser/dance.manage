@@ -64,27 +64,36 @@ public class CourseManagerImpl extends ManagerBaseImpl<Course> implements
         return courses;
     }
 
-    public List<String> getChildrenPerStyle(List<Style> enabledStyles,
+    public List<String> getParticipantPerStyle(List<Style> enabledStyles,
             List<CourseParticipant> enabledCourseParticipants, int year) {
-        List<String> childrenPerStyle = new ArrayList<String>();
-        int childrenCount = 0;
+        List<String> participantsPerStyle = new ArrayList<String>();
+        int participantCount = 0;
         for (Style style : enabledStyles) {
             DetachedCriteria criteria = DetachedCriteria.forClass(Course.class);
             criteria.add(Restrictions.eq("enabled", true));
             criteria.add(Restrictions.eq("style.sid", style.getSid()));
-            criteria.add(Restrictions.like("year", 2013));
+            criteria.add(Restrictions.eq("year", year));
             List<Course> coursesWithStyle = mainDao.getListByCriteria(criteria);
             for (Course course : coursesWithStyle) {
                 for (CourseParticipant cp : enabledCourseParticipants) {
                     if (cp.getKey().getCourse().getCid() == course.getCid()) {
-                        childrenCount++;
+                        participantCount++;
                     }
                 }
 
             }
-            childrenPerStyle.add(style.getName() + "," + childrenCount);
-            childrenCount = 0;
+            participantsPerStyle.add(style.getName() + "(" + participantCount
+                    + ")" + "," + participantCount);
+            participantCount = 0;
         }
-        return childrenPerStyle;
+        return participantsPerStyle;
+    }
+
+    public List<Long> getParticipantPerLevel(int year) {
+        List<Long> participantsPerLevel = mainDao
+                .getQueryResultsLong("select count(*) from Course as c join c.courseParticipants as cp where c.year="
+                        + year + " group by c.level");
+
+        return participantsPerLevel;
     }
 }
