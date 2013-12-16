@@ -7,7 +7,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import at.danceandfun.util.AppContext;
 
 public enum CourseLevel {
-    BEGINNER(0), INTERMEDIATE(1), ADVANCED(2), PAUSE(3);
+    BEGINNER(0), INTERMEDIATE(1), ADVANCED(2);
 
     private Integer value;
 

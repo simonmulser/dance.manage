@@ -72,28 +72,38 @@ table th,table td {
 								<tbody>
 									<c:forEach items="${validatedList1}" var="validatedCourse">
 										<tr>
-											<td>${validatedCourse.course.name}</td>
-											<td><spring:message code ="${validatedCourse.course.level.i18nIdentifier}" /></td>
-											<td>
-												<c:choose>
-													<c:when test="${validatedCourse.balletRestriction}">
-														<i class="icon-smile restriction-icon-bad"></i>
-													</c:when>
-													<c:otherwise>
-														<i class="icon-smile restriction-icon-good"></i>
-													</c:otherwise>
-												</c:choose>
-											</td>
-											<td>
-												<c:choose>
-													<c:when test="${validatedCourse.twoBreaksRestriction}">
-														<i class="icon-smile restriction-icon-bad"></i>
-													</c:when>
-													<c:otherwise>
-														<i class="icon-smile restriction-icon-good"></i>
-													</c:otherwise>
-												</c:choose>
-											</td>
+											<c:choose>
+												<c:when test="${validatedCourse.course.dummyCourse}">
+													<td>-</td>
+													<td>-</td>
+													<td>-</td>
+													<td>-</td>
+												</c:when>
+												<c:otherwise>
+													<td>${validatedCourse.course.name}</td>
+													<td><spring:message code ="${validatedCourse.course.level.i18nIdentifier}" /></td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.balletRestriction}">
+																<i class="icon-smile restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.twoBreaksRestriction}">
+																<i class="icon-smile restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
+												</c:otherwise>
+											</c:choose>
 										</tr>
 									</c:forEach>
 								</tbody>
@@ -119,28 +129,38 @@ table th,table td {
 								<tbody>
 									<c:forEach items="${validatedList2}" var="validatedCourse">
 										<tr>
-											<td>${validatedCourse.course.name}</td>
-											<td><spring:message code ="${validatedCourse.course.level.i18nIdentifier}" /></td>
-											<td>
-												<c:choose>
-													<c:when test="${validatedCourse.balletRestriction}">
-														<i class="icon-smile restriction-icon-bad"></i>
-													</c:when>
-													<c:otherwise>
-														<i class="icon-smile restriction-icon-good"></i>
-													</c:otherwise>
-												</c:choose>
-											</td>
-											<td>
-												<c:choose>
-													<c:when test="${validatedCourse.twoBreaksRestriction}">
-														<i class="icon-smile restriction-icon-bad"></i>
-													</c:when>
-													<c:otherwise>
-														<i class="icon-smile restriction-icon-good"></i>
-													</c:otherwise>
-												</c:choose>
-											</td>
+											<c:choose>
+												<c:when test="${validatedCourse.course.dummyCourse}">
+													<td>-</td>
+													<td>-</td>
+													<td>-</td>
+													<td>-</td>
+												</c:when>
+												<c:otherwise>
+													<td>${validatedCourse.course.name}</td>
+													<td><spring:message code ="${validatedCourse.course.level.i18nIdentifier}" /></td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.balletRestriction}">
+																<i class="icon-smile restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.twoBreaksRestriction}">
+																<i class="icon-smile restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
+												</c:otherwise>
+											</c:choose>
 										</tr>
 									</c:forEach>
 								</tbody>
@@ -166,28 +186,38 @@ table th,table td {
 								<tbody>
 									<c:forEach items="${validatedList3}" var="validatedCourse">
 										<tr>
-											<td>${validatedCourse.course.name}</td>
-											<td><spring:message code ="${validatedCourse.course.level.i18nIdentifier}" /></td>
-											<td>
-												<c:choose>
-													<c:when test="${validatedCourse.balletRestriction}">
-														<i class="icon-smile restriction-icon-bad"></i>
-													</c:when>
-													<c:otherwise>
-														<i class="icon-smile restriction-icon-good"></i>
-													</c:otherwise>
-												</c:choose>
-											</td>
-											<td>
-												<c:choose>
-													<c:when test="${validatedCourse.twoBreaksRestriction}">
-														<i class="icon-smile restriction-icon-bad"></i>
-													</c:when>
-													<c:otherwise>
-														<i class="icon-smile restriction-icon-good"></i>
-													</c:otherwise>
-												</c:choose>
-											</td>
+											<c:choose>
+												<c:when test="${validatedCourse.course.dummyCourse}">
+													<td>-</td>
+													<td>-</td>
+													<td>-</td>
+													<td>-</td>
+												</c:when>
+												<c:otherwise>
+													<td>${validatedCourse.course.name}</td>
+													<td><spring:message code ="${validatedCourse.course.level.i18nIdentifier}" /></td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.balletRestriction}">
+																<i class="icon-smile restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.twoBreaksRestriction}">
+																<i class="icon-smile restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
+												</c:otherwise>
+											</c:choose>
 										</tr>
 									</c:forEach>
 								</tbody>

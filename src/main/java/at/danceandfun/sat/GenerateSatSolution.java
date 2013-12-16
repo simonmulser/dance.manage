@@ -507,12 +507,13 @@ public class GenerateSatSolution {
         // address.setCity("Platzhalter");
         // address.setZip(10);
         // address.setNumber(10);
-        dummyCourse.setName("-");
+        dummyCourse.setName("Dummy");
         dummyCourse.setStyle(dummyStyle);
         dummyCourse.setAmountPerformances(1);
         dummyCourse.setEnabled(true);
-        dummyCourse.setLevel(CourseLevel.PAUSE);
-        dummyCourse.setAgeGroup(AgeGroup.PAUSE);
+        dummyCourse.setLevel(CourseLevel.BEGINNER);
+        dummyCourse.setAgeGroup(AgeGroup.SMALL);
+        dummyCourse.setDummyCourse(true);
         // dummyCourse.setAddress(address);
         // dummyCourse.setDuration(CourseDuration.FIFTY);
         // dummyCourse.setSemesterPrice(10.0);
@@ -531,7 +532,7 @@ public class GenerateSatSolution {
 
         if (dummies > 0) {
             for (int i = courses.size() - 1; i >= 0; i--) {
-                if (courses.get(i).getName().equals("-")) {
+                if (courses.get(i).isDummyCourse()) {
                     if (foundDummies == 0) {
                         int[] temp = { buildMappingVariable(3, 1, i + 1) };
                         clauses.add(temp);
