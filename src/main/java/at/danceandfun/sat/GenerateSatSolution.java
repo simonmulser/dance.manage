@@ -89,8 +89,6 @@ public class GenerateSatSolution {
         numberOfSlots = newOrderOfCourses.size() / numberOfPlays;
 
         addDummyClauses(newOrderOfCourses);
-        System.out.println("TEST " + newOrderOfCourses.size() + ", "
-                + numberOfSlots);
 
         movedCourses = addAdvancedAtTheEnd(newOrderOfCourses, numberOfSlots);
         addNotTwoOfAKind(newOrderOfCourses, numberOfCourses, numberOfSlots,
@@ -214,7 +212,6 @@ public class GenerateSatSolution {
                     }
                 }
             }
-            System.out.println(countBallets);
             if (countBallets * 2 - 1 > numberOfSlots - movedCourses) {
                 throw new SatException(
                         "Too many Ballets in one Performance! Had to reshuffle!");
@@ -476,8 +473,9 @@ public class GenerateSatSolution {
             try {
                 solver.addClause(new VecInt(cur));
             } catch (ContradictionException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                if (!e.getMessage().equals("Creating Empty clause ?")) {
+                    e.printStackTrace();
+                }
             }
         }
 
