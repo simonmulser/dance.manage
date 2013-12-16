@@ -30,9 +30,9 @@
 										code="nav.logout" /></a></li>
 						</ul></li>
 				</ul>
-				<form class="navbar-search pull-right">
-					<input type="text" class="search-query"
-						placeholder="<spring:message code="nav.search" />">
+				<form action="<c:url value='/admin/search/request' />" class="navbar-search pull-right">
+					<input type="text" name="searchTerm" class="search-query"
+						placeholder="<spring:message code="nav.search" />" />
 				</form>
 			</div>
 			<!--/.nav-collapse -->
