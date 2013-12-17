@@ -57,15 +57,18 @@ table th,table td {
 							<table class="table table-striped table-bordered">
 								<thead>
 									<tr>
-										<th style="width: 50%"><spring:message
+										<th style="width: 60%"><spring:message
 												code="label.coursename" /></th>
-										<th style="width: 23%"><spring:message
+										<th style="width: 25%"><spring:message
 												code="label.courselevel" /></th>
-										<th style="width: 4%"><i
+										<th style="width: 5%"><i
 											title="<spring:message code='help.restriction.noconsecutiveballett' />"
 											class="inline-tooltip icon icon-question-sign"></i></th>
-										<th style="width: 4%"><i
+										<th style="width: 5%"><i
 											title="<spring:message code='help.restriction.twoCoursesBreak' />"
+											class="inline-tooltip icon icon-question-sign"></i></th>
+										<th style="width: 5%"><i
+											title="<spring:message code='help.restriction.advancedAtEnd' />"
 											class="inline-tooltip icon icon-question-sign"></i></th>
 									</tr>
 								</thead>
@@ -102,6 +105,16 @@ table th,table td {
 															</c:otherwise>
 														</c:choose>
 													</td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.advancedAtEndRestriction}">
+																<i class="icon-smile restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
 												</c:otherwise>
 											</c:choose>
 										</tr>
@@ -114,15 +127,18 @@ table th,table td {
 							<table class="table table-striped table-bordered">
 								<thead>
 									<tr>
-										<th style="width: 50%"><spring:message
+										<th style="width: 60%"><spring:message
 												code="label.coursename" /></th>
 										<th style="width: 25%"><spring:message
 												code="label.courselevel" /></th>
-										<th style="width: 4%"><i
+										<th style="width: 5%"><i
 											title="<spring:message code='help.restriction.noconsecutiveballett' />"
 											class="inline-tooltip icon icon-question-sign"></i></th>
-										<th style="width: 4%"><i
+										<th style="width: 5%"><i
 											title="<spring:message code='help.restriction.twoCoursesBreak' />"
+											class="inline-tooltip icon icon-question-sign"></i></th>
+										<th style="width: 5%"><i
+											title="<spring:message code='help.restriction.advancedAtEnd' />"
 											class="inline-tooltip icon icon-question-sign"></i></th>
 									</tr>
 								</thead>
@@ -159,6 +175,16 @@ table th,table td {
 															</c:otherwise>
 														</c:choose>
 													</td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.advancedAtEndRestriction}">
+																<i class="icon-smile restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
 												</c:otherwise>
 											</c:choose>
 										</tr>
@@ -171,7 +197,7 @@ table th,table td {
 							<table class="table table-striped table-bordered">
 								<thead>
 									<tr>
-										<th style="width: 65%"><spring:message
+										<th style="width: 60%"><spring:message
 												code="label.coursename" /></th>
 										<th style="width: 25%"><spring:message
 												code="label.courselevel" /></th>
@@ -180,6 +206,9 @@ table th,table td {
 											class="inline-tooltip icon icon-question-sign"></i></th>
 										<th style="width: 5%"><i
 											title="<spring:message code='help.restriction.twoCoursesBreak' />"
+											class="inline-tooltip icon icon-question-sign"></i></th>
+										<th style="width: 5%"><i
+											title="<spring:message code='help.restriction.advancedAtEnd' />"
 											class="inline-tooltip icon icon-question-sign"></i></th>
 									</tr>
 								</thead>
@@ -209,6 +238,16 @@ table th,table td {
 													<td>
 														<c:choose>
 															<c:when test="${validatedCourse.twoBreaksRestriction}">
+																<i class="icon-smile restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.advancedAtEndRestriction}">
 																<i class="icon-smile restriction-icon-bad"></i>
 															</c:when>
 															<c:otherwise>
