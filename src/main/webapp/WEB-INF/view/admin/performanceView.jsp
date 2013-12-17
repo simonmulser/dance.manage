@@ -37,7 +37,6 @@ table th,table td {
 					<input type="submit" value="<spring:message code="label.create"/>"
 						class="btn btn-primary" />
 				</div>
-
 			</form:form>
 		</dmtags:widget>
 
@@ -58,24 +57,66 @@ table th,table td {
 							<table class="table table-striped table-bordered">
 								<thead>
 									<tr>
-										<th style="width: 50%"><spring:message
+										<th style="width: 60%"><spring:message
 												code="label.coursename" /></th>
-										<th style="width: 23%"><spring:message
-												code="label.ageGroup" /></th>
-										<th style="width: 23%"><spring:message
+										<th style="width: 25%"><spring:message
 												code="label.courselevel" /></th>
-										<th style="width: 4%"><i
+										<th style="width: 5%"><i
 											title="<spring:message code='help.restriction.noconsecutiveballett' />"
+											class="inline-tooltip icon icon-question-sign"></i></th>
+										<th style="width: 5%"><i
+											title="<spring:message code='help.restriction.twoCoursesBreak' />"
+											class="inline-tooltip icon icon-question-sign"></i></th>
+										<th style="width: 5%"><i
+											title="<spring:message code='help.restriction.advancedAtEnd' />"
 											class="inline-tooltip icon icon-question-sign"></i></th>
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${performanceList1}" var="course">
+									<c:forEach items="${validatedList1}" var="validatedCourse">
 										<tr>
-											<td>${course.name}</td>
-											<td><spring:message code ="${course.ageGroup.i18nIdentifier}" /></td>
-											<td><spring:message code ="${course.level.i18nIdentifier}" /></td>
-											<td><i class="icon-smile restriction-icon-good"></i></td>
+											<c:choose>
+												<c:when test="${validatedCourse.course.dummyCourse}">
+													<td>-</td>
+													<td>-</td>
+													<td>-</td>
+													<td>-</td>
+												</c:when>
+												<c:otherwise>
+													<td>${validatedCourse.course.name}</td>
+													<td><spring:message code ="${validatedCourse.course.level.i18nIdentifier}" /></td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.balletRestriction}">
+																<i class="icon-smile restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.twoBreaksRestriction}">
+																<i class="icon-smile restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.advancedAtEndRestriction}">
+																<i class="icon-smile restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
+												</c:otherwise>
+											</c:choose>
 										</tr>
 									</c:forEach>
 								</tbody>
@@ -86,24 +127,66 @@ table th,table td {
 							<table class="table table-striped table-bordered">
 								<thead>
 									<tr>
-										<th style="width: 50%"><spring:message
+										<th style="width: 60%"><spring:message
 												code="label.coursename" /></th>
 										<th style="width: 25%"><spring:message
-												code="label.ageGroup" /></th>
-										<th style="width: 25%"><spring:message
 												code="label.courselevel" /></th>
-										<th style="width: 4%"><i
+										<th style="width: 5%"><i
 											title="<spring:message code='help.restriction.noconsecutiveballett' />"
+											class="inline-tooltip icon icon-question-sign"></i></th>
+										<th style="width: 5%"><i
+											title="<spring:message code='help.restriction.twoCoursesBreak' />"
+											class="inline-tooltip icon icon-question-sign"></i></th>
+										<th style="width: 5%"><i
+											title="<spring:message code='help.restriction.advancedAtEnd' />"
 											class="inline-tooltip icon icon-question-sign"></i></th>
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${performanceList2}" var="course">
+									<c:forEach items="${validatedList2}" var="validatedCourse">
 										<tr>
-											<td>${course.name}</td>
-											<td><spring:message code ="${course.ageGroup.i18nIdentifier}" /></td>
-											<td><spring:message code ="${course.level.i18nIdentifier}" /></td>
-											<td><i class="icon-smile restriction-icon-good"></i></td>
+											<c:choose>
+												<c:when test="${validatedCourse.course.dummyCourse}">
+													<td>-</td>
+													<td>-</td>
+													<td>-</td>
+													<td>-</td>
+												</c:when>
+												<c:otherwise>
+													<td>${validatedCourse.course.name}</td>
+													<td><spring:message code ="${validatedCourse.course.level.i18nIdentifier}" /></td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.balletRestriction}">
+																<i class="icon-smile restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.twoBreaksRestriction}">
+																<i class="icon-smile restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.advancedAtEndRestriction}">
+																<i class="icon-smile restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
+												</c:otherwise>
+											</c:choose>
 										</tr>
 									</c:forEach>
 								</tbody>
@@ -114,24 +197,66 @@ table th,table td {
 							<table class="table table-striped table-bordered">
 								<thead>
 									<tr>
-										<th style="width: 50%"><spring:message
+										<th style="width: 60%"><spring:message
 												code="label.coursename" /></th>
 										<th style="width: 25%"><spring:message
-												code="label.ageGroup" /></th>
-										<th style="width: 25%"><spring:message
 												code="label.courselevel" /></th>
-										<th style="width: 4%"><i
+										<th style="width: 5%"><i
 											title="<spring:message code='help.restriction.noconsecutiveballett' />"
+											class="inline-tooltip icon icon-question-sign"></i></th>
+										<th style="width: 5%"><i
+											title="<spring:message code='help.restriction.twoCoursesBreak' />"
+											class="inline-tooltip icon icon-question-sign"></i></th>
+										<th style="width: 5%"><i
+											title="<spring:message code='help.restriction.advancedAtEnd' />"
 											class="inline-tooltip icon icon-question-sign"></i></th>
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${performanceList3}" var="course">
+									<c:forEach items="${validatedList3}" var="validatedCourse">
 										<tr>
-											<td>${course.name}</td>
-											<td><spring:message code ="${course.ageGroup.i18nIdentifier}" /></td>
-											<td><spring:message code ="${course.level.i18nIdentifier}" /></td>
-											<td><i class="icon-smile restriction-icon-good"></i></td>
+											<c:choose>
+												<c:when test="${validatedCourse.course.dummyCourse}">
+													<td>-</td>
+													<td>-</td>
+													<td>-</td>
+													<td>-</td>
+												</c:when>
+												<c:otherwise>
+													<td>${validatedCourse.course.name}</td>
+													<td><spring:message code ="${validatedCourse.course.level.i18nIdentifier}" /></td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.balletRestriction}">
+																<i class="icon-smile restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.twoBreaksRestriction}">
+																<i class="icon-smile restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.advancedAtEndRestriction}">
+																<i class="icon-smile restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
+												</c:otherwise>
+											</c:choose>
 										</tr>
 									</c:forEach>
 								</tbody>

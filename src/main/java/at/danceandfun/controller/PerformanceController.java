@@ -1,6 +1,7 @@
 package at.danceandfun.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,8 @@ import at.danceandfun.entity.Participant;
 import at.danceandfun.entity.Performance;
 import at.danceandfun.exception.SatException;
 import at.danceandfun.sat.GenerateSatSolution;
+import at.danceandfun.sat.SatValidator;
+import at.danceandfun.sat.ValidatedCourse;
 import at.danceandfun.service.CourseManager;
 import at.danceandfun.service.ParticipantManager;
 import at.danceandfun.service.PerformanceManager;
@@ -42,6 +45,10 @@ public class PerformanceController {
     private Performance tempPerformance1 = new Performance();
     private Performance tempPerformance2 = new Performance();
     private Performance tempPerformance3 = new Performance();
+    private List<ValidatedCourse> validatedList1 = new ArrayList<ValidatedCourse>();
+    private List<ValidatedCourse> validatedList2 = new ArrayList<ValidatedCourse>();
+    private List<ValidatedCourse> validatedList3 = new ArrayList<ValidatedCourse>();
+    private Map<Integer, Performance> performancePlan;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String listPerformances(ModelMap map) {
@@ -50,6 +57,9 @@ public class PerformanceController {
         map.addAttribute("performanceList1", tempPerformance1.getCourses());
         map.addAttribute("performanceList2", tempPerformance2.getCourses());
         map.addAttribute("performanceList3", tempPerformance3.getCourses());
+        map.addAttribute("validatedList1", validatedList1);
+        map.addAttribute("validatedList2", validatedList2);
+        map.addAttribute("validatedList3", validatedList3);
 
         return "admin/performanceView";
     }
@@ -57,16 +67,17 @@ public class PerformanceController {
     @RequestMapping(value = "/build", method = RequestMethod.POST)
     public String buildPerformance(ModelMap map) {
         logger.debug("BUILD performance");
-        Map<Integer, Performance> plan = new HashMap<Integer, Performance>();
+        performancePlan = new HashMap<Integer, Performance>();
         List<Course> courses = courseManager.getEnabledList();
         List<Participant> participantList = participantManager.getEnabledList();
-        // Collections.shuffle(courses);
+        Collections.shuffle(courses);
 
         GenerateSatSolution sat = new GenerateSatSolution();
 
         while (true) {
             try {
-                plan = sat.generatePerformance(courses, participantList);
+                performancePlan = sat.generatePerformance(courses,
+                        participantList);
                 break;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -77,13 +88,29 @@ public class PerformanceController {
             }
         }
 
-        tempPerformance1 = plan.get(1);
-        tempPerformance2 = plan.get(2);
-        tempPerformance3 = plan.get(3);
+        SatValidator validator = new SatValidator(performancePlan,
+                participantList);
+
+        Map<Integer, List<ValidatedCourse>> validatedPerformancePlan = validator
+                .validatePerformancePlan();
+
+        tempPerformance1 = performancePlan.get(1);
+        tempPerformance2 = performancePlan.get(2);
+        tempPerformance3 = performancePlan.get(3);
+        validatedList1 = validatedPerformancePlan.get(1);
+        validatedList2 = validatedPerformancePlan.get(2);
+        validatedList3 = validatedPerformancePlan.get(3);
         // performanceManager.save(tempPerformance1);
         // performanceManager.save(tempPerformance2);
         // performanceManager.save(tempPerformance3);
         performance = new Performance();
+
+        return "redirect:/admin/performance";
+    }
+
+    @RequestMapping(value = "/validate", method = RequestMethod.POST)
+    public String buildPerformance() {
+        logger.debug("VALDIATE performancePlan");
 
         return "redirect:/admin/performance";
     }

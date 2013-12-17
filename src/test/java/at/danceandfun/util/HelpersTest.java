@@ -1,6 +1,6 @@
 package at.danceandfun.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -51,13 +51,14 @@ public class HelpersTest {
         int durationMinutes = course.getDuration().getValue();
         DateTime result = Helpers
                 .getCourseEndDateTimeCurrentWeekRepresentation(course);
-        assertEquals(course.getTime().plusMinutes(durationMinutes).getHourOfDay(), result.getHourOfDay());
-        assertEquals(course.getTime().plusMinutes(durationMinutes).getMinuteOfHour(),
-                result.getMinuteOfHour());
-        assertEquals(course.getTime().plusMinutes(durationMinutes).getSecondOfMinute(),
-                result.getSecondOfMinute());
-        assertEquals(course.getTime().plusMinutes(durationMinutes).getMillisOfSecond(),
-                result.getMillisOfSecond());
+        assertEquals(course.getTime().plusMinutes(durationMinutes)
+                .getHourOfDay(), result.getHourOfDay());
+        assertEquals(course.getTime().plusMinutes(durationMinutes)
+                .getMinuteOfHour(), result.getMinuteOfHour());
+        assertEquals(course.getTime().plusMinutes(durationMinutes)
+                .getSecondOfMinute(), result.getSecondOfMinute());
+        assertEquals(course.getTime().plusMinutes(durationMinutes)
+                .getMillisOfSecond(), result.getMillisOfSecond());
         assertEquals((int) course.getWeekday().getValue() + 1,
                 result.getDayOfWeek());
 

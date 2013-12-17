@@ -83,6 +83,13 @@ public class DaoBaseImpl<T> implements DaoBase<T> {
         return session.createQuery(query).list();
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Long> getQueryResultsLong(String query) {
+        Session session = getHibernateSession();
+        return session.createQuery(query).list();
+    }
+
     protected Session getHibernateSession() {
         Session session = entityManager.unwrap(Session.class);
         return session;

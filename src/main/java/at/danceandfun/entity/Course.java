@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PostPersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -130,6 +131,9 @@ public class Course extends EntityBase {
 
     @OneToMany(mappedBy = "course")
     private List<Appointment> appointments = new ArrayList<Appointment>();
+
+    @Transient
+    private boolean dummyCourse = false;
 
     public Course() {
     }
@@ -343,6 +347,14 @@ public class Course extends EntityBase {
 
     public void setAppointments(List<Appointment> appointments) {
         this.appointments = appointments;
+    }
+
+    public boolean isDummyCourse() {
+        return dummyCourse;
+    }
+
+    public void setDummyCourse(boolean dummyCourse) {
+        this.dummyCourse = dummyCourse;
     }
 
     @PreUpdate
