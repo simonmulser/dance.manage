@@ -61,15 +61,15 @@ table th,table td {
 												code="label.coursename" /></th>
 										<th style="width: 25%"><spring:message
 												code="label.courselevel" /></th>
-										<th style="width: 5%"><i
+										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.noconsecutiveballett' />"
-											class="inline-tooltip icon icon-question-sign"></i></th>
-										<th style="width: 5%"><i
+											class="inline-tooltip icon icon-female"></i></th>
+										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.twoCoursesBreak' />"
-											class="inline-tooltip icon icon-question-sign"></i></th>
-										<th style="width: 5%"><i
+											class="inline-tooltip icon icon-coffee"></i></th>
+										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.advancedAtEnd' />"
-											class="inline-tooltip icon icon-question-sign"></i></th>
+											class="inline-tooltip icon icon-group"></i></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -81,6 +81,7 @@ table th,table td {
 													<td>-</td>
 													<td>-</td>
 													<td>-</td>
+													<td>-</td>
 												</c:when>
 												<c:otherwise>
 													<td>${validatedCourse.course.name}</td>
@@ -88,7 +89,7 @@ table th,table td {
 													<td>
 														<c:choose>
 															<c:when test="${validatedCourse.balletRestriction}">
-																<i class="icon-smile restriction-icon-bad"></i>
+																<i class="icon-frown restriction-icon-bad"></i>
 															</c:when>
 															<c:otherwise>
 																<i class="icon-smile restriction-icon-good"></i>
@@ -98,7 +99,7 @@ table th,table td {
 													<td>
 														<c:choose>
 															<c:when test="${validatedCourse.twoBreaksRestriction}">
-																<i class="icon-smile restriction-icon-bad"></i>
+																<i class="icon-frown restriction-icon-bad"></i>
 															</c:when>
 															<c:otherwise>
 																<i class="icon-smile restriction-icon-good"></i>
@@ -108,7 +109,7 @@ table th,table td {
 													<td>
 														<c:choose>
 															<c:when test="${validatedCourse.advancedAtEndRestriction}">
-																<i class="icon-smile restriction-icon-bad"></i>
+																<i class="icon-frown restriction-icon-bad"></i>
 															</c:when>
 															<c:otherwise>
 																<i class="icon-smile restriction-icon-good"></i>
@@ -131,15 +132,15 @@ table th,table td {
 												code="label.coursename" /></th>
 										<th style="width: 25%"><spring:message
 												code="label.courselevel" /></th>
-										<th style="width: 5%"><i
+										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.noconsecutiveballett' />"
-											class="inline-tooltip icon icon-question-sign"></i></th>
-										<th style="width: 5%"><i
+											class="inline-tooltip icon icon-female"></i></th>
+										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.twoCoursesBreak' />"
-											class="inline-tooltip icon icon-question-sign"></i></th>
-										<th style="width: 5%"><i
+											class="inline-tooltip icon icon-coffee"></i></th>
+										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.advancedAtEnd' />"
-											class="inline-tooltip icon icon-question-sign"></i></th>
+											class="inline-tooltip icon icon-group"></i></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -151,6 +152,7 @@ table th,table td {
 													<td>-</td>
 													<td>-</td>
 													<td>-</td>
+													<td>-</td>
 												</c:when>
 												<c:otherwise>
 													<td>${validatedCourse.course.name}</td>
@@ -158,7 +160,7 @@ table th,table td {
 													<td>
 														<c:choose>
 															<c:when test="${validatedCourse.balletRestriction}">
-																<i class="icon-smile restriction-icon-bad"></i>
+																<i class="icon-frown restriction-icon-bad"></i>
 															</c:when>
 															<c:otherwise>
 																<i class="icon-smile restriction-icon-good"></i>
@@ -168,7 +170,7 @@ table th,table td {
 													<td>
 														<c:choose>
 															<c:when test="${validatedCourse.twoBreaksRestriction}">
-																<i class="icon-smile restriction-icon-bad"></i>
+																<i class="icon-frown restriction-icon-bad"></i>
 															</c:when>
 															<c:otherwise>
 																<i class="icon-smile restriction-icon-good"></i>
@@ -178,7 +180,7 @@ table th,table td {
 													<td>
 														<c:choose>
 															<c:when test="${validatedCourse.advancedAtEndRestriction}">
-																<i class="icon-smile restriction-icon-bad"></i>
+																<i class="icon-frown restriction-icon-bad"></i>
 															</c:when>
 															<c:otherwise>
 																<i class="icon-smile restriction-icon-good"></i>
@@ -201,15 +203,15 @@ table th,table td {
 												code="label.coursename" /></th>
 										<th style="width: 25%"><spring:message
 												code="label.courselevel" /></th>
-										<th style="width: 5%"><i
+										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.noconsecutiveballett' />"
-											class="inline-tooltip icon icon-question-sign"></i></th>
-										<th style="width: 5%"><i
+											class="inline-tooltip icon icon-female"></i></th>
+										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.twoCoursesBreak' />"
-											class="inline-tooltip icon icon-question-sign"></i></th>
-										<th style="width: 5%"><i
+											class="inline-tooltip icon icon-coffee"></i></th>
+										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.advancedAtEnd' />"
-											class="inline-tooltip icon icon-question-sign"></i></th>
+											class="inline-tooltip icon icon-group"></i></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -221,6 +223,7 @@ table th,table td {
 													<td>-</td>
 													<td>-</td>
 													<td>-</td>
+													<td>-</td>
 												</c:when>
 												<c:otherwise>
 													<td>${validatedCourse.course.name}</td>
@@ -228,7 +231,7 @@ table th,table td {
 													<td>
 														<c:choose>
 															<c:when test="${validatedCourse.balletRestriction}">
-																<i class="icon-smile restriction-icon-bad"></i>
+																<i class="icon-frown restriction-icon-bad"></i>
 															</c:when>
 															<c:otherwise>
 																<i class="icon-smile restriction-icon-good"></i>
@@ -238,7 +241,7 @@ table th,table td {
 													<td>
 														<c:choose>
 															<c:when test="${validatedCourse.twoBreaksRestriction}">
-																<i class="icon-smile restriction-icon-bad"></i>
+																<i class="icon-frown restriction-icon-bad"></i>
 															</c:when>
 															<c:otherwise>
 																<i class="icon-smile restriction-icon-good"></i>
@@ -248,7 +251,7 @@ table th,table td {
 													<td>
 														<c:choose>
 															<c:when test="${validatedCourse.advancedAtEndRestriction}">
-																<i class="icon-smile restriction-icon-bad"></i>
+																<i class="icon-frown restriction-icon-bad"></i>
 															</c:when>
 															<c:otherwise>
 																<i class="icon-smile restriction-icon-good"></i>
