@@ -8,7 +8,8 @@
 			<a class="btn btn-navbar" data-toggle="collapse"
 				data-target=".nav-collapse"><span class="icon-bar"></span><span
 				class="icon-bar"></span><span class="icon-bar"></span> </a><a
-				class="brand" href="<c:url value="${homeLink}" />"><spring:message code="nav.title" /></a>
+				class="brand" href="<c:url value="${homeLink}" />"><spring:message
+					code="nav.title" /></a>
 			<div class="nav-collapse">
 				<ul class="nav pull-right">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -21,8 +22,8 @@
 										code="nav.help" /></a></li>
 						</ul></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"><i class="icon-user"></i> ${user.firstname} <b
-							class="caret"></b></a>
+						data-toggle="dropdown"><i class="icon-user"></i>
+							${user.firstname} <b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a href="<c:url value="${editProfileLink}" />"><spring:message
 										code="nav.editProfile" /></a></li>
@@ -30,10 +31,13 @@
 										code="nav.logout" /></a></li>
 						</ul></li>
 				</ul>
-				<form action="<c:url value='/admin/search/request' />" class="navbar-search pull-right">
-					<input type="text" name="searchTerm" class="search-query"
-						placeholder="<spring:message code="nav.search" />" />
-				</form>
+				<c:if test="${userType eq 'admin'}">
+					<form action="<c:url value='/admin/search/request' />"
+						class="navbar-search pull-right">
+						<input type="text" name="query" class="search-query"
+							placeholder="<spring:message code="nav.search" />" />
+					</form>
+				</c:if>
 			</div>
 			<!--/.nav-collapse -->
 		</div>

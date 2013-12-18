@@ -10,7 +10,9 @@ public interface SearchManager {
 
     public List<Participant> searchParticipants(String searchTerm);
 
-    public List<Teacher> searchTeacher(String searchTerm);
+    public List<Teacher> searchTeachers(String searchTerm);
+
+    public List<Teacher> searchParents(String searchTerm);
 
     public List<Course> searchCourses(String query);
 }
