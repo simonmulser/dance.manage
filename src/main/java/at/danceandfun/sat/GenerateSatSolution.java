@@ -88,6 +88,8 @@ public class GenerateSatSolution {
         numberOfCourses = newOrderOfCourses.size();
         numberOfSlots = newOrderOfCourses.size() / numberOfPlays;
 
+        arrangeAmountOfSpectators(newOrderOfCourses);
+
         addDummyClauses(newOrderOfCourses);
 
         movedCourses = addAdvancedAtTheEnd(newOrderOfCourses, numberOfSlots);
@@ -520,6 +522,37 @@ public class GenerateSatSolution {
         // dummyCourse.setWeekday(WeekDay.MONDAY);
 
         return dummyCourse;
+    }
+
+    private void arrangeAmountOfSpectators(List<Course> courses)
+            throws SatException {
+        int amount1 = 0;
+        int amount2 = 0;
+        int amount3 = 0;
+
+        for (int i = 0; i < this.numberOfSlots; i++) {
+            amount1 += courses.get(i).getEstimatedSpectators().getValue() + 1;
+        }
+        for (int i = this.numberOfSlots; i < 2 * this.numberOfSlots; i++) {
+            if (!courses.get(i).isDummyCourse()) {
+                amount2 += courses.get(i).getEstimatedSpectators().getValue() + 1;
+            }
+        }
+        for (int i = 2 * this.numberOfSlots; i < 3 * this.numberOfSlots; i++) {
+            if (!courses.get(i).isDummyCourse()) {
+                amount3 += courses.get(i).getEstimatedSpectators().getValue() + 1;
+            }
+        }
+
+        int meanAmount = (amount1 + amount2 + amount3) / 3;
+        if (Math.abs(amount1 - meanAmount) > 3
+                || Math.abs(amount2 - meanAmount) > 3
+                || Math.abs(amount3 - meanAmount) > 3) {
+            throw new SatException("Amount of spectors is not balanced");
+        }
+
+        System.out.println("ZUSCHAUERZAHLEN: " + amount1 + " " + amount2 + " "
+                + amount3);
     }
 
     /**
