@@ -41,6 +41,8 @@
 						<ul class="dropdown-menu">
 							<li><a href="/dancemanage/admin/participant"><spring:message
 										code="nav.participants" /></a></li>
+							<li><a href="/dancemanage/admin/parent"><spring:message
+										code="nav.parents" /></a></li>			
 							<li><a href="/dancemanage/admin/teacher"><spring:message
 										code="nav.teachers" /></a></li>
 						</ul></li>

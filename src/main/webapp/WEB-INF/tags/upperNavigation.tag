@@ -13,17 +13,8 @@
 			<div class="nav-collapse">
 				<ul class="nav pull-right">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"><i class="icon-cog"></i> <spring:message
-								code="nav.account" /> <b class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li><a href="javascript:;"><spring:message
-										code="nav.settings" /></a></li>
-							<li><a href="javascript:;"><spring:message
-										code="nav.help" /></a></li>
-						</ul></li>
-					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"><i class="icon-user"></i>
-							${user.firstname} <b class="caret"></b></a>
+						data-toggle="dropdown"><i class="icon-user"></i> ${user.firstname} <b
+							class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a href="<c:url value="${editProfileLink}" />"><spring:message
 										code="nav.editProfile" /></a></li>

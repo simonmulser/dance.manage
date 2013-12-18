@@ -1317,11 +1317,11 @@ color: #333;
 	color: #ff2b00;
 }
 
-#showSiblings, #showCourses, #showStyles, #showTeacher{
+#showSiblings, #showCourses, #showStyles, #showTeacher, #showParent{
 	margin-top:10px;
 }
 
-.siblingTag, .courseTag, .styleTag, .teacherTag {
+.siblingTag, .courseTag, .styleTag, .teacherTag, .parentTag {
 	color: white;
 	border: 1px solid;
 	border-color: #D66C04;

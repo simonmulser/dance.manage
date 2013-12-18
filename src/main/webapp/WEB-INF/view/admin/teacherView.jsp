@@ -185,11 +185,14 @@
 		}
 	});
 	
-	$("#datepicker").datepicker({
+	$(".datepicker").datepicker({
 		showOn : "button",
 		buttonImage : "/dancemanage/css/ui/images/calendar.gif",
 		buttonImageOnly : true,
-		dateFormat : "dd.mm.yy"
+		dateFormat : "dd.mm.yy",
+		changeMonth: true,
+	    changeYear: true,
+	    yearRange: "1960:2000"
 	});
 	
 	$(document).on("saveStyleCourse",function(){ //damit Styles und Courses erhalten bleiben
@@ -221,178 +224,146 @@
 	});
 	$(document).trigger("saveStyleCourse", [""]);
 	
-	$(document)
-			.ready(
-					function() {
-						$("#showStyles").on("click", "i", function() {
-							$("#duplicateStyle").hide();
-							var id = $(this).attr("id");
-							var styleName = $(this).siblings("span").text();
-							$(this).parent().remove();
-							$("#tempStyles").val(function(i, v) {
-								return v.replace(id + ";", "-" + id + ";");
-							}).val();
-							$("#tempStyleNames").val(function(i, v) {
-								return v.replace(styleName + ","+id+";", "");
-							}).val();
-						});
+	$(document).ready(function() {
+		$("#showStyles").on("click", "i", function() {
+			$("#duplicateStyle").hide();
+			var id = $(this).attr("id");
+			var styleName = $(this).siblings("span").text();
+			$(this).parent().remove();
+			$("#tempStyles").val(function(i, v) {
+				return v.replace(id + ";", "-" + id + ";");
+			}).val();
+			$("#tempStyleNames").val(function(i, v) {
+				return v.replace(styleName + ","+id+";", "");
+			}).val();
+		});
 
-						//attach autocomplete
-						$("#stylesQuery")
-								.autocomplete(
-										{
-											minLength : 1,
-											delay : 500,
-											//define callback to format results
-											source : function(request, response) {
-												$
-														.getJSON(
-																"/dancemanage/admin/teacher/getStyles",
-																request,
-																function(result) {
-																	response($
-																			.map(
-																					result,
-																					function(
-																							item) {
-																						return {
-																							// following property gets displayed in drop down
-																							label : item.name,
-																							// following property gets entered in the textbox
-																							value : item.name,
-																							sid: item.sid
-																						};
-																					}));
-																});
-											},
-
-											//define select handler
-											select : function(event, ui) {
-												if (ui.item) {
-													event.preventDefault();
-													var input = $("#tempStyles");
-													var inputName = $("#tempStyleNames");
-													var tempStyles = input.val();
-													var itemId = ui.item.sid;
-													if(tempStyles.indexOf(itemId) == -1){ //neues Element
-														$("#duplicateStyle").hide();
-														$("#selectedStyles").append("<span class='styleTag'>"
-																		+ ui.item.label
-																		+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i><span style='display:none;'>" + ui.item.label + "</span></span>");
-												
-														input.val(input.val() + itemId + ";");
-														inputName.val(inputName.val() + ui.item.label + "," + itemId + ";");
-														
-													}else if(tempStyles.indexOf("-"+itemId) != -1){ //bereits einmal gelöscht
-														$("#duplicateStyle").hide();
-														$("#selectedStyles")
-														.append(
-																"<span class='styleTag'>"
-																		+ ui.item.label
-																		+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i><span style='display:none;'>" + ui.item.label + "</span></span>");
-														
-														input.val(function(i, v) {
-															return v.replace("-"+itemId + ";", itemId + ";");
-														}).val();
-														inputName.val(inputName.val() + ui.item.label + "," + itemId + ";");
-
-													}else{ //bereits vorhanden
-														$("#duplicateStyle").show();
-													}	
-									
-													var defValue = $("#stylesQuery").prop('defaultValue');
-													$("#stylesQuery").val(defValue);
-													$("#stylesQuery").blur();
-													return false;
-												}
-											}
-										});
-					});
-	$(document)
-	.ready(
-			function() {
-				$("#showCourses").on("click", "i", function() {
-					$("#duplicateCourse").hide();
-					var id = $(this).attr("id");
-					var courseName = $(this).siblings("span").text();
-					$(this).parent().remove();
-					$("#tempCourses").val(function(i, v) {
-						return v.replace(id + ";", "-" + id + ";");
-					}).val();
-					$("#tempCourseNames").val(function(i, v) {
-						return v.replace(courseName + ","+id+";", "");
-					}).val();
+		//attach autocomplete
+		$("#stylesQuery").autocomplete({
+			minLength : 1,
+			delay : 500,
+			//define callback to format results
+			source : function(request, response) {
+				$.getJSON("/dancemanage/admin/teacher/getStyles",request,function(result) {
+					response($.map(result,function(item) {
+						return {
+							// following property gets displayed in drop down
+							label : item.name,
+							// following property gets entered in the textbox
+							value : item.name,
+							sid: item.sid
+						};
+					}));
 				});
+			},
 
-				$("#coursesQuery")
-						.autocomplete(
-								{
-									minLength : 1,
-									delay : 500,
-									source : function(request, response) {
-										$
-												.getJSON(
-														"/dancemanage/admin/teacher/getCourses",
-														request,
-														function(result) {
-															response($
-																	.map(
-																			result,
-																			function(
-																					item) {
-																				return {
-																					label : item.name,
-																					value : item.name,
-																					cid: item.cid
-																				};
-																			}));
-														});
-									},
+			//define select handler
+			select : function(event, ui) {
+				if (ui.item) {
+					event.preventDefault();
+					var input = $("#tempStyles");
+					var inputName = $("#tempStyleNames");
+					var tempStyles = input.val();
+					var itemId = ui.item.sid;
+					if(tempStyles.indexOf(itemId) == -1){ //neues Element
+						$("#duplicateStyle").hide();
+						$("#selectedStyles").append("<span class='styleTag'>"
+										+ ui.item.label
+										+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i><span style='display:none;'>" + ui.item.label + "</span></span>");
+				
+						input.val(input.val() + itemId + ";");
+						inputName.val(inputName.val() + ui.item.label + "," + itemId + ";");
+						
+					}else if(tempStyles.indexOf("-"+itemId) != -1){ //bereits einmal gelöscht
+						$("#duplicateStyle").hide();
+						$("#selectedStyles").append("<span class='styleTag'>"
+										+ ui.item.label
+										+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i><span style='display:none;'>" + ui.item.label + "</span></span>");
+						
+						input.val(function(i, v) {
+							return v.replace("-"+itemId + ";", itemId + ";");
+						}).val();
+						inputName.val(inputName.val() + ui.item.label + "," + itemId + ";");
 
-									select : function(event, ui) {
-										if (ui.item) {
-											event.preventDefault();
-											
-											var input = $("#tempCourses");
-											var inputName = $("#tempCourseNames");
-											var tempCourses = input.val();
-											var itemId = ui.item.cid;
-											if(tempCourses.indexOf(itemId) == -1){ //neues Element
-												$("#duplicateCourse").hide();
-												$("#selectedCourses")
-												.append(
-														"<span class='courseTag'>"
-																+ ui.item.label
-																+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i><span style='display:none;'>" + ui.item.label + "</span></span>");
-										
-												input.val(input.val() + itemId + ";");
-												inputName.val(inputName.val() + ui.item.label + "," + itemId + ";");
-												
-											}else if(tempCourses.indexOf("-"+itemId) != -1){ //bereits einmal gelöscht
-												$("#duplicateCourse").hide();
-												$("#selectedCourses")
-												.append(
-														"<span class='courseTag'>"
-																+ ui.item.label
-																+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i><span style='display:none;'>" + ui.item.label + "</span></span>");
-												
-												input.val(function(i, v) {
-													return v.replace("-"+itemId + ";", itemId + ";");
-												}).val();
-												inputName.val(inputName.val() + ui.item.label + "," + itemId + ";");
+					}else{ //bereits vorhanden
+						$("#duplicateStyle").show();
+					}	
+	
+					var defValue = $("#stylesQuery").prop('defaultValue');
+					$("#stylesQuery").val(defValue);
+					$("#stylesQuery").blur();
+					return false;
+				}
+			}
+		});
+	});
+	$(document).ready(function() {
+		$("#showCourses").on("click", "i", function() {
+			$("#duplicateCourse").hide();
+			var id = $(this).attr("id");
+			var courseName = $(this).siblings("span").text();
+			$(this).parent().remove();
+			$("#tempCourses").val(function(i, v) {
+				return v.replace(id + ";", "-" + id + ";");
+			}).val();
+			$("#tempCourseNames").val(function(i, v) {
+				return v.replace(courseName + ","+id+";", "");
+			}).val();
+		});
 
-											}else{ //bereits vorhanden
-												$("#duplicateCourse").show();
-											}
+		$("#coursesQuery").autocomplete({
+			minLength : 1,
+			delay : 500,
+			source : function(request, response) {
+				$.getJSON("/dancemanage/admin/teacher/getCourses",request,function(result) {
+					response($.map(result,function(item) {
+						return {
+							label : item.name,
+							value : item.name,
+							cid: item.cid
+						};
+					}));
+				});
+			},
 
-											
-			
-											var defValue = $("#coursesQuery").prop('defaultValue');
-											$("#coursesQuery").val(defValue);
-											$("#coursesQuery").blur();
-											return false;
-										}
-									}
-								});
-			});
+			select : function(event, ui) {
+				if (ui.item) {
+					event.preventDefault();
+					
+					var input = $("#tempCourses");
+					var inputName = $("#tempCourseNames");
+					var tempCourses = input.val();
+					var itemId = ui.item.cid;
+					if(tempCourses.indexOf(itemId) == -1){ //neues Element
+						$("#duplicateCourse").hide();
+						$("#selectedCourses").append("<span class='courseTag'>"
+										+ ui.item.label
+										+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i><span style='display:none;'>" + ui.item.label + "</span></span>");
+				
+						input.val(input.val() + itemId + ";");
+						inputName.val(inputName.val() + ui.item.label + "," + itemId + ";");
+						
+					}else if(tempCourses.indexOf("-"+itemId) != -1){ //bereits einmal gelöscht
+						$("#duplicateCourse").hide();
+						$("#selectedCourses").append("<span class='courseTag'>"
+										+ ui.item.label
+										+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i><span style='display:none;'>" + ui.item.label + "</span></span>");
+						
+						input.val(function(i, v) {
+							return v.replace("-"+itemId + ";", itemId + ";");
+						}).val();
+						inputName.val(inputName.val() + ui.item.label + "," + itemId + ";");
+	
+					}else{ //bereits vorhanden
+						$("#duplicateCourse").show();
+					}
+
+					var defValue = $("#coursesQuery").prop('defaultValue');
+					$("#coursesQuery").val(defValue);
+					$("#coursesQuery").blur();
+					return false;
+				}
+			}
+		});
+	});
 </script>

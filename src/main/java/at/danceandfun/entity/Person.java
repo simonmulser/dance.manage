@@ -17,14 +17,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.joda.time.LocalDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -75,12 +72,6 @@ public abstract class Person extends EntityBase implements UserDetails {
 
     @Column(name = "PASSWORD")
     private String password;
-
-    @Column(name = "BIRTHDAY")
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
-    @NotNull
-    @Past
-    private LocalDate birthday;
 
     @Column(name = "ENABLED")
     private boolean enabled;
@@ -143,14 +134,6 @@ public abstract class Person extends EntityBase implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public LocalDate getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(LocalDate birthday) {
-        this.birthday = birthday;
     }
 
     public void setEnabled(boolean enabled) {

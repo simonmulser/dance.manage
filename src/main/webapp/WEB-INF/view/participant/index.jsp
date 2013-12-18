@@ -107,12 +107,12 @@
 					<thead />
 					<dmtags:personInformation />
 					<tr>
-						<td><spring:message code="label.emergencyNumber" /></td>
-						<td>${user.emergencyNumber}</td>
+						<td><spring:message code="label.contactPerson" /></td>
+						<td>${user.parent.firstname}&nbsp;${user.parent.lastname}</td>
 					</tr>
 					<tr>
-						<td><spring:message code="label.contactPerson" /></td>
-						<td>${user.contactPerson}</td>
+						<td><spring:message code="label.emergencyNumber" /></td>
+						<td>${user.parent.telephone}</td>
 					</tr>
 
 					<dmtags:addressInformation />
