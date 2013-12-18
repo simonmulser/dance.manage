@@ -99,6 +99,8 @@ public class SatValidator {
         validatedMap.put(2, validatedCourseList2);
         validatedMap.put(3, validatedCourseList3);
 
+        // validatedMap = validatedBalancedAmountOfSpectators(validatedMap);
+
         return validatedMap;
     }
 
@@ -234,6 +236,56 @@ public class SatValidator {
         }
 
         return validatedCourseList;
+    }
+
+    /**
+     * @summary This method validates the restriction for a balanced amount of
+     *          spectators in every performance. Every course is inspected and
+     *          the boolean for the specific restriction is set to 'true' if the
+     *          constraint is violated
+     * @param validatedMap
+     *            Gets a map of 3 lists of ValidatedCourses as an input. This
+     *            class contains a course and booleans for the violation of
+     *            restrictions
+     * @return map containing 3 lists of ValidatedCourses with the updated
+     *         booleans of advancedAtEndRestriction
+     */
+    private Map<Integer, List<ValidatedCourse>> validatedBalancedAmountOfSpectators(
+            Map<Integer, List<ValidatedCourse>> validatedMap) {
+        List<Integer> amountSpectatorList = new ArrayList<Integer>();
+        boolean isBalanced = true;
+
+        for (int i = 1; i <= 3; i++) {
+            List<ValidatedCourse> validatedCourseList = validatedMap.get(i);
+            int spectatorAmount = 0;
+
+            for (ValidatedCourse currentCourse : validatedCourseList) {
+                spectatorAmount += currentCourse.getCourse()
+                        .getEstimatedSpectators().getValue();
+            }
+
+            amountSpectatorList.add(spectatorAmount);
+        }
+
+        Collections.sort(amountSpectatorList);
+
+        if (Math.abs(amountSpectatorList.get(0)
+                - amountSpectatorList.get(amountSpectatorList.size() - 1)) > 5) {
+            isBalanced = false;
+        }
+
+        if (!isBalanced) {
+            for (int i = 1; i <= 3; i++) {
+                List<ValidatedCourse> validatedCourseList = validatedMap.get(i);
+
+                for (ValidatedCourse currentCourse : validatedCourseList) {
+                    currentCourse.setBalancedAmountOfSpectators(true);
+                }
+                validatedMap.put(i, validatedCourseList);
+            }
+        }
+
+        return validatedMap;
     }
 
     public Boolean getViolationOfRestriktions() {

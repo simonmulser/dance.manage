@@ -66,7 +66,7 @@ table th,table td {
 					</ul>
 
 					<div class="tab-content">
-						<div class="tab-pane active" id="hall1">
+						<div class="tab-pane active" id="hall1" icon="icon-group">
 							<table class="table table-striped table-bordered">
 								<thead>
 									<tr>
@@ -82,7 +82,7 @@ table th,table td {
 											class="inline-tooltip icon icon-coffee"></i></th>
 										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.advancedAtEnd' />"
-											class="inline-tooltip icon icon-group"></i></th>
+											class="inline-tooltip icon icon-star"></i></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -137,7 +137,7 @@ table th,table td {
 							</table>
 						</div>
 
-						<div class="tab-pane" id="hall2">
+						<div class="tab-pane" id="hall2" icon="icon-group>
 							<table class="table table-striped table-bordered">
 								<thead>
 									<tr>
@@ -153,7 +153,7 @@ table th,table td {
 											class="inline-tooltip icon icon-coffee"></i></th>
 										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.advancedAtEnd' />"
-											class="inline-tooltip icon icon-group"></i></th>
+											class="inline-tooltip icon icon-star"></i></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -209,7 +209,7 @@ table th,table td {
 						</div>
 
 						<div class="tab-pane" id="hall3">
-							<table class="table table-striped table-bordered">
+							<table class="table table-striped table-bordered" icon="icon-group>
 								<thead>
 									<tr>
 										<th style="width: 60%"><spring:message
@@ -224,7 +224,7 @@ table th,table td {
 											class="inline-tooltip icon icon-coffee"></i></th>
 										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.advancedAtEnd' />"
-											class="inline-tooltip icon icon-group"></i></th>
+											class="inline-tooltip icon icon-star"></i></th>
 									</tr>
 								</thead>
 								<tbody>

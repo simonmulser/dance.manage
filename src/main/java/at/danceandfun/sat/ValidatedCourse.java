@@ -11,6 +11,7 @@ public class ValidatedCourse {
     private Boolean balletRestriction;
     private Boolean twoBreaksRestriction;
     private Boolean advancedAtEndRestriction;
+    private Boolean balancedAmountOfSpectators;
 
     public ValidatedCourse(Course course) {
         this.course = course;
@@ -49,6 +50,14 @@ public class ValidatedCourse {
 
     public void setAdvancedAtEndRestriction(Boolean advancedAtEndRestriction) {
         this.advancedAtEndRestriction = advancedAtEndRestriction;
+    }
+
+    public Boolean getBalancedAmountOfSpectators() {
+        return balancedAmountOfSpectators;
+    }
+
+    public void setBalancedAmountOfSpectators(Boolean balancedAmountOfSpectators) {
+        this.balancedAmountOfSpectators = balancedAmountOfSpectators;
     }
 
 }

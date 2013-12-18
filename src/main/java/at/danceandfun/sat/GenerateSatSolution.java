@@ -544,15 +544,12 @@ public class GenerateSatSolution {
             }
         }
 
-        int meanAmount = (amount1 + amount2 + amount3) / 3;
+        double meanAmount = (amount1 + amount2 + amount3) / 3;
         if (Math.abs(amount1 - meanAmount) > 3
                 || Math.abs(amount2 - meanAmount) > 3
                 || Math.abs(amount3 - meanAmount) > 3) {
             throw new SatException("Amount of spectors is not balanced");
         }
-
-        System.out.println("ZUSCHAUERZAHLEN: " + amount1 + " " + amount2 + " "
-                + amount3);
     }
 
     /**
