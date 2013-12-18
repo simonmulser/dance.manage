@@ -13,17 +13,20 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.hibernate.annotations.Type;
+import org.joda.time.LocalDate;
 import org.springframework.security.core.GrantedAuthority;
 
 import at.danceandfun.role.RoleParticipant;
-import at.danceandfun.util.PatternConstants;
 
 @Entity
 @Table(name = "PARTICIPANT")
@@ -35,20 +38,30 @@ public class Participant extends Person {
      */
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "EMERGENCYNUMBER")
-    private String emergencyNumber;
+    /*
+     * @Column(name = "EMERGENCYNUMBER") private String emergencyNumber;
+     * 
+     * @Column(name = "CONTACTPERSON")
+     * 
+     * @Pattern(regexp = PatternConstants.CHARACTER_PATTERN_CONTACT, message =
+     * "{pattern.contactperson}") private String contactPerson;
+     */
 
-    @Column(name = "CONTACTPERSON")
-    @Pattern(regexp = PatternConstants.CHARACTER_PATTERN_CONTACT, message = "{pattern.contactperson}")
-    private String contactPerson;
+    @ManyToOne(cascade = { CascadeType.ALL })
+    @JoinColumn(name = "PARENT_ID")
+    private Parent parent;
+
+    @Column(name = "BIRTHDAY")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+    @NotNull
+    @Past
+    private LocalDate birthday;
 
     @OneToMany(mappedBy = "key.participant", fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
     private List<CourseParticipant> courseParticipants = new ArrayList<CourseParticipant>();
 
     @OneToMany(mappedBy = "key.participant", fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
     private List<Absence> absences = new ArrayList<Absence>();
-
-    // TODO NiceToHave mapping with performance for ticket selling
 
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(name = "PARTICIPANT_SIBLING", joinColumns = { @JoinColumn(name = "P_ID") }, inverseJoinColumns = { @JoinColumn(name = "P_ID_REVERSE") })
@@ -72,20 +85,32 @@ public class Participant extends Person {
     public Participant() {
     }
 
-    public String getEmergencyNumber() {
-        return emergencyNumber;
+    /*
+     * public String getEmergencyNumber() { return emergencyNumber; }
+     * 
+     * public void setEmergencyNumber(String emergencyNumber) {
+     * this.emergencyNumber = emergencyNumber; }
+     * 
+     * public String getContactPerson() { return contactPerson; }
+     * 
+     * public void setContactPerson(String contactPerson) { this.contactPerson =
+     * contactPerson; }
+     */
+
+    public LocalDate getBirthday() {
+        return birthday;
     }
 
-    public void setEmergencyNumber(String emergencyNumber) {
-        this.emergencyNumber = emergencyNumber;
+    public Parent getParent() {
+        return parent;
     }
 
-    public String getContactPerson() {
-        return contactPerson;
+    public void setParent(Parent parent) {
+        this.parent = parent;
     }
 
-    public void setContactPerson(String contactPerson) {
-        this.contactPerson = contactPerson;
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
     }
 
     @JsonIgnore

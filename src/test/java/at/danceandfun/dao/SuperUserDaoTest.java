@@ -2,7 +2,6 @@ package at.danceandfun.dao;
 
 import static org.junit.Assert.fail;
 
-import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,6 @@ public class SuperUserDaoTest {
     public static SuperUser getValidSuperUser() {
         SuperUser superUser = new SuperUser();
         superUser.setAddress(AddressDaoTest.getValidAddress());
-        superUser.setBirthday(new LocalDate().minusYears(10));
         superUser.setFirstname("first");
         superUser.setLastname("last");
         superUser.setTelephone("123456789");

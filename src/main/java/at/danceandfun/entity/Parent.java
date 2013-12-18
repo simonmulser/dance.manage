@@ -5,9 +5,11 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import at.danceandfun.role.RoleParent;
@@ -22,6 +24,9 @@ public class Parent extends Person {
      */
     private static final long serialVersionUID = 1L;
 
+    @OneToMany(mappedBy = "parent")
+    private List<Participant> children = new ArrayList<Participant>();
+
     public Parent() {
     }
 
@@ -30,6 +35,15 @@ public class Parent extends Person {
         List<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
         auth.add(new RoleParent());
         return auth;
+    }
+
+    @JsonIgnore
+    public List<Participant> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Participant> children) {
+        this.children = children;
     }
 
     @Override

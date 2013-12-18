@@ -23,10 +23,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import at.danceandfun.entity.Course;
 import at.danceandfun.entity.CourseParticipant;
 import at.danceandfun.entity.CourseParticipantID;
+import at.danceandfun.entity.Parent;
 import at.danceandfun.entity.Participant;
 import at.danceandfun.service.AddressManager;
 import at.danceandfun.service.CourseManager;
 import at.danceandfun.service.CourseParticipantManager;
+import at.danceandfun.service.ParentManager;
 import at.danceandfun.service.ParticipantManager;
 
 @Controller
@@ -46,6 +48,8 @@ public class ParticipantController {
     private CourseManager courseManager;
     @Autowired
     private CourseParticipantManager courseParticipantManager;
+    @Autowired
+    private ParentManager parentManager;
 
     private Participant participant;
 
@@ -87,6 +91,18 @@ public class ParticipantController {
 
             if (participant.getAddress().getAid() == null) {
                 addressManager.update(participant.getAddress());
+            }
+
+            if (!(participant.getParent().getPid() == null)) {
+                logger.debug("Parent neu setzen mit pid: "
+                        + participant.getParent().getPid());
+                Parent newParent = parentManager.get(participant.getParent()
+                        .getPid());
+                participant.setParent(newParent);
+            } else {
+                logger.debug("Parent ist null: "
+                        + participant.getParent().getPid());
+                participant.setParent(null);
             }
 
             if (participant.getPid() == null) {
@@ -216,6 +232,14 @@ public class ParticipantController {
         participantManager.merge(participant);
         participant = new Participant();
         return "redirect:/admin/participant";
+    }
+
+    @RequestMapping(value = "/getParents", method = RequestMethod.GET)
+    public @ResponseBody
+    List<Parent> getParents(@RequestParam("term") String query) {
+        logger.debug("Entered :" + query);
+
+        return parentManager.searchForParents(participant, query);
     }
 
     @RequestMapping(value = "/getSiblings", method = RequestMethod.GET)

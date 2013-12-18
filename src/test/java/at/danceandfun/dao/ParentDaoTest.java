@@ -2,7 +2,6 @@ package at.danceandfun.dao;
 
 import static org.junit.Assert.fail;
 
-import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,6 @@ public class ParentDaoTest {
     public static Parent getValidParent() {
         Parent parent = new Parent();
         parent.setAddress(AddressDaoTest.getValidAddress());
-        parent.setBirthday(new LocalDate().minusYears(10));
         parent.setFirstname("first");
         parent.setLastname("last");
         parent.setTelephone("123456789");
