@@ -41,18 +41,6 @@
 					class="icon-bar"></span> <span class="icon-bar"></span>
 				</a> <a class="brand" href="#"> dance.manage </a>
 
-				<div class="nav-collapse">
-					<ul class="nav pull-right">
-
-						<li class=""><a href="#" class=""> <spring:message
-									code="login.noaccountquestion" />
-						</a></li>
-
-					</ul>
-
-				</div>
-				<!--/.nav-collapse -->
-
 			</div>
 			<!-- /container -->
 
@@ -109,12 +97,13 @@
 					<span class="login-checkbox"> <input id="Field" name="Field"
 						type="checkbox" class="field login-checkbox" value="First Choice"
 						tabindex="4" /> <label class="choice" for="Field"><spring:message
-								code="login.keepsignedin" /></label>
+								code="login.keepsignedin" /></label><br /> <a href="#"><spring:message code="login.reset" /></a>
 					</span>
-
+				
 					<button class="button btn btn-success btn-large">
 						<spring:message code="login.signin" />
 					</button>
+					
 
 				</div>
 				<!-- .actions -->
@@ -130,10 +119,7 @@
 
 
 
-	<div class="login-extra">
-		<a href="#"><spring:message code="login.reset" /></a>
-	</div>
-	<!-- /login-extra -->
+	
 
 
 	<script src="js/jquery-1.7.2.js"></script>

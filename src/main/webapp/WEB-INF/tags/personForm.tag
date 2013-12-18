@@ -7,6 +7,7 @@
 
 <form:input path="pid" type="hidden" />
 <form:input path="enabled" type="hidden" />
+<form:input path="password" type="hidden" />
 <form:input path="address.aid" type="hidden" />
 
 <spring:bind path="firstname">
@@ -54,14 +55,3 @@
 	</div>
 	<form:errors path="telephone" cssClass="error" />
 </div>
-
-<div class="control-group">
-	<form:label path="birthday" class="control-label">
-		<spring:message code="label.birthday" />*
-                </form:label>
-	<div class="span6">
-		<form:input path="birthday" id="datepicker" />
-	</div>
-	<form:errors path="birthday" cssClass="error" />
-</div>
-

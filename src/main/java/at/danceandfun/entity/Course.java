@@ -242,6 +242,7 @@ public class Course extends EntityBase {
         this.level = level.getValue();
     }
 
+    @JsonIgnore
     public List<Rating> getRatings() {
         return ratings;
     }
@@ -341,6 +342,7 @@ public class Course extends EntityBase {
         this.level = level;
     }
 
+    @JsonIgnore
     public List<Appointment> getAppointments() {
         return appointments;
     }

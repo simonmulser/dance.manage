@@ -281,118 +281,94 @@
 		}
 	});
 	
-	$(document)
-			.ready(
-					function() {
-						$("#showStyles").on("click", "i", function() { //Stil löschen
-							$(this).parent().remove();
-							$("#styleSid").val(null);
-						});
+	$(document).ready(function() {
+		$("#showStyles").on("click", "i", function() { //Stil löschen
+			$(this).parent().remove();
+			$("#styleSid").val(null);
+		});
 
-						$("#stylesQuery")
-								.autocomplete(
-										{
-											minLength : 1,
-											delay : 500,
-											//define callback to format results
-											source : function(request, response) {
-												$
-														.getJSON(
-																"/dancemanage/admin/course/getStyles",
-																request,
-																function(result) {
-																	response($
-																			.map(
-																					result,
-																					function(
-																							item) {
-																						return {
-																							label : item.name,
-																							value : item.name,
-																							sid: item.sid
-																						};
-																					}));
-																});
-											},
+		$("#stylesQuery").autocomplete({
+			minLength : 1,
+			delay : 500,
+			//define callback to format results
+			source : function(request, response) {
+				$.getJSON("/dancemanage/admin/course/getStyles",request,function(result) {
+					response($.map(result,function(item) {
+						return {
+							label : item.name,
+							value : item.name,
+							sid: item.sid
+						};
+					}));
+				});
+			},
 
-											select : function(event, ui) {
-												if (ui.item) {
-													event.preventDefault();
-													$("#showStyles").empty();
-													$("#styleName").empty();
-													$("#showStyles").append("<span class='styleTag'>"
-																			+ ui.item.label
-																			+ "&nbsp;<i class='icon icon-remove'></i></span>");
-													$("#styleName").val(ui.item.label);
-													$("#styleSid").val(ui.item.sid);
-													
-													var defValue = $("#stylesQuery").prop('defaultValue');
-													$("#stylesQuery").val(defValue);
-													$("#stylesQuery").blur();
-													
-													return false;
-												}
-											}
-										});
-					});
-	$(document)
-			.ready(
-					function() {
-						$("#showTeacher").on("click", "i", function() { //Lehrer löschen
-							$(this).parent().remove();
-							$("#teacherPid").val(null);
-						});
+			select : function(event, ui) {
+				if (ui.item) {
+					event.preventDefault();
+					$("#showStyles").empty();
+					$("#styleName").empty();
+					$("#showStyles").append("<span class='styleTag'>"
+											+ ui.item.label
+											+ "&nbsp;<i class='icon icon-remove'></i></span>");
+					$("#styleName").val(ui.item.label);
+					$("#styleSid").val(ui.item.sid);
+					
+					var defValue = $("#stylesQuery").prop('defaultValue');
+					$("#stylesQuery").val(defValue);
+					$("#stylesQuery").blur();
+					
+					return false;
+				}
+			}
+		});
+	});
+	$(document).ready(function() {
+		$("#showTeacher").on("click", "i", function() { //Lehrer löschen
+			$(this).parent().remove();
+			$("#teacherPid").val(null);
+		});
 
-						$("#teacherQuery")
-								.autocomplete(
-										{
-											minLength : 1,
-											delay : 500,
-											source : function(request, response) {
-												$
-														.getJSON(
-																"/dancemanage/admin/course/getTeachers",
-																request,
-																function(result) {
-																	response($
-																			.map(
-																					result,
-																					function(
-																							item) {
-																						return {
-																							label : item.firstname
-																									+ " "
-																									+ item.lastname,
-																							value : item.firstname
-																									+ " "
-																									+ item.lastname,
-																							pid: item.pid,
-																							first: item.firstname,
-																							last: item.lastname
-																						};
-																					}));
-																});
-											},
+		$("#teacherQuery").autocomplete({
+			minLength : 1,
+			delay : 500,
+			source : function(request, response) {
+				$.getJSON("/dancemanage/admin/course/getTeachers",request,function(result) {
+					response($.map(result,function(item) {
+						return {
+							label : item.firstname
+									+ " "
+									+ item.lastname,
+							value : item.firstname
+									+ " "
+									+ item.lastname,
+							pid: item.pid,
+							first: item.firstname,
+							last: item.lastname
+						};
+					}));
+				});
+			},
 
-											select : function(event, ui) {
-												if (ui.item) {
-													event.preventDefault();
-													$("#showTeacher").empty();
-													$("#showTeacher")
-															.append(
-																	"<span class='teacherTag'>"
-																			+ ui.item.label
-																			+ "&nbsp;<i class='icon icon-remove'></i></span>");
-													$("#teacherPid").val(ui.item.pid);
-													$("#teacherFirst").val(ui.item.first);
-													$("#teacherLast").val(ui.item.last);
-													
-													var defValue = $("#teacherQuery").prop('defaultValue');
-													$("#teacherQuery").val(defValue);
-													$("#teacherQuery").blur();
-													return false;
-												}
-											}
-										});
-					});
+			select : function(event, ui) {
+				if (ui.item) {
+					event.preventDefault();
+					$("#showTeacher").empty();
+					$("#showTeacher")
+							.append(
+									"<span class='teacherTag'>"
+											+ ui.item.label
+											+ "&nbsp;<i class='icon icon-remove'></i></span>");
+					$("#teacherPid").val(ui.item.pid);
+					$("#teacherFirst").val(ui.item.first);
+					$("#teacherLast").val(ui.item.last);
+					
+					var defValue = $("#teacherQuery").prop('defaultValue');
+					$("#teacherQuery").val(defValue);
+					$("#teacherQuery").blur();
+					return false;
+				}
+			}
+		});
+	});
 </script>
