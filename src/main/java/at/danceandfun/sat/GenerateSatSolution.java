@@ -35,6 +35,7 @@ public class GenerateSatSolution {
     private List<Participant> participantList;
     private List<int[]> clauses;
     private int dummies;
+    private int movedCourses;
 
     /**
      * @precondition An amount of minimal 3 courses as input.
@@ -44,16 +45,21 @@ public class GenerateSatSolution {
      * @throws IOException
      */
     public Map<Integer, Performance> generatePerformance(List<Course> courses,
-            List<Participant> participantList) throws IOException, SatException {
+            List<Participant> participantList, boolean balletRestriction,
+            boolean twoBreaksRestriction, boolean advancedAtEndRestriction,
+            boolean balancedAmountOfSpectators) throws IOException,
+            SatException {
         newOrderOfCourses = new ArrayList<Course>();
         performance = new Performance();
         this.participantList = participantList;
         clauses = new ArrayList<int[]>();
         Map<Integer, Performance> plan;
         int[] solution;
-        int movedCourses;
+
         dummyCourse = generateDummyCourse();
         dummies = 0;
+
+        movedCourses = 0;
 
         List<Course> helpList = new ArrayList<Course>();
 
@@ -66,7 +72,7 @@ public class GenerateSatSolution {
                 newOrderOfCourses.add(c);
                 if (c.getAmountPerformances() == 2) {
                     newOrderOfCourses.add(r.nextInt(newOrderOfCourses.size()),
-                            c);
+                            new Course(c));
                 }
             }
         }
@@ -89,12 +95,8 @@ public class GenerateSatSolution {
         numberOfSlots = newOrderOfCourses.size() / numberOfPlays;
 
         addDummyClauses(newOrderOfCourses);
-
-        movedCourses = addAdvancedAtTheEnd(newOrderOfCourses, numberOfSlots);
-        addNotTwoOfAKind(newOrderOfCourses, numberOfCourses, numberOfSlots,
-                numberOfPlays, movedCourses);
-        add2SlotBrake(newOrderOfCourses, participantList, numberOfCourses,
-                numberOfSlots, numberOfPlays);
+        addCheckedRestrictions(balletRestriction, twoBreaksRestriction,
+                advancedAtEndRestriction, balancedAmountOfSpectators);
         addBasicRestrictions(newOrderOfCourses, numberOfCourses, numberOfSlots,
                 numberOfPlays);
 
@@ -102,6 +104,42 @@ public class GenerateSatSolution {
         plan = backMapping(solution, newOrderOfCourses);
 
         return plan;
+    }
+
+    /**
+     * @summary This method only adds the checked restrictions from the
+     *          PerformanceView to the list of clauses
+     * @param balletRestriction
+     *            boolean if the restriction for 'nonconsecutive ballets' should
+     *            be considered
+     * @param twoBreaksRestriction
+     *            boolean if the restriction for 'two breaks for students who
+     *            perform in multiple courses' should be considered
+     * @param advancedAtEndRestriction
+     *            boolean if the restriction for 'advanced courses at the end'
+     *            should be considered
+     * @param balancedAmountOfSpectators
+     *            boolean if the restriction for 'balanced amount of spectators'
+     *            should be considered
+     * @throws SatException
+     */
+    private void addCheckedRestrictions(boolean balletRestriction,
+            boolean twoBreaksRestriction, boolean advancedAtEndRestriction,
+            boolean balancedAmountOfSpectators) throws SatException {
+        if (balancedAmountOfSpectators) {
+            arrangeAmountOfSpectators(newOrderOfCourses);
+        }
+        if (advancedAtEndRestriction) {
+            addAdvancedAtTheEnd(newOrderOfCourses, numberOfSlots);
+        }
+        if (balletRestriction) {
+            addNotTwoOfAKind(newOrderOfCourses, numberOfCourses, numberOfSlots,
+                    numberOfPlays, movedCourses);
+        }
+        if (twoBreaksRestriction) {
+            add2SlotBrake(newOrderOfCourses, participantList, numberOfCourses,
+                    numberOfSlots, numberOfPlays);
+        }
     }
 
     /**
@@ -347,9 +385,8 @@ public class GenerateSatSolution {
      * @param courses
      * @param t
      */
-    private int addAdvancedAtTheEnd(List<Course> courses, int t) {
+    private void addAdvancedAtTheEnd(List<Course> courses, int t) {
         Map<String, int[]> usedCourses = new HashMap<String, int[]>();
-        int movedCourses = 0;
 
         /*
          * positions: int 1 = in welche aufführung der jeweilige kurs gemappt
@@ -370,16 +407,15 @@ public class GenerateSatSolution {
                     usedCourses.put(tempCourse.getName(), positions);
 
                 } else {
-                    int[] temp = { buildMappingVariable(1, t - movedCourses,
-                            i + 1) };
+                    int[] temp = { buildMappingVariable(1, t
+                            - this.movedCourses, i + 1) };
                     clauses.add(temp);
-                    int[] positions = { 1, movedCourses };
+                    int[] positions = { 1, this.movedCourses };
                     usedCourses.put(tempCourse.getName(), positions);
-                    movedCourses++;
+                    this.movedCourses++;
                 }
             }
         }
-        return movedCourses;
 
     }
 
@@ -520,6 +556,34 @@ public class GenerateSatSolution {
         // dummyCourse.setWeekday(WeekDay.MONDAY);
 
         return dummyCourse;
+    }
+
+    private void arrangeAmountOfSpectators(List<Course> courses)
+            throws SatException {
+        int amount1 = 0;
+        int amount2 = 0;
+        int amount3 = 0;
+
+        for (int i = 0; i < this.numberOfSlots; i++) {
+            amount1 += courses.get(i).getEstimatedSpectators().getValue() + 1;
+        }
+        for (int i = this.numberOfSlots; i < 2 * this.numberOfSlots; i++) {
+            if (!courses.get(i).isDummyCourse()) {
+                amount2 += courses.get(i).getEstimatedSpectators().getValue() + 1;
+            }
+        }
+        for (int i = 2 * this.numberOfSlots; i < 3 * this.numberOfSlots; i++) {
+            if (!courses.get(i).isDummyCourse()) {
+                amount3 += courses.get(i).getEstimatedSpectators().getValue() + 1;
+            }
+        }
+
+        double meanAmount = (amount1 + amount2 + amount3) / 3;
+        if (Math.abs(amount1 - meanAmount) > 3
+                || Math.abs(amount2 - meanAmount) > 3
+                || Math.abs(amount3 - meanAmount) > 3) {
+            throw new SatException("Amount of spectors is not balanced");
+        }
     }
 
     /**

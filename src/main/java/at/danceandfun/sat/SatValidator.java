@@ -2,7 +2,6 @@ package at.danceandfun.sat;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,52 +21,20 @@ import at.danceandfun.entity.Performance;
 
 public class SatValidator {
 
-    private Boolean violationOfRestriktions;
     private Map<Integer, Performance> performancePlan;
-    private Map<Integer, List<ValidatedCourse>> validatedMap;
     private List<Participant> participantList;
     private List<Course> courseList1;
     private List<Course> courseList2;
     private List<Course> courseList3;
-    private List<ValidatedCourse> validatedCourseList1;
-    private List<ValidatedCourse> validatedCourseList2;
-    private List<ValidatedCourse> validatedCourseList3;
 
     public SatValidator(Map<Integer, Performance> performancePlan,
             List<Participant> participantList) {
-        this.violationOfRestriktions = false;
         this.performancePlan = performancePlan;
         this.participantList = participantList;
 
         this.courseList1 = performancePlan.get(1).getCourses();
         this.courseList2 = performancePlan.get(2).getCourses();
         this.courseList3 = performancePlan.get(3).getCourses();
-
-        this.validatedCourseList1 = new ArrayList<ValidatedCourse>();
-        this.validatedCourseList2 = new ArrayList<ValidatedCourse>();
-        this.validatedCourseList3 = new ArrayList<ValidatedCourse>();
-
-        this.validatedMap = new HashMap<Integer, List<ValidatedCourse>>();
-
-        fillValidatedCourseLists();
-
-    }
-
-    /**
-     * @summary Every list of courses is mirrored into a list of
-     *          ValidatedCourses. The advantage of this list is the option to
-     *          set booleans for restrictions for every course.
-     */
-    private void fillValidatedCourseLists() {
-        for (Course currentCourse : this.courseList1) {
-            this.validatedCourseList1.add(new ValidatedCourse(currentCourse));
-        }
-        for (Course currentCourse : this.courseList2) {
-            this.validatedCourseList2.add(new ValidatedCourse(currentCourse));
-        }
-        for (Course currentCourse : this.courseList3) {
-            this.validatedCourseList3.add(new ValidatedCourse(currentCourse));
-        }
     }
 
     /**
@@ -76,30 +43,32 @@ public class SatValidator {
      * @return 3 lists of ValidatedCourses. Each for one performance. Booleans
      *         for the restrictions are stored for every course.
      */
-    public Map<Integer, List<ValidatedCourse>> validatePerformancePlan() {
+    public Map<Integer, Performance> validatePerformancePlan() {
         // Restriction - Not two of a kind
-        validatedCourseList1 = validateNotTwoOfAKindRestriktion(validatedCourseList1);
-        validatedCourseList2 = validateNotTwoOfAKindRestriktion(validatedCourseList2);
-        validatedCourseList3 = validateNotTwoOfAKindRestriktion(validatedCourseList3);
+        this.courseList1 = validateNotTwoOfAKindRestriktion(this.courseList1);
+        this.courseList2 = validateNotTwoOfAKindRestriktion(this.courseList2);
+        this.courseList3 = validateNotTwoOfAKindRestriktion(this.courseList3);
 
         // Restriction - 2 slots brake
-        validatedCourseList1 = validate2SlotBrakeRestriktion(
-                validatedCourseList1, participantList);
-        validatedCourseList2 = validate2SlotBrakeRestriktion(
-                validatedCourseList2, participantList);
-        validatedCourseList3 = validate2SlotBrakeRestriktion(
-                validatedCourseList3, participantList);
+        this.courseList1 = validate2SlotBrakeRestriktion(this.courseList1,
+                participantList);
+        this.courseList2 = validate2SlotBrakeRestriktion(this.courseList2,
+                participantList);
+        this.courseList3 = validate2SlotBrakeRestriktion(this.courseList3,
+                participantList);
 
         // Restriction - Advanced at the end
-        validatedCourseList1 = validateAdvancedAtTheEndRestriktion(validatedCourseList1);
-        validatedCourseList2 = validateAdvancedAtTheEndRestriktion(validatedCourseList2);
-        validatedCourseList3 = validateAdvancedAtTheEndRestriktion(validatedCourseList3);
+        this.courseList1 = validateAdvancedAtTheEndRestriktion(this.courseList1);
+        this.courseList2 = validateAdvancedAtTheEndRestriktion(this.courseList2);
+        this.courseList3 = validateAdvancedAtTheEndRestriktion(this.courseList3);
 
-        validatedMap.put(1, validatedCourseList1);
-        validatedMap.put(2, validatedCourseList2);
-        validatedMap.put(3, validatedCourseList3);
+        performancePlan.get(1).setCourses(courseList1);
+        performancePlan.get(2).setCourses(courseList2);
+        performancePlan.get(3).setCourses(courseList3);
 
-        return validatedMap;
+        performancePlan = validatedBalancedAmountOfSpectators(performancePlan);
+
+        return performancePlan;
     }
 
     /**
@@ -114,14 +83,14 @@ public class SatValidator {
      * @return list of ValidatedCourses with the updated booleans of
      *         balletRestriction
      */
-    private List<ValidatedCourse> validateNotTwoOfAKindRestriktion(
-            List<ValidatedCourse> validatedCourseList) {
+    private List<Course> validateNotTwoOfAKindRestriktion(
+            List<Course> validatedCourseList) {
 
         int countGap = 999;
         int lastBallet = -1;
 
         for (int i = 0; i < validatedCourseList.size(); i++) {
-            Course currentCourse = validatedCourseList.get(i).getCourse();
+            Course currentCourse = validatedCourseList.get(i);
             if (currentCourse.getStyle().getName().equals("Ballett")) {
                 if (countGap == 0) {
                     if (lastBallet != -1) {
@@ -129,7 +98,7 @@ public class SatValidator {
                                 .setBalletRestriction(true);
                     }
                     validatedCourseList.get(i).setBalletRestriction(true);
-                    violationOfRestriktions = true;
+                    validatedCourseList.get(i).setViolationOfRestriktions(true);
 
                 }
                 lastBallet = i;
@@ -154,9 +123,8 @@ public class SatValidator {
      * @return list of ValidatedCourses with the updated booleans of
      *         twoBreaksRestriction
      */
-    private List<ValidatedCourse> validate2SlotBrakeRestriktion(
-            List<ValidatedCourse> validatedCourseList,
-            List<Participant> participantList) {
+    private List<Course> validate2SlotBrakeRestriktion(
+            List<Course> validatedCourseList, List<Participant> participantList) {
         List<Integer> participantIDList = new ArrayList<Integer>();
         List<Integer> courseIDList = new ArrayList<Integer>();
         Participant currentParticipant;
@@ -174,8 +142,8 @@ public class SatValidator {
             for (CourseParticipant currentCP : currentParticipant
                     .getCourseParticipants()) {
                 for (int i = 0; i < validatedCourseList.size(); i++) {
-                    if (validatedCourseList.get(i).getCourse()
-                            .equals(currentCP.getKey().getCourse())) {
+                    if (validatedCourseList.get(i).equals(
+                            currentCP.getKey().getCourse())) {
                         courseIDList.add(i);
                     }
                 }
@@ -190,7 +158,10 @@ public class SatValidator {
                                 .setTwoBreaksRestriction(true);
                         validatedCourseList.get(courseIDList.get(i + 1))
                                 .setTwoBreaksRestriction(true);
-                        violationOfRestriktions = true;
+                        validatedCourseList.get(i).setViolationOfRestriktions(
+                                true);
+                        validatedCourseList.get(courseIDList.get(i + 1))
+                                .setViolationOfRestriktions(true);
                     }
                 }
             }
@@ -211,13 +182,13 @@ public class SatValidator {
      * @return list of ValidatedCourses with the updated booleans of
      *         advancedAtEndRestriction
      */
-    private List<ValidatedCourse> validateAdvancedAtTheEndRestriktion(
-            List<ValidatedCourse> validatedCourseList) {
+    private List<Course> validateAdvancedAtTheEndRestriktion(
+            List<Course> validatedCourseList) {
         List<Integer> idList = new ArrayList<Integer>();
         int sizeOfValidatedCourseList = validatedCourseList.size();
 
         for (int i = 0; i < sizeOfValidatedCourseList; i++) {
-            if (validatedCourseList.get(i).getCourse().getAmountPerformances() == 3) {
+            if (validatedCourseList.get(i).getAmountPerformances() == 3) {
                 idList.add(i);
             }
         }
@@ -229,14 +200,66 @@ public class SatValidator {
             if (!(idList.get(i) == sizeOfValidatedCourseList - (i + 1))) {
                 validatedCourseList.get(idList.get(i))
                         .setAdvancedAtEndRestriction(true);
-                violationOfRestriktions = true;
+                validatedCourseList.get(idList.get(i))
+                        .setViolationOfRestriktions(true);
+
             }
         }
 
         return validatedCourseList;
     }
 
-    public Boolean getViolationOfRestriktions() {
-        return this.violationOfRestriktions;
+    /**
+     * @summary This method validates the restriction for a balanced amount of
+     *          spectators in every performance. Every course is inspected and
+     *          the boolean for the specific restriction is set to 'true' if the
+     *          constraint is violated
+     * @param validatedMap
+     *            Gets a map of 3 lists of ValidatedCourses as an input. This
+     *            class contains a course and booleans for the violation of
+     *            restrictions
+     * @return map containing 3 lists of ValidatedCourses with the updated
+     *         booleans of advancedAtEndRestriction
+     */
+    private Map<Integer, Performance> validatedBalancedAmountOfSpectators(
+            Map<Integer, Performance> performanceMap) {
+        List<Integer> amountSpectatorList = new ArrayList<Integer>();
+        boolean isBalanced = true;
+
+        for (int i = 1; i <= 3; i++) {
+            List<Course> validatedCourseList = performanceMap.get(i)
+                    .getCourses();
+            int spectatorAmount = 0;
+
+            for (Course currentCourse : validatedCourseList) {
+                if (!currentCourse.isDummyCourse()) {
+                    spectatorAmount += currentCourse.getEstimatedSpectators()
+                            .getValue();
+                }
+            }
+
+            amountSpectatorList.add(spectatorAmount);
+        }
+
+        Collections.sort(amountSpectatorList);
+
+        if (Math.abs(amountSpectatorList.get(0)
+                - amountSpectatorList.get(amountSpectatorList.size() - 1)) > 5) {
+            isBalanced = false;
+        }
+
+        if (!isBalanced) {
+            for (int i = 1; i <= 3; i++) {
+                List<Course> validatedCourseList = performanceMap.get(i)
+                        .getCourses();
+
+                for (Course currentCourse : validatedCourseList) {
+                    currentCourse.setBalancedAmountOfSpectators(true);
+                }
+                performanceMap.get(i).setCourses(validatedCourseList);
+            }
+        }
+
+        return performanceMap;
     }
 }
