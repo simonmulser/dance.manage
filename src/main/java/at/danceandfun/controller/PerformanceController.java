@@ -50,6 +50,7 @@ public class PerformanceController {
     private boolean twoBreaksRestriction = true;
     private boolean advancedAtEndRestriction = true;
     private boolean balancedAmountOfSpectators = true;
+    private boolean balancedAgeGroup = true;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String listPerformances(ModelMap map) {
@@ -64,6 +65,7 @@ public class PerformanceController {
         map.addAttribute("advancedAtEndRestriction", advancedAtEndRestriction);
         map.addAttribute("balancedAmountOfSpectators",
                 balancedAmountOfSpectators);
+        map.addAttribute("balancedAgeGroup", balancedAgeGroup);
 
         return "admin/performanceView";
     }
@@ -86,7 +88,7 @@ public class PerformanceController {
                 performancePlan = sat.generatePerformance(courses,
                         participantList, balletRestriction,
                         twoBreaksRestriction, advancedAtEndRestriction,
-                        balancedAmountOfSpectators);
+                        balancedAmountOfSpectators, balancedAgeGroup);
                 break;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -141,6 +143,12 @@ public class PerformanceController {
         } else {
             this.balancedAmountOfSpectators = false;
         }
+        if (request.getParameter("CheckboxBalancedAgeGroup") != null) {
+            this.balancedAgeGroup = true;
+        } else {
+            this.balancedAgeGroup = false;
+        }
+
     }
 
     public void setPerformanceManager(PerformanceManager performanceManager) {
