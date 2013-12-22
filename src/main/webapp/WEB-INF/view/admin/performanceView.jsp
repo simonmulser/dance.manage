@@ -66,7 +66,7 @@ table th,table td {
 					</ul>
 
 					<div class="tab-content">
-						<div class="tab-pane active" id="hall1" icon="icon-group">
+						<div class="tab-pane active" id="hall1">
 							<table class="table table-striped table-bordered">
 								<thead>
 									<tr>
@@ -86,10 +86,10 @@ table th,table td {
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${validatedList1}" var="validatedCourse">
+									<c:forEach items="${performanceList1}" var="validatedCourse">
 										<tr>
 											<c:choose>
-												<c:when test="${validatedCourse.course.dummyCourse}">
+												<c:when test="${validatedCourse.dummyCourse}">
 													<td>-</td>
 													<td>-</td>
 													<td>-</td>
@@ -97,8 +97,8 @@ table th,table td {
 													<td>-</td>
 												</c:when>
 												<c:otherwise>
-													<td>${validatedCourse.course.name}</td>
-													<td><spring:message code ="${validatedCourse.course.level.i18nIdentifier}" /></td>
+													<td>${validatedCourse.name}</td>
+													<td><spring:message code ="${validatedCourse.level.i18nIdentifier}" /></td>
 													<td>
 														<c:choose>
 															<c:when test="${validatedCourse.balletRestriction}">
@@ -137,7 +137,7 @@ table th,table td {
 							</table>
 						</div>
 
-						<div class="tab-pane" id="hall2" icon="icon-group>
+						<div class="tab-pane" id="hall2">
 							<table class="table table-striped table-bordered">
 								<thead>
 									<tr>
@@ -157,10 +157,10 @@ table th,table td {
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${validatedList2}" var="validatedCourse">
+									<c:forEach items="${performanceList2}" var="validatedCourse">
 										<tr>
 											<c:choose>
-												<c:when test="${validatedCourse.course.dummyCourse}">
+												<c:when test="${validatedCourse.dummyCourse}">
 													<td>-</td>
 													<td>-</td>
 													<td>-</td>
@@ -168,8 +168,8 @@ table th,table td {
 													<td>-</td>
 												</c:when>
 												<c:otherwise>
-													<td>${validatedCourse.course.name}</td>
-													<td><spring:message code ="${validatedCourse.course.level.i18nIdentifier}" /></td>
+													<td>${validatedCourse.name}</td>
+													<td><spring:message code ="${validatedCourse.level.i18nIdentifier}" /></td>
 													<td>
 														<c:choose>
 															<c:when test="${validatedCourse.balletRestriction}">
@@ -209,7 +209,7 @@ table th,table td {
 						</div>
 
 						<div class="tab-pane" id="hall3">
-							<table class="table table-striped table-bordered" icon="icon-group>
+							<table class="table table-striped table-bordered">
 								<thead>
 									<tr>
 										<th style="width: 60%"><spring:message
@@ -228,10 +228,10 @@ table th,table td {
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${validatedList3}" var="validatedCourse">
+									<c:forEach items="${performanceList3}" var="validatedCourse">
 										<tr>
 											<c:choose>
-												<c:when test="${validatedCourse.course.dummyCourse}">
+												<c:when test="${validatedCourse.dummyCourse}">
 													<td>-</td>
 													<td>-</td>
 													<td>-</td>
@@ -239,8 +239,8 @@ table th,table td {
 													<td>-</td>
 												</c:when>
 												<c:otherwise>
-													<td>${validatedCourse.course.name}</td>
-													<td><spring:message code ="${validatedCourse.course.level.i18nIdentifier}" /></td>
+													<td>${validatedCourse.name}</td>
+													<td><spring:message code ="${validatedCourse.level.i18nIdentifier}" /></td>
 													<td>
 														<c:choose>
 															<c:when test="${validatedCourse.balletRestriction}">

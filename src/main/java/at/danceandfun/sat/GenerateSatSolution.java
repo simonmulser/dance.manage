@@ -35,6 +35,7 @@ public class GenerateSatSolution {
     private List<Participant> participantList;
     private List<int[]> clauses;
     private int dummies;
+    private int movedCourses;
 
     /**
      * @precondition An amount of minimal 3 courses as input.
@@ -51,9 +52,11 @@ public class GenerateSatSolution {
         clauses = new ArrayList<int[]>();
         Map<Integer, Performance> plan;
         int[] solution;
-        int movedCourses;
+
         dummyCourse = generateDummyCourse();
         dummies = 0;
+
+        movedCourses = 0;
 
         List<Course> helpList = new ArrayList<Course>();
 
@@ -66,7 +69,7 @@ public class GenerateSatSolution {
                 newOrderOfCourses.add(c);
                 if (c.getAmountPerformances() == 2) {
                     newOrderOfCourses.add(r.nextInt(newOrderOfCourses.size()),
-                            c);
+                            new Course(c));
                 }
             }
         }
@@ -92,7 +95,7 @@ public class GenerateSatSolution {
 
         addDummyClauses(newOrderOfCourses);
 
-        movedCourses = addAdvancedAtTheEnd(newOrderOfCourses, numberOfSlots);
+        addAdvancedAtTheEnd(newOrderOfCourses, numberOfSlots);
         addNotTwoOfAKind(newOrderOfCourses, numberOfCourses, numberOfSlots,
                 numberOfPlays, movedCourses);
         add2SlotBrake(newOrderOfCourses, participantList, numberOfCourses,
@@ -349,9 +352,8 @@ public class GenerateSatSolution {
      * @param courses
      * @param t
      */
-    private int addAdvancedAtTheEnd(List<Course> courses, int t) {
+    private void addAdvancedAtTheEnd(List<Course> courses, int t) {
         Map<String, int[]> usedCourses = new HashMap<String, int[]>();
-        int movedCourses = 0;
 
         /*
          * positions: int 1 = in welche aufführung der jeweilige kurs gemappt
@@ -372,16 +374,15 @@ public class GenerateSatSolution {
                     usedCourses.put(tempCourse.getName(), positions);
 
                 } else {
-                    int[] temp = { buildMappingVariable(1, t - movedCourses,
-                            i + 1) };
+                    int[] temp = { buildMappingVariable(1, t
+                            - this.movedCourses, i + 1) };
                     clauses.add(temp);
-                    int[] positions = { 1, movedCourses };
+                    int[] positions = { 1, this.movedCourses };
                     usedCourses.put(tempCourse.getName(), positions);
-                    movedCourses++;
+                    this.movedCourses++;
                 }
             }
         }
-        return movedCourses;
 
     }
 

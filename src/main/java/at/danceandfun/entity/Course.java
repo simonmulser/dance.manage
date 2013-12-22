@@ -135,6 +135,48 @@ public class Course extends EntityBase {
     @Transient
     private boolean dummyCourse = false;
 
+    @Transient
+    private Boolean balletRestriction = false;
+
+    @Transient
+    private Boolean twoBreaksRestriction = false;
+
+    @Transient
+    private Boolean advancedAtEndRestriction = false;
+
+    @Transient
+    private Boolean balancedAmountOfSpectators = false;
+
+    public Course(Course another) {
+        this.cid = another.cid;
+        this.name = another.name;
+        this.slug = another.slug;
+        this.duration = another.duration;
+        this.semesterPrice = another.semesterPrice;
+        this.yearPrice = another.yearPrice;
+        this.weekday = another.weekday;
+        this.time = another.time;
+        this.estimatedSpectators = another.estimatedSpectators;
+        this.ageGroup = another.ageGroup;
+        this.amountPerformances = another.amountPerformances;
+        this.enabled = another.enabled;
+        this.level = another.level;
+        this.year = another.year;
+        this.ratings = another.ratings;
+        this.address = another.address;
+        this.teacher = another.teacher;
+        this.style = another.style;
+        this.performances = another.performances;
+        this.positions = another.positions;
+        this.courseParticipants = another.courseParticipants;
+        this.appointments = another.appointments;
+        this.dummyCourse = another.dummyCourse;
+        this.balletRestriction = another.balletRestriction;
+        this.twoBreaksRestriction = another.twoBreaksRestriction;
+        this.advancedAtEndRestriction = another.advancedAtEndRestriction;
+        this.balancedAmountOfSpectators = another.balancedAmountOfSpectators;
+    }
+
     public Course() {
     }
 
@@ -355,6 +397,38 @@ public class Course extends EntityBase {
 
     public void setDummyCourse(boolean dummyCourse) {
         this.dummyCourse = dummyCourse;
+    }
+
+    public Boolean getBalletRestriction() {
+        return balletRestriction;
+    }
+
+    public void setBalletRestriction(Boolean balletRestriction) {
+        this.balletRestriction = balletRestriction;
+    }
+
+    public Boolean getTwoBreaksRestriction() {
+        return twoBreaksRestriction;
+    }
+
+    public void setTwoBreaksRestriction(Boolean twoBreaksRestriction) {
+        this.twoBreaksRestriction = twoBreaksRestriction;
+    }
+
+    public Boolean getAdvancedAtEndRestriction() {
+        return advancedAtEndRestriction;
+    }
+
+    public void setAdvancedAtEndRestriction(Boolean advancedAtEndRestriction) {
+        this.advancedAtEndRestriction = advancedAtEndRestriction;
+    }
+
+    public Boolean getBalancedAmountOfSpectators() {
+        return balancedAmountOfSpectators;
+    }
+
+    public void setBalancedAmountOfSpectators(Boolean balancedAmountOfSpectators) {
+        this.balancedAmountOfSpectators = balancedAmountOfSpectators;
     }
 
     @PreUpdate
