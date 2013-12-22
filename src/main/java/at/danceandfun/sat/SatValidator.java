@@ -21,7 +21,6 @@ import at.danceandfun.entity.Performance;
 
 public class SatValidator {
 
-    private Boolean violationOfRestriktions;
     private Map<Integer, Performance> performancePlan;
     private List<Participant> participantList;
     private List<Course> courseList1;
@@ -30,7 +29,6 @@ public class SatValidator {
 
     public SatValidator(Map<Integer, Performance> performancePlan,
             List<Participant> participantList) {
-        this.violationOfRestriktions = false;
         this.performancePlan = performancePlan;
         this.participantList = participantList;
 
@@ -100,7 +98,7 @@ public class SatValidator {
                                 .setBalletRestriction(true);
                     }
                     validatedCourseList.get(i).setBalletRestriction(true);
-                    violationOfRestriktions = true;
+                    validatedCourseList.get(i).setViolationOfRestriktions(true);
 
                 }
                 lastBallet = i;
@@ -160,7 +158,10 @@ public class SatValidator {
                                 .setTwoBreaksRestriction(true);
                         validatedCourseList.get(courseIDList.get(i + 1))
                                 .setTwoBreaksRestriction(true);
-                        violationOfRestriktions = true;
+                        validatedCourseList.get(i).setViolationOfRestriktions(
+                                true);
+                        validatedCourseList.get(courseIDList.get(i + 1))
+                                .setViolationOfRestriktions(true);
                     }
                 }
             }
@@ -199,7 +200,9 @@ public class SatValidator {
             if (!(idList.get(i) == sizeOfValidatedCourseList - (i + 1))) {
                 validatedCourseList.get(idList.get(i))
                         .setAdvancedAtEndRestriction(true);
-                violationOfRestriktions = true;
+                validatedCourseList.get(idList.get(i))
+                        .setViolationOfRestriktions(true);
+
             }
         }
 
@@ -258,9 +261,5 @@ public class SatValidator {
         }
 
         return performanceMap;
-    }
-
-    public Boolean getViolationOfRestriktions() {
-        return this.violationOfRestriktions;
     }
 }

@@ -147,6 +147,9 @@ public class Course extends EntityBase {
     @Transient
     private Boolean balancedAmountOfSpectators = false;
 
+    @Transient
+    private Boolean violationOfRestriktions = false;
+
     public Course(Course another) {
         this.cid = another.cid;
         this.name = another.name;
@@ -175,6 +178,7 @@ public class Course extends EntityBase {
         this.twoBreaksRestriction = another.twoBreaksRestriction;
         this.advancedAtEndRestriction = another.advancedAtEndRestriction;
         this.balancedAmountOfSpectators = another.balancedAmountOfSpectators;
+        this.violationOfRestriktions = another.violationOfRestriktions;
     }
 
     public Course() {
@@ -429,6 +433,14 @@ public class Course extends EntityBase {
 
     public void setBalancedAmountOfSpectators(Boolean balancedAmountOfSpectators) {
         this.balancedAmountOfSpectators = balancedAmountOfSpectators;
+    }
+
+    public Boolean getViolationOfRestriktions() {
+        return violationOfRestriktions;
+    }
+
+    public void setViolationOfRestriktions(Boolean violationOfRestriktions) {
+        this.violationOfRestriktions = violationOfRestriktions;
     }
 
     @PreUpdate
