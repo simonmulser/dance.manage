@@ -136,16 +136,19 @@ public class Course extends EntityBase {
     private boolean dummyCourse = false;
 
     @Transient
-    private Boolean balletRestriction = false;
+    private boolean balletRestriction = false;
 
     @Transient
-    private Boolean twoBreaksRestriction = false;
+    private boolean twoBreaksRestriction = false;
 
     @Transient
-    private Boolean advancedAtEndRestriction = false;
+    private boolean advancedAtEndRestriction = false;
 
     @Transient
-    private Boolean balancedAmountOfSpectators = false;
+    private boolean balancedAmountOfSpectators = false;
+
+    @Transient
+    private boolean balancedAgeGroup = false;
 
     @Transient
     private Boolean violationOfRestriktions = false;
@@ -178,6 +181,7 @@ public class Course extends EntityBase {
         this.twoBreaksRestriction = another.twoBreaksRestriction;
         this.advancedAtEndRestriction = another.advancedAtEndRestriction;
         this.balancedAmountOfSpectators = another.balancedAmountOfSpectators;
+        this.balancedAgeGroup = another.balancedAgeGroup;
         this.violationOfRestriktions = another.violationOfRestriktions;
     }
 
@@ -433,6 +437,14 @@ public class Course extends EntityBase {
 
     public void setBalancedAmountOfSpectators(Boolean balancedAmountOfSpectators) {
         this.balancedAmountOfSpectators = balancedAmountOfSpectators;
+    }
+
+    public boolean isBalancedAgeGroup() {
+        return balancedAgeGroup;
+    }
+
+    public void setBalancedAgeGroup(boolean balancedAgeGroup) {
+        this.balancedAgeGroup = balancedAgeGroup;
     }
 
     public Boolean getViolationOfRestriktions() {

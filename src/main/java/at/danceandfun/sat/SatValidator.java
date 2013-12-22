@@ -68,6 +68,8 @@ public class SatValidator {
 
         performancePlan = validatedBalancedAmountOfSpectators(performancePlan);
 
+        performancePlan = validatedBalancedAgeGroup(performancePlan);
+
         return performancePlan;
     }
 
@@ -214,12 +216,11 @@ public class SatValidator {
      *          spectators in every performance. Every course is inspected and
      *          the boolean for the specific restriction is set to 'true' if the
      *          constraint is violated
-     * @param validatedMap
-     *            Gets a map of 3 lists of ValidatedCourses as an input. This
-     *            class contains a course and booleans for the violation of
-     *            restrictions
-     * @return map containing 3 lists of ValidatedCourses with the updated
-     *         booleans of advancedAtEndRestriction
+     * @param performanceMap
+     *            Gets a map of 3 performancess as an input. This class contains
+     *            the list of courses
+     * @return map containing 3 performances with the updated booleans of
+     *         advancedAtEndRestriction
      */
     private Map<Integer, Performance> validatedBalancedAmountOfSpectators(
             Map<Integer, Performance> performanceMap) {
@@ -234,7 +235,7 @@ public class SatValidator {
             for (Course currentCourse : validatedCourseList) {
                 if (!currentCourse.isDummyCourse()) {
                     spectatorAmount += currentCourse.getEstimatedSpectators()
-                            .getValue();
+                            .getValue() + 1;
                 }
             }
 
@@ -244,7 +245,7 @@ public class SatValidator {
         Collections.sort(amountSpectatorList);
 
         if (Math.abs(amountSpectatorList.get(0)
-                - amountSpectatorList.get(amountSpectatorList.size() - 1)) > 5) {
+                - amountSpectatorList.get(amountSpectatorList.size() - 1)) > 6) {
             isBalanced = false;
         }
 
@@ -255,6 +256,58 @@ public class SatValidator {
 
                 for (Course currentCourse : validatedCourseList) {
                     currentCourse.setBalancedAmountOfSpectators(true);
+                }
+                performanceMap.get(i).setCourses(validatedCourseList);
+            }
+        }
+
+        return performanceMap;
+    }
+
+    /**
+     * @summary This method validates the restriction for a balanced age group
+     *          in every performance. Every course is inspected and the boolean
+     *          for the specific restriction is set to 'true' if the constraint
+     *          is violated
+     * @param performanceMap
+     *            Gets a map of 3 performancess as an input. This class contains
+     *            the list of courses
+     * @return map containing 3 performances with the updated booleans of
+     *         advancedAtEndRestriction
+     */
+    private Map<Integer, Performance> validatedBalancedAgeGroup(
+            Map<Integer, Performance> performanceMap) {
+        List<Integer> amountAgeGroupList = new ArrayList<Integer>();
+        boolean isBalanced = true;
+
+        for (int i = 1; i <= 3; i++) {
+            List<Course> validatedCourseList = performanceMap.get(i)
+                    .getCourses();
+            int ageGroupAmount = 0;
+
+            for (Course currentCourse : validatedCourseList) {
+                if (!currentCourse.isDummyCourse()) {
+                    ageGroupAmount += currentCourse.getAgeGroup().getValue() + 1;
+                }
+            }
+
+            amountAgeGroupList.add(ageGroupAmount);
+        }
+
+        Collections.sort(amountAgeGroupList);
+
+        if (Math.abs(amountAgeGroupList.get(0)
+                - amountAgeGroupList.get(amountAgeGroupList.size() - 1)) > 6) {
+            isBalanced = false;
+        }
+
+        if (!isBalanced) {
+            for (int i = 1; i <= 3; i++) {
+                List<Course> validatedCourseList = performanceMap.get(i)
+                        .getCourses();
+
+                for (Course currentCourse : validatedCourseList) {
+                    currentCourse.setBalancedAgeGroup(true);
                 }
                 performanceMap.get(i).setCourses(validatedCourseList);
             }

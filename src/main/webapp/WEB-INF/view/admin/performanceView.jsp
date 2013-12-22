@@ -61,7 +61,10 @@ table th,table td {
 						<input type="checkbox" value="Spectators"	id="CheckboxBalancedSpectators" name="CheckboxBalancedSpectators" <c:if test="${balancedAmountOfSpectators}">checked</c:if>>
 						<div style="float:left; margin-left: 4px"><i class="icon-group"></i></div><div style="margin-left: 25px"><spring:message code='help.restriction.balancedSpectators' /></div>
 					</label>
-					
+					<label class="checkbox">
+						<input type="checkbox" value="AgeGroupd"	id="CheckboxBalancedAgeGroup" name="CheckboxBalancedAgeGroup" <c:if test="${balancedAgeGroup}">checked</c:if>>
+						<div style="float:left; margin-left: 4px"><i class="icon-adn"></i></div><div style="margin-left: 25px"><spring:message code='help.restriction.balancedAgeGroup' /></div>
+					</label>
 				</div>
 				<div style="margin-top: 20px">
 					<input type="submit" value="<spring:message code="label.create"/>"

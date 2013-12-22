@@ -47,8 +47,8 @@ public class GenerateSatSolution {
     public Map<Integer, Performance> generatePerformance(List<Course> courses,
             List<Participant> participantList, boolean balletRestriction,
             boolean twoBreaksRestriction, boolean advancedAtEndRestriction,
-            boolean balancedAmountOfSpectators) throws IOException,
-            SatException {
+            boolean balancedAmountOfSpectators, boolean balancedAgeGroup)
+            throws IOException, SatException {
         newOrderOfCourses = new ArrayList<Course>();
         performance = new Performance();
         this.participantList = participantList;
@@ -96,7 +96,8 @@ public class GenerateSatSolution {
 
         addDummyClauses(newOrderOfCourses);
         addCheckedRestrictions(balletRestriction, twoBreaksRestriction,
-                advancedAtEndRestriction, balancedAmountOfSpectators);
+                advancedAtEndRestriction, balancedAmountOfSpectators,
+                balancedAgeGroup);
         addBasicRestrictions(newOrderOfCourses, numberOfCourses, numberOfSlots,
                 numberOfPlays);
 
@@ -121,11 +122,15 @@ public class GenerateSatSolution {
      * @param balancedAmountOfSpectators
      *            boolean if the restriction for 'balanced amount of spectators'
      *            should be considered
+     * @param balancedAgeGroup
+     *            boolean if the restriction for "balanced age groups" should be
+     *            considered
      * @throws SatException
      */
     private void addCheckedRestrictions(boolean balletRestriction,
             boolean twoBreaksRestriction, boolean advancedAtEndRestriction,
-            boolean balancedAmountOfSpectators) throws SatException {
+            boolean balancedAmountOfSpectators, boolean balancedAgeGroup)
+            throws SatException {
         if (balancedAmountOfSpectators) {
             arrangeAmountOfSpectators(newOrderOfCourses);
         }
@@ -139,6 +144,9 @@ public class GenerateSatSolution {
         if (twoBreaksRestriction) {
             add2SlotBrake(newOrderOfCourses, participantList, numberOfCourses,
                     numberOfSlots, numberOfPlays);
+        }
+        if (balancedAgeGroup) {
+            arrangeAgeGroup(newOrderOfCourses);
         }
     }
 
@@ -419,6 +427,65 @@ public class GenerateSatSolution {
 
     }
 
+    private void arrangeAmountOfSpectators(List<Course> courses)
+            throws SatException {
+        int amount1 = 0;
+        int amount2 = 0;
+        int amount3 = 0;
+
+        for (int i = 0; i < this.numberOfSlots; i++) {
+            amount1 += courses.get(i).getEstimatedSpectators().getValue() + 1;
+        }
+        for (int i = this.numberOfSlots; i < 2 * this.numberOfSlots; i++) {
+            if (!courses.get(i).isDummyCourse()) {
+                amount2 += courses.get(i).getEstimatedSpectators().getValue() + 1;
+            }
+        }
+        for (int i = 2 * this.numberOfSlots; i < 3 * this.numberOfSlots; i++) {
+            if (!courses.get(i).isDummyCourse()) {
+                amount3 += courses.get(i).getEstimatedSpectators().getValue() + 1;
+            }
+        }
+
+        double meanAmount = (amount1 + amount2 + amount3) / 3;
+        if (Math.abs(amount1 - meanAmount) > 3
+                || Math.abs(amount2 - meanAmount) > 3
+                || Math.abs(amount3 - meanAmount) > 3) {
+            throw new SatException("Amount of spectors is not balanced");
+        }
+    }
+
+    private void arrangeAgeGroup(List<Course> courses) throws SatException {
+        int amount1 = 0;
+        int amount2 = 0;
+        int amount3 = 0;
+
+        for (int i = 0; i < this.numberOfSlots; i++) {
+            amount1 += courses.get(i).getAgeGroup().getValue() + 1;
+        }
+        for (int i = this.numberOfSlots; i < 2 * this.numberOfSlots; i++) {
+            if (!courses.get(i).isDummyCourse()) {
+                amount2 += courses.get(i).getAgeGroup().getValue() + 1;
+            }
+        }
+        for (int i = 2 * this.numberOfSlots; i < 3 * this.numberOfSlots; i++) {
+            if (!courses.get(i).isDummyCourse()) {
+                amount3 += courses.get(i).getAgeGroup().getValue() + 1;
+            }
+        }
+
+        System.out.println("Agegroup 1: " + amount1);
+        System.out.println("Agegroup 2: " + amount2);
+        System.out.println("Agegroup 3: " + amount3);
+
+        double meanAmount = (amount1 + amount2 + amount3) / 3;
+        if (Math.abs(amount1 - meanAmount) > 3
+                || Math.abs(amount2 - meanAmount) > 3
+                || Math.abs(amount3 - meanAmount) > 3) {
+            throw new SatException("Age groups are not balanced");
+        }
+    }
+
     /**
      * @summary Converts the list into a Integer Array, which is necessary to
      *          fill the SAT Solver.
@@ -556,34 +623,6 @@ public class GenerateSatSolution {
         // dummyCourse.setWeekday(WeekDay.MONDAY);
 
         return dummyCourse;
-    }
-
-    private void arrangeAmountOfSpectators(List<Course> courses)
-            throws SatException {
-        int amount1 = 0;
-        int amount2 = 0;
-        int amount3 = 0;
-
-        for (int i = 0; i < this.numberOfSlots; i++) {
-            amount1 += courses.get(i).getEstimatedSpectators().getValue() + 1;
-        }
-        for (int i = this.numberOfSlots; i < 2 * this.numberOfSlots; i++) {
-            if (!courses.get(i).isDummyCourse()) {
-                amount2 += courses.get(i).getEstimatedSpectators().getValue() + 1;
-            }
-        }
-        for (int i = 2 * this.numberOfSlots; i < 3 * this.numberOfSlots; i++) {
-            if (!courses.get(i).isDummyCourse()) {
-                amount3 += courses.get(i).getEstimatedSpectators().getValue() + 1;
-            }
-        }
-
-        double meanAmount = (amount1 + amount2 + amount3) / 3;
-        if (Math.abs(amount1 - meanAmount) > 3
-                || Math.abs(amount2 - meanAmount) > 3
-                || Math.abs(amount3 - meanAmount) > 3) {
-            throw new SatException("Amount of spectors is not balanced");
-        }
     }
 
     /**
