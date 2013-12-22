@@ -45,7 +45,10 @@ public class GenerateSatSolution {
      * @throws IOException
      */
     public Map<Integer, Performance> generatePerformance(List<Course> courses,
-            List<Participant> participantList) throws IOException, SatException {
+            List<Participant> participantList, boolean balletRestriction,
+            boolean twoBreaksRestriction, boolean advancedAtEndRestriction,
+            boolean balancedAmountOfSpectators) throws IOException,
+            SatException {
         newOrderOfCourses = new ArrayList<Course>();
         performance = new Performance();
         this.participantList = participantList;
@@ -91,15 +94,9 @@ public class GenerateSatSolution {
         numberOfCourses = newOrderOfCourses.size();
         numberOfSlots = newOrderOfCourses.size() / numberOfPlays;
 
-        arrangeAmountOfSpectators(newOrderOfCourses);
-
         addDummyClauses(newOrderOfCourses);
-
-        addAdvancedAtTheEnd(newOrderOfCourses, numberOfSlots);
-        addNotTwoOfAKind(newOrderOfCourses, numberOfCourses, numberOfSlots,
-                numberOfPlays, movedCourses);
-        add2SlotBrake(newOrderOfCourses, participantList, numberOfCourses,
-                numberOfSlots, numberOfPlays);
+        addCheckedRestrictions(balletRestriction, twoBreaksRestriction,
+                advancedAtEndRestriction, balancedAmountOfSpectators);
         addBasicRestrictions(newOrderOfCourses, numberOfCourses, numberOfSlots,
                 numberOfPlays);
 
@@ -107,6 +104,42 @@ public class GenerateSatSolution {
         plan = backMapping(solution, newOrderOfCourses);
 
         return plan;
+    }
+
+    /**
+     * @summary This method only adds the checked restrictions from the
+     *          PerformanceView to the list of clauses
+     * @param balletRestriction
+     *            boolean if the restriction for 'nonconsecutive ballets' should
+     *            be considered
+     * @param twoBreaksRestriction
+     *            boolean if the restriction for 'two breaks for students who
+     *            perform in multiple courses' should be considered
+     * @param advancedAtEndRestriction
+     *            boolean if the restriction for 'advanced courses at the end'
+     *            should be considered
+     * @param balancedAmountOfSpectators
+     *            boolean if the restriction for 'balanced amount of spectators'
+     *            should be considered
+     * @throws SatException
+     */
+    private void addCheckedRestrictions(boolean balletRestriction,
+            boolean twoBreaksRestriction, boolean advancedAtEndRestriction,
+            boolean balancedAmountOfSpectators) throws SatException {
+        if (balancedAmountOfSpectators) {
+            arrangeAmountOfSpectators(newOrderOfCourses);
+        }
+        if (advancedAtEndRestriction) {
+            addAdvancedAtTheEnd(newOrderOfCourses, numberOfSlots);
+        }
+        if (balletRestriction) {
+            addNotTwoOfAKind(newOrderOfCourses, numberOfCourses, numberOfSlots,
+                    numberOfPlays, movedCourses);
+        }
+        if (twoBreaksRestriction) {
+            add2SlotBrake(newOrderOfCourses, participantList, numberOfCourses,
+                    numberOfSlots, numberOfPlays);
+        }
     }
 
     /**

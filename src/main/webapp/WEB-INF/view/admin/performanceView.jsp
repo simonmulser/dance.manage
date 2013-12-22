@@ -37,21 +37,39 @@ table th,table td {
 <dmtags:base title="${i18nTitle}" activesection="performances">
 	<dmtags:span width="12">
 
-
+	<dmtags:span width="6">
 		<dmtags:widget title="${i18nCreatePlan}" icon="icon-camera">
 			<form:form method="post" action="performance/build"
 				commandName="performance" class="form-horizontal">
 				<div>
-					<p>Drücken Sie auf 'Erstellen', um einen Aufführungsplan
-						generieren zu lassen.</p>
+					<spring:message code="label.createPerformancePlan" />
 				</div>
-
-				<div class="form-actions">
+				<div style="margin-top: 20px">
+					<label class="checkbox">
+						<input type="checkbox" value="Ballet"	id="CheckboxBallet" name="CheckboxBallet" <c:if test="${balletRestriction}">checked</c:if>>
+						<div style="float:left; margin-left: 4px"><i class="icon-female"></i></div><div style="margin-left: 25px"><spring:message code='help.restriction.noconsecutiveballett' /></div>
+					</label>
+					<label class="checkbox">
+						<input type="checkbox" value="Break"	id="CheckboxTwoCourseBreak" name="CheckboxTwoCourseBreak" <c:if test="${twoBreaksRestriction}">checked</c:if>>
+						<div style="float:left; margin-left: 4px"><i class="icon-coffee"></i></div><div style="margin-left: 25px"><spring:message code='help.restriction.twoCoursesBreak' /></div>
+					</label>
+					<label class="checkbox">
+						<input type="checkbox" value="Advanced"	id="CheckboxAdvancedAtEnd" name="CheckboxAdvancedAtEnd" <c:if test="${advancedAtEndRestriction}">checked</c:if>>
+						<div style="float:left; margin-left: 4px"><i class="icon-star"></i></div><div style="margin-left: 25px"><spring:message code='help.restriction.advancedAtEnd' /></div>
+					</label>
+					<label class="checkbox">
+						<input type="checkbox" value="Spectators"	id="CheckboxBalancedSpectators" name="CheckboxBalancedSpectators" <c:if test="${balancedAmountOfSpectators}">checked</c:if>>
+						<div style="float:left; margin-left: 4px"><i class="icon-group"></i></div><div style="margin-left: 25px"><spring:message code='help.restriction.balancedSpectators' /></div>
+					</label>
+					
+				</div>
+				<div style="margin-top: 20px">
 					<input type="submit" value="<spring:message code="label.create"/>"
 						class="btn btn-primary" />
 				</div>
 			</form:form>
 		</dmtags:widget>
+	</dmtags:span>
 
 		<c:if test="${!empty performanceList1}">
 			<dmtags:widget title="${i18nScheduleProposal}" style="table"

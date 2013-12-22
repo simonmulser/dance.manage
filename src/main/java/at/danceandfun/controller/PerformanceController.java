@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,24 +46,37 @@ public class PerformanceController {
     private Performance tempPerformance2 = new Performance();
     private Performance tempPerformance3 = new Performance();
     private Map<Integer, Performance> performancePlan;
+    private boolean balletRestriction = true;
+    private boolean twoBreaksRestriction = true;
+    private boolean advancedAtEndRestriction = true;
+    private boolean balancedAmountOfSpectators = true;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String listPerformances(ModelMap map) {
         logger.debug("LIST performances with id " + performance.getPerid());
+
         map.addAttribute("performance", performance);
         map.addAttribute("performanceList1", tempPerformance1.getCourses());
         map.addAttribute("performanceList2", tempPerformance2.getCourses());
         map.addAttribute("performanceList3", tempPerformance3.getCourses());
+        map.addAttribute("balletRestriction", balletRestriction);
+        map.addAttribute("twoBreaksRestriction", twoBreaksRestriction);
+        map.addAttribute("advancedAtEndRestriction", advancedAtEndRestriction);
+        map.addAttribute("balancedAmountOfSpectators",
+                balancedAmountOfSpectators);
 
         return "admin/performanceView";
     }
 
     @RequestMapping(value = "/build", method = RequestMethod.POST)
-    public String buildPerformance(ModelMap map) {
+    public String buildPerformance(ModelMap map, HttpServletRequest request) {
         logger.debug("BUILD performance");
         performancePlan = new HashMap<Integer, Performance>();
         List<Course> courses = courseManager.getEnabledList();
         List<Participant> participantList = participantManager.getEnabledList();
+
+        setCheckedRestrictions(request);
+
         Collections.shuffle(courses);
 
         GenerateSatSolution sat = new GenerateSatSolution();
@@ -69,7 +84,9 @@ public class PerformanceController {
         while (true) {
             try {
                 performancePlan = sat.generatePerformance(courses,
-                        participantList);
+                        participantList, balletRestriction,
+                        twoBreaksRestriction, advancedAtEndRestriction,
+                        balancedAmountOfSpectators);
                 break;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -101,6 +118,29 @@ public class PerformanceController {
         logger.debug("VALDIATE performancePlan");
 
         return "redirect:/admin/performance";
+    }
+
+    private void setCheckedRestrictions(HttpServletRequest request) {
+        if (request.getParameter("CheckboxBallet") != null) {
+            this.balletRestriction = true;
+        } else {
+            this.balletRestriction = false;
+        }
+        if (request.getParameter("CheckboxTwoCourseBreak") != null) {
+            this.twoBreaksRestriction = true;
+        } else {
+            this.twoBreaksRestriction = false;
+        }
+        if (request.getParameter("CheckboxAdvancedAtEnd") != null) {
+            this.advancedAtEndRestriction = true;
+        } else {
+            this.advancedAtEndRestriction = false;
+        }
+        if (request.getParameter("CheckboxBalancedSpectators") != null) {
+            this.balancedAmountOfSpectators = true;
+        } else {
+            this.balancedAmountOfSpectators = false;
+        }
     }
 
     public void setPerformanceManager(PerformanceManager performanceManager) {
