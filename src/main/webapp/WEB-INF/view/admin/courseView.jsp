@@ -13,10 +13,10 @@
 		<spring:message var="i18nWidgetTitle" code="widget.courses" />
 
 		<dmtags:widget icon="icon-calendar" title="${i18nWidgetTitle}">
-			<spring:message code="help.course" /><br />
+			<spring:message code="help.course" />
+			<br />
 			<spring:message code="help.required" />
-			<form:form method="post" action="course/add" commandName="course"
-				class="form-horizontal">
+			<form:form method="post" action="course/add" commandName="course" class="form-horizontal">
 				<form:input path="cid" type="hidden" />
 				<form:input path="enabled" type="hidden" />
 				<div class="control-group">
@@ -33,8 +33,7 @@
 						<spring:message code="label.coursePlace" />*
 				</form:label>
 					<div class="span6">
-						<form:radiobuttons path="address.aid" items="${addressList}"
-							itemValue="aid" />
+						<form:radiobuttons path="address.aid" items="${addressList}" itemValue="aid" />
 					</div>
 					<form:errors path="address" cssClass="error" />
 				</div>
@@ -136,13 +135,10 @@
 						<spring:message code="label.styles" />*
 				</form:label>
 					<div class="ui-widget span6">
-						<input id="stylesQuery" type="text" value="" /><i
-							title="<spring:message code='help.searchStyle' />"
-							class="inline-tooltip icon icon-question-sign"></i>
+						<input id="stylesQuery" type="text" value="" /><i title="<spring:message code='help.searchStyle' />" class="inline-tooltip icon icon-question-sign"></i>
 						<div id="showStyles">
 							<c:if test="${!empty course.style.sid }">
-								<span class="styleTag">${course.style.name}&nbsp;<i
-									class="icon icon-remove"></i></span>
+								<span class="styleTag">${course.style.name}&nbsp;<i class="icon icon-remove"></i></span>
 							</c:if>
 						</div>
 						<form:input path="style.sid" id="styleSid" type="hidden" />
@@ -156,13 +152,10 @@
 						<spring:message code="label.teacher" />
 					</form:label>
 					<div class="ui-widget span6">
-						<input id="teacherQuery" type="text" value="" /><i
-							title="<spring:message code='help.searchTeacher' />"
-							class="inline-tooltip icon icon-question-sign"></i>
+						<input id="teacherQuery" type="text" value="" /><i title="<spring:message code='help.searchTeacher' />" class="inline-tooltip icon icon-question-sign"></i>
 						<div id="showTeacher">
 							<c:if test="${!empty course.teacher.pid }">
-								<span class="teacherTag">${course.teacher.firstname}&nbsp;${course.teacher.lastname}&nbsp;<i
-									class="icon icon-remove"></i></span>
+								<span class="teacherTag">${course.teacher.firstname}&nbsp;${course.teacher.lastname}&nbsp;<i class="icon icon-remove"></i></span>
 							</c:if>
 						</div>
 						<form:input path="teacher.pid" id="teacherPid" type="hidden" />
@@ -172,8 +165,7 @@
 				</div>
 
 				<div class="form-actions">
-					<input type="submit" value="<spring:message code="label.save"/>"
-						class="btn btn-primary" />
+					<input type="submit" value="<spring:message code="label.save"/>" class="btn btn-primary" />
 					<button class="btn">
 						<spring:message code="label.cancel" />
 					</button>
@@ -185,9 +177,7 @@
 		<dmtags:widget title="${i18nOverview}" style="table" icon="icon-list">
 			<c:if test="${!empty courseList}">
 
-				<display:table name="courseList" id="course"
-					class="table table-striped table-bordered displaytag" pagesize="15"
-					requestURI="/admin/course" defaultsort="1">
+				<display:table name="courseList" id="course" class="table table-striped table-bordered displaytag" pagesize="15" requestURI="/admin/course" defaultsort="1">
 					<display:column sortable="true" titleKey="label.coursename">
 						<c:out value="${course.name}" />
 					</display:column>
@@ -204,10 +194,8 @@
 					<display:column sortable="true" titleKey="label.courseduration">
 						<spring:message code="${course.duration.i18nIdentifier}" />
 					</display:column>
-					<display:column sortable="true"
-						titleKey="label.estimatedSpectators">
-						<spring:message
-							code="${course.estimatedSpectators.i18nIdentifier}" />
+					<display:column sortable="true" titleKey="label.estimatedSpectators">
+						<spring:message code="${course.estimatedSpectators.i18nIdentifier}" />
 					</display:column>
 					<display:column sortable="true" titleKey="label.amountPerformances">
 					${course.amountPerformances}
@@ -219,18 +207,25 @@
 						<c:set var="cid" value="${course.cid}" />
 						<a href="course/edit/${cid}"><spring:message code="label.edit" /></a>
 						<br />
-						<a href="course/delete/${cid}" class="openDialog" id="${cid}"><spring:message
-								code="label.delete" /></a>
-						<div id="deleteId" style="display:none;"></div>		
+						<a href="course/delete/${cid}" class="openDialog" id="${cid}"><spring:message code="label.delete" /></a>
+						<div id="deleteId" style="display: none;"></div>
+						<br />
+						<c:choose>
+							<c:when test="${course.appointments.size() gt 0}">
+								<a href="<c:url value="/admin/appointment/edit/${course.slug}" />"><spring:message code="label.editAppointments" /></a>
+							</c:when>
+							<c:otherwise>
+								<a href="<c:url value="/admin/appointment/edit/${course.slug}" />"><spring:message code="label.createAppointments" /> </a>
+							</c:otherwise>
+						</c:choose>
+
 					</display:column>
 				</display:table>
 
 
-				<div id="dialog-confirm"
-					title="<spring:message code="delete.title" />">
+				<div id="dialog-confirm" title="<spring:message code="delete.title" />">
 					<p>
-						<span class="ui-icon ui-icon-alert"
-							style="float: left; margin: 0 7px 20px 0;"></span>
+						<span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
 						<spring:message code="delete.course" />
 					</p>
 				</div>

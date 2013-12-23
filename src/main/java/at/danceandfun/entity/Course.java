@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.PostPersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -130,6 +131,7 @@ public class Course extends EntityBase {
     private List<CourseParticipant> courseParticipants = new ArrayList<CourseParticipant>();
 
     @OneToMany(mappedBy = "course")
+    @OrderBy(value = "number asc")
     private List<Appointment> appointments = new ArrayList<Appointment>();
 
     @Transient
