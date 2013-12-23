@@ -1,5 +1,7 @@
 package at.danceandfun.util;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 
 import org.joda.time.DateTime;
@@ -8,6 +10,7 @@ import org.junit.Test;
 
 import at.danceandfun.dao.CourseDaoTest;
 import at.danceandfun.entity.Course;
+import at.danceandfun.exception.BusinessException;
 
 public class HelpersTest {
 
@@ -71,5 +74,20 @@ public class HelpersTest {
         assertEquals(weekDayOfThisWeek.getWeekOfWeekyear(),
                 result.getWeekOfWeekyear());
         assertEquals(weekDayOfThisWeek.getYear(), result.getYear());
+    }
+
+    @Test
+    public void testExtractSlug() {
+        assertThat(Helpers.extractId("course-1a-15-12"), is(12));
+    }
+
+    @Test(expected = BusinessException.class)
+    public void testExtractSlugException() {
+        assertThat(Helpers.extractId("course2-a"), is(12));
+    }
+
+    @Test(expected = BusinessException.class)
+    public void testExtractSlugExceptionWithNull() {
+        assertThat(Helpers.extractId(null), is(12));
     }
 }

@@ -90,7 +90,7 @@ public class ParticipantController {
             participant.setEnabled(true);
 
             if (participant.getAddress().getAid() == null) {
-                addressManager.update(participant.getAddress());
+                addressManager.persist(participant.getAddress());
             }
 
             if (!(participant.getParent().getPid() == null)) {
@@ -107,7 +107,7 @@ public class ParticipantController {
 
             if (participant.getPid() == null) {
                 logger.debug("New participant");
-                participantManager.update(participant);
+                participantManager.persist(participant);
             }
 
             if (!participant.getTempSiblings().equals("")) {

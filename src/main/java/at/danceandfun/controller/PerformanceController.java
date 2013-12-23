@@ -101,12 +101,12 @@ public class PerformanceController {
 
         SatValidator validator = new SatValidator(performancePlan,
                 participantList);
-
         performancePlan = validator.validatePerformancePlan();
 
         tempPerformance1 = performancePlan.get(1);
         tempPerformance2 = performancePlan.get(2);
         tempPerformance3 = performancePlan.get(3);
+
         // performanceManager.save(tempPerformance1);
         // performanceManager.save(tempPerformance2);
         // performanceManager.save(tempPerformance3);

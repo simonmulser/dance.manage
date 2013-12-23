@@ -36,7 +36,7 @@
 																test="${not empty appointment.appointmentDate}">&nbsp;(${appointment.appointmentDate})</c:if>
 														</a>
 													</div>
-													
+
 													<!-- searching the absence object from the user for the appointment -->
 													<c:forEach items="${appointment.absences}" var="absence">
 														<c:if test="${absence.key.participant.pid == user.pid && absence.enabled == true}">
@@ -44,7 +44,7 @@
 															<c:set var="absenceForAppointment" value="${absence}" />
 														</c:if>
 													</c:forEach>
-													
+
 													<div id="collapse${loop.index}" class="accordion-body collapse" style="height: 0px;">
 														<div class="accordion-inner">
 															<c:choose>
