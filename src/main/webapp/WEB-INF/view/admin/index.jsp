@@ -181,6 +181,28 @@
 
 
 <script>
+var eventColors = ['#FF8106', '#FEC34D', '#FF4023', '#FF5C00', '#E55300', '#15AB00', '#FF9F00', '#90B5E8'];
+var mapping = {};
+var usedColors = new Array();
+
+function Test(eventName) {
+	if(!(eventName in mapping)) {
+		var color = Math.floor(Math.random() * 8) + 0;
+		if(usedColors.indexOf(color) != -1) {
+			var found = false;
+			while(!found || usedColors.length >= eventColors.length) {
+				color = Math.floor(Math.random() * 8) + 0;
+				if(usedColors.indexOf(color) == -1) {
+					found = true;
+				}
+			}
+		}
+		mapping[eventName] = color;
+		usedColors.push(color);
+	}
+	return eventColors[mapping[eventName]];
+}
+
 $(document).ready(function() {
 	var courseData = [
 	<c:forEach items="${courseList}" var="course"
@@ -190,7 +212,7 @@ $(document).ready(function() {
 	              start: '<joda:format value="${course.getStartDateTimeCurrentWeekRepresentation()}" pattern="yyyy-MM-dd HH:mm:ss" />',
 	              end: '<joda:format value="${course.getEndDateTimeCurrentWeekRepresentation()}" pattern="yyyy-MM-dd HH:mm:ss" />',
 	              allDay: false,
-	              color: '#FF8106',
+	              color: Test('${course.style.name}'),
 		        },
 	</c:forEach>
 	];
