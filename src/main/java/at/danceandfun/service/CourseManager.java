@@ -2,6 +2,7 @@ package at.danceandfun.service;
 
 import java.util.List;
 
+import at.danceandfun.entity.Address;
 import at.danceandfun.entity.Course;
 import at.danceandfun.entity.CourseParticipant;
 import at.danceandfun.entity.Participant;
@@ -19,4 +20,6 @@ public interface CourseManager extends ManagerBase<Course> {
             List<CourseParticipant> enabledCourseParticipants, int year);
 
     public List<Long> getParticipantPerLevel(int year);
+    
+    public List<Course> getCoursesByStudioAddress(Address address);
 }

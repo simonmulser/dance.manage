@@ -3,10 +3,12 @@ package at.danceandfun.service;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import at.danceandfun.dao.CourseDaoTest;
 import at.danceandfun.dao.DaoBaseImpl;
+import at.danceandfun.entity.Address;
 import at.danceandfun.entity.Course;
 import at.danceandfun.entity.Participant;
 import at.danceandfun.entity.Teacher;
@@ -35,6 +38,10 @@ public class CourseManagerTest {
 
     @Autowired
     private ParticipantManager participantManager;
+
+    @Autowired
+    private AddressManager addressManager;
+
     @Autowired
     private TeacherManager teacherManager;
 
@@ -46,6 +53,22 @@ public class CourseManagerTest {
 
     @Autowired
     private DaoBaseImpl<Course> courseDao;
+
+    @Test
+    public void testGetCoursesByStudioAddress() {
+        List<Address> studioAddresses = addressManager.getStudioAddresses();
+        Iterator<Address> iter = studioAddresses.iterator();
+        while (iter.hasNext()) {
+            Address currentAddress = iter.next();
+            List<Course> courses = courseManager.getCoursesByStudioAddress(currentAddress);
+            assertThat(courses.get(0), is(notNullValue()));
+            Iterator<Course> courseIter = courses.iterator();
+            while(courseIter.hasNext()) {
+                Course c = courseIter.next();
+                assertEquals(currentAddress, c.getAddress());
+            }
+        }
+    }
 
     @Test
     public void searchForParticipantCourses() {

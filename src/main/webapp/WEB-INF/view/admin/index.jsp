@@ -26,8 +26,7 @@
 <dmtags:base title="${title}" activesection="dashboard">
 
 	<dmtags:span width="6">
-		<dmtags:widget icon="icon-comment"
-			title="${i18nWidgetLatestFeedback}">
+		<dmtags:widget icon="icon-comment" title="${i18nWidgetLatestFeedback}">
 			<ul class="messages_layout">
 				<li class="from_user left"><a href="#" class="avatar"><img
 						src="img/message_avatar1.png" /></a>
@@ -173,7 +172,24 @@
 	<dmtags:span width="12">
 		<dmtags:widget title="${i18nCourses}" style="nopad"
 			icon="icon-calendar">
-			<div id='calendar'></div>
+			<br />
+			<div class="tabbable">
+				<ul class="nav nav-tabs">
+					<c:forEach items="${addressList}" var="element" varStatus="status">
+						<li ${status.first ? 'class="active"' : ''}><a
+							href="#studio${element.aid}" data-toggle="tab">${element}</a></li>
+					</c:forEach>
+				</ul>
+
+				<div class="tab-content">
+					<c:forEach items="${addressList}" var="element" varStatus="status">
+						<div class="tab-pane ${status.first ? 'active' : ''}"
+							id="studio${element.aid}">
+							<div id='calendar${element.aid}'></div>
+						</div>
+					</c:forEach>
+				</div>
+			</div>
 		</dmtags:widget>
 	</dmtags:span>
 
@@ -181,9 +197,16 @@
 
 
 <script>
+$('a[data-toggle="tab"]').on('shown', function (e) {
+	<c:forEach items="${addressList}" var="element">
+		$('#calendar${element.aid}').fullCalendar('render');
+	</c:forEach>
+});
+
 var eventColors = ['#FF8106', '#FEC34D', '#FF4023', '#FF5C00', '#E55300', '#15AB00', '#FF9F00', '#90B5E8'];
 var mapping = {};
 var usedColors = new Array();
+var courseData = {};
 
 function Test(eventName) {
 	if(!(eventName in mapping)) {
@@ -204,9 +227,10 @@ function Test(eventName) {
 }
 
 $(document).ready(function() {
-	var courseData = [
-	<c:forEach items="${courseList}" var="course"
-		varStatus="loop">
+
+	<c:forEach items="${courseByAddressList}" var="address" varStatus="loop">
+		courseData['${address.key.aid}'] = [
+		<c:forEach items="${address.value}" var="course" varStatus="loop">
 		        {
 	              title: '${course.name}',
 	              start: '<joda:format value="${course.getStartDateTimeCurrentWeekRepresentation()}" pattern="yyyy-MM-dd HH:mm:ss" />',
@@ -214,28 +238,29 @@ $(document).ready(function() {
 	              allDay: false,
 	              color: Test('${course.style.name}'),
 		        },
+		</c:forEach>
+		];
+		
+	    $('#calendar${address.key.aid}').fullCalendar({
+	        header: {
+	          left: '',
+	          center: '',
+	          right: '',
+	        },
+	        defaultView: 'agendaWeek',
+	        weekends: false,
+	        contentHeight: 450,
+	        allDaySlot: false,
+	        axisFormat: 'HH:mm',
+	        timeFormat: 'HH:mm{ - HH:mm}',
+	        minTime: 10,
+	        firstHour: 15,
+	        firstDay: 1,
+	        slotMinutes: 15,
+	        columnFormat: 'dddd',
+	        editable: false,
+	        events: courseData['${address.key.aid}'],
+	      });
 	</c:forEach>
-	];
-	
-    $('#calendar').fullCalendar({
-      header: {
-        left: '',
-        center: '',
-        right: '',
-      },
-      defaultView: 'agendaWeek',
-      weekends: false,
-      contentHeight: 450,
-      allDaySlot: false,
-      axisFormat: 'HH:mm',
-      timeFormat: 'HH:mm{ - HH:mm}',
-      minTime: 10,
-      firstHour: 15,
-      firstDay: 1,
-      slotMinutes: 15,
-      columnFormat: 'dddd',
-      editable: false,
-      events: courseData,
-    });
   });
 </script>
