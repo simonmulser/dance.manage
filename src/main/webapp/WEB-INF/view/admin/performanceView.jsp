@@ -35,7 +35,7 @@ table th,table td {
 
 
 <dmtags:base title="${i18nTitle}" activesection="performances">
-	<dmtags:span width="12">
+
 
 	<dmtags:span width="6">
 		<dmtags:widget title="${i18nCreatePlan}" icon="icon-camera">
@@ -73,7 +73,8 @@ table th,table td {
 			</form:form>
 		</dmtags:widget>
 	</dmtags:span>
-
+	
+	<dmtags:span width="12">
 		<c:if test="${!empty performanceList1}">
 			<dmtags:widget title="${i18nScheduleProposal}" style="table"
 				icon="icon-list">
