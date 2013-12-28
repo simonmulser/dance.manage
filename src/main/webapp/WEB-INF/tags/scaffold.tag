@@ -27,7 +27,9 @@
 <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
+    
+<!--  jQuery is loaded before the page to allow inline scriptlets -->
+<script src="<c:url value="/js/jquery-1.7.2.js" />"></script>
 
 </head>
 <body>
@@ -54,7 +56,6 @@
 	<!-- Le javascript
 ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
-	<script src="<c:url value="/js/jquery-1.7.2.js" />"></script>
 	<script src="<c:url value="/js/jquery-ui.js" />"></script>
 	<script src="<c:url value="/js/excanvas.min.js" />"></script>
 	<script src="<c:url value="/js/chart.js" />" type="text/javascript"></script>
