@@ -6,33 +6,11 @@
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 <%@taglib prefix="joda" uri="http://www.joda.org/joda/time/tags"%>
 
-<style>
-table {
-	table-layout: fixed;
-}
-
-table th,table td {
-	overflow: hidden;
-}
-
-[draggable] {
-  -moz-user-select: none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
-  /* Required to make elements draggable in old WebKit */
-  -khtml-user-drag: element;
-  -webkit-user-drag: element;
-}
-</style>
-
 <spring:message var="i18nTitle" code="nav.performances" />
 <spring:message var="i18nCreatePlan" code="widget.createPlan" />
 <spring:message var="i18nScheduleProposal"
 	code="widget.scheduleproposal" />
 	
-
-
 
 <dmtags:base title="${i18nTitle}" activesection="performances">
 
