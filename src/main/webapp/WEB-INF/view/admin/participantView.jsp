@@ -16,7 +16,7 @@
 			code="nav.courseParticipants" />
 
 		<dmtags:widget title="${i18nWidgetCourseParticipants}"
-			icon="icon-user">
+			icon="icon-user" id="add">
 			<spring:message code="help.participant" /><br />
 			<spring:message code="help.required" />
 			<form:form method="post" action="participant/add"
@@ -112,7 +112,7 @@
 
 		<c:if test="${!empty participantList}">
 			<spring:message var="i18nOverview" code="widget.overview" />
-			<dmtags:widget title="${i18nOverview}" style="table" icon="icon-list">
+			<dmtags:widget title="${i18nOverview}" style="table" icon="icon-list" id="list">
 				<display:table name="participantList" id="row"
 					class="table table-striped table-bordered displaytag" pagesize="15"
 					requestURI="/admin/participant" defaultsort="1">

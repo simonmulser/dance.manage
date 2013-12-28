@@ -12,7 +12,7 @@
 
 		<spring:message var="i18nWidgetTitle" code="widget.courses" />
 
-		<dmtags:widget icon="icon-calendar" title="${i18nWidgetTitle}">
+		<dmtags:widget icon="icon-calendar" title="${i18nWidgetTitle}" id="add">
 			<spring:message code="help.course" />
 			<br />
 			<spring:message code="help.required" />
@@ -174,7 +174,7 @@
 		</dmtags:widget>
 
 		<spring:message var="i18nOverview" code="widget.overview" />
-		<dmtags:widget title="${i18nOverview}" style="table" icon="icon-list">
+		<dmtags:widget title="${i18nOverview}" style="table" icon="icon-list" id="list">
 			<c:if test="${!empty courseList}">
 
 				<display:table name="courseList" id="course" class="table table-striped table-bordered displaytag" pagesize="15" requestURI="/admin/course" defaultsort="1">

@@ -4,6 +4,7 @@
 <%@attribute name="title" required="true" type="java.lang.String"%>
 <%@attribute name="style" required="false" type="java.lang.String"%>
 <%@attribute name="icon" required="true" type="java.lang.String"%>
+<%@attribute name="id" required="false" type="java.lang.String"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
@@ -17,7 +18,7 @@
 	</c:when>
 </c:choose>
 
-<div class="${widgetStyle}">
+<div class="${widgetStyle}" id="${not empty id ? id : ''}">
 	<div class="widget-header">
 		<i class="${icon}"></i>
 		<h3>
