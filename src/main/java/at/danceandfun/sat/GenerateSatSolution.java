@@ -486,6 +486,49 @@ public class GenerateSatSolution {
         }
     }
 
+    private void multipleGroupsInSamePerformance(List<Course> courses,
+            List<Participant> participants, int k, int t, int p) throws SatException {
+    	List<Integer> idList = new ArrayList<Integer>();
+    	
+    	// All Participants who play in more than one course.
+    	for (int i = 0; i < participants.size(); i++) {
+            if (participants.get(i).getCourseParticipants().size() > 1) {
+                idList.add(i);
+            }
+        }
+    	
+    	// Now count the amount of the courses in the different performances
+    	for (int id : idList) {
+            List<Integer> courseIDList = new ArrayList<Integer>();
+            Participant currentParticipant = participants.get(id);
+            int amount1 = 0;
+            int amount2 = 0;
+            int amount3 = 0;
+
+            for (CourseParticipant currentCP : currentParticipant
+                    .getCourseParticipants()) {
+                for (int i = 0; i < courses.size(); i++) {
+                    if (courses.get(i).equals(currentCP.getKey().getCourse())) {
+                        courseIDList.add(i + 1);			//i+1 ??
+                    }
+                }
+            }
+            for(int j = 0; j < courseIDList.size(); j++) {
+            	if(courseIDList.get(j) < this.numberOfSlots) {
+            		amount1++;
+            	}
+            	if((2*this.numberOfSlots) > courseIDList.get(j) && courseIDList.get(j) > this.numberOfSlots) {
+            		amount2++;
+            	}
+            	if((3*this.numberOfSlots) > courseIDList.get(j) && courseIDList.get(j) > (2*this.numberOfSlots)) {
+            		amount3++;
+            	}	
+            }
+            //To Do, swapping
+            
+    	}
+    }
+    
     /**
      * @summary Converts the list into a Integer Array, which is necessary to
      *          fill the SAT Solver.
