@@ -504,6 +504,7 @@ public class GenerateSatSolution {
 	private void multipleGroupsInSamePerformance(List<Course> courses,
 			List<Participant> participants, int k, int t, int p) throws SatException {
 		List<Integer> idList = new ArrayList<Integer>();
+		Random r = new Random();
 
 		// All Participants who play in more than one course.
 		for (int i = 0; i < participants.size(); i++) {
@@ -540,61 +541,171 @@ public class GenerateSatSolution {
 					amount3.add(courseIDList.get(j));
 				}	
 			}
-			
-			//To Do, swapping
-			if(amount1.size() > amount2.size() && amount1.size() > amount3.size()) {
-				while(amount2.size() != 0) {
-					
-					Collections.swap(newOrderOfCourses, amount2.get(0), 0);
+
+			//normal swapping (when amount of the lists amountX are not even)
+			if(amount1.size() > amount2.size() && amount1.size() > amount3.size()) {				
+				while(amount2.size() != 0) {				
+					Collections.swap(newOrderOfCourses, amount2.get(0), helpSwapping(amount1));
 					amount1.add(amount2.remove(0));				
 				}
-				if(amount3.size() != 0) {
-
+				while(amount3.size() != 0) {
+					Collections.swap(newOrderOfCourses, amount3.get(0), helpSwapping(amount1));
+					amount1.add(amount3.remove(0));
 				}
 			}
 			if(amount2.size() > amount1.size() && amount2.size() > amount3.size()) {
-				if(amount1.size() != 0) {
-
+				while(amount1.size() != 0) {				
+					Collections.swap(newOrderOfCourses, amount1.get(0), 2*helpSwapping(amount2));
+					amount2.add(amount1.remove(0));				
 				}
-				if(amount3.size() != 0) {
-
+				while(amount3.size() != 0) {
+					Collections.swap(newOrderOfCourses, amount3.get(0), 2*helpSwapping(amount2));
+					amount2.add(amount3.remove(0));
 				}
 			}
 			if(amount3.size() > amount2.size() && amount3.size() > amount1.size()) {
-				if(amount1.size() != 0) {
-
+				while(amount1.size() != 0) {				
+					Collections.swap(newOrderOfCourses, amount1.get(0), 3*helpSwapping(amount3));
+					amount3.add(amount1.remove(0));				
 				}
-				if(amount2.size() != 0) {
-
+				while(amount2.size() != 0) {
+					Collections.swap(newOrderOfCourses, amount2.get(0), 3*helpSwapping(amount3));
+					amount3.add(amount2.remove(0));
 				}
 			}
-			
 
+			//special case, the amount of 2 is even --> random selection
+			if(amount1.size() == amount2.size() && amount1.size() != amount3.size()) {
+				if(r.nextBoolean()) {
+					while(amount1.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount1.get(0), 2*helpSwapping(amount2));
+						amount2.add(amount1.remove(0));
+					}
+					while(amount3.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount3.get(0), 2*helpSwapping(amount2));
+						amount2.add(amount3.remove(0));
+					}
+				}
+				if(!r.nextBoolean()) {
+					while(amount2.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount2.get(0), helpSwapping(amount1));	
+						amount1.add(amount2.remove(0));
+					}
+					while(amount3.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount3.get(0), helpSwapping(amount1));
+						amount1.add(amount3.remove(0));
+					}
+				}
+			}
+
+			if(amount2.size() == amount3.size() && amount2.size() != amount1.size()) {
+				if(r.nextBoolean()) {
+					while(amount2.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount2.get(0), 3*helpSwapping(amount3));
+						amount3.add(amount2.remove(0));
+					}
+					while(amount1.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount1.get(0), 3*helpSwapping(amount3));
+						amount3.add(amount1.remove(0));
+					}
+				}
+				if(!r.nextBoolean()) {
+					while(amount2.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount3.get(0), 2*helpSwapping(amount2));
+						amount3.add(amount2.remove(0));
+					}
+					while(amount1.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount1.get(0), 2*helpSwapping(amount2));
+						amount2.add(amount1.remove(0));
+					}
+				}
+			}
+			if(amount1.size() == amount3.size() && amount1.size() != amount2.size()) {
+				if(r.nextBoolean()) {
+					while(amount1.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount1.get(0), 3*helpSwapping(amount3));
+						amount3.add(amount1.remove(0));
+					}
+					while(amount2.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount2.get(0), 3*helpSwapping(amount3));
+						amount3.add(amount2.remove(0));
+					}
+				}
+				if(!r.nextBoolean()) {
+					while(amount3.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount3.get(0), helpSwapping(amount1));	
+						amount1.add(amount3.remove(0));
+					}
+					while(amount2.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount2.get(0), helpSwapping(amount1));
+						amount1.add(amount2.remove(0));
+					}
+				}
+			}
+
+			if(amount1.size() == amount2.size() && amount1.size() == amount3.size()) {
+				int random = (int) (Math.random()*3+1);
+				
+				if(random == 1) {
+					while(amount3.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount3.get(0), helpSwapping(amount1));	
+						amount1.add(amount3.remove(0));
+					}
+					while(amount2.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount2.get(0), helpSwapping(amount1));
+						amount1.add(amount2.remove(0));
+					}
+				}
+				if(random == 2) {
+					while(amount2.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount3.get(0), 2*helpSwapping(amount2));
+						amount3.add(amount2.remove(0));
+					}
+					while(amount1.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount1.get(0), 2*helpSwapping(amount2));
+						amount2.add(amount1.remove(0));
+					}	
+				}
+				if(random == 3) {
+					while(amount1.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount1.get(0), 3*helpSwapping(amount3));
+						amount3.add(amount1.remove(0));
+					}
+					while(amount2.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount2.get(0), 3*helpSwapping(amount3));
+						amount3.add(amount2.remove(0));
+					}
+				}
+			}
 		}
 	}
 
+	private void sibsInSamePerformace(List <Course> courses) throws SatException {
+		
+	}
+	
 	private int helpSwapping(List<Integer> listOfTakenCourses) {
 
 		List<Integer> list= new ArrayList<Integer>();
 		for(int i = 0; i < numberOfSlots; i++) {
 			list.add(0);
 		}
-		
+
 		for(int i=0; i<listOfTakenCourses.size(); i++) {
 			if(list.get(numberOfSlots%listOfTakenCourses.get(i)) == 0) {
 				list.set(numberOfSlots%listOfTakenCourses.get(i),1);
 			}
 		}
-		
+
 		Random r = new Random();
 		int index = r.nextInt(list.size());
 		if(list.get(index) == 1) {
 			helpSwappingSecond(list);
 		}
 		return index;
-		
+
 	}
-	
+
 	private int helpSwappingSecond(List<Integer> list) {
 		Random r = new Random();
 		int index = r.nextInt(list.size());
@@ -603,7 +714,7 @@ public class GenerateSatSolution {
 		}
 		return index;
 	}
-	
+
 	/**
 	 * @summary Converts the list into a Integer Array, which is necessary to
 	 *          fill the SAT Solver.
