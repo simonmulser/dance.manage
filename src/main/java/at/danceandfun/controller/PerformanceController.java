@@ -51,6 +51,8 @@ public class PerformanceController {
     private boolean advancedAtEndRestriction = true;
     private boolean balancedAmountOfSpectators = true;
     private boolean balancedAgeGroup = true;
+    private boolean multipleGroupsSamePerformance = true;
+    private boolean sibsSamePerformance = true;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String listPerformances(ModelMap map) {
@@ -66,6 +68,9 @@ public class PerformanceController {
         map.addAttribute("balancedAmountOfSpectators",
                 balancedAmountOfSpectators);
         map.addAttribute("balancedAgeGroup", balancedAgeGroup);
+        map.addAttribute("multipleGroupsSamePerformance",
+                multipleGroupsSamePerformance);
+        map.addAttribute("sibsSamePerformance", sibsSamePerformance);
 
         return "admin/performanceView";
     }
@@ -88,7 +93,8 @@ public class PerformanceController {
                 performancePlan = sat.generatePerformance(courses,
                         participantList, balletRestriction,
                         twoBreaksRestriction, advancedAtEndRestriction,
-                        balancedAmountOfSpectators, balancedAgeGroup);
+                        balancedAmountOfSpectators, balancedAgeGroup,
+                        multipleGroupsSamePerformance, sibsSamePerformance);
                 break;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -148,7 +154,16 @@ public class PerformanceController {
         } else {
             this.balancedAgeGroup = false;
         }
-
+        if (request.getParameter("CheckboxMultipleGroupsSamePerformance") != null) {
+            this.multipleGroupsSamePerformance = true;
+        } else {
+            this.multipleGroupsSamePerformance = false;
+        }
+        if (request.getParameter("CheckboxSibsSamePerformance") != null) {
+            this.sibsSamePerformance = true;
+        } else {
+            this.sibsSamePerformance = false;
+        }
     }
 
     public void setPerformanceManager(PerformanceManager performanceManager) {
