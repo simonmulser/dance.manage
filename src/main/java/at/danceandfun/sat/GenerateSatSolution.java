@@ -502,7 +502,7 @@ public class GenerateSatSolution {
 	 * @throws SatException
 	 */
 	private void multipleGroupsInSamePerformance(List<Course> courses,
-			List<Participant> participants, int k, int t, int p) throws SatException {
+			List<Participant> participants) throws SatException {
 		List<Integer> idList = new ArrayList<Integer>();
 		Random r = new Random();
 
@@ -680,8 +680,199 @@ public class GenerateSatSolution {
 		}
 	}
 
-	private void sibsInSamePerformace(List <Course> courses) throws SatException {
+	private void sibsInSamePerformace(List <Course> courses, List<Participant> participants) throws SatException {
+		List<Participant> sibList = new ArrayList<Participant>();
+		List<Integer> idList = new ArrayList<Integer>();
+		Random r = new Random();
+
+		// All Participants with one sib at least
+		for (int i = 0; i < participants.size(); i++) {
+			if (participants.get(i).getSiblings().size() >= 1) {
+				idList.add(i);
+			}
+		}
 		
+		// Now count the amount of the courses in the different performances
+		for (int id : idList) {
+			List<Integer> courseIDList = new ArrayList<Integer>();
+			Participant currentParticipant = participants.get(id);
+			List<Integer> amount1 = new ArrayList<Integer>();
+			List<Integer>amount2 = new ArrayList<Integer>();
+			List<Integer> amount3 = new ArrayList<Integer>();
+			boolean allInOne =false;
+			
+			for (CourseParticipant currentCP : currentParticipant
+					.getCourseParticipants()) {
+				for (int i = 0; i < courses.size(); i++) {
+					if (courses.get(i).equals(currentCP.getKey().getCourse())) {
+						courseIDList.add(i + 1);			//i+1 ??
+					}					
+				}
+				
+			}
+			
+			for(Participant participant : currentParticipant.getSiblings()) {
+				sibList.add(participant);
+			}
+			int index=0;
+			for (CourseParticipant currentCP : sibList.get(index).getCourseParticipants()) {
+				for (int i = 0; i < courses.size(); i++) {
+					if (courses.get(i).equals(currentCP.getKey().getCourse())) {
+						courseIDList.add(i + 1);			//i+1 ??
+					}					
+				}
+				index++;
+			}
+			
+			
+			for(int j = 0; j < courseIDList.size(); j++) {
+				if(courseIDList.get(j) < this.numberOfSlots) {
+					amount1.add(courseIDList.get(j));
+				}
+				if((2*this.numberOfSlots) > courseIDList.get(j) && courseIDList.get(j) > this.numberOfSlots) {
+					amount2.add(courseIDList.get(j));
+				}
+				if((3*this.numberOfSlots) > courseIDList.get(j) && courseIDList.get(j) > (2*this.numberOfSlots)) {
+					amount3.add(courseIDList.get(j));
+				}	
+			}
+
+			//normal swapping (when amount of the lists amountX are not even)
+			if(amount1.size() > amount2.size() && amount1.size() > amount3.size()) {				
+				while(amount2.size() != 0) {				
+					Collections.swap(newOrderOfCourses, amount2.get(0), helpSwapping(amount1));
+					amount1.add(amount2.remove(0));				
+				}
+				while(amount3.size() != 0) {
+					Collections.swap(newOrderOfCourses, amount3.get(0), helpSwapping(amount1));
+					amount1.add(amount3.remove(0));
+				}
+			}
+			if(amount2.size() > amount1.size() && amount2.size() > amount3.size()) {
+				while(amount1.size() != 0) {				
+					Collections.swap(newOrderOfCourses, amount1.get(0), 2*helpSwapping(amount2));
+					amount2.add(amount1.remove(0));				
+				}
+				while(amount3.size() != 0) {
+					Collections.swap(newOrderOfCourses, amount3.get(0), 2*helpSwapping(amount2));
+					amount2.add(amount3.remove(0));
+				}
+			}
+			if(amount3.size() > amount2.size() && amount3.size() > amount1.size()) {
+				while(amount1.size() != 0) {				
+					Collections.swap(newOrderOfCourses, amount1.get(0), 3*helpSwapping(amount3));
+					amount3.add(amount1.remove(0));				
+				}
+				while(amount2.size() != 0) {
+					Collections.swap(newOrderOfCourses, amount2.get(0), 3*helpSwapping(amount3));
+					amount3.add(amount2.remove(0));
+				}
+			}
+
+			//special case, the amount of 2 is even --> random selection
+			if(amount1.size() == amount2.size() && amount1.size() != amount3.size()) {
+				if(r.nextBoolean()) {
+					while(amount1.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount1.get(0), 2*helpSwapping(amount2));
+						amount2.add(amount1.remove(0));
+					}
+					while(amount3.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount3.get(0), 2*helpSwapping(amount2));
+						amount2.add(amount3.remove(0));
+					}
+				}
+				if(!r.nextBoolean()) {
+					while(amount2.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount2.get(0), helpSwapping(amount1));	
+						amount1.add(amount2.remove(0));
+					}
+					while(amount3.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount3.get(0), helpSwapping(amount1));
+						amount1.add(amount3.remove(0));
+					}
+				}
+			}
+
+			if(amount2.size() == amount3.size() && amount2.size() != amount1.size()) {
+				if(r.nextBoolean()) {
+					while(amount2.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount2.get(0), 3*helpSwapping(amount3));
+						amount3.add(amount2.remove(0));
+					}
+					while(amount1.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount1.get(0), 3*helpSwapping(amount3));
+						amount3.add(amount1.remove(0));
+					}
+				}
+				if(!r.nextBoolean()) {
+					while(amount2.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount3.get(0), 2*helpSwapping(amount2));
+						amount3.add(amount2.remove(0));
+					}
+					while(amount1.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount1.get(0), 2*helpSwapping(amount2));
+						amount2.add(amount1.remove(0));
+					}
+				}
+			}
+			if(amount1.size() == amount3.size() && amount1.size() != amount2.size()) {
+				if(r.nextBoolean()) {
+					while(amount1.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount1.get(0), 3*helpSwapping(amount3));
+						amount3.add(amount1.remove(0));
+					}
+					while(amount2.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount2.get(0), 3*helpSwapping(amount3));
+						amount3.add(amount2.remove(0));
+					}
+				}
+				if(!r.nextBoolean()) {
+					while(amount3.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount3.get(0), helpSwapping(amount1));	
+						amount1.add(amount3.remove(0));
+					}
+					while(amount2.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount2.get(0), helpSwapping(amount1));
+						amount1.add(amount2.remove(0));
+					}
+				}
+			}
+
+			if(amount1.size() == amount2.size() && amount1.size() == amount3.size()) {
+				int random = (int) (Math.random()*3+1);
+				
+				if(random == 1) {
+					while(amount3.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount3.get(0), helpSwapping(amount1));	
+						amount1.add(amount3.remove(0));
+					}
+					while(amount2.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount2.get(0), helpSwapping(amount1));
+						amount1.add(amount2.remove(0));
+					}
+				}
+				if(random == 2) {
+					while(amount2.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount3.get(0), 2*helpSwapping(amount2));
+						amount3.add(amount2.remove(0));
+					}
+					while(amount1.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount1.get(0), 2*helpSwapping(amount2));
+						amount2.add(amount1.remove(0));
+					}	
+				}
+				if(random == 3) {
+					while(amount1.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount1.get(0), 3*helpSwapping(amount3));
+						amount3.add(amount1.remove(0));
+					}
+					while(amount2.size() != 0) {
+						Collections.swap(newOrderOfCourses,amount2.get(0), 3*helpSwapping(amount3));
+						amount3.add(amount2.remove(0));
+					}
+				}
+			}
+		}
 	}
 	
 	private int helpSwapping(List<Integer> listOfTakenCourses) {
