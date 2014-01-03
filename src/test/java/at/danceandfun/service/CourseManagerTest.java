@@ -68,7 +68,7 @@ public class CourseManagerTest {
     @Test
     public void testSaveWithSlugMocktio() {
         ((CourseManagerImpl) courseManager).setDao(dao);
-        courseManager.update(CourseDaoTest.getValidCourse());
+        courseManager.persist(CourseDaoTest.getValidCourse());
 
         verify(dao).persist(any(Course.class));
         ((CourseManagerImpl) courseManager).setDao(courseDao);

@@ -12,7 +12,7 @@ public abstract class ManagerBaseImpl<T> implements ManagerBase<T> {
     protected DaoBaseImpl<T> mainDao;
 
     @Override
-    public void update(T domain) {
+    public void persist(T domain) {
         mainDao.persist(domain);
 
     }

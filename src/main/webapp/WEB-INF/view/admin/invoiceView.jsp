@@ -12,6 +12,31 @@
 
 		<dmtags:widget icon="icon-envelope" title="${i18nInvoices}">
 			<spring:message code="help.invoice" />
+			
+			<form:form method="post" action="invoice/add"
+				commandName="invoice" class="form-horizontal">
+				
+				<div id="find_keyword" class="control-group">
+					<form:label path="owner" class="control-label">
+						<spring:message code="label.participant" />
+					</form:label>
+					<div class="ui-widget span6">
+						<input id="participantQuery" type="text" value="" /><i
+							title="<spring:message code='help.searchParticipant' />"
+							class="inline-tooltip icon icon-question-sign"></i>
+							
+						<div id="showParticipant">			
+							<span id="selectedParticipant">
+								
+							 </span>
+						</div>
+					</div>
+
+					<form:input path="owner" id="owner" type="hidden" />
+				</div>
+				
+			</form:form>	
+			
 		</dmtags:widget>
 		<spring:message var="i18nOverview" code="widget.overview" />
 		<dmtags:widget title="${i18nOverview}" style="table" icon="icon-list">

@@ -128,12 +128,12 @@ public class TeacherController {
             }
 
             if (teacher.getAddress().getAid() == null) {
-                addressManager.update(teacher.getAddress());
+                addressManager.persist(teacher.getAddress());
             }
 
             if (teacher.getPid() == null) {
                 logger.debug("New teacher");
-                teacherManager.update(teacher);
+                teacherManager.persist(teacher);
 
             } else {
                 logger.debug("Update teacher");

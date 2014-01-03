@@ -7,7 +7,7 @@ import org.hibernate.criterion.DetachedCriteria;
 
 public interface ManagerBase<T> {
 
-    public void update(T domain);
+    public void persist(T domain);
 
     public T merge(T domain);
 

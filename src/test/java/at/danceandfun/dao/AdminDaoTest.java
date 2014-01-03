@@ -2,7 +2,6 @@ package at.danceandfun.dao;
 
 import static org.junit.Assert.fail;
 
-import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,6 @@ public class AdminDaoTest {
     public static Admin getValidAdmin() {
         Admin admin = new Admin();
         admin.setAddress(AddressDaoTest.getValidAddress());
-        admin.setBirthday(new LocalDate().minusYears(10));
         admin.setFirstname("first");
         admin.setLastname("last");
         admin.setTelephone("123456789");

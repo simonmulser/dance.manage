@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.PostPersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -130,6 +131,7 @@ public class Course extends EntityBase {
     private List<CourseParticipant> courseParticipants = new ArrayList<CourseParticipant>();
 
     @OneToMany(mappedBy = "course")
+    @OrderBy(value = "number asc")
     private List<Appointment> appointments = new ArrayList<Appointment>();
 
     @Transient
@@ -149,6 +151,12 @@ public class Course extends EntityBase {
 
     @Transient
     private boolean balancedAgeGroup = false;
+
+    @Transient
+    private boolean multipleGroupsSamePerformance = false;
+
+    @Transient
+    private boolean sibsSamePerformance = false;
 
     @Transient
     private Boolean violationOfRestriktions = false;
@@ -182,6 +190,8 @@ public class Course extends EntityBase {
         this.advancedAtEndRestriction = another.advancedAtEndRestriction;
         this.balancedAmountOfSpectators = another.balancedAmountOfSpectators;
         this.balancedAgeGroup = another.balancedAgeGroup;
+        this.multipleGroupsSamePerformance = another.multipleGroupsSamePerformance;
+        this.sibsSamePerformance = another.sibsSamePerformance;
         this.violationOfRestriktions = another.violationOfRestriktions;
     }
 
@@ -292,6 +302,7 @@ public class Course extends EntityBase {
         this.level = level.getValue();
     }
 
+    @JsonIgnore
     public List<Rating> getRatings() {
         return ratings;
     }
@@ -391,6 +402,7 @@ public class Course extends EntityBase {
         this.level = level;
     }
 
+    @JsonIgnore
     public List<Appointment> getAppointments() {
         return appointments;
     }
@@ -445,6 +457,23 @@ public class Course extends EntityBase {
 
     public void setBalancedAgeGroup(boolean balancedAgeGroup) {
         this.balancedAgeGroup = balancedAgeGroup;
+    }
+
+    public boolean isMultipleGroupsSamePerformance() {
+        return multipleGroupsSamePerformance;
+    }
+
+    public void setMultipleGroupsSamePerformance(
+            boolean multipleGroupsSamePerformance) {
+        this.multipleGroupsSamePerformance = multipleGroupsSamePerformance;
+    }
+
+    public boolean isSibsSamePerformance() {
+        return sibsSamePerformance;
+    }
+
+    public void setSibsSamePerformance(boolean sibsSamePerformance) {
+        this.sibsSamePerformance = sibsSamePerformance;
     }
 
     public Boolean getViolationOfRestriktions() {
