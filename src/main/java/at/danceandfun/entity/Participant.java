@@ -82,6 +82,9 @@ public class Participant extends Person {
     @Transient
     private String tempCourseNames;
 
+    @Transient
+    private List<String> tempCourseDuration;
+
     public Participant() {
     }
 
@@ -179,6 +182,14 @@ public class Participant extends Person {
 
     public void setTempCourseNames(String tempCourseNames) {
         this.tempCourseNames = tempCourseNames;
+    }
+
+    public List<String> getTempCourseDuration() {
+        return tempCourseDuration;
+    }
+
+    public void setTempCourseDuration(List<String> tempCourseDuration) {
+        this.tempCourseDuration = tempCourseDuration;
     }
 
     @JsonIgnore

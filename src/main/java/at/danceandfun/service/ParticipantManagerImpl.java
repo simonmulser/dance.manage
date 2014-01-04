@@ -82,4 +82,17 @@ public class ParticipantManagerImpl extends ManagerBaseImpl<Participant>
         logger.info("delete absence:" + absence);
         absenceDao.merge(absence);
     }
+
+    @Override
+    public List<Participant> searchForParticipants(String query) {
+        DetachedCriteria criteria = DetachedCriteria
+                .forClass(Participant.class);
+
+        Criterion rest1 = Restrictions.like("firstname", query + "%");
+        Criterion rest2 = Restrictions.like("lastname", query + "%");
+        criteria.add(Restrictions.or(rest1, rest2));
+
+        criteria.add(Restrictions.eq("enabled", true));
+        return mainDao.getListByCriteria(criteria);
+    }
 }
