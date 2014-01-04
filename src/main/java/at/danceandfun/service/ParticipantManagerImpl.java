@@ -38,7 +38,7 @@ public class ParticipantManagerImpl extends ManagerBaseImpl<Participant>
         return mainDao
                 .getQueryResults("select p"
                         + " from Participant as p"
-                        + " inner join p.courseParticipants as cp inner join cp.key.course as c"
+                        + " inner join p.courseParticipants as cp inner join cp.course as c"
                         + " group by p.pid, p.enabled, p.firstname, p.lastname, p.address, p.telephone, p.password, p.email, p.birthday, p.created, p.updated"
                         + " order by count(p.id) desc, p.lastname, p.firstname");
 
@@ -81,5 +81,18 @@ public class ParticipantManagerImpl extends ManagerBaseImpl<Participant>
     public void mergeAbsence(Absence absence) {
         logger.info("delete absence:" + absence);
         absenceDao.merge(absence);
+    }
+
+    @Override
+    public List<Participant> searchForParticipants(String query) {
+        DetachedCriteria criteria = DetachedCriteria
+                .forClass(Participant.class);
+
+        Criterion rest1 = Restrictions.like("firstname", query + "%");
+        Criterion rest2 = Restrictions.like("lastname", query + "%");
+        criteria.add(Restrictions.or(rest1, rest2));
+
+        criteria.add(Restrictions.eq("enabled", true));
+        return mainDao.getListByCriteria(criteria);
     }
 }

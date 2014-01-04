@@ -90,17 +90,16 @@
 							<spring:message code='error.duplicateCourse' />
 						</div>
 						<div id="showCourses">
-
-							<span id="selectedCourses"> <c:forEach
-									items="${participant.courseParticipants}"
-									var="courseParticipant">
-									<c:if test="${courseParticipant.enabled}">
-										<span class="courseTag">${courseParticipant.key.course.name}&nbsp;<i
-											id="${courseParticipant.key.course.cid}"
-											class="icon icon-remove"></i></span>
-									</c:if>
-								</c:forEach>
-							</span>
+							<span id="selectedCourses">
+								<c:forEach items="${participant.courseParticipants}"
+								var="courseParticipant">
+								<c:if test="${courseParticipant.enabled}">
+									<span class="courseTag">${courseParticipant.course.name}&nbsp;<i
+										id="${courseParticipant.course.cid}"
+										class="icon icon-remove"></i></span>
+								</c:if>
+							</c:forEach>
+							 </span>
 						</div>
 					</div>
 
@@ -171,9 +170,10 @@
 							<c:forEach items="${row.courseParticipants}"
 								var="courseParticipant" varStatus="loop">
 								<c:if test="${courseParticipant.enabled}">
-								${courseParticipant.key.course.name}
-								</c:if>
+								${courseParticipant.course.name}
 								${!loop.last ? ', ' : ''}
+								</c:if>
+								
 						</c:forEach>
 						</c:if>
 					</display:column>
