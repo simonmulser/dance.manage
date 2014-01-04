@@ -275,7 +275,7 @@ public class GenerateSatSolution {
             for (CourseParticipant currentCP : currentParticipant
                     .getCourseParticipants()) {
                 for (int i = 0; i < courses.size(); i++) {
-                    if (courses.get(i).equals(currentCP.getKey().getCourse())) {
+                    if (courses.get(i).equals(currentCP.getCourse())) {
                         courseIDList.add(i + 1);
                     }
                 }
@@ -306,7 +306,7 @@ public class GenerateSatSolution {
             for (CourseParticipant currentCP : currentParticipant
                     .getCourseParticipants()) {
                 for (int i = 0; i < courses.size(); i++) {
-                    if (courses.get(i).equals(currentCP.getKey().getCourse())) {
+                    if (courses.get(i).equals(currentCP.getCourse())) {
                         courseIDList.add(i + 1);
                     }
                 }

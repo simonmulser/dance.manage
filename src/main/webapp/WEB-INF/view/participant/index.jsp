@@ -30,8 +30,8 @@
 							<c:forEach items="${user.courseParticipants}"
 								var="courseParticipant" varStatus="loop">
 								<tr>
-									<td>${courseParticipant.key.course.year}</td>
-									<td>${courseParticipant.key.course.name}</td>
+									<td>${courseParticipant.course.year}</td>
+									<td>${courseParticipant.course.name}</td>
 									<td>${courseParticipant.duration}</td>
 								</tr>
 							</c:forEach>
@@ -140,9 +140,9 @@ $(document).ready(function() {
 	<c:forEach items="${user.courseParticipants}" var="courseParticipant"
 		varStatus="loop">
 		        {
-	              title: '${courseParticipant.key.course.name}',
-	              start: '<joda:format value="${courseParticipant.key.course.getStartDateTimeCurrentWeekRepresentation()}" pattern="yyyy-MM-dd HH:mm:ss" />',
-	              end: '<joda:format value="${courseParticipant.key.course.getEndDateTimeCurrentWeekRepresentation()}" pattern="yyyy-MM-dd HH:mm:ss" />',
+	              title: '${courseParticipant.course.name}',
+	              start: '<joda:format value="${courseParticipant.course.getStartDateTimeCurrentWeekRepresentation()}" pattern="yyyy-MM-dd HH:mm:ss" />',
+	              end: '<joda:format value="${courseParticipant.course.getEndDateTimeCurrentWeekRepresentation()}" pattern="yyyy-MM-dd HH:mm:ss" />',
 	              allDay: false,
 	              color: '#FF8106',
 		        },

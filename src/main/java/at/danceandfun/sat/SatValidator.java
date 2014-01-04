@@ -175,7 +175,7 @@ public class SatValidator {
                     .getCourseParticipants()) {
                 for (int i = 0; i < validatedCourseList.size(); i++) {
                     if (validatedCourseList.get(i).getCourse()
-                            .equals(currentCP.getKey().getCourse())) {
+                            .equals(currentCP.getCourse())) {
                         courseIDList.add(i);
                     }
                 }

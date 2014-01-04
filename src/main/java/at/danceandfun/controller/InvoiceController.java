@@ -58,11 +58,10 @@ public class InvoiceController {
         for (Participant p : participants) {
             List<String> courseDurations = new ArrayList<String>();
             for (CourseParticipant cp : p.getCourseParticipants()) {
-                courseDurations.add(cp.getKey().getCourse().getCid() + "/"
-                        + cp.getKey().getCourse().getName() + ":"
-                        + cp.getDuration() + "/"
-                        + cp.getKey().getCourse().getSemesterPrice() + "/"
-                        + cp.getKey().getCourse().getYearPrice());
+                courseDurations.add(cp.getCourse().getCid() + "/"
+                        + cp.getCourse().getName() + ":" + cp.getDuration()
+                        + "/" + cp.getCourse().getSemesterPrice() + "/"
+                        + cp.getCourse().getYearPrice());
             }
             p.setTempCourseDuration(courseDurations);
             participantsWithCourseDuration.add(p);

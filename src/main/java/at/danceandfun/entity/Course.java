@@ -126,7 +126,7 @@ public class Course extends EntityBase {
     @OneToMany(mappedBy = "key.course", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     private List<Position> positions = new ArrayList<Position>();
 
-    @OneToMany(mappedBy = "key.course")
+    @OneToMany(mappedBy = "course")
     private List<CourseParticipant> courseParticipants = new ArrayList<CourseParticipant>();
 
     @OneToMany(mappedBy = "course")

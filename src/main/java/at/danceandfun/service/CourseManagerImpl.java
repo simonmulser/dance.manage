@@ -39,7 +39,7 @@ public class CourseManagerImpl extends ManagerBaseImpl<Course> implements
 
             for (CourseParticipant cp : actualParticipant
                     .getCourseParticipants()) {
-                Course actualCourse = cp.getKey().getCourse();
+                Course actualCourse = cp.getCourse();
                 Criterion rest2 = Restrictions.eq("cid", actualCourse.getCid());
                 criteria.add(Restrictions.not(rest2));
             }
@@ -76,7 +76,7 @@ public class CourseManagerImpl extends ManagerBaseImpl<Course> implements
             List<Course> coursesWithStyle = mainDao.getListByCriteria(criteria);
             for (Course course : coursesWithStyle) {
                 for (CourseParticipant cp : enabledCourseParticipants) {
-                    if (cp.getKey().getCourse().getCid() == course.getCid()) {
+                    if (cp.getCourse().getCid() == course.getCid()) {
                         participantCount++;
                     }
                 }
