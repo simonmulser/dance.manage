@@ -13,7 +13,7 @@
 		<dmtags:widget icon="icon-envelope" title="${i18nInvoices}">
 			<spring:message code="help.invoice" />
 			
-			<form:form method="post" action="invoice/add"
+			<form:form method="post" action="invoice/preview"
 				commandName="invoice" class="form-horizontal">
 				
 				<div id="find_keyword" class="control-group">
@@ -24,17 +24,102 @@
 						<input id="participantQuery" type="text" value="" /><i
 							title="<spring:message code='help.searchParticipant' />"
 							class="inline-tooltip icon icon-question-sign"></i>
-							
-						<div id="showParticipant">			
-							
-						</div>
-						<div id="courses"></div>
 					</div>
-
-					<form:input path="participant.pid" id="participantPid" />
 				</div>
 				<div id="showDetails">
-					
+					<c:choose>
+						<c:when test="${!empty invoice.positions }">
+							<spring:message code="label.invoiceAddress" />
+							<form:input path="participant.pid" id="participantPid" type="hidden" />
+							<c:choose>
+								<c:when test="${!empty invoice.parent.pid}">
+									<div>
+										<form:input path="parent.pid" id="parentPid" type="hidden" />
+										${invoice.parent.firstname }&nbsp;${invoice.parent.lastname }<br />
+										${invoice.parent.address.street}&nbsp;${invoice.parent.address.number}
+										<c:if test="${!empty invoice.parent.address.stair}">
+											/ ${invoice.parent.address.stair }
+										</c:if>	
+										<c:if test="${!empty invoice.parent.address.door}">
+											/ ${invoice.parent.address.door }
+										</c:if>
+										<br />
+										${invoice.parent.address.zip},&nbsp;${invoice.parent.address.city }
+									</div>
+								</c:when>
+								<c:when test="${!empty invoice.participant.pid}">
+									<div>
+										${invoice.participant.firstname }&nbsp;${invoice.participant.lastname }<br />
+										${invoice.participant.address.street}&nbsp;${invoice.participant.address.number}
+										<c:if test="${!empty invoice.participant.address.stair}">
+											/ ${invoice.participant.address.stair }
+										</c:if>	
+										<c:if test="${!empty invoice.participant.address.door}">
+											/ ${invoice.participant.address.door }
+										</c:if>
+										<br />
+										${invoice.participant.address.zip},&nbsp;${invoice.participant.address.city }
+									</div>
+								</c:when>
+								<c:otherwise>
+								</c:otherwise>
+							</c:choose>
+							<c:forEach items="${invoice.positions}" var="position" varStatus="status">
+								<div class="control-group">
+									<form:label path="positions[${status.index }].key.course.name" class="control-label">
+										${position.key.course.name}
+									</form:label>
+									<form:input path="positions[${status.index }].key.course.name" type="hidden" />
+									<form:input path="positions[${status.index }].key.course.cid" type="hidden" />
+									<div class="span6">
+										<form:select path="positions[${status.index }].duration">
+											<form:options items="${Duration}" />
+										</form:select>
+									</div>
+									<c:if test="${!empty position.amount }">
+										<form:label path="positions[${status.index }].amount" class="control-label">
+										${position.amount}
+									</form:label>
+									</c:if>
+									<c:if test="${!empty position.errorMessage }">
+										<div class="errorMessage">${position.errorMessage }</div>
+									</c:if>
+									
+								</div>
+							</c:forEach>
+							<div class="control-group">
+								<form:label path="reduction" class="control-label">
+									<spring:message code="label.reduction" />
+							    </form:label>
+								<div class="span6">
+									<form:input path="reduction" /> %
+								</div>
+								<form:errors path="reduction" cssClass="error" />
+							</div>
+							
+								<c:if test="${!empty invoice.totalAmount }">
+									<div class="control-group">
+										<form:label path="totalAmount" class="control-label">
+											<spring:message code="label.totalAmount" />
+												${invoice.totalAmount}
+										</form:label>
+									</div>	
+									<div class="control-group">
+									<form:label path="vatAmount" class="control-label">
+										<spring:message code="label.vatAmount" />
+											${invoice.vatAmount}
+									</form:label>	
+									</div>	
+								</c:if>
+							
+							<div class="form-actions">
+								<input type="submit" value="<spring:message code="label.preview"/>"
+									class="btn btn-primary" />
+							</div>
+						</c:when>
+						<c:otherwise>
+						</c:otherwise>
+					</c:choose>
 				</div>
 				
 			</form:form>	
@@ -60,49 +145,18 @@
 			source : function(request, response) {
 				$.getJSON("/dancemanage/admin/invoice/getParticipants",request,function(result) {
 					response($.map(result,function(item) {
-						return {
-							label : item.firstname
-									+ " "
-									+ item.lastname,
-							value : item.firstname
-									+ " "
-									+ item.lastname,
-							pid: item.pid,
-							first: item.firstname,
-							last: item.lastname,
-							course: item.tempCourseDuration
-						};
+							return {
+								label : item.firstname + " " + item.lastname,
+								value : item.firstname + " " + item.lastname,
+								pid: item.pid
+							};
 					}));
 				});
 			},
 
 			select : function(event, ui) {
 				if (ui.item) {
-					event.preventDefault();
-					$("#showParticipant").empty();
-					$("#showParticipant").append("<span class='participantTag'>"
-											+ ui.item.label
-											+ "&nbsp;<i class='icon icon-remove'></i></span>");
-					$("#participantPid").val(ui.item.pid);
-					<c:forEach items="${ui.item.course}" var="course">
-						var course = "${course}";
-						var courseSplit = course.split(":");
-						var courseInfo = courseSplit[0].split("/");
-						var courseCid = courseInfo[0];
-						var courseName = courseInfo[1];
-						var detailsSplit = courseSplit[1].split("/");
-						var duration = detailsSplit[0];
-						var semesterPrice = detailsSplit[1];
-						var yearPrice = detailsSplit[2];
-						
-					</c:forEach>
-					//$("#participantFirst").val(ui.item.first); notwendig?
-					//$("#participantLast").val(ui.item.last);
-					
-					var defValue = $("#participantQuery").prop('defaultValue');
-					$("#participantQuery").val(defValue);
-					$("#participantQuery").blur();
-					return false;
+					window.location.href = '/dancemanage/admin/invoice/getDetailsForParticipant/' + ui.item.pid;
 				}
 			}
 		});

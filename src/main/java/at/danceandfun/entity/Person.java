@@ -1,8 +1,6 @@
 package at.danceandfun.entity;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,14 +11,12 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -82,9 +78,6 @@ public abstract class Person extends EntityBase implements UserDetails {
     @Valid
     private Address address;
 
-    @OneToMany(mappedBy = "owner")
-    private List<Invoice> invoices = new ArrayList<Invoice>();
-
     public Person() {
     }
 
@@ -140,22 +133,12 @@ public abstract class Person extends EntityBase implements UserDetails {
         this.enabled = enabled;
     }
 
-    @JsonIgnore
     public Address getAddress() {
         return address;
     }
 
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-    @JsonIgnore
-    public List<Invoice> getInvoices() {
-        return invoices;
-    }
-
-    public void setInvoices(List<Invoice> invoices) {
-        this.invoices = invoices;
     }
 
     @Override

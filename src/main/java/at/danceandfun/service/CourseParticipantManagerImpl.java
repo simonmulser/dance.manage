@@ -1,14 +1,10 @@
 package at.danceandfun.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import at.danceandfun.dao.DaoBaseImpl;
 import at.danceandfun.entity.CourseParticipant;
-import at.danceandfun.entity.Participant;
 
 @Service
 public class CourseParticipantManagerImpl extends
@@ -20,13 +16,10 @@ public class CourseParticipantManagerImpl extends
     }
 
     @Override
-    public List<CourseParticipant> getOpenCoursesByParticipant(
-            Participant participant) {
-        List<CourseParticipant> openCourseParticipants = new ArrayList<CourseParticipant>();
-        for (CourseParticipant cp : participant.getCourseParticipants()) {
-
-        }
-        return null;
+    public int getCourseCountByParticipant(int cid, int pid) {
+        return mainDao
+                .getQueryResultsCount("select count(*) from CourseParticipant as cp where cp.enabled=true and cp.course.cid = "
+                        + cid + " and cp.participant.pid=" + pid);
     }
 
 }

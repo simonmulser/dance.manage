@@ -1,7 +1,5 @@
 package at.danceandfun.entity;
 
-import javax.persistence.AssociationOverride;
-import javax.persistence.AssociationOverrides;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,9 +13,6 @@ import at.danceandfun.enumeration.Duration;
 
 @Entity
 @Table(name = "COURSE_PARTICIPANT")
-@AssociationOverrides({
-        @AssociationOverride(name = "key.participant", joinColumns = @JoinColumn(name = "P_ID")),
-        @AssociationOverride(name = "key.course", joinColumns = @JoinColumn(name = "C_ID")) })
 public class CourseParticipant extends EntityBase {
 
     /**
@@ -38,7 +33,7 @@ public class CourseParticipant extends EntityBase {
     private Participant participant;
 
     @Column(name = "DURATION")
-    private Duration duration;
+    private Integer duration;
 
     @Column(name = "ENABLED")
     private boolean enabled;
@@ -71,11 +66,11 @@ public class CourseParticipant extends EntityBase {
     }
 
     public Duration getDuration() {
-        return duration;
+        return Duration.parse(this.duration);
     }
 
     public void setDuration(Duration duration) {
-        this.duration = duration;
+        this.duration = duration.getValue();
     }
 
     public boolean isEnabled() {
