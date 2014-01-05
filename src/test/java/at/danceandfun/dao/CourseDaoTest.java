@@ -1,5 +1,9 @@
 package at.danceandfun.dao;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.lessThan;
+
 import org.joda.time.LocalTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,6 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import at.danceandfun.entity.Appointment;
 import at.danceandfun.entity.Course;
 import at.danceandfun.entity.Style;
 import at.danceandfun.enumeration.AgeGroup;
@@ -46,7 +51,20 @@ public class CourseDaoTest {
     }
 
     @Test
-    public void testUpdateCourse() {
+    public void testMergeCourse() {
         courseDao.merge(getValidCourse());
+    }
+
+    @Test
+    public void testOrderByAppointments() {
+        Course course = courseDao.get(1);
+        Appointment previousAppointment = null;
+        for (Appointment appointment : course.getAppointments()) {
+            if (previousAppointment != null) {
+                assertThat(previousAppointment.getNumber(),
+                        is(lessThan(appointment.getNumber())));
+            }
+            previousAppointment = appointment;
+        }
     }
 }

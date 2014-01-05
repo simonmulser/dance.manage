@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import at.danceandfun.entity.Course;
 import at.danceandfun.entity.CourseParticipant;
-import at.danceandfun.entity.CourseParticipantID;
 import at.danceandfun.entity.Participant;
 import at.danceandfun.enumeration.Duration;
 
@@ -113,10 +112,8 @@ public class ParticipantDaoTest {
             Participant participant = getValidParticipant();
             CourseParticipant courseParticipant = new CourseParticipant();
             courseParticipant.setDuration(Duration.YEAR);
-            CourseParticipantID key = new CourseParticipantID();
-            key.setParticipant(participant);
-            key.setCourse(course);
-            courseParticipant.setKey(key);
+            courseParticipant.setParticipant(participant);
+            courseParticipant.setCourse(course);
             List<CourseParticipant> courseParticipants = new ArrayList<CourseParticipant>();
             courseParticipants.add(courseParticipant);
             participant.setCourseParticipants(courseParticipants);

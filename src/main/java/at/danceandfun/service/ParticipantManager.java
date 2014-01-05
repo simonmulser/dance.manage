@@ -15,4 +15,6 @@ public interface ParticipantManager extends ManagerBase<Participant> {
             String query);
 
     public void mergeAbsence(Absence absence);
+
+    public List<Participant> searchForParticipants(String query);
 }

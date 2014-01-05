@@ -4,10 +4,17 @@
 <%@attribute name="title" required="true" type="java.lang.String"%>
 <%@attribute name="style" required="false" type="java.lang.String"%>
 <%@attribute name="icon" required="true" type="java.lang.String"%>
+<%@attribute name="id" required="false" type="java.lang.String"%>
+<%@attribute name="retractable" required="false"
+	type="java.lang.Boolean"%>
+<%@attribute name="retractedPerDefault" required="false"
+	type="java.lang.Boolean"%>	
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<jsp:useBean id="random" class="java.util.Random" scope="application" />
 
 <c:set var="widgetStyle" value="widget" />
+<c:set var="widgetId" value="${random.nextInt()}" />
 <c:choose>
 	<c:when test="${style eq 'table'}">
 		<c:set var="widgetStyle" value="widget widget-table action-table" />
@@ -17,17 +24,25 @@
 	</c:when>
 </c:choose>
 
-<div class="${widgetStyle}">
-	<div class="widget-header">
+<div class="${widgetStyle}" id="${not empty id ? id : ''}">
+	<div class="widget-header" id="widget-header-${widgetId}" ${retractable ? 'style="cursor: pointer;"' : ''}>
 		<i class="${icon}"></i>
-		<h3>
-			${title}
-		</h3>
+		<h3>${title}</h3>
 	</div>
 	<!-- /widget-header -->
-	<div class="widget-content">
+	<div class="widget-content" id="widget-content-${widgetId}" ${retractedPerDefault ? 'style="display:none"' : ''}>
 		<jsp:doBody />
 	</div>
 	<!-- /widget-content -->
 </div>
 <!-- /widget -->
+
+<c:if test="${retractable}">
+	<script>
+		$('#widget-header-${widgetId}').click(function() {
+			$('#widget-content-${widgetId}').toggle('slide', {
+				direction : 'up'
+			});
+		});
+	</script>
+</c:if>

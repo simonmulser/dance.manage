@@ -6,21 +6,19 @@
 <%@taglib uri="http://displaytag.sf.net" prefix="display"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 
-<dmtags:base title="${i18nNavParents}"
-	activesection="parents">
+<dmtags:base title="${i18nNavParents}" activesection="parents">
 	<dmtags:span width="12">
 
-		<spring:message var="i18nWidgetParents"
-			code="widget.parents" />
-		<spring:message var="i18nNavParents"
-			code="nav.parents" />
+		<spring:message var="i18nWidgetParents" code="widget.parents" />
+		<spring:message var="i18nNavParents" code="nav.parents" />
 
-		<dmtags:widget title="${i18nWidgetParents}"
-			icon="icon-user">
-			<spring:message code="help.parent" /><br />
+		<dmtags:widget title="${i18nWidgetParents}" icon="icon-user" id="add"
+			retractable="true" retractedPerDefault="true">
+			<spring:message code="help.parent" />
+			<br />
 			<spring:message code="help.required" />
-			<form:form method="post" action="parent/add"
-				commandName="parent" class="form-horizontal">
+			<form:form method="post" action="parent/add" commandName="parent"
+				class="form-horizontal">
 
 				<dmtags:personForm />
 
@@ -51,11 +49,10 @@
 						<c:out value="${row.telephone}" />
 					</display:column>
 					<display:column sortable="true" titleKey="label.street">
-						<c:out
-							value="${row.address.street} ${row.address.number}" />
+						<c:out value="${row.address.street} ${row.address.number}" />
 						<c:if test="${!empty row.address.stair}">
 							<c:out value="/${row.address.stair }" />
-						</c:if>	
+						</c:if>
 						<c:if test="${!empty row.address.door}">
 							<c:out value="/${row.address.door }" />
 						</c:if>
@@ -77,12 +74,11 @@
 					</display:column>
 					<display:column>
 						<c:set var="pid" value="${row.pid}" />
-						<a href="parent/edit/${pid}"><spring:message
-								code="label.edit" /></a>
+						<a href="parent/edit/${pid}"><spring:message code="label.edit" /></a>
 						<br />
 						<a href="parent/delete/${pid}" class="openDialog" id="${pid }"><spring:message
 								code="label.delete" /></a>
-						<div id="deleteId" style="display:none;"></div>			
+						<div id="deleteId" style="display: none;"></div>
 					</display:column>
 				</display:table>
 				<div id="dialog-confirm"
@@ -98,8 +94,17 @@
 	</dmtags:span>
 </dmtags:base>
 <script type="text/javascript">
+	// this section is needed if the url contains an anchor hash to a widget which is retracted by default
+	$(document).ready(
+			function() {
+				if (window.location.hash) {
+					$(window.location.hash).children("[id*='widget-content-']")
+							.removeAttr('style');
+				}
+			});
+
 	$('i').tooltip();
-	
+
 	$(".openDialog").click(function() { //Löschen rückbestätigen
 		$("#deleteId").text($(this).attr("id"));
 		$("#dialog-confirm").dialog("open");
@@ -111,7 +116,7 @@
 		modal : true,
 		buttons : {
 			"OK" : function() {
-				document.location = "parent/delete/"+$("#deleteId").text();
+				document.location = "parent/delete/" + $("#deleteId").text();
 
 				$(this).dialog("close");
 			},
