@@ -108,7 +108,7 @@ public class CourseController {
 
         if (course.getCid() == null) {
             logger.debug("New course");
-            courseManager.update(course);
+            courseManager.persist(course);
         } else {
             logger.debug("Update course");
             courseManager.merge(course);

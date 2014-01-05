@@ -38,8 +38,12 @@ public class Invoice extends EntityBase {
     private boolean enabled;
 
     @ManyToOne
-    @JoinColumn(name = "P_ID")
+    @JoinColumn(name = "OWNER_ID")
     private Person owner;
+
+    @ManyToOne
+    @JoinColumn(name = "P_ID")
+    private Participant participant;
 
     @OneToMany(mappedBy = "key.invoice", cascade = CascadeType.ALL)
     private List<Position> positions = new ArrayList<Position>();
@@ -77,6 +81,14 @@ public class Invoice extends EntityBase {
 
     public void setOwner(Person owner) {
         this.owner = owner;
+    }
+
+    public Participant getParticipant() {
+        return participant;
+    }
+
+    public void setParticipant(Participant participant) {
+        this.participant = participant;
     }
 
     public List<Position> getPositions() {

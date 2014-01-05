@@ -75,12 +75,12 @@ public class ParentController {
             parent.setEnabled(true);
 
             if (parent.getAddress().getAid() == null) {
-                addressManager.update(parent.getAddress());
+                addressManager.merge(parent.getAddress());
             }
 
             if (parent.getPid() == null) {
                 logger.debug("New parent");
-                parentManager.update(parent);
+                parentManager.merge(parent);
             }
 
             logger.debug("Update parent");

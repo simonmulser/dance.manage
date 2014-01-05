@@ -16,7 +16,7 @@
 				<div class="tabbable">
 					<ul class="nav nav-tabs">
 						<c:forEach items="${user.courseParticipants}" var="courseParticipant" varStatus="loop">
-							<li <c:if test="${loop.first}">class="active"</c:if>><a href="#${courseParticipant.key.course.slug}" data-toggle="tab">${courseParticipant.key.course.name}</a></li>
+							<li <c:if test="${loop.first}">class="active"</c:if>><a href="#${courseParticipant.course.slug}" data-toggle="tab">${courseParticipant.course.name}</a></li>
 						</c:forEach>
 					</ul>
 
@@ -24,11 +24,11 @@
 
 					<div class="tab-content">
 						<c:forEach items="${user.courseParticipants}" var="courseParticipant" varStatus="loop">
-							<div class="tab-pane <c:if test="${loop.first}">active</c:if>" id="${courseParticipant.key.course.slug}">
+							<div class="tab-pane <c:if test="${loop.first}">active</c:if>" id="${courseParticipant.course.slug}">
 								<c:choose>
-									<c:when test="${courseParticipant.key.course.appointments.size() gt 0}">
+									<c:when test="${courseParticipant.course.appointments.size() gt 0}">
 										<div class="accordion" id="accordion2">
-											<c:forEach items="${courseParticipant.key.course.appointments}" var="appointment" varStatus="loop">
+											<c:forEach items="${courseParticipant.course.appointments}" var="appointment" varStatus="loop">
 												<c:set var="isAbsent" value="false" />
 												<div class="accordion-group">
 													<div class="accordion-heading">
@@ -36,7 +36,7 @@
 																test="${not empty appointment.appointmentDate}">&nbsp;(${appointment.appointmentDate})</c:if>
 														</a>
 													</div>
-													
+
 													<!-- searching the absence object from the user for the appointment -->
 													<c:forEach items="${appointment.absences}" var="absence">
 														<c:if test="${absence.key.participant.pid == user.pid && absence.enabled == true}">
@@ -44,7 +44,7 @@
 															<c:set var="absenceForAppointment" value="${absence}" />
 														</c:if>
 													</c:forEach>
-													
+
 													<div id="collapse${loop.index}" class="accordion-body collapse" style="height: 0px;">
 														<div class="accordion-inner">
 															<c:choose>
@@ -54,7 +54,7 @@
 																	<br />
 																	<br />
 																	<spring:message code="user.changeReason" />
-																	<form method="post" action="<c:url value='/participant/absence/update/${courseParticipant.key.course.slug}' />" class="form-horizontal">
+																	<form method="post" action="<c:url value='/participant/absence/update/${courseParticipant.course.slug}' />" class="form-horizontal">
 																		<input id="appointmentId" name="appointmentId" type="hidden" value="${appointment.apid}">
 																		<div class="control-group">
 																			<label for="reason" class="control-label"> <spring:message code="label.reason" />:
@@ -68,7 +68,7 @@
 																		</div>
 																	</form>
 																	<spring:message code="user.presentQuestion" />
-																	<form method="post" action="<c:url value='/participant/absence/update/${courseParticipant.key.course.slug}' />" class="form-horizontal">
+																	<form method="post" action="<c:url value='/participant/absence/update/${courseParticipant.course.slug}' />" class="form-horizontal">
 																		<input id="appointmentId" name="appointmentId" type="hidden" value="${appointment.apid}"> <input id="enabled" name="enabled" type="hidden" value="false">
 																		<div class="form-actions">
 																			<input type="submit" value="<spring:message code="label.report" />" class="btn btn-primary">
@@ -79,7 +79,7 @@
 																	<spring:message code="user.absentQuestion" />
 																	<br />
 																	<br />
-																	<form method="post" action="<c:url value='/participant/absence/save/${courseParticipant.key.course.slug}' />" class="form-horizontal">
+																	<form method="post" action="<c:url value='/participant/absence/save/${courseParticipant.course.slug}' />" class="form-horizontal">
 																		<input id="appointmentId" name="appointmentId" type="hidden" value="${appointment.apid}">
 																		<div class="control-group">
 																			<label for="reason" class="control-label"> <spring:message code="label.reason" />:

@@ -12,8 +12,10 @@
 
 		<spring:message var="i18nWidgetTitle" code="widget.courses" />
 
-		<dmtags:widget icon="icon-calendar" title="${i18nWidgetTitle}">
-			<spring:message code="help.course" /><br />
+		<dmtags:widget icon="icon-calendar" title="${i18nWidgetTitle}"
+			id="add" retractable="true" retractedPerDefault="true">
+			<spring:message code="help.course" />
+			<br />
 			<spring:message code="help.required" />
 			<form:form method="post" action="course/add" commandName="course"
 				class="form-horizontal">
@@ -166,7 +168,8 @@
 							</c:if>
 						</div>
 						<form:input path="teacher.pid" id="teacherPid" type="hidden" />
-						<form:input path="teacher.firstname" id="teacherFirst" type="hidden" />
+						<form:input path="teacher.firstname" id="teacherFirst"
+							type="hidden" />
 						<form:input path="teacher.lastname" id="teacherLast" type="hidden" />
 					</div>
 				</div>
@@ -182,7 +185,8 @@
 		</dmtags:widget>
 
 		<spring:message var="i18nOverview" code="widget.overview" />
-		<dmtags:widget title="${i18nOverview}" style="table" icon="icon-list">
+		<dmtags:widget title="${i18nOverview}" style="table" icon="icon-list"
+			id="list">
 			<c:if test="${!empty courseList}">
 
 				<display:table name="courseList" id="course"
@@ -221,7 +225,21 @@
 						<br />
 						<a href="course/delete/${cid}" class="openDialog" id="${cid}"><spring:message
 								code="label.delete" /></a>
-						<div id="deleteId" style="display:none;"></div>		
+						<div id="deleteId" style="display: none;"></div>
+						<br />
+						<c:choose>
+							<c:when test="${course.appointments.size() gt 0}">
+								<a
+									href="<c:url value="/admin/appointment/edit/${course.slug}" />"><spring:message
+										code="label.editAppointments" /></a>
+							</c:when>
+							<c:otherwise>
+								<a
+									href="<c:url value="/admin/appointment/edit/${course.slug}" />"><spring:message
+										code="label.createAppointments" /> </a>
+							</c:otherwise>
+						</c:choose>
+
 					</display:column>
 				</display:table>
 
@@ -241,24 +259,43 @@
 
 
 <script type="text/javascript">
+
+	// this section is needed if the url contains an anchor hash to a widget which is retracted by default
+	$(document).ready(
+			function() {
+				if (window.location.hash) {
+					$(window.location.hash).children("[id*='widget-content-']")
+							.removeAttr('style');
+				}
+			});
+
 	$('i').tooltip();
-	$(document).on("saveStyleTeacher",function(){ //damit Stil und Teacher erhalten bleiben
-		if($("#styleSid").val() != ''){
-			$("#showStyles").empty();
-			$("#showStyles").append("<span class='styleTag'>"
-							+ $("#styleName").val()
-							+ "&nbsp;<i class='icon icon-remove'></i></span>");
-		}
-	
-		if($("#teacherPid").val() != ''){
-			$("#showTeacher").empty();
-			$("#showTeacher").append("<span class='teacherTag'>"
-							+ $("#teacherFirst").val() + "&nbsp;" + $("#teacherLast").val()
-							+ "&nbsp;<i class='icon icon-remove'></i></span>");
-		}
-	});
-	$(document).trigger("saveStyleTeacher", [""]);
-	
+	$(document)
+			.on(
+					"saveStyleTeacher",
+					function() { //damit Stil und Teacher erhalten bleiben
+						if ($("#styleSid").val() != '') {
+							$("#showStyles").empty();
+							$("#showStyles")
+									.append(
+											"<span class='styleTag'>"
+													+ $("#styleName").val()
+													+ "&nbsp;<i class='icon icon-remove'></i></span>");
+						}
+
+						if ($("#teacherPid").val() != '') {
+							$("#showTeacher").empty();
+							$("#showTeacher")
+									.append(
+											"<span class='teacherTag'>"
+													+ $("#teacherFirst").val()
+													+ "&nbsp;"
+													+ $("#teacherLast").val()
+													+ "&nbsp;<i class='icon icon-remove'></i></span>");
+						}
+					});
+	$(document).trigger("saveStyleTeacher", [ "" ]);
+
 	$(".openDialog").click(function() { // Rückbestätigung bei Löschen 
 		$("#deleteId").text($(this).attr("id"));
 		$("#dialog-confirm").dialog("open");
@@ -270,7 +307,7 @@
 		modal : true,
 		buttons : {
 			"OK" : function() {
-				document.location = "course/delete/"+$("#deleteId").text();
+				document.location = "course/delete/" + $("#deleteId").text();
 				$("#deleteId").text("");
 
 				$(this).dialog("close");
@@ -280,95 +317,134 @@
 			}
 		}
 	});
-	
-	$(document).ready(function() {
-		$("#showStyles").on("click", "i", function() { //Stil löschen
-			$(this).parent().remove();
-			$("#styleSid").val(null);
-		});
 
-		$("#stylesQuery").autocomplete({
-			minLength : 1,
-			delay : 500,
-			//define callback to format results
-			source : function(request, response) {
-				$.getJSON("/dancemanage/admin/course/getStyles",request,function(result) {
-					response($.map(result,function(item) {
-						return {
-							label : item.name,
-							value : item.name,
-							sid: item.sid
-						};
-					}));
-				});
-			},
+	$(document)
+			.ready(
+					function() {
+						$("#showStyles").on("click", "i", function() { //Stil löschen
+							$(this).parent().remove();
+							$("#styleSid").val(null);
+						});
 
-			select : function(event, ui) {
-				if (ui.item) {
-					event.preventDefault();
-					$("#showStyles").empty();
-					$("#styleName").empty();
-					$("#showStyles").append("<span class='styleTag'>"
-											+ ui.item.label
-											+ "&nbsp;<i class='icon icon-remove'></i></span>");
-					$("#styleName").val(ui.item.label);
-					$("#styleSid").val(ui.item.sid);
-					
-					var defValue = $("#stylesQuery").prop('defaultValue');
-					$("#stylesQuery").val(defValue);
-					$("#stylesQuery").blur();
-					
-					return false;
-				}
-			}
-		});
-	});
-	$(document).ready(function() {
-		$("#showTeacher").on("click", "i", function() { //Lehrer löschen
-			$(this).parent().remove();
-			$("#teacherPid").val(null);
-		});
+						$("#stylesQuery")
+								.autocomplete(
+										{
+											minLength : 1,
+											delay : 500,
+											//define callback to format results
+											source : function(request, response) {
+												$
+														.getJSON(
+																"/dancemanage/admin/course/getStyles",
+																request,
+																function(result) {
+																	response($
+																			.map(
+																					result,
+																					function(
+																							item) {
+																						return {
+																							label : item.name,
+																							value : item.name,
+																							sid : item.sid
+																						};
+																					}));
+																});
+											},
 
-		$("#teacherQuery").autocomplete({
-			minLength : 1,
-			delay : 500,
-			source : function(request, response) {
-				$.getJSON("/dancemanage/admin/course/getTeachers",request,function(result) {
-					response($.map(result,function(item) {
-						return {
-							label : item.firstname
-									+ " "
-									+ item.lastname,
-							value : item.firstname
-									+ " "
-									+ item.lastname,
-							pid: item.pid,
-							first: item.firstname,
-							last: item.lastname
-						};
-					}));
-				});
-			},
+											select : function(event, ui) {
+												if (ui.item) {
+													event.preventDefault();
+													$("#showStyles").empty();
+													$("#styleName").empty();
+													$("#showStyles")
+															.append(
+																	"<span class='styleTag'>"
+																			+ ui.item.label
+																			+ "&nbsp;<i class='icon icon-remove'></i></span>");
+													$("#styleName").val(
+															ui.item.label);
+													$("#styleSid").val(
+															ui.item.sid);
 
-			select : function(event, ui) {
-				if (ui.item) {
-					event.preventDefault();
-					$("#showTeacher").empty();
-					$("#showTeacher")
-							.append(
-									"<span class='teacherTag'>"
-											+ ui.item.label
-											+ "&nbsp;<i class='icon icon-remove'></i></span>");
-					$("#teacherPid").val(ui.item.pid);
-					$("#teacherFirst").val(ui.item.first);
-					$("#teacherLast").val(ui.item.last);
-					
-					var defValue = $("#teacherQuery").prop('defaultValue');
-					$("#teacherQuery").val(defValue);
-					$("#teacherQuery").blur();
-					return false;
-				}
-			}
-		});
-	});
+													var defValue = $(
+															"#stylesQuery")
+															.prop(
+																	'defaultValue');
+													$("#stylesQuery").val(
+															defValue);
+													$("#stylesQuery").blur();
+
+													return false;
+												}
+											}
+										});
+					});
+	$(document)
+			.ready(
+					function() {
+						$("#showTeacher").on("click", "i", function() { //Lehrer löschen
+							$(this).parent().remove();
+							$("#teacherPid").val(null);
+						});
+
+						$("#teacherQuery")
+								.autocomplete(
+										{
+											minLength : 1,
+											delay : 500,
+											source : function(request, response) {
+												$
+														.getJSON(
+																"/dancemanage/admin/course/getTeachers",
+																request,
+																function(result) {
+																	response($
+																			.map(
+																					result,
+																					function(
+																							item) {
+																						return {
+																							label : item.firstname
+																									+ " "
+																									+ item.lastname,
+																							value : item.firstname
+																									+ " "
+																									+ item.lastname,
+																							pid : item.pid,
+																							first : item.firstname,
+																							last : item.lastname
+																						};
+																					}));
+																});
+											},
+
+											select : function(event, ui) {
+												if (ui.item) {
+													event.preventDefault();
+													$("#showTeacher").empty();
+													$("#showTeacher")
+															.append(
+																	"<span class='teacherTag'>"
+																			+ ui.item.label
+																			+ "&nbsp;<i class='icon icon-remove'></i></span>");
+													$("#teacherPid").val(
+															ui.item.pid);
+													$("#teacherFirst").val(
+															ui.item.first);
+													$("#teacherLast").val(
+															ui.item.last);
+
+													var defValue = $(
+															"#teacherQuery")
+															.prop(
+																	'defaultValue');
+													$("#teacherQuery").val(
+															defValue);
+													$("#teacherQuery").blur();
+													return false;
+												}
+											}
+										});
+					});
 </script>

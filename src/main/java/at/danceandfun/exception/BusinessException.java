@@ -1,13 +1,13 @@
 package at.danceandfun.exception;
 
-public class Businessexception extends RuntimeException {
+public class BusinessException extends RuntimeException {
 
     /**
      * 
      */
     private static final long serialVersionUID = 545488786180671175L;
 
-    public Businessexception(String string) {
+    public BusinessException(String string) {
         super(string);
     }
 

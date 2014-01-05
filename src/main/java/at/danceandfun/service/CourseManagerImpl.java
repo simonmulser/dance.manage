@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import at.danceandfun.dao.DaoBaseImpl;
+import at.danceandfun.entity.Address;
 import at.danceandfun.entity.Course;
 import at.danceandfun.entity.CourseParticipant;
 import at.danceandfun.entity.Participant;
@@ -39,7 +40,7 @@ public class CourseManagerImpl extends ManagerBaseImpl<Course> implements
 
             for (CourseParticipant cp : actualParticipant
                     .getCourseParticipants()) {
-                Course actualCourse = cp.getKey().getCourse();
+                Course actualCourse = cp.getCourse();
                 Criterion rest2 = Restrictions.eq("cid", actualCourse.getCid());
                 criteria.add(Restrictions.not(rest2));
             }
@@ -76,7 +77,7 @@ public class CourseManagerImpl extends ManagerBaseImpl<Course> implements
             List<Course> coursesWithStyle = mainDao.getListByCriteria(criteria);
             for (Course course : coursesWithStyle) {
                 for (CourseParticipant cp : enabledCourseParticipants) {
-                    if (cp.getKey().getCourse().getCid() == course.getCid()) {
+                    if (cp.getCourse().getCid() == course.getCid()) {
                         participantCount++;
                     }
                 }
@@ -95,5 +96,16 @@ public class CourseManagerImpl extends ManagerBaseImpl<Course> implements
                         + year + " group by c.level");
 
         return participantsPerLevel;
+    }
+
+    @Override
+    public List<Course> getCoursesByStudioAddress(Address address) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Course.class);
+
+        criteria.add(Restrictions.eq("enabled", true));
+        criteria.add(Restrictions.eq("address", address));
+
+        List<Course> courses = mainDao.getListByCriteria(criteria);
+        return courses;
     }
 }

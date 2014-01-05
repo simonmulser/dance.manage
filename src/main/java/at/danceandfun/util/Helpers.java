@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
 import at.danceandfun.entity.Course;
+import at.danceandfun.exception.BusinessException;
 
 public class Helpers {
 
@@ -45,5 +46,19 @@ public class Helpers {
         String normalized = Normalizer.normalize(nowhitespace, Form.NFD);
         String slug = NONLATIN.matcher(normalized).replaceAll("");
         return slug.toLowerCase(Locale.ENGLISH);
+    }
+
+    public static Integer extractId(String slug) {
+        if (slug == null) {
+            throw new BusinessException("slug is null");
+        }
+
+        String[] pieces = slug.split("-");
+        try {
+            int id = Integer.parseInt(pieces[pieces.length - 1]);
+            return id;
+        } catch (NumberFormatException e) {
+            throw new BusinessException("last part of slug is not an integer");
+        }
     }
 }

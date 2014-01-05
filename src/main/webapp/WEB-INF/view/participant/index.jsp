@@ -16,8 +16,7 @@
 		<spring:message var="i18nAgenda" code="widget.agenda" />
 		<c:choose>
 			<c:when test="${user.courseParticipants.size() gt 0}">
-				<dmtags:widget title="${i18nMyCourses}" style="table"
-					icon="icon-list">
+				<dmtags:widget title="${i18nMyCourses}" style="table" icon="icon-list">
 					<table class="table table-striped table-bordered">
 						<thead>
 							<tr>
@@ -27,11 +26,10 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach items="${user.courseParticipants}"
-								var="courseParticipant" varStatus="loop">
+							<c:forEach items="${user.courseParticipants}" var="courseParticipant" varStatus="loop">
 								<tr>
-									<td>${courseParticipant.key.course.year}</td>
-									<td>${courseParticipant.key.course.name}</td>
+									<td>${courseParticipant.course.year}</td>
+									<td>${courseParticipant.course.name}</td>
 									<td>${courseParticipant.duration}</td>
 								</tr>
 							</c:forEach>
@@ -40,8 +38,7 @@
 				</dmtags:widget>
 			</c:when>
 			<c:otherwise>
-				<dmtags:widget title="${i18nMyCourses}" style="noTable"
-					icon="icon-list">
+				<dmtags:widget title="${i18nMyCourses}" style="noTable" icon="icon-list">
 					<spring:message code="participant.noCourses" />
 				</dmtags:widget>
 			</c:otherwise>
@@ -50,13 +47,11 @@
 		<spring:message var="i18nSiblings" code="widget.siblings" />
 		<c:choose>
 			<c:when test="${user.siblings.size() gt 0}">
-				<dmtags:widget title="${i18nSiblings}" style="table"
-					icon="icon-list">
+				<dmtags:widget title="${i18nSiblings}" style="table" icon="icon-list">
 					<table class="table table-striped table-bordered">
 						<thead />
 						<tbody>
-							<c:forEach items="${user.siblings}" var="sibling"
-								varStatus="loop">
+							<c:forEach items="${user.siblings}" var="sibling" varStatus="loop">
 								<tr>
 									<td>${sibling.firstname}&nbsp;${sibling.lastname}</td>
 								</tr>
@@ -67,8 +62,7 @@
 			</c:when>
 			<c:otherwise>
 
-				<dmtags:widget title="${i18nSiblings}" style="noTable"
-					icon="icon-list">
+				<dmtags:widget title="${i18nSiblings}" style="noTable" icon="icon-list">
 					<spring:message code="participant.noSiblings" />
 				</dmtags:widget>
 			</c:otherwise>
@@ -83,8 +77,7 @@
             </dmtags:widget>
 			</c:when>
 			<c:otherwise>
-				<dmtags:widget title="${i18nInvoices}" style="noTable"
-					icon="icon-list">
+				<dmtags:widget title="${i18nInvoices}" style="noTable" icon="icon-list">
 					<spring:message code="user.noInvoices" />
 				</dmtags:widget>
 			</c:otherwise>
@@ -95,11 +88,8 @@
 		<div class="table">
 			<div class="widget-header">
 				<i class="icon-user"></i>
-				<h3>
-					${i18nMyAccount}
-				</h3>
-				<a href="<c:url value='/participant/edit' />"><button
-						type="submit" class="btn btn-primary">${i18nEdit}</button></a>
+				<h3>${i18nMyAccount}</h3>
+				<a href="<c:url value='/participant/edit' />"><button type="submit" class="btn btn-primary">${i18nEdit}</button></a>
 			</div>
 			<!-- /widget-header -->
 			<div class="widget-content">
@@ -122,8 +112,7 @@
 	</dmtags:span>
 
 	<dmtags:span width="12">
-		<dmtags:widget title="${i18nAgenda}" style="nopad"
-			icon="icon-calendar">
+		<dmtags:widget title="${i18nAgenda}" style="nopad" icon="icon-calendar">
 			<div id='calendar'></div>
 		</dmtags:widget>
 	</dmtags:span>
@@ -140,9 +129,9 @@ $(document).ready(function() {
 	<c:forEach items="${user.courseParticipants}" var="courseParticipant"
 		varStatus="loop">
 		        {
-	              title: '${courseParticipant.key.course.name}',
-	              start: '<joda:format value="${courseParticipant.key.course.getStartDateTimeCurrentWeekRepresentation()}" pattern="yyyy-MM-dd HH:mm:ss" />',
-	              end: '<joda:format value="${courseParticipant.key.course.getEndDateTimeCurrentWeekRepresentation()}" pattern="yyyy-MM-dd HH:mm:ss" />',
+	              title: '${courseParticipant.course.name}',
+	              start: '<joda:format value="${courseParticipant.course.getStartDateTimeCurrentWeekRepresentation()}" pattern="yyyy-MM-dd HH:mm:ss" />',
+	              end: '<joda:format value="${courseParticipant.course.getEndDateTimeCurrentWeekRepresentation()}" pattern="yyyy-MM-dd HH:mm:ss" />',
 	              allDay: false,
 	              color: '#FF8106',
 		        },

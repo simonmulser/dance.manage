@@ -22,7 +22,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import at.danceandfun.entity.Course;
 import at.danceandfun.entity.CourseParticipant;
-import at.danceandfun.entity.CourseParticipantID;
 import at.danceandfun.entity.Parent;
 import at.danceandfun.entity.Participant;
 import at.danceandfun.service.AddressManager;
@@ -90,7 +89,7 @@ public class ParticipantController {
             participant.setEnabled(true);
 
             if (participant.getAddress().getAid() == null) {
-                addressManager.update(participant.getAddress());
+                addressManager.persist(participant.getAddress());
             }
 
             if (!(participant.getParent().getPid() == null)) {
@@ -107,7 +106,7 @@ public class ParticipantController {
 
             if (participant.getPid() == null) {
                 logger.debug("New participant");
-                participantManager.update(participant);
+                participantManager.persist(participant);
             }
 
             if (!participant.getTempSiblings().equals("")) {
@@ -150,10 +149,8 @@ public class ParticipantController {
                     } else if (participant.getCourseById(actualCourse) == null) {
                         logger.debug("Neuen Kurs hinzufügen");
                         CourseParticipant newCP = new CourseParticipant();
-                        CourseParticipantID newCPID = new CourseParticipantID();
-                        newCPID.setCourse(actualCourse);
-                        newCPID.setParticipant(participant);
-                        newCP.setKey(newCPID);
+                        newCP.setCourse(actualCourse);
+                        newCP.setParticipant(participant);
                         newCP.setEnabled(true);
                         participant.getCourseParticipants().add(newCP);
                     }
@@ -194,7 +191,7 @@ public class ParticipantController {
             for (CourseParticipant cp : participantManager.get(pid)
                     .getCourseParticipants()) {
                 if (cp.isEnabled()) {
-                    Course actualCourse = cp.getKey().getCourse();
+                    Course actualCourse = cp.getCourse();
                     actualCourses += actualCourse.getCid().toString() + ";";
                     actualCourseNames += actualCourse.getName() + ","
                             + actualCourse.getCid().toString() + ";";

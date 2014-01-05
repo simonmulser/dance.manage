@@ -62,7 +62,7 @@
 									<td>${participant.courseParticipants.size()}</td>
 									<td><c:forEach items="${participant.courseParticipants}"
 											var="courseParticipant" varStatus="loop">
-	                                ${courseParticipant.key.course.name}
+	                                ${courseParticipant.course.name}
 	                                ${!loop.last ? ', ' : ''}
 	                                </c:forEach></td>
 									<td>${participant.lastname}</td>
@@ -107,7 +107,7 @@
 									</td>
 									<td><c:forEach items="${participant.courseParticipants}"
 											var="courseParticipant" varStatus="loop">
-                                    ${courseParticipant.key.course.name}
+                                    ${courseParticipant.course.name}
                                     ${!loop.last ? ', ' : ''}
                                     </c:forEach></td>
 								</tr>
