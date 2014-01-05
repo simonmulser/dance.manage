@@ -26,7 +26,7 @@ public class SearchController {
         model.put("searchedParticipants",
                 searchManager.searchParticipants(query));
         model.put("searchedTeachers", searchManager.searchTeachers(query));
-        model.put("searchedParents", searchManager.searchTeachers(query));
+        model.put("searchedParents", searchManager.searchParents(query));
         model.put("searchedCourses", searchManager.searchCourses(query));
         return "admin/searchView";
     }

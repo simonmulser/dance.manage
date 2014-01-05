@@ -13,14 +13,14 @@
 		<spring:message var="i18nSearchParticipants" code="widget.participants" />
 		<c:choose>
 			<c:when test="${searchedParticipants.size() gt 0}">
-				<dmtags:widget title="${i18nSearchSearchParticipants}" style="table"
+				<dmtags:widget title="${i18nSearchParticipants}" style="table"
 					icon="icon-list">
 					<table class="table table-striped table-bordered">
 						<tbody>
 							<c:forEach items="${searchedParticipants}"
 								var="searchedParticipant" varStatus="loop">
 								<tr>
-									<td>${searchedParticipant.firstname} ${searchedParticipant.lastname}</td>
+									<td>${searchedParticipant.firstname}&nbsp;${searchedParticipant.lastname}</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -37,7 +37,7 @@
 		
 		<spring:message var="i18nSearchCourses" code="widget.courses" />
 		<c:choose>
-			<c:when test="${searchedParticipants.size() gt 0}">
+			<c:when test="${searchedCourses.size() gt 0}">
 				<dmtags:widget title="${i18nSearchCourses}" style="table"
 					icon="icon-list">
 					<table class="table table-striped table-bordered">
@@ -72,7 +72,7 @@
 							<c:forEach items="${searchedParents}"
 								var="searchedParent" varStatus="loop">
 								<tr>
-									<td>${searchedParent.firstname} ${searchedParent.lastname}</td>
+									<td>${searchedParent.firstname}&nbsp;${searchedParent.lastname}</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -97,7 +97,7 @@
 							<c:forEach items="${searchedTeachers}"
 								var="searchedTeacher" varStatus="loop">
 								<tr>
-									<td>${searchedTeacher.firstname} ${searchedTeacher.lastname}</td>
+									<td>${searchedTeacher.firstname}&nbsp;${searchedTeacher.lastname}</td>
 								</tr>
 							</c:forEach>
 						</tbody>

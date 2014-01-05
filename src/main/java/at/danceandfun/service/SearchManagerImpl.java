@@ -55,14 +55,14 @@ public class SearchManagerImpl implements SearchManager {
         return teacherDao.getEnabledListWithCriteria(criteria);
     }
 
-    public List<Teacher> searchParents(String query) {
-        DetachedCriteria criteria = DetachedCriteria.forClass(Teacher.class);
+    public List<Parent> searchParents(String query) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Parent.class);
 
         criteria.add(Restrictions.or(
                 Restrictions.like("firstname", query + "%"),
                 Restrictions.like("lastname", query + "%")));
 
-        return teacherDao.getEnabledListWithCriteria(criteria);
+        return parentDao.getEnabledListWithCriteria(criteria);
     }
 
     @Override
