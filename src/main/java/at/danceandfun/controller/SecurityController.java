@@ -57,8 +57,8 @@ public class SecurityController {
                     .getAuthentication().getPrincipal();
             session.setAttribute("user", parent);
             session.setAttribute("userType", "parent");
-            session.setAttribute("editProfileLink", "#");
-            session.setAttribute("homeLink", "#");
+            session.setAttribute("editProfileLink", "/parent/edit");
+            session.setAttribute("homeLink", "/parent");
 
             return "redirect:/parent";
         }

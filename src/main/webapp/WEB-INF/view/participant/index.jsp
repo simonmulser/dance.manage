@@ -8,12 +8,14 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <spring:message var="i18nTitle" code="nav.home" />
+<spring:message var="i18nMyAccount" code="widget.myaccount" />
+<spring:message var="i18nEdit" code="label.edit" />
+<spring:message var="i18nMyCourses" code="widget.mycourses" />
+<spring:message var="i18nAgenda" code="widget.agenda" />
+<spring:message var="i18nInvoices" code="widget.invoices" />
+
 <dmtags:base title="${i18nTitle}" activesection="dashboard">
 	<dmtags:span width="6">
-		<spring:message var="i18nMyAccount" code="widget.myaccount" />
-		<spring:message var="i18nEdit" code="label.edit" />
-		<spring:message var="i18nMyCourses" code="widget.mycourses" />
-		<spring:message var="i18nAgenda" code="widget.agenda" />
 		<c:choose>
 			<c:when test="${user.courseParticipants.size() gt 0}">
 				<dmtags:widget title="${i18nMyCourses}" style="table" icon="icon-list">
@@ -68,7 +70,6 @@
 			</c:otherwise>
 		</c:choose>
 
-		<spring:message var="i18nInvoices" code="widget.invoices" />
 		<c:choose>
 			<c:when test="${user.invoices.size() gt 0}">
 				<!-- style="table" -->
@@ -97,6 +98,10 @@
 					<thead />
 					<dmtags:personInformation />
 					<tr>
+						<td><spring:message code="label.birthday" /></td>
+						<td>${user.birthday}</td>
+					</tr>
+					<tr>
 						<td><spring:message code="label.contactPerson" /></td>
 						<td>${user.parent.firstname}&nbsp;${user.parent.lastname}</td>
 					</tr>
@@ -121,9 +126,6 @@
 
 
 <script>
-
-
-
 $(document).ready(function() {
 	var courseData = [
 	<c:forEach items="${user.courseParticipants}" var="courseParticipant"
