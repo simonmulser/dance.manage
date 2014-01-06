@@ -30,102 +30,154 @@
 				<div id="showDetails">
 					<c:choose>
 						<c:when test="${!empty invoice.positions }">
-							<spring:message code="label.invoiceAddress" />
-							<form:input path="participant.pid" id="participantPid" type="hidden" />
-							<c:choose>
-								<c:when test="${!empty invoice.parent.pid}">
-									<div>
-										<form:input path="parent.pid" id="parentPid" type="hidden" />
-										${invoice.parent.firstname }&nbsp;${invoice.parent.lastname }<br />
-										${invoice.parent.address.street}&nbsp;${invoice.parent.address.number}
-										<c:if test="${!empty invoice.parent.address.stair}">
-											/ ${invoice.parent.address.stair }
-										</c:if>	
-										<c:if test="${!empty invoice.parent.address.door}">
-											/ ${invoice.parent.address.door }
-										</c:if>
-										<br />
-										${invoice.parent.address.zip},&nbsp;${invoice.parent.address.city }
-									</div>
-								</c:when>
-								<c:when test="${!empty invoice.participant.pid}">
-									<div>
-										${invoice.participant.firstname }&nbsp;${invoice.participant.lastname }<br />
-										${invoice.participant.address.street}&nbsp;${invoice.participant.address.number}
-										<c:if test="${!empty invoice.participant.address.stair}">
-											/ ${invoice.participant.address.stair }
-										</c:if>	
-										<c:if test="${!empty invoice.participant.address.door}">
-											/ ${invoice.participant.address.door }
-										</c:if>
-										<br />
-										${invoice.participant.address.zip},&nbsp;${invoice.participant.address.city }
-									</div>
-								</c:when>
-								<c:otherwise>
-								</c:otherwise>
-							</c:choose>
-							<c:forEach items="${invoice.positions}" var="position" varStatus="status">
-								<div class="control-group">
-									<form:label path="positions[${status.index }].key.course.name" class="control-label">
-										${position.key.course.name}
-									</form:label>
-									<form:input path="positions[${status.index }].key.course.name" type="hidden" />
-									<form:input path="positions[${status.index }].key.course.cid" type="hidden" />
-									<div class="span6">
-										<form:select path="positions[${status.index }].duration">
-											<form:options items="${Duration}" />
-										</form:select>
-									</div>
-									<c:if test="${!empty position.amount }">
-										<form:label path="positions[${status.index }].amount" class="control-label">
-										${position.amount}
-									</form:label>
+							<table cellpadding="10">
+								
+								<form:input path="participant.pid" id="participantPid" type="hidden" />
+								<tr>
+									<c:choose>
+										<c:when test="${!empty invoice.parent.pid}">
+											
+												<td colspan="2">
+													<spring:message code="label.invoiceAddress" /><br />
+													<form:input path="parent.pid" id="parentPid" type="hidden" />
+													${invoice.parent.firstname }&nbsp;${invoice.parent.lastname }<br />
+													${invoice.parent.address.street}&nbsp;${invoice.parent.address.number}
+													<c:if test="${!empty invoice.parent.address.stair}">
+														/ ${invoice.parent.address.stair }
+													</c:if>	
+													<c:if test="${!empty invoice.parent.address.door}">
+														/ ${invoice.parent.address.door }
+													</c:if>
+													<br />
+													${invoice.parent.address.zip},&nbsp;${invoice.parent.address.city }
+												</td>
+												<td colspan="2">
+													<spring:message code="label.senderAddress" /><br />
+													Dance &amp; Fun<br />
+													${user.address.street}&nbsp;${user.address.number }<br />
+													${user.address.zip }&nbsp;${user.address.city }
+												</td>
+										</c:when>
+										<c:when test="${!empty invoice.participant.pid}">
+												<td colspan="2">
+													<spring:message code="label.invoiceAddress" /><br />
+													${invoice.participant.firstname }&nbsp;${invoice.participant.lastname }<br />
+													${invoice.participant.address.street}&nbsp;${invoice.participant.address.number}
+													<c:if test="${!empty invoice.participant.address.stair}">
+														/ ${invoice.participant.address.stair }
+													</c:if>	
+													<c:if test="${!empty invoice.participant.address.door}">
+														/ ${invoice.participant.address.door }
+													</c:if>
+													<br />
+													${invoice.participant.address.zip},&nbsp;${invoice.participant.address.city }
+												</td>
+												<td colspan="2">
+													<spring:message code="label.senderAddress" /><br />
+													Dance &amp; Fun<br />
+													${user.address.street}&nbsp;${user.address.number }<br />
+													${user.address.zip }&nbsp;${user.address.city }
+												</td>
+										</c:when>
+										<c:otherwise>
+										</c:otherwise>
+									</c:choose>
+								</tr>
+								<tr>
+								<td colspan="4">&nbsp;</td>
+								</tr>
+								<tr>
+									<td>Bezeichnung</td>
+									<td>Position</td>
+									<td>Preis</td>
+									<td>Status</td>
+								</tr>
+								<c:forEach items="${invoice.positions}" var="position" varStatus="status">
+									<tr>
+										<td>
+											<form:label path="positions[${status.index }].key.course.name">
+												${position.key.course.name}
+											</form:label>
+											<form:input path="positions[${status.index }].key.course.name" type="hidden" />
+											<form:input path="positions[${status.index }].key.course.cid" type="hidden" />
+										</td>
+										<td>
+												<form:select path="positions[${status.index }].duration">
+													<form:options items="${Duration}" />
+												</form:select>
+										</td>
+										<td>
+											<c:if test="${!empty position.amount }">
+												<form:label path="positions[${status.index }].amount"	>
+												${position.amount} &euro;
+											</form:label>
+											</c:if>
+										</td>
+										<td>
+											<c:if test="${!empty position.errorMessage }">
+												<div class="errorMessage">${position.errorMessage }</div>
+											</c:if>
+										</td>
+										
+									</tr>
+								</c:forEach>
+								<tr>
+								<td colspan="4">&nbsp;</td>
+								</tr>
+								<tr>
+									<td>
+										<form:label path="reduction">
+											<spring:message code="label.reduction" />
+									    </form:label>
+									    </td>
+								    <td>
+										<form:input path="reduction" /> %
+										<form:errors path="reduction" cssClass="error" />
+									</td>
+								</tr>
+								<tr>
+									<td></td>
+									<c:if test="${!empty invoice.vatAmount }">
+										<td>
+											<form:label path="vatAmount">
+												<spring:message code="label.vatAmount" />
+											</form:label>
+										</td>
+										<td>	
+											${invoice.vatAmount} &euro;
+										</td>
 									</c:if>
-									<c:if test="${!empty position.errorMessage }">
-										<div class="errorMessage">${position.errorMessage }</div>
+									<td></td>
+								</tr>
+								<tr>
+									<td></td>
+									<c:if test="${!empty invoice.totalAmount }">
+											<td>
+												<form:label path="totalAmount">
+													<spring:message code="label.totalAmount" />	
+												</form:label>
+											</td>
+											<td>
+												${invoice.totalAmount} &euro;
+											</td>
 									</c:if>
-									
-								</div>
-							</c:forEach>
-							<div class="control-group">
-								<form:label path="reduction" class="control-label">
-									<spring:message code="label.reduction" />
-							    </form:label>
-								<div class="span6">
-									<form:input path="reduction" /> %
-								</div>
-								<form:errors path="reduction" cssClass="error" />
-							</div>
-							
-								<c:if test="${!empty invoice.totalAmount }">
-									<div class="control-group">
-										<form:label path="totalAmount" class="control-label">
-											<spring:message code="label.totalAmount" />
-												${invoice.totalAmount}
-										</form:label>
-									</div>	
-									<div class="control-group">
-									<form:label path="vatAmount" class="control-label">
-										<spring:message code="label.vatAmount" />
-											${invoice.vatAmount}
-									</form:label>	
-									</div>	
-								</c:if>
-							<c:choose>
-								<c:when test="${status eq 0}">
-									<div class="form-actions">
-										<input type="submit" value="<spring:message code="label.preview"/>"
-											class="btn btn-primary" />
-									</div>
-								</c:when>
-								<c:otherwise>
-									<div class="form-actions">
-										<input type="submit" value="<spring:message code="label.save"/>"
-											class="btn btn-primary" />
-									</div>
-								</c:otherwise>
-							</c:choose>
+									<td></td>
+								</tr>
+							</table>
+								<c:choose>
+									<c:when test="${status eq 0}">
+										<div class="form-actions">
+											<input type="submit" value="<spring:message code="label.preview"/>"
+												class="btn btn-primary" />
+										</div>
+									</c:when>
+									<c:otherwise>
+										<div class="form-actions">
+											<input type="submit" value="<spring:message code="label.save"/>"
+												class="btn btn-primary" />
+										</div>
+									</c:otherwise>
+								</c:choose>
 						</c:when>
 						<c:otherwise>
 						</c:otherwise>

@@ -1,5 +1,7 @@
 package at.danceandfun.entity;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,6 +125,9 @@ public class Invoice extends EntityBase {
     public void setTotalAmount(Double totalAmount) {
         this.totalAmount = totalAmount;
         this.vatAmount = totalAmount * 0.166667;
+        BigDecimal bd = new BigDecimal(this.vatAmount).setScale(2,
+                RoundingMode.HALF_EVEN);
+        this.vatAmount = bd.doubleValue();
     }
 
     public Double getVatAmount() {

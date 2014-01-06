@@ -2,6 +2,7 @@ package at.danceandfun.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
@@ -10,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.LocalDateTime;
 import org.joda.time.Period;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -30,6 +32,7 @@ import at.danceandfun.enumeration.Duration;
 import at.danceandfun.service.CourseParticipantManager;
 import at.danceandfun.service.InvoiceManager;
 import at.danceandfun.service.ParticipantManager;
+import at.danceandfun.util.AppContext;
 
 @Controller
 @RequestMapping(value = "admin/invoice")
@@ -46,6 +49,7 @@ public class InvoiceController {
 
     private Invoice invoice;
     private int status; // 0=preview, 1=readyToSave, 2=Save, 3=Saved
+    private boolean editTrue = false;
 
     @PostConstruct
     public void init() {
@@ -61,10 +65,14 @@ public class InvoiceController {
             init();
         }
 
+        if (!editTrue) {
+            invoice = new Invoice();
+        }
+
         map.addAttribute("invoice", invoice);
         map.addAttribute("invoiceList", invoiceManager.getEnabledList());
         map.addAttribute("status", status);
-
+        editTrue = false;
         return "admin/invoiceView";
     }
 
@@ -79,6 +87,7 @@ public class InvoiceController {
     @RequestMapping(value = "/getDetailsForParticipant/{pid}")
     public String detailsForParticipant(@PathVariable("pid") Integer pid,
             ModelMap map) {
+        editTrue = true;
         invoice = new Invoice();
         Participant actualParticipant = participantManager.get(pid);
         for (CourseParticipant cp : actualParticipant.getCourseParticipants()) {
@@ -109,6 +118,7 @@ public class InvoiceController {
             BindingResult result, RedirectAttributes redirectAttributes,
             ModelMap map) {
 
+        editTrue = true;
         Participant actualParticipant = participantManager.get(invoice
                 .getParticipant().getPid());
         invoice.setParticipant(actualParticipant);
@@ -134,18 +144,14 @@ public class InvoiceController {
                         && cp.getCourse().getCid() == pos.getKey().getCourse()
                                 .getCid()) {
                     if (pos.getDuration() == cp.getDuration()) {
-                        pos.setErrorMessage("Für "
-                                + pos.getKey().getCourse().getName()
-                                + " existiert bereits eine Rechnung.");
+                        pos.setErrorMessage(geti18nMessage("message.invoiceExisting"));
                         status = 0;
                     } else if (pos.getDuration() == Duration.YEAR
                             && courseCount != 0) {
-                        pos.setErrorMessage("Für "
-                                + pos.getKey().getCourse().getName()
-                                + " wurde bereits 1 Semester bezahlt.");
+                        pos.setErrorMessage(geti18nMessage("message.invoiceOneSemester"));
                         status = 0; // preview
                     } else if (pos.getDuration() == Duration.NONE) {
-                        pos.setErrorMessage("Diese Position wird nicht berücksichtigt.");
+                        pos.setErrorMessage(geti18nMessage("message.notRelevatPosition"));
                         noneCounts++;
                     } else {
                         if (pos.getDuration() == Duration.YEAR) {
@@ -153,7 +159,7 @@ public class InvoiceController {
                         } else {
                             pos.setAmount(cp.getCourse().getSemesterPrice());
                         }
-                        pos.setErrorMessage("Position in Ordnung.");
+                        pos.setErrorMessage(geti18nMessage("message.okPosition"));
                         totalAmount += pos.getAmount();
                     }
                     positionsWithErrors.add(pos);
@@ -211,5 +217,11 @@ public class InvoiceController {
         }
         invoice = new Invoice();
         return "redirect:/admin/invoice";
+    }
+
+    public String geti18nMessage(String identifier) {
+        Locale locale = LocaleContextHolder.getLocale();
+        return AppContext.getApplicationContext().getMessage(identifier, null,
+                locale);
     }
 }
