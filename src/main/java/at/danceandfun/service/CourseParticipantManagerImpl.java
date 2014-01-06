@@ -23,9 +23,10 @@ public class CourseParticipantManagerImpl extends
     public List<CourseParticipant> getOpenCoursesByParticipant(
             Participant participant) {
         List<CourseParticipant> openCourseParticipants = new ArrayList<CourseParticipant>();
-        for (CourseParticipant cp : participant.getCourseParticipants()) {
-
-        }
+        // pushed in this way into dev-branch. remove or implement
+        // for (CourseParticipant cp : participant.getCourseParticipants()) {
+        //
+        // }
         return null;
     }
 
