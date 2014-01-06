@@ -18,7 +18,7 @@
 			<div class="widget-header">
 				<i class="icon-user"></i>
 				<h3>${i18nMyChildren}</h3>
-				<a href="<c:url value='#' />"><button type="submit" class="btn btn-primary"><spring:message code="parent.addChild" /></button></a>
+				<!-- <a href="<c:url value='/parent/add/child' />"><button type="submit" class="btn btn-primary"><spring:message code="parent.editChild" /></button></a> -->
 			</div>
 			<!-- /widget-header -->
 			<c:choose>
@@ -29,6 +29,7 @@
 								<tr>
 									<th><spring:message code="label.firstname" /></th>
 									<th><spring:message code="label.lastname" /></th>
+									<th />
 								</tr>
 							</thead>
 							<tbody>
@@ -36,6 +37,7 @@
 									<tr>
 										<td>${child.firstname}</td>
 										<td>${child.lastname}</td>
+										<td style="text-align:center"><a href="<c:url value='#'/>"><button type="submit" class="btn btn-info"><spring:message code="parent.viewChildAccount" ></spring:message></button></a></td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -44,8 +46,7 @@
 				</c:when>
 				<c:otherwise>
 					<div class="widget-content">
-						<!-- spring:message code="participant.noCourses" / -->
-						parent.noChildren
+						<spring:message code="parent.noChildren" />
 					</div>
 				</c:otherwise>
 			</c:choose>

@@ -68,4 +68,5 @@ public class PersonManagerImpl implements PersonManager {
         throw new UsernameNotFoundException("no user found with username "
                 + username);
     }
+
 }

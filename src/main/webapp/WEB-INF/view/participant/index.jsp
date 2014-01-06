@@ -78,7 +78,7 @@
             </dmtags:widget>
 			</c:when>
 			<c:otherwise>
-				<dmtags:widget title="${i18nInvoices}" style="noTable" icon="icon-list">
+				<dmtags:widget title="${i18nInvoices}" style="noTable" icon="icon-envelope">
 					<spring:message code="user.noInvoices" />
 				</dmtags:widget>
 			</c:otherwise>

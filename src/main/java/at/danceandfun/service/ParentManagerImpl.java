@@ -11,14 +11,22 @@ import org.springframework.stereotype.Service;
 import at.danceandfun.dao.DaoBaseImpl;
 import at.danceandfun.entity.Parent;
 import at.danceandfun.entity.Participant;
+import at.danceandfun.exception.BusinessException;
 
 @Service
 public class ParentManagerImpl extends ManagerBaseImpl<Parent> implements
         ParentManager {
 
+    private PersonManager personManager;
+
     @Autowired
     public void setDao(DaoBaseImpl<Parent> parentDao) {
         setMainDao(parentDao);
+    }
+
+    @Autowired
+    public void setPersonManager(PersonManager personManager) {
+        this.personManager = personManager;
     }
 
     public List<Parent> searchForParents(Participant actualParticipant,
@@ -39,5 +47,23 @@ public class ParentManagerImpl extends ManagerBaseImpl<Parent> implements
         }
         List<Parent> parents = mainDao.getListByCriteria(criteria);
         return parents;
+    }
+
+    @Override
+    public void addChild(Parent parent, Participant participant, String password)
+            throws BusinessException {
+
+        if (!participant.getPassword().equals(password)) {
+            throw new BusinessException("Wrong Password");
+        }
+
+        if (parent.getChildren().contains(participant)) {
+            throw new BusinessException(
+                    "The parent is already set for this child");
+        }
+
+        parent.getChildren().add(participant);
+
+        merge(parent);
     }
 }
