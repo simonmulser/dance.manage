@@ -3,6 +3,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
+<%@taglib uri="http://displaytag.sf.net" prefix="display"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 <spring:message var="i18nTitle" code="nav.invoices" />
 <dmtags:base title="${i18nTitle}" activesection="invoices">
@@ -111,11 +112,20 @@
 									</form:label>	
 									</div>	
 								</c:if>
-							
-							<div class="form-actions">
-								<input type="submit" value="<spring:message code="label.preview"/>"
-									class="btn btn-primary" />
-							</div>
+							<c:choose>
+								<c:when test="${status eq 0}">
+									<div class="form-actions">
+										<input type="submit" value="<spring:message code="label.preview"/>"
+											class="btn btn-primary" />
+									</div>
+								</c:when>
+								<c:otherwise>
+									<div class="form-actions">
+										<input type="submit" value="<spring:message code="label.save"/>"
+											class="btn btn-primary" />
+									</div>
+								</c:otherwise>
+							</c:choose>
 						</c:when>
 						<c:otherwise>
 						</c:otherwise>
@@ -127,12 +137,81 @@
 		</dmtags:widget>
 		<spring:message var="i18nOverview" code="widget.overview" />
 		<dmtags:widget title="${i18nOverview}" style="table" icon="icon-list">
-
+			<display:table name="invoiceList" id="invoice"
+					class="table table-striped table-bordered displaytag" pagesize="15"
+					requestURI="/admin/invoice" defaultsort="1">
+					<display:column sortable="true" titleKey="label.invoiceID">
+						${invoice.iid}
+					</display:column>
+					<display:column sortable="true" titleKey="label.invoiceDate">
+						<joda:format value="${invoice.date}" pattern="dd.MM.yyyy" />
+					</display:column>
+					
+					<display:column sortable="true" titleKey="label.invoiceRecipient">
+						<c:choose>
+							<c:when test="${!empty invoice.parent.pid }">
+								${invoice.parent.firstname}&nbsp;${invoice.parent.lastname}
+							</c:when>
+							<c:otherwise>
+								${invoice.participant.firstname}&nbsp;${invoice.participant.lastname}
+							</c:otherwise>
+						</c:choose>
+					</display:column>
+					<display:column sortable="true" titleKey="label.participant">
+						${invoice.participant.firstname}&nbsp;${invoice.participant.lastname}
+					</display:column>
+					<display:column titleKey="label.totalAmount">
+						${invoice.totalAmount}&euro;
+					</display:column>
+					<display:column titleKey="label.vatAmount">
+						${invoice.vatAmount}&euro;
+					</display:column>
+					<display:column titleKey="label.reduction">
+						${invoice.reduction}%
+					</display:column>
+					<display:column>
+						<c:set var="iid" value="${invoice.iid}" />
+						<br />
+						<a href="invoice/delete/${iid}" class="openDialog" id="${iid}"><spring:message
+								code="label.cancelInvoice" /></a>
+								<i title="<spring:message code='help.invoiceDelete' />" class="inline-tooltip icon icon-question-sign"></i>
+						<div id="deleteId" style="display:none;"></div>		
+					</display:column>
+			</display:table>
+			<div id="dialog-confirm"
+					title="<spring:message code="delete.title" />">
+					<p>
+						<span class="ui-icon ui-icon-alert"
+							style="float: left; margin: 0 7px 20px 0;"></span>
+						<spring:message code="delete.invoice" />
+					</p>
+				</div>
 		</dmtags:widget>
 	</dmtags:span>
 </dmtags:base>
 <script type="text/javascript">
 	$('i').tooltip();
+	$(".openDialog").click(function() { // Rückbestätigung bei Löschen 
+		$("#deleteId").text($(this).attr("id"));
+		$("#dialog-confirm").dialog("open");
+		return false;
+	});
+	$("#dialog-confirm").dialog({
+		autoOpen : false,
+		resizable : false,
+		modal : true,
+		buttons : {
+			"OK" : function() {
+				document.location = "invoice/delete/"+$("#deleteId").text();
+				$("#deleteId").text("");
+
+				$(this).dialog("close");
+			},
+			Cancel : function() {
+				$(this).dialog("close");
+			}
+		}
+	});
 	$(document).ready(function() {
 		$("#showParticipant").on("click", "i", function() { //Participant löschen
 			$(this).parent().remove();
