@@ -12,6 +12,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import at.danceandfun.entity.Teacher;
@@ -19,6 +20,7 @@ import at.danceandfun.service.TeacherManager;
 
 @Controller
 @RequestMapping(value = "/teacher")
+@SessionAttributes("teacher")
 public class TeacherHomeController {
 
     private static Logger logger = Logger
