@@ -554,9 +554,9 @@ public class GenerateSatSolution {
         System.out.println("Anzahl an Participants mit mehr als einem Kurs: "
                 + idList.size());
 
-        System.out.println("Mein Name lautet: "
-                + participants.get(idList.get(0)).getFirstname() + " "
-                + participants.get(idList.get(0)).getLastname());
+//        System.out.println("Mein Name lautet: "
+//                + participants.get(idList.get(0)).getFirstname() + " "
+//                + participants.get(idList.get(0)).getLastname());
 
         // Now count the amount of the courses in the different performances
         for (int id : idList) {
