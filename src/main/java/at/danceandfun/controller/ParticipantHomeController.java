@@ -5,6 +5,7 @@ import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -26,6 +27,7 @@ import at.danceandfun.service.ParticipantManager;
 @Controller
 @RequestMapping(value = "/participant")
 @SessionAttributes("participant")
+@PreAuthorize("hasPermission(#pid, 'owner') or hasPermission(#pid, 'isParent')")
 public class ParticipantHomeController {
 
     private static Logger logger = Logger
@@ -40,28 +42,29 @@ public class ParticipantHomeController {
     @Autowired
     private AppointmentManager appointmentManager;
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public String showIndex(ModelMap map) {
+    @RequestMapping(value = "/{pid}", method = RequestMethod.GET)
+    public String showIndex(ModelMap map, @PathVariable int pid) {
         logger.debug("showIndex");
-        Participant participant = getLoggedInParticipant();
+        Participant participant = participantManager.get(pid);
 
-        map.put("user", participant);
+        map.put("participant", participant);
         return "participant/index";
     }
 
-    @RequestMapping(value = "/edit", method = RequestMethod.GET)
-    public String showEdit(ModelMap map) {
+    @RequestMapping(value = "/edit/{pid}", method = RequestMethod.GET)
+    public String showEdit(ModelMap map, @PathVariable int pid) {
         logger.debug("showEdit");
-        Participant participant = getLoggedInParticipant();
+        Participant participant = participantManager.get(pid);
 
         map.put("participant", participant);
         return "participant/editParticipant";
     }
 
-    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    @RequestMapping(value = "/edit/{pid}", method = RequestMethod.POST)
     public String updateParticipant(ModelMap map,
             @ModelAttribute("participant") @Valid Participant participant,
-            BindingResult result, RedirectAttributes redirectAttributes) {
+            BindingResult result, RedirectAttributes redirectAttributes,
+            @PathVariable int pid) {
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute(
                     "org.springframework.validation.BindingResult.participant",
@@ -72,23 +75,24 @@ public class ParticipantHomeController {
 
         logger.debug("updateParticipant");
         participantManager.merge(participant);
-        return "redirect:/participant";
+        return "redirect:/participant/" + pid;
 
     }
 
-    @RequestMapping(value = "/absence", method = RequestMethod.GET)
-    public String showAbsence(ModelMap map) {
+    @RequestMapping(value = "/absence/{pid}", method = RequestMethod.GET)
+    public String showAbsence(ModelMap map, @PathVariable int pid) {
         logger.debug("showAbsence");
-        Participant participant = getLoggedInParticipant();
+        Participant participant = participantManager.get(pid);
 
-        map.put("user", participant);
+        map.put("participant", participant);
         return "participant/absenceView";
     }
 
-    @RequestMapping(value = "/absence/save/{slug}", method = RequestMethod.POST)
-    public String saveAbsence(@PathVariable String slug,
+    @RequestMapping(value = "/absence/save/{slug}/{pid}", method = RequestMethod.POST)
+    public String saveAbsence(@PathVariable String slug, @PathVariable int pid,
             HttpServletRequest request, ModelMap map) {
-        Participant participant = getLoggedInParticipant();
+        Participant participant = participantManager.get(pid);
+
         String reason = request.getParameter("reason");
         Integer appointmentId = Integer.parseInt(request
                 .getParameter("appointmentId"));
@@ -101,14 +105,14 @@ public class ParticipantHomeController {
 
         participantManager.mergeAbsence(absence);
 
-        map.put("user", participant);
+        map.put("participant", participant);
         return "participant/absenceView";
     }
 
-    @RequestMapping(value = "/absence/update/{slug}", method = RequestMethod.POST)
+    @RequestMapping(value = "/absence/update/{slug}/{pid}", method = RequestMethod.POST)
     public String deleteAbsence(@PathVariable String slug,
-            HttpServletRequest request, ModelMap map) {
-        Participant participant = getLoggedInParticipant();
+            @PathVariable int pid, HttpServletRequest request, ModelMap map) {
+        Participant participant = participantManager.get(pid);
         Integer appointmentId = Integer.parseInt(request
                 .getParameter("appointmentId"));
         String enabled = request.getParameter("enabled");
@@ -128,7 +132,7 @@ public class ParticipantHomeController {
 
         participantManager.mergeAbsence(absence);
 
-        map.put("user", participant);
+        map.put("participant", participant);
         return "participant/absenceView";
     }
 

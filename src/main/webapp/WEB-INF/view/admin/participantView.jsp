@@ -40,8 +40,8 @@
 							class="inline-tooltip icon icon-question-sign"></i>
 						<div id="showParent">
 							<c:if test="${!empty participant.parent.pid }">
-								<span class="parentTag">${participant.parent.firstname}&nbsp;${participant.parent.lastname}&nbsp;<i
-									class="icon icon-remove"></i></span>
+								<div class="parentTag">${participant.parent.firstname}&nbsp;${participant.parent.lastname}&nbsp;<i
+									class="icon icon-remove tagCloseIcon"></i></div>
 							</c:if>
 						</div>
 						<form:input path="parent.pid" id="parentPid" type="hidden" />
@@ -64,12 +64,12 @@
 						</div>
 						<div id="showSiblings">
 
-							<span id="selectedSiblings"> <c:forEach
+							<div id="selectedSiblings"> <c:forEach
 									items="${participant.siblings}" var="sib">
-									<span class="siblingTag">${sib.firstname}&nbsp;${sib.lastname}&nbsp;<i
-										id="${sib.pid}" class="icon icon-remove"></i></span>
+									<div class="siblingTag">${sib.firstname}&nbsp;${sib.lastname}&nbsp;<i
+										id="${sib.pid}" class="icon icon-remove tagCloseIcon"></i></div>
 								</c:forEach>
-							</span>
+							</div>
 						</div>
 					</div>
 
@@ -90,16 +90,16 @@
 							<spring:message code='error.duplicateCourse' />
 						</div>
 						<div id="showCourses">
-							<span id="selectedCourses">
+							<div id="selectedCourses">
 								<c:forEach items="${participant.courseParticipants}"
 								var="courseParticipant">
 								<c:if test="${courseParticipant.enabled}">
-									<span class="courseTag">${courseParticipant.course.name}&nbsp;<i
+									<div class="courseTag">${courseParticipant.course.name}&nbsp;<i
 										id="${courseParticipant.course.cid}"
-										class="icon icon-remove"></i></span>
+										class="icon icon-remove tagCloseIcon"></i></div>
 								</c:if>
 							</c:forEach>
-							 </span>
+							 </div>
 						</div>
 					</div>
 
@@ -257,11 +257,11 @@
 							$("#showParent").empty();
 							$("#showParent")
 									.append(
-											"<span class='parentTag'>"
+											"<div class='parentTag'>"
 													+ $("#parentFirst").val()
 													+ "&nbsp;"
 													+ $("#parentLast").val()
-													+ "&nbsp;<i class='icon icon-remove'></i></span>");
+													+ "&nbsp;<i class='icon icon-remove tagCloseIcon'></i></div>");
 						}
 						if ($("#tempSiblingNames").val() != '') {
 							$("#selectedSiblings").empty();
@@ -272,11 +272,11 @@
 								var parts = siblings[i].split(",");
 								$("#selectedSiblings")
 										.append(
-												"<span class='siblingTag'>"
+												"<div class='siblingTag'>"
 														+ parts[0]
-														+ "&nbsp;<i id='" + parts[1] + "' class='icon icon-remove'></i><span style='display:none;'>"
+														+ "&nbsp;<i id='" + parts[1] + "' class='icon icon-remove tagCloseIcon'></i><span style='display:none;'>"
 														+ parts[0]
-														+ "</span></span>");
+														+ "</span></div>");
 							}
 
 						}
@@ -290,11 +290,11 @@
 								var parts = courses[i].split(",");
 								$("#selectedCourses")
 										.append(
-												"<span class='courseTag'>"
+												"<div class='courseTag'>"
 														+ parts[0]
-														+ "&nbsp;<i id='" + parts[1] + "' class='icon icon-remove'></i><span style='display:none;'>"
+														+ "&nbsp;<i id='" + parts[1] + "' class='icon icon-remove tagCloseIcon'></i><span style='display:none;'>"
 														+ parts[0]
-														+ "</span></span>");
+														+ "</span></div>");
 							}
 
 						}
@@ -346,9 +346,9 @@
 													$("#showParent").empty();
 													$("#showParent")
 															.append(
-																	"<span class='parentTag'>"
+																	"<div class='parentTag'>"
 																			+ ui.item.label
-																			+ "&nbsp;<i class='icon icon-remove'></i></span>");
+																			+ "&nbsp;<i class='icon icon-remove tagCloseIcon'></i></div>");
 													$("#parentPid").val(
 															ui.item.pid);
 													$("#parentFirst").val(
@@ -438,11 +438,11 @@
 																.hide();
 														$("#selectedSiblings")
 																.append(
-																		"<span class='siblingTag'>"
+																		"<div class='siblingTag'>"
 																				+ ui.item.label
-																				+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i><span style='display:none;'>"
+																				+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove tagCloseIcon'></i><span style='display:none;'>"
 																				+ ui.item.label
-																				+ "</span></span>");
+																				+ "</span></div>");
 
 														input.val(input.val()
 																+ itemId + ";");
@@ -463,13 +463,13 @@
 																.hide();
 														$("#selectedSiblings")
 																.append(
-																		"<span class='siblingTag'>"
+																		"<div class='siblingTag'>"
 																				+ ui.item.label
-																				+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i><span style='display:none;'>"
+																				+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove tagCloseIcon'></i><span style='display:none;'>"
 																				+ ui.item.firstname
 																				+ " "
 																				+ ui.item.lastname
-																				+ "</span></span>");
+																				+ "</span></div>");
 
 														input
 																.val(
@@ -577,11 +577,11 @@
 																.hide();
 														$("#selectedCourses")
 																.append(
-																		"<span class='courseTag'>"
+																		"<div class='courseTag'>"
 																				+ ui.item.label
-																				+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i><span style='display:none;'>"
+																				+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove tagCloseIcon'></i><span style='display:none;'>"
 																				+ ui.item.label
-																				+ "</span></span>");
+																				+ "</span></div>");
 
 														input.val(input.val()
 																+ itemId + ";");
@@ -599,11 +599,11 @@
 																.hide();
 														$("#selectedCourses")
 																.append(
-																		"<span class='courseTag'>"
+																		"<div class='courseTag'>"
 																				+ ui.item.label
-																				+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove'></i><span style='display:none;'>"
+																				+ "&nbsp;<i id='" + itemId + "' class='icon icon-remove tagCloseIcon'></i><span style='display:none;'>"
 																				+ ui.item.label
-																				+ "</span></span>");
+																				+ "</span></div>");
 
 														input
 																.val(

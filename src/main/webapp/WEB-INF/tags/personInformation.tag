@@ -20,7 +20,3 @@
 	<td><spring:message code="label.telephone" /></td>
 	<td>${user.telephone}</td>
 </tr>
-<tr>
-	<td><spring:message code="label.birthday" /></td>
-	<td>${user.birthday}</td>
-</tr>
