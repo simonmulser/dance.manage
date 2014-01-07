@@ -24,7 +24,7 @@ public class InvoiceDaoTest {
 
     public static Invoice getValidInvoice() {
         Invoice invoice = new Invoice();
-        invoice.setOwner(ParticipantDaoTest.getValidParticipant());
+        invoice.setParticipant(ParticipantDaoTest.getValidParticipant());
         invoice.setDate(new LocalDateTime());
         invoice.setEnabled(true);
         return invoice;
