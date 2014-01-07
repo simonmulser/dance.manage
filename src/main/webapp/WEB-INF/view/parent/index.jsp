@@ -14,7 +14,7 @@
 
 <dmtags:base title="${i18nTitle}" activesection="dashboard">
 	<dmtags:span width="6">
-		<div class="table">
+		<div class="widget widget-table action-table">
 			<div class="widget-header">
 				<i class="icon-user"></i>
 				<h3>${i18nMyChildren}</h3>
@@ -37,7 +37,7 @@
 									<tr>
 										<td>${child.firstname}</td>
 										<td>${child.lastname}</td>
-										<td style="text-align:center"><a href="<c:url value='#'/>"><button type="submit" class="btn btn-info"><spring:message code="parent.viewChildAccount" ></spring:message></button></a></td>
+										<td style="text-align:center"><a href="<c:url value='/participant/${child.pid}'/>"><button type="submit" class="btn btn-info"><spring:message code="parent.viewChildAccount" ></spring:message></button></a></td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -68,7 +68,7 @@
 	</dmtags:span>
 
 	<dmtags:span width="6">
-		<div class="table">
+		<div class="widget widget-table action-table">
 			<div class="widget-header">
 				<i class="icon-user"></i>
 				<h3>${i18nMyAccount}</h3>

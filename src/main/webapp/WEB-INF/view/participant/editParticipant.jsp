@@ -11,7 +11,7 @@
 	<spring:message var="i18nAccountInfo" code="widget.accountInfo" />
 <dmtags:span width="12">
 	<dmtags:widget title="${i18nAccountInfo}" icon="icon-user">
-		<form:form method="post" action="edit" commandName="participant"
+		<form:form method="post" action="" commandName="participant"
 			class="form-horizontal">
 
 			<dmtags:personForm />
@@ -19,6 +19,8 @@
 			<dmtags:participantForm />
 
 			<dmtags:addressForm />
+			
+			<form:input path="parent" type="hidden"/>
 
 			<div class="form-actions">
 				<input type="submit" value="<spring:message code="label.save"/>"

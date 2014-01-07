@@ -29,12 +29,9 @@ public class ParentManagerTest {
 
     @Autowired
     private ParentManagerImpl parentManager;
-
     @SuppressWarnings("unchecked")
     private DaoBaseImpl<Parent> mockedDao = (DaoBaseImpl<Parent>) mock(DaoBaseImpl.class);
-
     private PersonManager personManager = (PersonManager) mock(PersonManager.class);
-
     private DaoBaseImpl<Parent> dao;
 
     @Before
