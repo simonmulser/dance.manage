@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,6 +67,11 @@ public class ParticipantHomeController {
             BindingResult result, RedirectAttributes redirectAttributes,
             @PathVariable int pid) {
         if (result.hasErrors()) {
+            for (ObjectError oe : result.getAllErrors()) {
+                logger.error("ERROR TOSTRING: " + oe.toString());
+                logger.error("ERRORS: " + oe.getCode() + " "
+                        + oe.getDefaultMessage());
+            }
             redirectAttributes.addFlashAttribute(
                     "org.springframework.validation.BindingResult.participant",
                     result);

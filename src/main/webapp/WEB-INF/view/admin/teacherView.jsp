@@ -61,11 +61,12 @@
 						<div id="duplicateCourse" class="duplicateError">
 							<spring:message code='error.duplicateCourse' />
 						</div>
-						<div id="showCourses">
+						<div id="showCoursesss">
 							<span id="selectedCourses"> <c:forEach
 									items="${teacher.courses}" var="cou">
+									${cou.name} ${cou.cid} ${cou.enabled}
 									<c:if test="${cou.enabled }">
-									<span class="courseTag">${cou.name}&nbsp;<i
+									<span class="courseTaggg">${cou.name}&nbsp;<i
 										id="${cou.cid}" class="icon icon-remove"></i></span></c:if>
 								</c:forEach>
 							</span>
