@@ -13,6 +13,7 @@ import at.danceandfun.exception.BusinessException;
 
 public class Helpers {
 
+    public static final String PASSWORD_FOR_DUMMY_ACCOUNTS = "ca92ddbb320e5ba3d78ff898445ab385298bb69fd7129e1c05bf30f48e407821ebc2ee3ae372047b";
     private static final Pattern NONLATIN = Pattern.compile("[^\\w-]");
     private static final Pattern WHITESPACE = Pattern.compile("[\\s]");
 

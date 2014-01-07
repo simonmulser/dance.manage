@@ -21,8 +21,8 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             /WEB-INF/dispatcher-servlet.xml,
+            /WEB-INF/spring-security.xml,
             classpath:/applicationContext.xml,
-            /WEB-INF/spring-security.xml
         </param-value>
     </context-param>
 
@@ -54,7 +54,8 @@
     <filter>
         <filter-name>OpenEntityManagerInViewFilter</filter-name>
         <filter-class>
-            org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
+            org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter
+        </filter-class>
         <init-param>
             <param-name>singleSession</param-name>
             <param-value>true</param-value>

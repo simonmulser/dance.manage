@@ -22,6 +22,7 @@ import at.danceandfun.entity.Course;
 import at.danceandfun.entity.CourseParticipant;
 import at.danceandfun.entity.Participant;
 import at.danceandfun.enumeration.Duration;
+import at.danceandfun.util.Helpers;
 
 @Transactional
 @ContextConfiguration("classpath:test/test-context.xml")
@@ -38,6 +39,7 @@ public class ParticipantDaoTest {
         Participant participant = new Participant();
         participant.setAddress(AddressDaoTest.getValidAddress());
         participant.setBirthday(new LocalDate().minusYears(10));
+        participant.setPassword(Helpers.PASSWORD_FOR_DUMMY_ACCOUNTS);
         participant.setFirstname("first");
         participant.setLastname("last");
         participant.setTelephone("123456789");

@@ -45,20 +45,21 @@ public class SecurityController {
         if (request.isUserInRole("ROLE_PARTICIPANT")) {
             Participant participant = (Participant) SecurityContextHolder
                     .getContext().getAuthentication().getPrincipal();
+            Integer pid = participant.getPid();
             session.setAttribute("user", participant);
             session.setAttribute("userType", "participant");
-            session.setAttribute("editProfileLink", "/participant/edit");
-            session.setAttribute("homeLink", "/participant");
+            session.setAttribute("editProfileLink", "/participant/edit/" + pid);
+            session.setAttribute("homeLink", "/participant/" + pid);
 
-            return "redirect:/participant";
+            return "redirect:/participant/" + pid;
         }
         if (request.isUserInRole("ROLE_PARENT")) {
             Parent parent = (Parent) SecurityContextHolder.getContext()
                     .getAuthentication().getPrincipal();
             session.setAttribute("user", parent);
             session.setAttribute("userType", "parent");
-            session.setAttribute("editProfileLink", "#");
-            session.setAttribute("homeLink", "#");
+            session.setAttribute("editProfileLink", "/parent/edit");
+            session.setAttribute("homeLink", "/parent");
 
             return "redirect:/parent";
         }

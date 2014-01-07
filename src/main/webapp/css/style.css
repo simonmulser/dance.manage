@@ -1323,10 +1323,11 @@ color: #333;
 
 .siblingTag, .courseTag, .styleTag, .teacherTag, .parentTag {
 	color: white;
+	float: left;
 	border: 1px solid;
 	border-color: #D66C04;
 	border-radius: 5px;
-	padding: 5px;
+	padding: 3px;
 	margin: 2px;
 	font-size: small;
 	background: #ff9f00 !important; /* Old browsers */
@@ -1337,6 +1338,10 @@ color: #333;
 	background: -ms-linear-gradient(top,  #ff9f00 1%,#ff8106 100%) !important; /* IE10+ */
 	background: linear-gradient(to bottom,  #ff9f00 1%,#ff8106 100%) !important; /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff9f00', endColorstr='#ff8106',GradientType=0 ) !important; /* IE6-9 */
+}
+
+.tagCloseIcon {
+	cursor: pointer;
 }
 
 .duplicateError{
