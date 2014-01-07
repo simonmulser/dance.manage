@@ -520,35 +520,34 @@ public class GenerateSatSolution {
 
 		// All Participants who play in more than one course.
 		for (int i = 0; i < participants.size(); i++) {
-			int counter = 0;
-
-			if(participants.get(i).getCourseParticipants().size() > 1) {
-				for(CourseParticipant currentCoPa : participants.get(i).getCourseParticipants()) {
-					if (currentCoPa.getKey().getCourse().getAmountPerformances() < 2) {			//&& currentCoPa.getKey().getCourse().getAmountPerformances() !=3
-						
-						
-						counter++;
-						//						System.out.println(i +". Teilnehmer namens " + participants.get(i).getFirstname() + " " + participants.get(i).getLastname());
-						//						System.out.println("Kurse " + currentCoPa.getKey().getCourse().getName());
-						//						boolean alreadyIn = false;
-						//						for(int j = 0; j <idList.size(); j++) {
-						//							if(idList.get(j) == i) {
-						//								alreadyIn = true;
-						//							}
-						//						}
-						//						if(!alreadyIn && counter > 2){
-						//							idList.add(i);
-						//							System.out.println(i +". Teilnehmer namens " + participants.get(i).getFirstname() + " " + participants.get(i).getLastname() + "Anzahl an Kursen: " + participants.get(i).getCourseParticipants().size());
-						//						System.out.println("Anzahl an Kursen: " + participants.get(i).getCourseParticipants().size());
-						//						System.out.println("DRINNEN " + currentCoPa.getKey().getCourse().getName());
-					}
-				}
-			}
-			if(counter == participants.get(i).getCourseParticipants().size()) {
-				idList.add(i);
-				System.out.println(i +". Teilnehmer namens " + participants.get(i).getFirstname() + " " + participants.get(i).getLastname() + "Anzahl an Kursen: " + participants.get(i).getCourseParticipants().size());
-			}
-		}
+            boolean isSinglePerformance = true;
+            int counter = 0;
+            
+            if (participants.get(i).getCourseParticipants().size() > 1) {
+                for (CourseParticipant currentCoPa : participants.get(i)
+                        .getCourseParticipants()) {
+                    if (currentCoPa.getKey().getCourse().isEnabled()) {
+                        if (currentCoPa.getKey().getCourse()
+                                .getAmountPerformances() < 2) { 
+                        	counter++;
+                            isSinglePerformance = true;
+                        
+                        } else {
+                            isSinglePerformance = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (isSinglePerformance && counter > 1) {
+                idList.add(i);
+                System.out.println(i + ". Teilnehmer namens "
+                        + participants.get(i).getFirstname() + " "
+                        + participants.get(i).getLastname()
+                        + "Anzahl an Kursen: "
+                        + participants.get(i).getCourseParticipants().size());
+            }
+        }
 
 
 		System.out.println("Anzahl an Participants mit mehr als einem Kurs: " + idList.size());
