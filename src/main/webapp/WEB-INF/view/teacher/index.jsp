@@ -84,4 +84,48 @@
 		</div>
 	</dmtags:span>
 	
+	<dmtags:span width="12">
+		<dmtags:widget title="${i18nAgenda}" style="nopad" icon="icon-calendar">
+			<div id='calendar'></div>
+		</dmtags:widget>
+	</dmtags:span>
 </dmtags:base>
+
+<script>
+
+$(document).ready(function() {
+	var courseData = [
+	<c:forEach items="${user.enabledCourses}" var="course"
+		varStatus="loop">
+		        {
+	              title: '${course.name}',
+	              start: '<joda:format value="${course.getStartDateTimeCurrentWeekRepresentation()}" pattern="yyyy-MM-dd HH:mm:ss" />',
+	              end: '<joda:format value="${course.getEndDateTimeCurrentWeekRepresentation()}" pattern="yyyy-MM-dd HH:mm:ss" />',
+	              allDay: false,
+	              color: '#FF8106',
+		        },
+	</c:forEach>
+	];
+	
+    $('#calendar').fullCalendar({
+      header: {
+        left: '',
+        center: '',
+        right: '',
+      },
+      defaultView: 'agendaWeek',
+      weekends: false,
+      contentHeight: 450,
+      allDaySlot: false,
+      axisFormat: 'HH:mm',
+      timeFormat: 'HH:mm{ - HH:mm}',
+      minTime: 10,
+      firstHour: 15,
+      firstDay: 1,
+      slotMinutes: 15,
+      columnFormat: 'dddd',
+      editable: false,
+      events: courseData,
+    });
+  });
+</script>

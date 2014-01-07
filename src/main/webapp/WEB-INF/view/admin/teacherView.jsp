@@ -64,8 +64,9 @@
 						<div id="showCourses">
 							<span id="selectedCourses"> <c:forEach
 									items="${teacher.courses}" var="cou">
+									<c:if test="${cou.enabled }">
 									<span class="courseTag">${cou.name}&nbsp;<i
-										id="${cou.cid}" class="icon icon-remove"></i></span>
+										id="${cou.cid}" class="icon icon-remove"></i></span></c:if>
 								</c:forEach>
 							</span>
 						</div>

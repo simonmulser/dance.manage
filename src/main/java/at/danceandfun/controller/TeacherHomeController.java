@@ -61,7 +61,7 @@ public class TeacherHomeController {
                     "org.springframework.validation.BindingResult.teacher",
                     result);
             redirectAttributes.addFlashAttribute("teacher", teacher);
-            return "redirect:/teacher/edit";
+            return "teacher/editTeacher";
         }
 
         logger.debug("updateTeacher");

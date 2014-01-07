@@ -67,7 +67,7 @@ public class ParticipantHomeController {
                     "org.springframework.validation.BindingResult.participant",
                     result);
             redirectAttributes.addFlashAttribute("participant", participant);
-            return "redirect:/participant/edit";
+            return "participant/editParticipant";
         }
 
         logger.debug("updateParticipant");
