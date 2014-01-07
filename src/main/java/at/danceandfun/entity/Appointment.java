@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
 
@@ -93,6 +94,7 @@ public class Appointment extends EntityBase {
         this.course = course;
     }
 
+    @JsonIgnore
     public List<Absence> getAbsences() {
         return absences;
     }
