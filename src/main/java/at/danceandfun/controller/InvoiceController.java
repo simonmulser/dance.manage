@@ -194,7 +194,7 @@ public class InvoiceController {
             invoice.setPositions(finalPositions);
             invoice.setEnabled(true);
             invoice.setDate(new LocalDateTime());
-            invoiceManager.update(invoice);
+            invoiceManager.persist(invoice);
             logger.debug("SAVED");
             status = 3;
         }
