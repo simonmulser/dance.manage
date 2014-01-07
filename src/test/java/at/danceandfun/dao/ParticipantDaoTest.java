@@ -20,9 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import at.danceandfun.entity.Course;
 import at.danceandfun.entity.CourseParticipant;
-import at.danceandfun.entity.CourseParticipantID;
 import at.danceandfun.entity.Participant;
 import at.danceandfun.enumeration.Duration;
+import at.danceandfun.util.Helpers;
 
 @Transactional
 @ContextConfiguration("classpath:test/test-context.xml")
@@ -39,6 +39,7 @@ public class ParticipantDaoTest {
         Participant participant = new Participant();
         participant.setAddress(AddressDaoTest.getValidAddress());
         participant.setBirthday(new LocalDate().minusYears(10));
+        participant.setPassword(Helpers.PASSWORD_FOR_DUMMY_ACCOUNTS);
         participant.setFirstname("first");
         participant.setLastname("last");
         participant.setTelephone("123456789");
@@ -113,10 +114,8 @@ public class ParticipantDaoTest {
             Participant participant = getValidParticipant();
             CourseParticipant courseParticipant = new CourseParticipant();
             courseParticipant.setDuration(Duration.YEAR);
-            CourseParticipantID key = new CourseParticipantID();
-            key.setParticipant(participant);
-            key.setCourse(course);
-            courseParticipant.setKey(key);
+            courseParticipant.setParticipant(participant);
+            courseParticipant.setCourse(course);
             List<CourseParticipant> courseParticipants = new ArrayList<CourseParticipant>();
             courseParticipants.add(courseParticipant);
             participant.setCourseParticipants(courseParticipants);

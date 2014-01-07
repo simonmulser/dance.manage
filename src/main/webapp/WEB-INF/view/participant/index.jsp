@@ -8,14 +8,16 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <spring:message var="i18nTitle" code="nav.home" />
+<spring:message var="i18nMyAccount" code="widget.myaccount" />
+<spring:message var="i18nEdit" code="label.edit" />
+<spring:message var="i18nMyCourses" code="widget.mycourses" />
+<spring:message var="i18nAgenda" code="widget.agenda" />
+<spring:message var="i18nInvoices" code="widget.invoices" />
+
 <dmtags:base title="${i18nTitle}" activesection="dashboard">
 	<dmtags:span width="6">
-		<spring:message var="i18nMyAccount" code="widget.myaccount" />
-		<spring:message var="i18nEdit" code="label.edit" />
-		<spring:message var="i18nMyCourses" code="widget.mycourses" />
-		<spring:message var="i18nAgenda" code="widget.agenda" />
 		<c:choose>
-			<c:when test="${user.courseParticipants.size() gt 0}">
+			<c:when test="${participant.courseParticipants.size() gt 0}">
 				<dmtags:widget title="${i18nMyCourses}" style="table" icon="icon-list">
 					<table class="table table-striped table-bordered">
 						<thead>
@@ -26,10 +28,10 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach items="${user.courseParticipants}" var="courseParticipant" varStatus="loop">
+							<c:forEach items="${participant.courseParticipants}" var="courseParticipant" varStatus="loop">
 								<tr>
-									<td>${courseParticipant.key.course.year}</td>
-									<td>${courseParticipant.key.course.name}</td>
+									<td>${courseParticipant.course.year}</td>
+									<td>${courseParticipant.course.name}</td>
 									<td>${courseParticipant.duration}</td>
 								</tr>
 							</c:forEach>
@@ -46,12 +48,12 @@
 
 		<spring:message var="i18nSiblings" code="widget.siblings" />
 		<c:choose>
-			<c:when test="${user.siblings.size() gt 0}">
+			<c:when test="${participant.siblings.size() gt 0}">
 				<dmtags:widget title="${i18nSiblings}" style="table" icon="icon-list">
 					<table class="table table-striped table-bordered">
 						<thead />
 						<tbody>
-							<c:forEach items="${user.siblings}" var="sibling" varStatus="loop">
+							<c:forEach items="${participant.siblings}" var="sibling" varStatus="loop">
 								<tr>
 									<td>${sibling.firstname}&nbsp;${sibling.lastname}</td>
 								</tr>
@@ -68,16 +70,15 @@
 			</c:otherwise>
 		</c:choose>
 
-		<spring:message var="i18nInvoices" code="widget.invoices" />
 		<c:choose>
-			<c:when test="${user.invoices.size() gt 0}">
+			<c:when test="${participant.invoices.size() gt 0}">
 				<!-- style="table" -->
 				<dmtags:widget title="${i18nInvoices}" icon="icon-envelope">
                 TODO show invoices
             </dmtags:widget>
 			</c:when>
 			<c:otherwise>
-				<dmtags:widget title="${i18nInvoices}" style="noTable" icon="icon-list">
+				<dmtags:widget title="${i18nInvoices}" style="noTable" icon="icon-envelope">
 					<spring:message code="user.noInvoices" />
 				</dmtags:widget>
 			</c:otherwise>
@@ -85,24 +86,43 @@
 	</dmtags:span>
 
 	<dmtags:span width="6">
-		<div class="table">
+		<div class="widget widget-table action-table">
 			<div class="widget-header">
 				<i class="icon-user"></i>
 				<h3>${i18nMyAccount}</h3>
-				<a href="<c:url value='/participant/edit' />"><button type="submit" class="btn btn-primary">${i18nEdit}</button></a>
+				<a href="<c:url value='/participant/edit/${participant.pid}' />"><button type="submit" class="btn btn-primary">${i18nEdit}</button></a>
 			</div>
 			<!-- /widget-header -->
 			<div class="widget-content">
 				<table class="table table-striped table-bordered">
 					<thead />
-					<dmtags:personInformation />
+					<tr>
+						<td><spring:message code="label.firstname" /></td>
+						<td>${participant.firstname}</td>
+					</tr>
+					<tr>
+						<td><spring:message code="label.lastname" /></td>
+						<td>${participant.lastname}</td>
+					</tr>
+					<tr>
+						<td><spring:message code="label.email" /></td>
+						<td>${participant.email}</td>
+					</tr>
+					<tr>
+						<td><spring:message code="label.telephone" /></td>
+						<td>${participant.telephone}</td>
+					</tr>
+					<tr>
+						<td><spring:message code="label.birthday" /></td>
+						<td>${participant.birthday}</td>
+					</tr>
 					<tr>
 						<td><spring:message code="label.contactPerson" /></td>
-						<td>${user.parent.firstname}&nbsp;${user.parent.lastname}</td>
+						<td>${participant.parent.firstname}&nbsp;${participant.parent.lastname}</td>
 					</tr>
 					<tr>
 						<td><spring:message code="label.emergencyNumber" /></td>
-						<td>${user.parent.telephone}</td>
+						<td>${participant.parent.telephone}</td>
 					</tr>
 
 					<dmtags:addressInformation />
@@ -121,17 +141,14 @@
 
 
 <script>
-
-
-
 $(document).ready(function() {
 	var courseData = [
-	<c:forEach items="${user.courseParticipants}" var="courseParticipant"
+	<c:forEach items="${participant.courseParticipants}" var="courseParticipant"
 		varStatus="loop">
 		        {
-	              title: '${courseParticipant.key.course.name}',
-	              start: '<joda:format value="${courseParticipant.key.course.getStartDateTimeCurrentWeekRepresentation()}" pattern="yyyy-MM-dd HH:mm:ss" />',
-	              end: '<joda:format value="${courseParticipant.key.course.getEndDateTimeCurrentWeekRepresentation()}" pattern="yyyy-MM-dd HH:mm:ss" />',
+	              title: '${courseParticipant.course.name}',
+	              start: '<joda:format value="${courseParticipant.course.getStartDateTimeCurrentWeekRepresentation()}" pattern="yyyy-MM-dd HH:mm:ss" />',
+	              end: '<joda:format value="${courseParticipant.course.getEndDateTimeCurrentWeekRepresentation()}" pattern="yyyy-MM-dd HH:mm:ss" />',
 	              allDay: false,
 	              color: '#FF8106',
 		        },

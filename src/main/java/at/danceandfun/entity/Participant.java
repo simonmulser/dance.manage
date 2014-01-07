@@ -57,7 +57,7 @@ public class Participant extends Person {
     @Past
     private LocalDate birthday;
 
-    @OneToMany(mappedBy = "key.participant", fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+    @OneToMany(mappedBy = "participant", fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
     private List<CourseParticipant> courseParticipants = new ArrayList<CourseParticipant>();
 
     @OneToMany(mappedBy = "key.participant", fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
@@ -81,6 +81,9 @@ public class Participant extends Person {
 
     @Transient
     private String tempCourseNames;
+
+    @Transient
+    private List<String> tempCourseDuration;
 
     public Participant() {
     }
@@ -124,7 +127,7 @@ public class Participant extends Person {
 
     public CourseParticipant getCourseById(Course course) {
         for (CourseParticipant cp : courseParticipants) {
-            if (cp.getKey().getCourse().getCid() == course.getCid()) {
+            if (cp.getCourse().getCid() == course.getCid()) {
                 return cp;
             }
         }
@@ -179,6 +182,14 @@ public class Participant extends Person {
 
     public void setTempCourseNames(String tempCourseNames) {
         this.tempCourseNames = tempCourseNames;
+    }
+
+    public List<String> getTempCourseDuration() {
+        return tempCourseDuration;
+    }
+
+    public void setTempCourseDuration(List<String> tempCourseDuration) {
+        this.tempCourseDuration = tempCourseDuration;
     }
 
     @JsonIgnore

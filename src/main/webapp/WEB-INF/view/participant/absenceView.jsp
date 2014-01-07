@@ -12,23 +12,23 @@
 	<spring:message var="i18nAbsence" code="widget.absence" />
 	<dmtags:widget title="${i18nMyCourses}" style="noTable" icon="icon-edit">
 		<c:choose>
-			<c:when test="${user.courseParticipants.size() gt 0}">
+			<c:when test="${participant.courseParticipants.size() gt 0}">
 				<div class="tabbable">
 					<ul class="nav nav-tabs">
-						<c:forEach items="${user.courseParticipants}" var="courseParticipant" varStatus="loop">
-							<li <c:if test="${loop.first}">class="active"</c:if>><a href="#${courseParticipant.key.course.slug}" data-toggle="tab">${courseParticipant.key.course.name}</a></li>
+						<c:forEach items="${participant.courseParticipants}" var="courseParticipant" varStatus="loop">
+							<li <c:if test="${loop.first}">class="active"</c:if>><a href="#${courseParticipant.course.slug}" data-toggle="tab">${courseParticipant.course.name}</a></li>
 						</c:forEach>
 					</ul>
 
 					<br />
 
 					<div class="tab-content">
-						<c:forEach items="${user.courseParticipants}" var="courseParticipant" varStatus="loop">
-							<div class="tab-pane <c:if test="${loop.first}">active</c:if>" id="${courseParticipant.key.course.slug}">
+						<c:forEach items="${participant.courseParticipants}" var="courseParticipant" varStatus="loop">
+							<div class="tab-pane <c:if test="${loop.first}">active</c:if>" id="${courseParticipant.course.slug}">
 								<c:choose>
-									<c:when test="${courseParticipant.key.course.appointments.size() gt 0}">
+									<c:when test="${courseParticipant.course.appointments.size() gt 0}">
 										<div class="accordion" id="accordion2">
-											<c:forEach items="${courseParticipant.key.course.appointments}" var="appointment" varStatus="loop">
+											<c:forEach items="${courseParticipant.course.appointments}" var="appointment" varStatus="loop">
 												<c:set var="isAbsent" value="false" />
 												<div class="accordion-group">
 													<div class="accordion-heading">
@@ -37,9 +37,9 @@
 														</a>
 													</div>
 
-													<!-- searching the absence object from the user for the appointment -->
+													<!-- searching the absence object from the participant for the appointment -->
 													<c:forEach items="${appointment.absences}" var="absence">
-														<c:if test="${absence.key.participant.pid == user.pid && absence.enabled == true}">
+														<c:if test="${absence.key.participant.pid == participant.pid && absence.enabled == true}">
 															<c:set var="isAbsent" value="true" />
 															<c:set var="absenceForAppointment" value="${absence}" />
 														</c:if>
@@ -49,12 +49,12 @@
 														<div class="accordion-inner">
 															<c:choose>
 																<c:when test="${isAbsent}">
-																	<spring:message code="user.absence" />
+																	<spring:message code="participant.absence" />
 																	<c:if test="${not empty absenceForAppointment.reason}">&nbsp;(${absenceForAppointment.reason})</c:if>.
 																	<br />
 																	<br />
-																	<spring:message code="user.changeReason" />
-																	<form method="post" action="<c:url value='/participant/absence/update/${courseParticipant.key.course.slug}' />" class="form-horizontal">
+																	<spring:message code="participant.changeReason" />
+																	<form method="post" action="<c:url value='/participant/absence/update/${courseParticipant.course.slug}/${participant.pid}' />" class="form-horizontal">
 																		<input id="appointmentId" name="appointmentId" type="hidden" value="${appointment.apid}">
 																		<div class="control-group">
 																			<label for="reason" class="control-label"> <spring:message code="label.reason" />:
@@ -67,8 +67,8 @@
 																			<input type="submit" value="<spring:message code="label.report" />" class="btn btn-primary">
 																		</div>
 																	</form>
-																	<spring:message code="user.presentQuestion" />
-																	<form method="post" action="<c:url value='/participant/absence/update/${courseParticipant.key.course.slug}' />" class="form-horizontal">
+																	<spring:message code="participant.presentQuestion" />
+																	<form method="post" action="<c:url value='/participant/absence/update/${courseParticipant.course.slug}/${participant.pid}' />" class="form-horizontal">
 																		<input id="appointmentId" name="appointmentId" type="hidden" value="${appointment.apid}"> <input id="enabled" name="enabled" type="hidden" value="false">
 																		<div class="form-actions">
 																			<input type="submit" value="<spring:message code="label.report" />" class="btn btn-primary">
@@ -76,10 +76,10 @@
 																	</form>
 																</c:when>
 																<c:otherwise>
-																	<spring:message code="user.absentQuestion" />
+																	<spring:message code="participant.absentQuestion" />
 																	<br />
 																	<br />
-																	<form method="post" action="<c:url value='/participant/absence/save/${courseParticipant.key.course.slug}' />" class="form-horizontal">
+																	<form method="post" action="<c:url value='/participant/absence/save/${courseParticipant.course.slug}/${participant.pid}' />" class="form-horizontal">
 																		<input id="appointmentId" name="appointmentId" type="hidden" value="${appointment.apid}">
 																		<div class="control-group">
 																			<label for="reason" class="control-label"> <spring:message code="label.reason" />:
@@ -101,7 +101,7 @@
 										</div>
 									</c:when>
 									<c:otherwise>
-										<spring:message code="user.noAppointments" />
+										<spring:message code="participant.noAppointments" />
 									</c:otherwise>
 								</c:choose>
 							</div>

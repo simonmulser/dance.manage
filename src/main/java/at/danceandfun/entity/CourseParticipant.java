@@ -3,9 +3,12 @@ package at.danceandfun.entity;
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import at.danceandfun.enumeration.Duration;
@@ -21,8 +24,18 @@ public class CourseParticipant extends EntityBase {
      * 
      */
     private static final long serialVersionUID = 1L;
+    @Id
+    @Column(name = "CP_ID")
+    @GeneratedValue
+    private Integer cpid;
 
-    private CourseParticipantID key = new CourseParticipantID();
+    @JoinColumn(name = "C_ID")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Course course;
+
+    @JoinColumn(name = "P_ID")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Participant participant;
 
     @Column(name = "DURATION")
     private Duration duration;
@@ -33,13 +46,28 @@ public class CourseParticipant extends EntityBase {
     public CourseParticipant() {
     }
 
-    @EmbeddedId
-    public CourseParticipantID getKey() {
-        return key;
+    public Integer getCpid() {
+        return cpid;
     }
 
-    public void setKey(CourseParticipantID key) {
-        this.key = key;
+    public void setCpid(Integer cpid) {
+        this.cpid = cpid;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public Participant getParticipant() {
+        return participant;
+    }
+
+    public void setParticipant(Participant participant) {
+        this.participant = participant;
     }
 
     public Duration getDuration() {
@@ -62,7 +90,7 @@ public class CourseParticipant extends EntityBase {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((key == null) ? 0 : key.hashCode());
+        result = prime * result + ((cpid == null) ? 0 : cpid.hashCode());
         return result;
     }
 
@@ -78,11 +106,11 @@ public class CourseParticipant extends EntityBase {
             return false;
         }
         CourseParticipant other = (CourseParticipant) obj;
-        if (key == null) {
-            if (other.key != null) {
+        if (cpid == null) {
+            if (other.cpid != null) {
                 return false;
             }
-        } else if (!key.equals(other.key)) {
+        } else if (!cpid.equals(other.cpid)) {
             return false;
         }
         return true;

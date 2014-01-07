@@ -16,31 +16,22 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
     <http>
         <intercept-url pattern='/admin/**' access='ROLE_ADMIN' />
-        <intercept-url pattern='/participant/**' access='ROLE_PARTICIPANT' />
-        <intercept-url pattern='/teacher/**' access='ROLE_TEACHER'/>
+        <intercept-url pattern='/participant/**'
+            access='ROLE_PARTICIPANT, ROLE_PARENT' />
+        <intercept-url pattern='/teacher/**' access='ROLE_TEACHER' />
         <intercept-url pattern='/parent/**' access='ROLE_PARENT' />
-        <access-denied-handler error-page="/accessDenied"/>
+        <access-denied-handler error-page="/accessDenied" />
         <form-login login-page='/login' default-target-url='/default'
             always-use-default-target='true' authentication-failure-url="/login?auth=fail" />
         <logout invalidate-session="true" logout-success-url="/login" />
     </http>
 
-
-    <beans:bean id="roleVoter"
-        class="org.springframework.security.access.vote.RoleHierarchyVoter">
-        <beans:constructor-arg ref="roleHierarchy" />
-    </beans:bean>
-    <beans:bean id="roleHierarchy"
-        class="org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl">
-        <beans:property name="hierarchy">
-            <beans:value>
-                ROLE_SUPERUSER > ROLE_PARTICIPANT
-                ROLE_SUPERUSER > ROLE_TEACHER
-                ROLE_SUPERUSER > ROLE_PARENT
-                ROLE_SUPERUSER > ROLE_ADMIN
-            </beans:value>
-        </beans:property>
-    </beans:bean>
+    <!-- TRIED TO ACTIVATE A SUPERUSER, BUT DON'T WORKED<beans:bean id="roleVoter" class="org.springframework.security.access.vote.RoleHierarchyVoter"> 
+        <beans:constructor-arg ref="roleHierarchy" /> </beans:bean> <beans:bean id="roleHierarchy" 
+        class="org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl"> 
+        <beans:property name="hierarchy"> <beans:value> ROLE_SUPERUSER > ROLE_PARTICIPANT 
+        ROLE_SUPERUSER > ROLE_TEACHER ROLE_SUPERUSER > ROLE_PARENT ROLE_SUPERUSER 
+        > ROLE_ADMIN </beans:value> </beans:property> </beans:bean> -->
 
     <authentication-manager alias="authenticationManager">
         <authentication-provider ref="daoAuthenticationProvider" />
@@ -55,21 +46,20 @@ http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
     <beans:bean id="passwordEncoder"
         class="org.springframework.security.crypto.password.StandardPasswordEncoder" />
 
-    <beans:bean id="exceptionTranslationFilter"
-        class="org.springframework.security.web.access.ExceptionTranslationFilter">
-        <beans:property name="authenticationEntryPoint"
-            ref="authenticationEntryPoint" />
-        <beans:property name="accessDeniedHandler" ref="accessDeniedHandler" />
+    <beans:bean id="expressionHandler"
+        class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">
+        <beans:property name="permissionEvaluator" ref="permissionEvaluator" />
     </beans:bean>
 
-    <beans:bean id="authenticationEntryPoint"
-        class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
-        <beans:property name="loginFormUrl" value="/login" />
+    <beans:bean id="permissionEvaluator"
+        class="at.danceandfun.aop.security.DMPermissionEvaluator">
+        <beans:constructor-arg index="0">
+            <beans:map key-type="java.lang.String"
+                value-type="at.danceandfun.aop.security.Permission">
+                <beans:entry key="isParent" value-ref="parentPermission" />
+                <beans:entry key="owner" value-ref="ownerPermission" />
+            </beans:map>
+        </beans:constructor-arg>
     </beans:bean>
 
-    <beans:bean id="accessDeniedHandler"
-        class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
-        <beans:property name="errorPage" value="/accessDenied" />
-    </beans:bean>
-
-</beans:beans>
+</beans:beans> 
