@@ -103,7 +103,7 @@
 										</td>
 										<td>
 												<form:select path="positions[${status.index }].duration">
-													<form:options items="${Duration}" />
+													<form:options items="${Duration}" itemLabel="label" />
 												</form:select>
 										</td>
 										<td>
