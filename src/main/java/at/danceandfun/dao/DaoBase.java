@@ -31,6 +31,8 @@ public interface DaoBase<T> {
 
     public List<Long> getQueryResultsLong(String query);
 
+    public int getQueryResultsCount(String query);
+
     public List<T> getListByCriterions(List<Criterion> criterions);
 
     public Class<T> getInjectedClass();
