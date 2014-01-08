@@ -153,6 +153,12 @@ public class Course extends EntityBase {
     private boolean balancedAgeGroup = false;
 
     @Transient
+    private boolean multipleGroupsSamePerformance = false;
+
+    @Transient
+    private boolean sibsSamePerformance = false;
+
+    @Transient
     private Boolean violationOfRestriktions = false;
 
     public Course(Course another) {
@@ -184,6 +190,8 @@ public class Course extends EntityBase {
         this.advancedAtEndRestriction = another.advancedAtEndRestriction;
         this.balancedAmountOfSpectators = another.balancedAmountOfSpectators;
         this.balancedAgeGroup = another.balancedAgeGroup;
+        this.multipleGroupsSamePerformance = another.multipleGroupsSamePerformance;
+        this.sibsSamePerformance = another.sibsSamePerformance;
         this.violationOfRestriktions = another.violationOfRestriktions;
     }
 
@@ -449,6 +457,23 @@ public class Course extends EntityBase {
 
     public void setBalancedAgeGroup(boolean balancedAgeGroup) {
         this.balancedAgeGroup = balancedAgeGroup;
+    }
+
+    public boolean isMultipleGroupsSamePerformance() {
+        return multipleGroupsSamePerformance;
+    }
+
+    public void setMultipleGroupsSamePerformance(
+            boolean multipleGroupsSamePerformance) {
+        this.multipleGroupsSamePerformance = multipleGroupsSamePerformance;
+    }
+
+    public boolean isSibsSamePerformance() {
+        return sibsSamePerformance;
+    }
+
+    public void setSibsSamePerformance(boolean sibsSamePerformance) {
+        this.sibsSamePerformance = sibsSamePerformance;
     }
 
     public Boolean getViolationOfRestriktions() {

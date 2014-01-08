@@ -2,6 +2,7 @@ package at.danceandfun.sat;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,7 @@ public class GenerateSatSolution {
     private List<int[]> clauses;
     private int dummies;
     private int movedCourses;
+    private List<Integer> swappedCourses;
 
     /**
      * @precondition An amount of minimal 3 courses as input.
@@ -47,7 +49,8 @@ public class GenerateSatSolution {
     public Map<Integer, Performance> generatePerformance(List<Course> courses,
             List<Participant> participantList, boolean balletRestriction,
             boolean twoBreaksRestriction, boolean advancedAtEndRestriction,
-            boolean balancedAmountOfSpectators, boolean balancedAgeGroup)
+            boolean balancedAmountOfSpectators, boolean balancedAgeGroup,
+            boolean multipleGroupsSamePerformance, boolean sibsSamePerformance)
             throws IOException, SatException {
         newOrderOfCourses = new ArrayList<Course>();
         performance = new Performance();
@@ -97,7 +100,8 @@ public class GenerateSatSolution {
         addDummyClauses(newOrderOfCourses);
         addCheckedRestrictions(balletRestriction, twoBreaksRestriction,
                 advancedAtEndRestriction, balancedAmountOfSpectators,
-                balancedAgeGroup);
+                balancedAgeGroup, multipleGroupsSamePerformance,
+                sibsSamePerformance);
         addBasicRestrictions(newOrderOfCourses, numberOfCourses, numberOfSlots,
                 numberOfPlays);
 
@@ -129,8 +133,15 @@ public class GenerateSatSolution {
      */
     private void addCheckedRestrictions(boolean balletRestriction,
             boolean twoBreaksRestriction, boolean advancedAtEndRestriction,
-            boolean balancedAmountOfSpectators, boolean balancedAgeGroup)
+            boolean balancedAmountOfSpectators, boolean balancedAgeGroup,
+            boolean multipleGroupsSamePerformance, boolean sibsSamePerformance)
             throws SatException {
+        if (multipleGroupsSamePerformance) {
+            multipleGroupsInSamePerformance(newOrderOfCourses, participantList);
+        }
+        if (sibsSamePerformance) {
+            sibsInSamePerformance(newOrderOfCourses, participantList);
+        }
         if (balancedAmountOfSpectators) {
             arrangeAmountOfSpectators(newOrderOfCourses);
         }
@@ -229,6 +240,14 @@ public class GenerateSatSolution {
         }
     }
 
+    /**
+     * @summary This method adds the restriction, which says, that two courses
+     *          of the same kind, are not allowed to stand behind one another.
+     * @param courses
+     * @param k
+     * @param t
+     * @param p
+     */
     /**
      * @summary This method adds the restriction, which says, that two courses
      *          of the same kind, are not allowed to stand behind one another.
@@ -487,6 +506,591 @@ public class GenerateSatSolution {
     }
 
     /**
+     * 
+     * @param courses
+     * @param participants
+     * @param k
+     * @param t
+     * @param p
+     * @throws SatException
+     */
+    private void multipleGroupsInSamePerformance(List<Course> courses,
+            List<Participant> participants) throws SatException {
+        List<Integer> idList = new ArrayList<Integer>();
+        Random r = new Random();
+        swappedCourses = new ArrayList<Integer>();
+        swappedCourses.clear();
+
+        // All Participants who play in more than one course.
+        for (int i = 0; i < participants.size(); i++) {
+            boolean isSinglePerformance = true;
+            int counter = 0;
+
+            if (participants.get(i).getCourseParticipants().size() > 1) {
+                for (CourseParticipant currentCoPa : participants.get(i)
+                        .getCourseParticipants()) {
+                    if (currentCoPa.getCourse().isEnabled()) {
+                        if (currentCoPa.getCourse().getAmountPerformances() < 2) {
+                            counter++;
+                            isSinglePerformance = true;
+
+                        } else {
+                            isSinglePerformance = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (isSinglePerformance && counter > 1) {
+                idList.add(i);
+                System.out.println(i + ". Teilnehmer namens "
+                        + participants.get(i).getFirstname() + " "
+                        + participants.get(i).getLastname()
+                        + "Anzahl an Kursen: "
+                        + participants.get(i).getCourseParticipants().size());
+            }
+        }
+
+        System.out.println("Anzahl an Participants mit mehr als einem Kurs: "
+                + idList.size());
+
+//        System.out.println("Mein Name lautet: "
+//                + participants.get(idList.get(0)).getFirstname() + " "
+//                + participants.get(idList.get(0)).getLastname());
+
+        // Now count the amount of the courses in the different performances
+        for (int id : idList) {
+            List<Integer> courseIDList = new ArrayList<Integer>();
+            Participant currentParticipant = participants.get(id);
+            List<Integer> amount1 = new ArrayList<Integer>();
+            List<Integer> amount2 = new ArrayList<Integer>();
+            List<Integer> amount3 = new ArrayList<Integer>();
+
+            for (CourseParticipant currentCP : currentParticipant
+                    .getCourseParticipants()) {
+                for (int i = 0; i < courses.size(); i++) {
+                    if (courses.get(i).equals(currentCP.getCourse())) {
+                        courseIDList.add(i);
+                    }
+                }
+            }
+            for (int j = 0; j < courseIDList.size(); j++) {
+                if (courseIDList.get(j) < this.numberOfSlots) {
+                    amount1.add(courseIDList.get(j));
+                }
+                if ((2 * this.numberOfSlots) > courseIDList.get(j)
+                        && courseIDList.get(j) >= this.numberOfSlots) {
+                    amount2.add(courseIDList.get(j));
+                }
+                if ((3 * this.numberOfSlots) > courseIDList.get(j)
+                        && courseIDList.get(j) >= (2 * this.numberOfSlots)) {
+                    amount3.add(courseIDList.get(j));
+                }
+            }
+
+            // normal swapping (when amount of the lists amountX are not even)
+            if (amount1.size() > amount2.size()
+                    && amount1.size() > amount3.size()) {
+                while (amount2.size() != 0) {
+                    checkAlreadySwapped(swappedCourses, amount2.get(0));
+                    Collections.swap(newOrderOfCourses, amount2.get(0),
+                            helpSwapping(amount1));
+                    amount1.add(amount2.get(0));
+                    swappedCourses.add(amount2.remove(0));
+
+                }
+                while (amount3.size() != 0) {
+                    checkAlreadySwapped(swappedCourses, amount3.get(0));
+                    Collections.swap(newOrderOfCourses, amount3.get(0),
+                            helpSwapping(amount1));
+                    amount1.add(amount3.get(0));
+                    swappedCourses.add(amount3.remove(0));
+                }
+            }
+            if (amount2.size() > amount1.size()
+                    && amount2.size() > amount3.size()) {
+                while (amount1.size() != 0) {
+                    checkAlreadySwapped(swappedCourses, amount1.get(0));
+                    Collections.swap(newOrderOfCourses, amount1.get(0),
+                            (numberOfSlots + helpSwapping(amount2)));
+                    amount2.add(amount1.get(0));
+                    swappedCourses.add(amount1.remove(0));
+                }
+                while (amount3.size() != 0) {
+                    checkAlreadySwapped(swappedCourses, amount3.get(0));
+                    Collections.swap(newOrderOfCourses, amount3.get(0),
+                            (numberOfSlots + helpSwapping(amount2)));
+                    amount2.add(amount3.get(0));
+                    swappedCourses.add(amount3.remove(0));
+                }
+            }
+            if (amount3.size() > amount2.size()
+                    && amount3.size() > amount1.size()) {
+                while (amount1.size() != 0) {
+                    checkAlreadySwapped(swappedCourses, amount1.get(0));
+                    Collections.swap(newOrderOfCourses, amount1.get(0),
+                            (2 * numberOfSlots + helpSwapping(amount3)));
+                    amount3.add(amount1.get(0));
+                    swappedCourses.add(amount1.remove(0));
+                }
+                while (amount2.size() != 0) {
+                    checkAlreadySwapped(swappedCourses, amount2.get(0));
+                    Collections.swap(newOrderOfCourses, amount2.get(0),
+                            (2 * numberOfSlots + helpSwapping(amount3)));
+                    amount3.add(amount2.get(0));
+                    swappedCourses.add(amount2.remove(0));
+                }
+            }
+
+            // special case, the amount of 2 is even --> random selection
+            if (amount1.size() == amount2.size()
+                    && amount1.size() != amount3.size()) {
+                if (r.nextBoolean()) {
+                    while (amount1.size() != 0) {
+                        checkAlreadySwapped(swappedCourses, amount1.get(0));
+                        Collections.swap(newOrderOfCourses, amount1.get(0),
+                                (numberOfSlots + helpSwapping(amount2)));
+                        amount2.add(amount1.get(0));
+                        swappedCourses.add(amount1.remove(0));
+                    }
+                    while (amount3.size() != 0) {
+                        checkAlreadySwapped(swappedCourses, amount3.get(0));
+                        Collections.swap(newOrderOfCourses, amount3.get(0),
+                                (numberOfSlots + helpSwapping(amount2)));
+                        amount2.add(amount3.get(0));
+                        swappedCourses.add(amount3.remove(0));
+                    }
+                }
+                if (!r.nextBoolean()) {
+                    while (amount2.size() != 0) {
+                        checkAlreadySwapped(swappedCourses, amount2.get(0));
+                        Collections.swap(newOrderOfCourses, amount2.get(0),
+                                helpSwapping(amount1));
+                        amount1.add(amount2.get(0));
+                        swappedCourses.add(amount2.remove(0));
+                    }
+                    while (amount3.size() != 0) {
+                        checkAlreadySwapped(swappedCourses, amount3.get(0));
+                        Collections.swap(newOrderOfCourses, amount3.get(0),
+                                helpSwapping(amount1));
+                        amount1.add(amount3.get(0));
+                        swappedCourses.add(amount3.remove(0));
+                    }
+                }
+            }
+
+            if (amount2.size() == amount3.size()
+                    && amount2.size() != amount1.size()) {
+                if (r.nextBoolean()) {
+                    while (amount2.size() != 0) {
+                        checkAlreadySwapped(swappedCourses, amount2.get(0));
+                        Collections.swap(newOrderOfCourses, amount2.get(0),
+                                (2 * numberOfSlots + helpSwapping(amount3)));
+                        amount3.add(amount2.get(0));
+                        swappedCourses.add(amount2.remove(0));
+                    }
+                    while (amount1.size() != 0) {
+                        checkAlreadySwapped(swappedCourses, amount1.get(0));
+                        Collections.swap(newOrderOfCourses, amount1.get(0),
+                                (2 * numberOfSlots + helpSwapping(amount3)));
+                        amount3.add(amount1.get(0));
+                        swappedCourses.add(amount1.remove(0));
+                    }
+                }
+                if (!r.nextBoolean()) {
+                    while (amount2.size() != 0) {
+                        checkAlreadySwapped(swappedCourses, amount3.get(0));
+                        Collections.swap(newOrderOfCourses, amount3.get(0),
+                                (numberOfSlots + helpSwapping(amount2)));
+                        amount3.add(amount2.get(0));
+                        swappedCourses.add(amount2.remove(0));
+                    }
+                    while (amount1.size() != 0) {
+                        checkAlreadySwapped(swappedCourses, amount1.get(0));
+                        Collections.swap(newOrderOfCourses, amount1.get(0),
+                                (numberOfSlots + helpSwapping(amount2)));
+                        amount2.add(amount1.get(0));
+                        swappedCourses.add(amount1.remove(0));
+                    }
+                }
+            }
+            if (amount1.size() == amount3.size()
+                    && amount1.size() != amount2.size()) {
+                if (r.nextBoolean()) {
+                    while (amount1.size() != 0) {
+                        checkAlreadySwapped(swappedCourses, amount1.get(0));
+                        Collections.swap(newOrderOfCourses, amount1.get(0),
+                                (2 * numberOfSlots + helpSwapping(amount3)));
+                        amount3.add(amount1.get(0));
+                        swappedCourses.add(amount1.remove(0));
+                    }
+                    while (amount2.size() != 0) {
+                        checkAlreadySwapped(swappedCourses, amount2.get(0));
+                        Collections.swap(newOrderOfCourses, amount2.get(0),
+                                (2 * numberOfSlots + helpSwapping(amount3)));
+                        amount3.add(amount2.get(0));
+                        swappedCourses.add(amount2.remove(0));
+                    }
+                }
+                if (!r.nextBoolean()) {
+                    while (amount3.size() != 0) {
+                        checkAlreadySwapped(swappedCourses, amount3.get(0));
+                        Collections.swap(newOrderOfCourses, amount3.get(0),
+                                helpSwapping(amount1));
+                        amount1.add(amount3.get(0));
+                        swappedCourses.add(amount3.remove(0));
+                    }
+                    while (amount2.size() != 0) {
+                        checkAlreadySwapped(swappedCourses, amount2.get(0));
+                        Collections.swap(newOrderOfCourses, amount2.get(0),
+                                helpSwapping(amount1));
+                        amount1.add(amount2.get(0));
+                        swappedCourses.add(amount2.remove(0));
+                    }
+                }
+            }
+
+            if (amount1.size() == amount2.size()
+                    && amount1.size() == amount3.size()) {
+                int random = (int) (Math.random() * 3 + 1);
+
+                if (random == 1) {
+                    while (amount3.size() != 0) {
+                        checkAlreadySwapped(swappedCourses, amount3.get(0));
+                        Collections.swap(newOrderOfCourses, amount3.get(0),
+                                helpSwapping(amount1));
+                        amount1.add(amount3.get(0));
+                        swappedCourses.add(amount3.remove(0));
+                    }
+                    while (amount2.size() != 0) {
+                        checkAlreadySwapped(swappedCourses, amount2.get(0));
+                        Collections.swap(newOrderOfCourses, amount2.get(0),
+                                helpSwapping(amount1));
+                        amount1.add(amount2.get(0));
+                        swappedCourses.add(amount2.remove(0));
+                    }
+                }
+                if (random == 2) {
+                    while (amount2.size() != 0) {
+                        checkAlreadySwapped(swappedCourses, amount3.get(0));
+                        Collections.swap(newOrderOfCourses, amount3.get(0),
+                                (numberOfSlots - 1 + helpSwapping(amount2)));
+                        amount3.add(amount2.get(0));
+                        swappedCourses.add(amount2.remove(0));
+                    }
+                    while (amount1.size() != 0) {
+                        checkAlreadySwapped(swappedCourses, amount1.get(0));
+                        Collections.swap(newOrderOfCourses, amount1.get(0),
+                                (numberOfSlots - 1 + helpSwapping(amount2)));
+                        amount2.add(amount1.get(0));
+                        swappedCourses.add(amount1.remove(0));
+                    }
+                }
+                if (random == 3) {
+                    while (amount1.size() != 0) {
+                        checkAlreadySwapped(swappedCourses, amount1.get(0));
+                        Collections
+                                .swap(newOrderOfCourses,
+                                        amount1.get(0),
+                                        (2 * numberOfSlots - 1 + helpSwapping(amount3)));
+                        amount3.add(amount1.get(0));
+                        swappedCourses.add(amount1.remove(0));
+                    }
+                    while (amount2.size() != 0) {
+                        checkAlreadySwapped(swappedCourses, amount2.get(0));
+                        Collections
+                                .swap(newOrderOfCourses,
+                                        amount2.get(0),
+                                        (2 * numberOfSlots - 1 + helpSwapping(amount3)));
+                        amount3.add(amount2.get(0));
+                        swappedCourses.add(amount2.remove(0));
+                    }
+                }
+            }
+        }
+    }
+
+    private void sibsInSamePerformance(List<Course> courses,
+            List<Participant> participants) throws SatException {
+        List<Participant> sibList = new ArrayList<Participant>();
+        List<Integer> idList = new ArrayList<Integer>();
+        Random r = new Random();
+
+        // All Participants with one sib at least
+        for (int i = 0; i < participants.size(); i++) {
+            if (participants.get(i).getSiblings().size() >= 1) {
+                idList.add(i);
+            }
+        }
+
+        // Now count the amount of the courses in the different performances
+        for (int id : idList) {
+            List<Integer> courseIDList = new ArrayList<Integer>();
+            Participant currentParticipant = participants.get(id);
+            List<Integer> amount1 = new ArrayList<Integer>();
+            List<Integer> amount2 = new ArrayList<Integer>();
+            List<Integer> amount3 = new ArrayList<Integer>();
+            boolean allInOne = false;
+
+            for (CourseParticipant currentCP : currentParticipant
+                    .getCourseParticipants()) {
+                for (int i = 0; i < courses.size(); i++) {
+                    if (courses.get(i).equals(currentCP.getCourse())) {
+                        courseIDList.add(i); // i+1 ??
+                    }
+                }
+
+            }
+
+            for (Participant participant : currentParticipant.getSiblings()) {
+                sibList.add(participant);
+            }
+            int index = 0;
+            for (CourseParticipant currentCP : sibList.get(index)
+                    .getCourseParticipants()) {
+                for (int i = 0; i < courses.size(); i++) {
+                    if (courses.get(i).equals(currentCP.getCourse())) {
+                        courseIDList.add(i + 1); // i+1 ??
+                    }
+                }
+                index++;
+            }
+
+            for (int j = 0; j < courseIDList.size(); j++) {
+                if (courseIDList.get(j) < this.numberOfSlots) {
+                    amount1.add(courseIDList.get(j));
+                }
+                if ((2 * this.numberOfSlots) > courseIDList.get(j)
+                        && courseIDList.get(j) > this.numberOfSlots) {
+                    amount2.add(courseIDList.get(j));
+                }
+                if ((3 * this.numberOfSlots) > courseIDList.get(j)
+                        && courseIDList.get(j) > (2 * this.numberOfSlots)) {
+                    amount3.add(courseIDList.get(j));
+                }
+            }
+
+            // normal swapping (when amount of the lists amountX are not even)
+            if (amount1.size() > amount2.size()
+                    && amount1.size() > amount3.size()) {
+                while (amount2.size() != 0) {
+                    Collections.swap(newOrderOfCourses, amount2.get(0),
+                            helpSwapping(amount1));
+                    amount1.add(amount2.remove(0));
+                }
+                while (amount3.size() != 0) {
+                    Collections.swap(newOrderOfCourses, amount3.get(0),
+                            helpSwapping(amount1));
+                    amount1.add(amount3.remove(0));
+                }
+            }
+            if (amount2.size() > amount1.size()
+                    && amount2.size() > amount3.size()) {
+                while (amount1.size() != 0) {
+                    Collections.swap(newOrderOfCourses, amount1.get(0),
+                            2 * helpSwapping(amount2));
+                    amount2.add(amount1.remove(0));
+                }
+                while (amount3.size() != 0) {
+                    Collections.swap(newOrderOfCourses, amount3.get(0),
+                            2 * helpSwapping(amount2));
+                    amount2.add(amount3.remove(0));
+                }
+            }
+            if (amount3.size() > amount2.size()
+                    && amount3.size() > amount1.size()) {
+                while (amount1.size() != 0) {
+                    Collections.swap(newOrderOfCourses, amount1.get(0),
+                            3 * helpSwapping(amount3));
+                    amount3.add(amount1.remove(0));
+                }
+                while (amount2.size() != 0) {
+                    Collections.swap(newOrderOfCourses, amount2.get(0),
+                            3 * helpSwapping(amount3));
+                    amount3.add(amount2.remove(0));
+                }
+            }
+
+            // special case, the amount of 2 is even --> random selection
+            if (amount1.size() == amount2.size()
+                    && amount1.size() != amount3.size()) {
+                if (r.nextBoolean()) {
+                    while (amount1.size() != 0) {
+                        Collections.swap(newOrderOfCourses, amount1.get(0),
+                                2 * helpSwapping(amount2));
+                        amount2.add(amount1.remove(0));
+                    }
+                    while (amount3.size() != 0) {
+                        Collections.swap(newOrderOfCourses, amount3.get(0),
+                                2 * helpSwapping(amount2));
+                        amount2.add(amount3.remove(0));
+                    }
+                }
+                if (!r.nextBoolean()) {
+                    while (amount2.size() != 0) {
+                        Collections.swap(newOrderOfCourses, amount2.get(0),
+                                helpSwapping(amount1));
+                        amount1.add(amount2.remove(0));
+                    }
+                    while (amount3.size() != 0) {
+                        Collections.swap(newOrderOfCourses, amount3.get(0),
+                                helpSwapping(amount1));
+                        amount1.add(amount3.remove(0));
+                    }
+                }
+            }
+
+            if (amount2.size() == amount3.size()
+                    && amount2.size() != amount1.size()) {
+                if (r.nextBoolean()) {
+                    while (amount2.size() != 0) {
+                        Collections.swap(newOrderOfCourses, amount2.get(0),
+                                3 * helpSwapping(amount3));
+                        amount3.add(amount2.remove(0));
+                    }
+                    while (amount1.size() != 0) {
+                        Collections.swap(newOrderOfCourses, amount1.get(0),
+                                3 * helpSwapping(amount3));
+                        amount3.add(amount1.remove(0));
+                    }
+                }
+                if (!r.nextBoolean()) {
+                    while (amount2.size() != 0) {
+                        Collections.swap(newOrderOfCourses, amount3.get(0),
+                                2 * helpSwapping(amount2));
+                        amount3.add(amount2.remove(0));
+                    }
+                    while (amount1.size() != 0) {
+                        Collections.swap(newOrderOfCourses, amount1.get(0),
+                                2 * helpSwapping(amount2));
+                        amount2.add(amount1.remove(0));
+                    }
+                }
+            }
+            if (amount1.size() == amount3.size()
+                    && amount1.size() != amount2.size()) {
+                if (r.nextBoolean()) {
+                    while (amount1.size() != 0) {
+                        Collections.swap(newOrderOfCourses, amount1.get(0),
+                                3 * helpSwapping(amount3));
+                        amount3.add(amount1.remove(0));
+                    }
+                    while (amount2.size() != 0) {
+                        Collections.swap(newOrderOfCourses, amount2.get(0),
+                                3 * helpSwapping(amount3));
+                        amount3.add(amount2.remove(0));
+                    }
+                }
+                if (!r.nextBoolean()) {
+                    while (amount3.size() != 0) {
+                        Collections.swap(newOrderOfCourses, amount3.get(0),
+                                helpSwapping(amount1));
+                        amount1.add(amount3.remove(0));
+                    }
+                    while (amount2.size() != 0) {
+                        Collections.swap(newOrderOfCourses, amount2.get(0),
+                                helpSwapping(amount1));
+                        amount1.add(amount2.remove(0));
+                    }
+                }
+            }
+
+            if (amount1.size() == amount2.size()
+                    && amount1.size() == amount3.size()) {
+                int random = (int) (Math.random() * 3 + 1);
+
+                if (random == 1) {
+                    while (amount3.size() != 0) {
+                        Collections.swap(newOrderOfCourses, amount3.get(0),
+                                helpSwapping(amount1));
+                        amount1.add(amount3.remove(0));
+                    }
+                    while (amount2.size() != 0) {
+                        Collections.swap(newOrderOfCourses, amount2.get(0),
+                                helpSwapping(amount1));
+                        amount1.add(amount2.remove(0));
+                    }
+                }
+                if (random == 2) {
+                    while (amount2.size() != 0) {
+                        Collections.swap(newOrderOfCourses, amount3.get(0),
+                                2 * helpSwapping(amount2));
+                        amount3.add(amount2.remove(0));
+                    }
+                    while (amount1.size() != 0) {
+                        Collections.swap(newOrderOfCourses, amount1.get(0),
+                                2 * helpSwapping(amount2));
+                        amount2.add(amount1.remove(0));
+                    }
+                }
+                if (random == 3) {
+                    while (amount1.size() != 0) {
+                        Collections.swap(newOrderOfCourses, amount1.get(0),
+                                3 * helpSwapping(amount3));
+                        amount3.add(amount1.remove(0));
+                    }
+                    while (amount2.size() != 0) {
+                        Collections.swap(newOrderOfCourses, amount2.get(0),
+                                3 * helpSwapping(amount3));
+                        amount3.add(amount2.remove(0));
+                    }
+                }
+            }
+        }
+    }
+
+    private int helpSwapping(List<Integer> listOfTakenCourses) {
+
+        System.out.println("1.helpSwapping Liste Elementanzahl: "
+                + listOfTakenCourses.size() + " numberOfSlots: "
+                + numberOfSlots);
+
+        List<Integer> list = new ArrayList<Integer>();
+        for (int i = 0; i < numberOfSlots; i++) {
+            list.add(0);
+        }
+
+        for (int j = 0; j < listOfTakenCourses.size(); j++) {
+            System.out.println("2.Schleifendurchlauf Nummer: " + j);
+            System.out.println("3.list.size() " + list.size()
+                    + " numberOfSlots%listOfTakenCourses " + numberOfSlots
+                    + "  " + listOfTakenCourses.get(j));
+            int restKlasse = listOfTakenCourses.get(j) % numberOfSlots;
+            System.out.println("Restklasse " + restKlasse);
+            if (list.get(restKlasse) == 0) {
+                list.set(listOfTakenCourses.get(j) % numberOfSlots, 1);
+            }
+            System.out.println("4. Hier?!");
+        }
+
+        Random r = new Random();
+        int index = r.nextInt(list.size() - 1);
+        if (list.get(index) == 1) {
+            helpSwappingSecond(list);
+        }
+        return index;
+
+    }
+
+    private int helpSwappingSecond(List<Integer> list) {
+        Random r = new Random();
+        int index = r.nextInt(list.size() - 1);
+        if (list.get(index) == 1) {
+            helpSwappingSecond(list);
+        }
+        return index;
+    }
+
+    private void checkAlreadySwapped(List<Integer> alreadySwapped, int courseID)
+            throws SatException {
+        for (int i = 0; i < alreadySwapped.size(); i++) {
+            if (alreadySwapped.get(i) == courseID) {
+                throw new SatException("Der Kurs wurde bereits geswapped!");
+            }
+        }
+    }
+
+    /**
      * @summary Converts the list into a Integer Array, which is necessary to
      *          fill the SAT Solver.
      * @param list
@@ -652,4 +1256,5 @@ public class GenerateSatSolution {
             }
         }
     }
+
 }
