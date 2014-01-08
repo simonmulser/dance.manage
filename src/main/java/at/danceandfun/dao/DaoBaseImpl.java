@@ -90,7 +90,6 @@ public class DaoBaseImpl<T> implements DaoBase<T> {
         return session.createQuery(query).list();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public int getQueryResultsCount(String query) {
         Session session = getHibernateSession();

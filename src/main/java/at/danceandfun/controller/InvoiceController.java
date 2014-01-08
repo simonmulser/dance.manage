@@ -50,6 +50,7 @@ public class InvoiceController {
     private Invoice invoice;
     private int status; // 0=preview, 1=readyToSave, 2=Save, 3=Saved
     private boolean editTrue = false;
+    private boolean cancelErrorMessage = false;
 
     @PostConstruct
     public void init() {
@@ -60,27 +61,24 @@ public class InvoiceController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String listInvoices(ModelMap map) {
         logger.debug("LIST all invoices from DB");
-
         if (status == 3) {
             init();
         }
-
         if (!editTrue) {
             invoice = new Invoice();
         }
-
         map.addAttribute("invoice", invoice);
         map.addAttribute("invoiceList", invoiceManager.getEnabledList());
         map.addAttribute("status", status);
+        map.addAttribute("cancelErrorMessage", cancelErrorMessage);
         editTrue = false;
+        cancelErrorMessage = false;
         return "admin/invoiceView";
     }
 
     @RequestMapping(value = "/getParticipants", method = RequestMethod.GET)
     public @ResponseBody
     List<Participant> getParticipants(@RequestParam("term") String query) {
-        logger.debug("Entered :" + query);
-
         return participantManager.searchForParticipants(query);
     }
 
@@ -108,7 +106,6 @@ public class InvoiceController {
         if (actualParticipant.hasParent()) {
             invoice.setParent(actualParticipant.getParent());
         }
-
         return "redirect:/admin/invoice";
     }
 
@@ -117,7 +114,6 @@ public class InvoiceController {
             @ModelAttribute(value = "invoice") @Valid Invoice invoice,
             BindingResult result, RedirectAttributes redirectAttributes,
             ModelMap map) {
-
         editTrue = true;
         Participant actualParticipant = participantManager.get(invoice
                 .getParticipant().getPid());
@@ -125,14 +121,12 @@ public class InvoiceController {
         if (actualParticipant.hasParent()) {
             invoice.setParent(actualParticipant.getParent());
         }
-        logger.debug("PREVIEW OF INVOICE FOR "
-                + actualParticipant.getFirstname());
-
         if (status == 0) {
             status = 1;
         }
 
         List<Position> positionsWithErrors = new ArrayList<Position>();
+        List<CourseParticipant> courseParticipantsToUpdate = new ArrayList<CourseParticipant>();
         double totalAmount = 0;
         int noneCounts = 0;
         for (CourseParticipant cp : actualParticipant.getCourseParticipants()) {
@@ -145,7 +139,7 @@ public class InvoiceController {
                                 .getCid()) {
                     if (pos.getDuration() == cp.getDuration()) {
                         pos.setErrorMessage(geti18nMessage("message.invoiceExisting"));
-                        status = 0;
+                        status = 0; // preview
                     } else if (pos.getDuration() == Duration.YEAR
                             && courseCount != 0) {
                         pos.setErrorMessage(geti18nMessage("message.invoiceOneSemester"));
@@ -154,6 +148,12 @@ public class InvoiceController {
                         pos.setErrorMessage(geti18nMessage("message.notRelevatPosition"));
                         noneCounts++;
                     } else {
+                        CourseParticipant tempCP = new CourseParticipant();
+                        tempCP.setCourse(cp.getCourse());
+                        tempCP.setParticipant(cp.getParticipant());
+                        tempCP.setEnabled(true);
+                        tempCP.setDuration(pos.getDuration());
+                        courseParticipantsToUpdate.add(tempCP);
                         if (pos.getDuration() == Duration.YEAR) {
                             pos.setAmount(cp.getCourse().getYearPrice());
                         } else {
@@ -165,11 +165,10 @@ public class InvoiceController {
                     positionsWithErrors.add(pos);
                 }
             }
-
         }
-
         invoice.setPositions(positionsWithErrors);
-        if (noneCounts == invoice.getPositions().size()) {
+        if (noneCounts == invoice.getPositions().size()) { // alle Positionen
+                                                           // NONE
             status = 0;
         }
         if (status != 0) {
@@ -182,7 +181,6 @@ public class InvoiceController {
         }
         if (status == 1) { // readyToSave
             status = 2;
-
         } else if (status == 2) { // save
             List<Position> finalPositions = new ArrayList<Position>();
             for (Position pos : invoice.getPositions()) {
@@ -195,7 +193,9 @@ public class InvoiceController {
             invoice.setEnabled(true);
             invoice.setDate(new LocalDateTime());
             invoiceManager.persist(invoice);
-            logger.debug("SAVED");
+            for (CourseParticipant cp : courseParticipantsToUpdate) {
+                courseParticipantManager.persist(cp);
+            }
             status = 3;
         }
         this.invoice = invoice;
@@ -206,14 +206,20 @@ public class InvoiceController {
     public String deleteInvoice(@PathVariable("iid") Integer iid) {
         logger.debug("Delete Invoice with id " + iid);
         invoice = invoiceManager.get(iid);
+        logger.debug("DURATION HERE:"
+                + invoice.getPositions().get(0).getDuration());
         if (Period.fieldDifference(new LocalDateTime(), invoice.getDate())
                 .getMonths() > 3) {
-            logger.debug("Couldn't be canceled");
+            cancelErrorMessage = true;
         } else {
-
             invoice.setEnabled(false);
             invoiceManager.merge(invoice);
-
+            for (Position pos : invoice.getPositions()) {
+                CourseParticipant cpToUpdate = courseParticipantManager
+                        .getCourseParticipantByPosition(pos);
+                cpToUpdate.setEnabled(false);
+                courseParticipantManager.merge(cpToUpdate);
+            }
         }
         invoice = new Invoice();
         return "redirect:/admin/invoice";
