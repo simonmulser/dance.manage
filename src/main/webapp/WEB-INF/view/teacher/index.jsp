@@ -95,7 +95,7 @@
 
 $(document).ready(function() {
 	var courseData = [
-	<c:forEach items="${teacher.enabledCourses}" var="course"
+	<c:forEach items="${enabledCourses}" var="course"
 		varStatus="loop">
 		        {
 	              title: '${course.name}',

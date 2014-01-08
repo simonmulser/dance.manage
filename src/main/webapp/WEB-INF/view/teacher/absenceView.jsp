@@ -12,10 +12,10 @@
 	<spring:message var="i18nAbsence" code="widget.absence" />
 	<dmtags:widget title="${i18nMyCourses}" style="noTable" icon="icon-edit">
 		<c:choose>
-			<c:when test="${teacher.enabledCourses.size() gt 0}">
+			<c:when test="${enabledCourses.size() gt 0}">
 				<div class="tabbable">
 					<ul class="nav nav-tabs">
-						<c:forEach items="${teacher.enabledCourses}" var="enabledCourse" varStatus="loop">
+						<c:forEach items="${enabledCourses}" var="enabledCourse" varStatus="loop">
 							<li <c:if test="${loop.first}">class="active"</c:if>><a href="#${enabledCourse.slug}" data-toggle="tab">${enabledCourse.name}</a></li>
 						</c:forEach>
 					</ul>
@@ -23,7 +23,7 @@
 					<br />
 
 					<div class="tab-content">
-						<c:forEach items="${teacher.enabledCourses}" var="enabledCourse" varStatus="loop">
+						<c:forEach items="${enabledCourses}" var="enabledCourse" varStatus="loop">
 							<div class="tab-pane <c:if test="${loop.first}">active</c:if>" id="${enabledCourse.slug}">
 								<c:choose>
 									<c:when test="${enabledCourse.appointments.size() gt 0}">

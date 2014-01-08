@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import at.danceandfun.entity.Teacher;
+import at.danceandfun.service.CourseManager;
 import at.danceandfun.service.TeacherManager;
 
 @Controller
@@ -29,12 +30,17 @@ public class TeacherHomeController {
     @Autowired
     private TeacherManager teacherManager;
 
+    @Autowired
+    private CourseManager courseManager;
+
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String showIndex(ModelMap map) {
         logger.debug("showIndexTeacher");
         Teacher teacher = getLoggedInTeacher();
 
         map.put("teacher", teacher);
+        map.put("enabledCourses",
+                courseManager.getEnabledCoursesByTeacher(teacher));
         return "teacher/index";
     }
 
