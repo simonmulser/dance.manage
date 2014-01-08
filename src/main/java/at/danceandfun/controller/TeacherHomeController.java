@@ -34,7 +34,7 @@ public class TeacherHomeController {
         logger.debug("showIndexTeacher");
         Teacher teacher = getLoggedInTeacher();
 
-        map.put("user", teacher);
+        map.put("teacher", teacher);
         return "teacher/index";
     }
 
@@ -68,6 +68,15 @@ public class TeacherHomeController {
         teacherManager.merge(teacher);
         return "redirect:/teacher";
 
+    }
+
+    @RequestMapping(value = "/absence", method = RequestMethod.GET)
+    public String showAbsence(ModelMap map) {
+        logger.debug("showAbsenceTeacher");
+        Teacher teacher = getLoggedInTeacher();
+
+        map.put("teacher", teacher);
+        return "teacher/absenceView";
     }
 
     private Teacher getLoggedInTeacher() {

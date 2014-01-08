@@ -14,7 +14,7 @@
 		<spring:message var="i18nStyles" code="widget.styles" />
 		<spring:message var="i18nAgenda" code="widget.agenda" />
 		<c:choose>
-			<c:when test="${user.courses.size() gt 0}">
+			<c:when test="${teacher.courses.size() gt 0}">
 				<dmtags:widget title="${i18nMyCourses}" style="table" icon="icon-list">
 					<table class="table table-striped table-bordered">
 						<thead>
@@ -24,7 +24,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach items="${user.courses}" var="course" varStatus="loop">
+							<c:forEach items="${teacher.courses}" var="course" varStatus="loop">
 								<tr>
 									<td>${course.year}</td>
 									<td>${course.name}</td>
@@ -36,18 +36,18 @@
 			</c:when>
 			<c:otherwise>
 				<dmtags:widget title="${i18nMyCourses}" style="noTable" icon="icon-list">
-					<spring:message code="participant.noCourses" />
+					<spring:message code="teacher.noCourses" />
 				</dmtags:widget>
 			</c:otherwise>
 		</c:choose>
 		
 		<c:choose>
-			<c:when test="${user.styles.size() gt 0}">
+			<c:when test="${teacher.styles.size() gt 0}">
 				<dmtags:widget title="${i18nStyles}" style="table" icon="icon-list">
 					<table class="table table-striped table-bordered">
 						<thead />
 						<tbody>
-							<c:forEach items="${user.styles}" var="style" varStatus="loop">
+							<c:forEach items="${teacher.styles}" var="style" varStatus="loop">
 								<tr>
 									<td>${style.name}</td>
 								</tr>
@@ -95,7 +95,7 @@
 
 $(document).ready(function() {
 	var courseData = [
-	<c:forEach items="${user.enabledCourses}" var="course"
+	<c:forEach items="${teacher.enabledCourses}" var="course"
 		varStatus="loop">
 		        {
 	              title: '${course.name}',

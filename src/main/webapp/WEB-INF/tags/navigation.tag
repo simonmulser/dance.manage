@@ -41,9 +41,18 @@
 					<li <c:if test="${activesection eq 'absence'}">class="active"</c:if>><a href="/dancemanage/participant/absence/${participant.pid}"><i class="icon-edit"></i><span><spring:message
 									code="nav.absence" /></span> </a></li>
 				</c:if>
+				
 				<c:if test="${userType eq 'parent'}">
 					<li <c:if test="${activesection eq 'dashboard' && !requestScope['javax.servlet.forward.request_uri'].contains('participant')}">class="active"</c:if>><a href="/dancemanage/parent"><i class="icon-dashboard"></i><span><spring:message code="nav.dashboard" /></span> </a></li>
 				</c:if>
+				
+				<c:if test="${userType eq 'teacher' }">
+					<li <c:if test="${activesection eq 'dashboard'}">class="active"</c:if>><a href="/dancemanage/teacher/"><i class="icon-dashboard"></i><span><spring:message
+									code="nav.dashboard" /></span> </a></li>
+					<li <c:if test="${activesection eq 'absence'}">class="active"</c:if>><a href="/dancemanage/teacher/absence/"><i class="icon-edit"></i><span><spring:message
+									code="nav.absence" /></span> </a></li>
+				</c:if>
+				
 			</ul>
 		</div>
 		<!-- /container -->
