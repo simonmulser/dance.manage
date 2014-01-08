@@ -11,6 +11,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PostPersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -21,6 +23,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import at.danceandfun.util.Helpers;
 import at.danceandfun.util.PatternConstants;
 
 /**
@@ -71,6 +74,9 @@ public abstract class Person extends EntityBase implements UserDetails {
 
     @Column(name = "ENABLED")
     private boolean enabled;
+
+    @Column(name = "SLUG")
+    private String slug;
 
     @ManyToOne(cascade = { CascadeType.ALL })
     @JoinColumn(name = "A_ID")
@@ -149,6 +155,18 @@ public abstract class Person extends EntityBase implements UserDetails {
     @Override
     public String getUsername() {
         return email;
+    }
+
+    @PreUpdate
+    @Override
+    public void onUpdate() {
+        slug = Helpers.toSlug(lastname + " " + pid);
+
+    }
+
+    @PostPersist
+    public void postCreate() {
+        slug = Helpers.toSlug(lastname + " " + pid);
     }
 
     @Override

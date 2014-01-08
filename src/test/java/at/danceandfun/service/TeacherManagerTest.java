@@ -24,7 +24,7 @@ import at.danceandfun.entity.Teacher;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TeacherManagerTest {
 
-    private static Logger logger = Logger.getLogger(TeacherManagerImpl.class);
+    private static Logger logger = Logger.getLogger(TeacherManagerTest.class);
 
     @Autowired
     private TeacherManager teacherManager;

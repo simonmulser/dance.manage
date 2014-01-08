@@ -121,6 +121,18 @@ public class Teacher extends Person {
         return courses;
     }
 
+    @JsonIgnore
+    public List<Course> getEnabledCourses() {
+        List<Course> enabledCourses = new ArrayList<Course>();
+        for (Course course : courses) {
+            if (course.isEnabled()) {
+                enabledCourses.add(course);
+            }
+        }
+        return enabledCourses;
+
+    }
+
     public void setCourses(List<Course> courses) {
         this.courses = courses;
     }

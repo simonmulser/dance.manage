@@ -24,7 +24,7 @@ import at.danceandfun.entity.Participant;
 public class ParticipantManagerTest {
 
     private static Logger logger = Logger
-            .getLogger(ParticipantManagerImpl.class);
+            .getLogger(ParticipantManagerTest.class);
 
     @Autowired
     private ParticipantManager participantManager;

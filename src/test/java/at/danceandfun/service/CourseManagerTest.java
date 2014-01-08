@@ -31,7 +31,7 @@ import at.danceandfun.entity.Teacher;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CourseManagerTest {
 
-    private static Logger logger = Logger.getLogger(CourseManagerImpl.class);
+    private static Logger logger = Logger.getLogger(CourseManagerTest.class);
 
     @Autowired
     private CourseManager courseManager;

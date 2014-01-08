@@ -11,12 +11,20 @@
 	<spring:message var="i18nAccountInfo" code="widget.accountInfo" />
 <dmtags:span width="12">
 	<dmtags:widget title="${i18nAccountInfo}" icon="icon-user">
-		<form:form method="post" action="" commandName="participant"
+		<form:form method="post" action="edit" commandName="teacher"
 			class="form-horizontal">
 
 			<dmtags:personForm />
-
-			<dmtags:participantForm />
+			
+			<div class="control-group">
+				<form:label path="birthday" class="control-label">
+					<spring:message code="label.birthday" />*
+			                </form:label>
+				<div class="span6">
+					<form:input path="birthday" class="datepicker" />
+				</div>
+				<form:errors path="birthday" cssClass="error" />
+			</div>
 
 			<dmtags:addressForm />
 
