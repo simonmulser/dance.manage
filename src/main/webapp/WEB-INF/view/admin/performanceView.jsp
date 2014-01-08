@@ -47,10 +47,12 @@
 						<input type="checkbox" value="MultipleGroups"	id="CheckboxMultipleGroupsSamePerformance" name="CheckboxMultipleGroupsSamePerformance" <c:if test="${multipleGroupsSamePerformance}">checked</c:if>>
 						<div style="float:left; margin-left: 4px"><i class="icon-sitemap <c:if test="${performanceList1[0].multipleGroupsSamePerformance}">restriction-icon-bad</c:if>"></i></div><div style="margin-left: 25px"><spring:message code='help.restriction.multipleGroupsSamePerformance' /></div>
 					</label>
+					<!-- 
 					<label class="checkbox">
 						<input type="checkbox" value="Sibs"	id="CheckboxSibsSamePerformance" name="CheckboxSibsSamePerformance" <c:if test="${sibsSamePerformance}">checked</c:if>>
 						<div style="float:left; margin-left: 4px"><i class="icon-adn <c:if test="${performanceList1[0].sibsSamePerformance}">restriction-icon-bad</c:if>"></i></div><div style="margin-left: 25px"><spring:message code='help.restriction.sibsSamePerformance' /></div>
-					</label>
+					</label> 
+					-->
 				</div>
 				<div style="margin-top: 20px">
 					<input type="submit" value="<spring:message code="label.create"/>"
