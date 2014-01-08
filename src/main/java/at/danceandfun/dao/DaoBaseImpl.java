@@ -90,6 +90,12 @@ public class DaoBaseImpl<T> implements DaoBase<T> {
         return session.createQuery(query).list();
     }
 
+    @Override
+    public int getQueryResultsCount(String query) {
+        Session session = getHibernateSession();
+        return ((Long) session.createQuery(query).uniqueResult()).intValue();
+    }
+
     protected Session getHibernateSession() {
         Session session = entityManager.unwrap(Session.class);
         return session;

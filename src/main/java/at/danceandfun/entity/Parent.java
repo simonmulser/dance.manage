@@ -27,6 +27,9 @@ public class Parent extends Person {
     @OneToMany(mappedBy = "parent")
     private List<Participant> children = new ArrayList<Participant>();
 
+    @OneToMany(mappedBy = "parent")
+    private List<Invoice> invoices = new ArrayList<Invoice>();
+
     public Parent() {
     }
 
@@ -44,6 +47,15 @@ public class Parent extends Person {
 
     public void setChildren(List<Participant> children) {
         this.children = children;
+    }
+
+    @JsonIgnore
+    public List<Invoice> getInvoices() {
+        return invoices;
+    }
+
+    public void setInvoices(List<Invoice> invoices) {
+        this.invoices = invoices;
     }
 
     @Override

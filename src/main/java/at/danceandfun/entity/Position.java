@@ -7,6 +7,9 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import at.danceandfun.enumeration.Duration;
 
 @Entity
 @Table(name = "POSITION")
@@ -23,7 +26,13 @@ public class Position extends EntityBase {
     private PositionID key = new PositionID();
 
     @Column(name = "AMOUNT")
-    private String amount;
+    private Double amount;
+
+    @Column(name = "DURATION")
+    private Integer duration;
+
+    @Transient
+    private String errorMessage;
 
     public Position() {
     }
@@ -37,12 +46,28 @@ public class Position extends EntityBase {
         this.key = key;
     }
 
-    public String getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
+    }
+
+    public Duration getDuration() {
+        return Duration.parse(this.duration);
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration.getValue();
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
 }
