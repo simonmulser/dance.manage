@@ -29,7 +29,7 @@ public class Position extends EntityBase {
     private Double amount;
 
     @Column(name = "DURATION")
-    private Duration duration;
+    private Integer duration;
 
     @Transient
     private String errorMessage;
@@ -55,11 +55,11 @@ public class Position extends EntityBase {
     }
 
     public Duration getDuration() {
-        return duration;
+        return Duration.parse(this.duration);
     }
 
     public void setDuration(Duration duration) {
-        this.duration = duration;
+        this.duration = duration.getValue();
     }
 
     public String getErrorMessage() {
