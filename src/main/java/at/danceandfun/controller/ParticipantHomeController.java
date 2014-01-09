@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import at.danceandfun.entity.Absence;
 import at.danceandfun.entity.Appointment;
 import at.danceandfun.entity.Participant;
+import at.danceandfun.entity.Rating;
 import at.danceandfun.service.AppointmentManager;
 import at.danceandfun.service.CourseManager;
 import at.danceandfun.service.ParticipantManager;
@@ -132,6 +133,26 @@ public class ParticipantHomeController {
 
         map.put("participant", participant);
         return "participant/absenceView";
+    }
+
+    @RequestMapping(value = "/rating/{pid}", method = RequestMethod.GET)
+    public String showRating(ModelMap map, @PathVariable int pid) {
+        logger.debug("showRating");
+        Participant participant = participantManager.get(pid);
+        Rating rating = new Rating();
+        map.put("rating", rating);
+        map.put("participant", participant);
+        return "participant/ratingView";
+    }
+
+    @RequestMapping(value = "/rating/add/{pid}", method = RequestMethod.GET)
+    public String addRating(ModelMap map, @PathVariable int pid) {
+        logger.debug("showRating");
+        Participant participant = participantManager.get(pid);
+        Rating rating = new Rating();
+        map.put("rating", rating);
+        map.put("participant", participant);
+        return "participant/ratingView";
     }
 
     private Participant getLoggedInParticipant() {
