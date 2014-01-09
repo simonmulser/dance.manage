@@ -18,12 +18,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import at.danceandfun.entity.Course;
 import at.danceandfun.entity.Participant;
 import at.danceandfun.entity.Performance;
+import at.danceandfun.entity.PerformancePlan;
 import at.danceandfun.exception.SatException;
 import at.danceandfun.sat.GenerateSatSolution;
 import at.danceandfun.sat.SatValidator;
 import at.danceandfun.service.CourseManager;
 import at.danceandfun.service.ParticipantManager;
 import at.danceandfun.service.PerformanceManager;
+import at.danceandfun.service.PerformancePlanManager;
 
 //import at.danceandfund.exception.SatException;
 
@@ -40,6 +42,8 @@ public class PerformanceController {
     private CourseManager courseManager;
     @Autowired
     private ParticipantManager participantManager;
+    @Autowired
+    private PerformancePlanManager performancePlanManager;
 
     private Performance performance = new Performance();
     private Performance tempPerformance1 = new Performance();
@@ -83,6 +87,17 @@ public class PerformanceController {
         List<Participant> participantList = participantManager.getEnabledList();
 
         setCheckedRestrictions(request);
+
+        List<PerformancePlan> performancesPerPlan = performancePlanManager
+                .getEnabledList();
+
+        System.out.println("---------------" + performancesPerPlan.size());
+
+        PerformancePlan plan = performancesPerPlan.get(0);
+
+        for (Performance cur : plan.getPerformances()) {
+            System.out.println("Performance: " + cur.getPerid());
+        }
 
         Collections.shuffle(courses);
 

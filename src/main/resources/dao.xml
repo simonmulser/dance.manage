@@ -31,6 +31,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="performanceDao" class="at.danceandfun.dao.DaoBaseImpl">
         <property name="classz" value="at.danceandfun.entity.Performance" />
     </bean>
+    <bean id="performancePlanDao" class="at.danceandfun.dao.DaoBaseImpl">
+        <property name="classz" value="at.danceandfun.entity.PerformancePlan" />
+    </bean>
     <bean id="positionDao" class="at.danceandfun.dao.DaoBaseImpl">
         <property name="classz" value="at.danceandfun.entity.Position" />
     </bean>
