@@ -25,7 +25,7 @@
 				<c:if test="${userType eq 'admin'}">
 					<form action="<c:url value='/admin/search/request' />"
 						class="navbar-search pull-right">
-						<input type="text" name="query" class="search-query"
+						<input type="text" id="searchQuery" value="" name="query" class="search-query"
 							placeholder="<spring:message code="nav.search" />" />
 					</form>
 				</c:if>
@@ -37,3 +37,4 @@
 	<!-- /navbar-inner -->
 </div>
 <!-- /navbar -->
+

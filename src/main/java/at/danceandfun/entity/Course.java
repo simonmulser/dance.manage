@@ -496,6 +496,11 @@ public class Course extends EntityBase {
         slug = Helpers.toSlug(name + " " + cid);
     }
 
+    @Transient
+    public String getIcon() {
+        return "icon-female";
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;

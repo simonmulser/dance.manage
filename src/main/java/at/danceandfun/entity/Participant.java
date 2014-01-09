@@ -185,6 +185,11 @@ public class Participant extends Person {
         return invoices;
     }
 
+    @Transient
+    public String getIcon() {
+        return "icon-female";
+    }
+
     public void setInvoices(List<Invoice> invoices) {
         this.invoices = invoices;
     }

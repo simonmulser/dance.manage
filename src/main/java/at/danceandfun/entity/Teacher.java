@@ -185,6 +185,11 @@ public class Teacher extends Person {
         this.tempCourseNames = tempCourseNames;
     }
 
+    @Transient
+    public String getIcon() {
+        return "icon-female";
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();

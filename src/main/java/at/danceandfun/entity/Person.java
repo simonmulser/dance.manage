@@ -12,6 +12,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -172,6 +173,11 @@ public abstract class Person extends EntityBase implements UserDetails {
         int result = 1;
         result = prime * result + ((pid == null) ? 0 : pid.hashCode());
         return result;
+    }
+
+    @Transient
+    public String getName() {
+        return firstname + " " + lastname;
     }
 
     @Override

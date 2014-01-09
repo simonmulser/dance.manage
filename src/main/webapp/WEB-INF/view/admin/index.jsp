@@ -263,4 +263,35 @@ $(document).ready(function() {
 	      });
 	</c:forEach>
   });
+  
+$(document).ready(
+		$("#searchQuery").autocomplete({
+			
+									minLength : 1,
+									delay : 500,
+									source : function(request, response) {
+										$.getJSON("/dancemanage/admin/search/searchQuery",
+											request,function(result) {
+												response($.map(result,
+													function(item) {
+														return {
+															label : item.name,
+															value : item.name,
+															classs : item.icon
+														};
+											}));
+										});
+									},
+
+									select : function(event, ui) {
+										if (ui.item) {
+											window.location.href = '/dancemanage/admin/invoice/getDetailsForParticipant/' + ui.item.pid;
+										}
+									}
+		}).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+        return $( "<li>" )
+        	.data( "item.autocomplete", item )
+        	.append( "<a> <i class='"+ item.classs +"''></i>&nbsp;" + item.label + " </a>" )
+        	.appendTo( ul );
+    });
 </script>
