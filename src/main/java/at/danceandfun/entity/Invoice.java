@@ -53,6 +53,9 @@ public class Invoice extends EntityBase {
     @Column(name = "REDUCTION")
     private Double reduction;
 
+    @Column(name = "REDUCTION_AMOUNT")
+    private Double reductionAmount;
+
     @Column(name = "TOTAL_AMOUNT")
     private Double totalAmount;
 
@@ -120,6 +123,14 @@ public class Invoice extends EntityBase {
 
     public Double getTotalAmount() {
         return totalAmount;
+    }
+
+    public Double getReductionAmount() {
+        return reductionAmount;
+    }
+
+    public void setReductionAmount(Double reductionAmount) {
+        this.reductionAmount = reductionAmount;
     }
 
     public void setTotalAmount(Double totalAmount) {

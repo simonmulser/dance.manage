@@ -77,7 +77,7 @@ public class Participant extends Person {
     private String tempCourseNames;
 
     @Transient
-    private List<Course> actualCourses;
+    private List<Course> actualCourses = new ArrayList<Course>();
 
     public Participant() {
     }

@@ -1,5 +1,8 @@
 package at.danceandfun.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
 import javax.persistence.Column;
@@ -34,6 +37,9 @@ public class Position extends EntityBase {
     @Transient
     private String errorMessage;
 
+    @Transient
+    private List<Duration> possibleDurations = new ArrayList<Duration>();
+
     public Position() {
     }
 
@@ -62,12 +68,22 @@ public class Position extends EntityBase {
         this.duration = duration.getValue();
     }
 
+    @Transient
     public String getErrorMessage() {
         return errorMessage;
     }
 
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
+    }
+
+    @Transient
+    public List<Duration> getPossibleDurations() {
+        return possibleDurations;
+    }
+
+    public void setPossibleDurations(List<Duration> possibleDurations) {
+        this.possibleDurations = possibleDurations;
     }
 
 }

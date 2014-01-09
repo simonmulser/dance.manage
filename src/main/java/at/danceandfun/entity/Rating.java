@@ -44,6 +44,10 @@ public class Rating extends EntityBase {
     @JoinColumn(name = "C_ID")
     private Course course;
 
+    @ManyToOne
+    @JoinColumn(name = "P_ID")
+    private Participant participant;
+
     public Rating() {
     }
 
@@ -109,6 +113,14 @@ public class Rating extends EntityBase {
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public Participant getParticipant() {
+        return participant;
+    }
+
+    public void setParticipant(Participant participant) {
+        this.participant = participant;
     }
 
 }
