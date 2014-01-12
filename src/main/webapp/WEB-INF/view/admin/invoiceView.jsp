@@ -13,7 +13,6 @@
 
 		<dmtags:widget icon="icon-envelope" title="${i18nInvoices}">
 			<spring:message code="help.invoice" />
-			
 			<form:form method="post" action="invoice/preview"
 				commandName="invoice" class="form-horizontal">
 				
@@ -104,8 +103,10 @@
 											<form:input path="positions[${status.index }].key.course.cid" type="hidden" />
 										</td>
 										<td>
+												<c:set var="index" value="${status.index }" />
+												<form:input path="positions[${status.index }].possibleDurations" type="hidden"/>
 												<form:select path="positions[${status.index }].duration">
-													<form:options items="${Duration}" />
+													<form:options items="${invoice.positions[index].possibleDurations}" itemLabel="label" />
 												</form:select>
 										</td>
 										<td>
@@ -137,6 +138,20 @@
 									 	<span class="add-on">%</span>
 										<form:errors path="reduction" cssClass="error" />
 									</td>
+								</tr>
+								<tr>
+									<td></td>
+									<c:if test="${!empty invoice.reductionAmount }">
+										<td>
+											<form:label path="reductionAmount">
+												<spring:message code="label.reduction" />
+											</form:label>
+										</td>
+										<td>	
+											${invoice.reductionAmount} &euro;
+										</td>
+									</c:if>
+									<td></td>
 								</tr>
 								<tr>
 									<td></td>
@@ -224,7 +239,7 @@
 					<display:column titleKey="label.reduction">
 						<c:choose>
 							<c:when test="${!empty invoice.reduction }">
-								${invoice.reduction}%
+								${invoice.reductionAmount }&euro;&nbsp;(${invoice.reduction}%)
 							</c:when>
 							<c:otherwise>
 								-
@@ -291,11 +306,6 @@
 		}
 	});
 	$(document).ready(function() {
-		$("#showParticipant").on("click", "i", function() { //Participant löschen
-			$(this).parent().remove();
-			$("#participantPid").val(null);
-		});
-
 		$("#participantQuery").autocomplete({
 			minLength : 1,
 			delay : 500,

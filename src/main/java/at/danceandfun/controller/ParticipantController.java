@@ -156,11 +156,7 @@ public class ParticipantController {
                     }
                 }
             }
-
-            logger.debug("Update participant");
             participantManager.merge(participant);
-            logger.debug("Finished updating participant");
-
             this.participant = new Participant();
         }
         return "redirect:/admin/participant";

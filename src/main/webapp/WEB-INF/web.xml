@@ -31,7 +31,7 @@
     </listener>
 
     <welcome-file-list>
-        <welcome-file>/index</welcome-file>
+        <welcome-file>/login</welcome-file>
     </welcome-file-list>
 
     <filter>
@@ -54,8 +54,7 @@
     <filter>
         <filter-name>OpenEntityManagerInViewFilter</filter-name>
         <filter-class>
-            org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter
-        </filter-class>
+            org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
         <init-param>
             <param-name>singleSession</param-name>
             <param-value>true</param-value>
@@ -87,4 +86,9 @@
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error/error404</location>
+    </error-page>
 </web-app>
