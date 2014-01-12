@@ -134,10 +134,8 @@
 								<c:when test="${!empty teacher.courses}">
 									<td><c:forEach items="${teacher.courses}" var="cou"
 											varStatus="loop">
-											<c:if test="${cou.enabled }">
 											${cou.name}
-											
-											${!loop.last ? ', ' : ''}</c:if>
+											${!loop.last ? ', ' : ''}
 										</c:forEach></td>
 								</c:when>
 								<c:otherwise>

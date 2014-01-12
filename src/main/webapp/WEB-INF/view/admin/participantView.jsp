@@ -93,11 +93,9 @@
 							<div id="selectedCourses">
 								<c:forEach items="${participant.courseParticipants}"
 								var="courseParticipant">
-								<c:if test="${courseParticipant.enabled}">
 									<div class="courseTag">${courseParticipant.course.name}&nbsp;<i
 										id="${courseParticipant.course.cid}"
 										class="icon icon-remove tagCloseIcon"></i></div>
-								</c:if>
 							</c:forEach>
 							 </div>
 						</div>
@@ -169,11 +167,8 @@
 						<c:if test="${!empty row.courseParticipants}">
 							<c:forEach items="${row.courseParticipants}"
 								var="courseParticipant" varStatus="loop">
-								<c:if test="${courseParticipant.enabled}">
 								${courseParticipant.course.name}
-								${!loop.last ? ', ' : ''}
-								</c:if>
-								
+								${!loop.last ? ', ' : ''}								
 						</c:forEach>
 						</c:if>
 					</display:column>

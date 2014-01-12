@@ -150,7 +150,7 @@ public class ParticipantHomeController {
         logger.debug("showRating");
         Participant participant = participantManager.get(pid);
         participant.setCourseParticipants(courseParticipantManager
-                .getEnabeledCourseParticipants(participant));
+                .getEnabledDistinctCourseParticipants(participant));
         this.rating = new Rating();
         map.put("rating", this.rating);
         map.addAttribute("ratingList",

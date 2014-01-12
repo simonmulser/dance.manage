@@ -110,13 +110,18 @@ public class Participant extends Person {
         this.courseParticipants = courseParticipants;
     }
 
-    public CourseParticipant getCourseById(Course course) {
+    public List<CourseParticipant> getCourseParticipantsById(Course course) {
+        List<CourseParticipant> containedCourseParticipants = new ArrayList<CourseParticipant>();
         for (CourseParticipant cp : courseParticipants) {
             if (cp.getCourse().getCid() == course.getCid()) {
-                return cp;
+                containedCourseParticipants.add(cp);
             }
         }
-        return null;
+        if (containedCourseParticipants.size() > 0) {
+            return containedCourseParticipants;
+        } else {
+            return null;
+        }
     }
 
     @JsonIgnore

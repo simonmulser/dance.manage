@@ -2,7 +2,6 @@ package at.danceandfun.service;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +13,6 @@ import at.danceandfun.entity.Rating;
 public class RatingManagerImpl extends ManagerBaseImpl<Rating> implements
         RatingManager {
 
-    private static Logger logger = Logger.getLogger(RatingManagerImpl.class);
-
     @Autowired
     public void setDao(DaoBaseImpl<Rating> ratingDao) {
         setMainDao(ratingDao);
@@ -25,7 +22,6 @@ public class RatingManagerImpl extends ManagerBaseImpl<Rating> implements
     public List<Rating> getNewestRatings() {
         List<Rating> ratings = mainDao
                 .getQueryResults("Select r from Rating as r where enabled=true order by r.rid desc");
-        logger.debug("SIZE: " + ratings.size());
         if (ratings.size() > 4) {
             return ratings.subList(0, 3);
         } else {
