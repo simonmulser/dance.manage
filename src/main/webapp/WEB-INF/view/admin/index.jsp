@@ -20,7 +20,8 @@
 	code="shortcut.editperformance" />
 <spring:message var="i18nSCCourseList" code="shortcut.courselist" />
 <spring:message var="i18nSCDailyStats" code="shortcut.dailystats" />
-<spring:message var="i18nSCFeedback" code="shortcut.feedback" />
+<spring:message var="i18nSCNewParents" code="shortcut.newparents" />
+<spring:message var="i18nSCNewTeacher" code="shortcut.newteacher" />
 
 
 <dmtags:base title="${title}" activesection="dashboard">
@@ -160,10 +161,10 @@
 				</a><a href="admin/statistics" class="shortcut"><i
 					class="shortcut-icon icon-signal"></i><span class="shortcut-label">${i18nSCDailyStats}</span>
 				</a><a href="javascript:;" class="shortcut"><i
-					class="shortcut-icon icon-comment"></i> <span
-					class="shortcut-label">${i18nSCFeedback}</span> </a><a
+					class="shortcut-icon icon-user"></i> <span
+					class="shortcut-label">${i18nSCNewParents}</span> </a><a
 					href="javascript:;" class="shortcut"> <i
-					class="shortcut-icon icon-tag"></i><span class="shortcut-label">Tags</span>
+					class="shortcut-icon icon-user"></i><span class="shortcut-label">${i18nSCNewTeacher}</span>
 				</a>
 			</div>
 		</dmtags:widget>
