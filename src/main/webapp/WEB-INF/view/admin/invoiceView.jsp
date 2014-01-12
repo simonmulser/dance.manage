@@ -38,21 +38,23 @@
 										<c:when test="${!empty invoice.parent.pid}">
 											
 												<td colspan="2">
-													<spring:message code="label.invoiceAddress" /><br />
-													<form:input path="parent.pid" id="parentPid" type="hidden" />
-													${invoice.parent.firstname }&nbsp;${invoice.parent.lastname }<br />
-													${invoice.parent.address.street}&nbsp;${invoice.parent.address.number}
-													<c:if test="${!empty invoice.parent.address.stair}">
-														/ ${invoice.parent.address.stair }
-													</c:if>	
-													<c:if test="${!empty invoice.parent.address.door}">
-														/ ${invoice.parent.address.door }
-													</c:if>
-													<br />
-													${invoice.parent.address.zip},&nbsp;${invoice.parent.address.city }
+													<address>
+														<em><spring:message code="label.invoiceAddress" /></em><br />
+														<form:input path="parent.pid" id="parentPid" type="hidden" />
+														<strong>${invoice.parent.firstname }&nbsp;${invoice.parent.lastname }</strong><br />
+														${invoice.parent.address.street}&nbsp;${invoice.parent.address.number}
+														<c:if test="${!empty invoice.parent.address.stair}">
+															/ ${invoice.parent.address.stair }
+														</c:if>	
+														<c:if test="${!empty invoice.parent.address.door}">
+															/ ${invoice.parent.address.door }
+														</c:if>
+														<br />
+														${invoice.parent.address.zip},&nbsp;${invoice.parent.address.city }
+													</address>
 												</td>
 												<td colspan="2">
-													<spring:message code="label.senderAddress" /><br />
+													<em><spring:message code="label.senderAddress" /></em><br />
 													Dance &amp; Fun<br />
 													${user.address.street}&nbsp;${user.address.number }<br />
 													${user.address.zip }&nbsp;${user.address.city }
@@ -60,8 +62,8 @@
 										</c:when>
 										<c:when test="${!empty invoice.participant.pid}">
 												<td colspan="2">
-													<spring:message code="label.invoiceAddress" /><br />
-													${invoice.participant.firstname }&nbsp;${invoice.participant.lastname }<br />
+													<em><spring:message code="label.invoiceAddress" /></em><br />
+													<strong>${invoice.participant.firstname }&nbsp;${invoice.participant.lastname }</strong><br />
 													${invoice.participant.address.street}&nbsp;${invoice.participant.address.number}
 													<c:if test="${!empty invoice.participant.address.stair}">
 														/ ${invoice.participant.address.stair }
@@ -73,7 +75,7 @@
 													${invoice.participant.address.zip},&nbsp;${invoice.participant.address.city }
 												</td>
 												<td colspan="2">
-													<spring:message code="label.senderAddress" /><br />
+													<em><spring:message code="label.senderAddress" /></em><br />
 													Dance &amp; Fun<br />
 													${user.address.street}&nbsp;${user.address.number }<br />
 													${user.address.zip }&nbsp;${user.address.city }
@@ -130,8 +132,9 @@
 											<spring:message code="label.reduction" />
 									    </form:label>
 									    </td>
-								    <td>
-										<form:input path="reduction" /> %
+								    <td class="input-append">
+								    	<form:input class="span1" path="reduction" />
+									 	<span class="add-on">%</span>
 										<form:errors path="reduction" cssClass="error" />
 									</td>
 								</tr>
