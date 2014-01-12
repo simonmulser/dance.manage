@@ -57,7 +57,6 @@
 					<tbody>
 						<c:forEach items="${participantsByCourseCount}"
 							var="participant" varStatus="loop">
-							<c:if test="${fn:length(participant.courseParticipants)>1 }">
 								<tr>
 									<td>${participant.courseParticipants.size()}</td>
 									<td><c:forEach items="${participant.courseParticipants}"
@@ -68,7 +67,6 @@
 									<td>${participant.firstname}</td>
 									<td>${participant.lastname}</td>
 								</tr>
-							</c:if>
 						</c:forEach>
 					</tbody>
 				</table>

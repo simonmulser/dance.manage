@@ -45,7 +45,9 @@ public class ListController {
                     .getParticipant().getPid());
             participant.setCourseParticipants(courseParticipantManager
                     .getEnabledDistinctCourseParticipants(participant));
-            participantsByCourseCount.add(participant);
+            if (participant.getCourseParticipants().size() > 1) {
+                participantsByCourseCount.add(participant);
+            }
         }
 
         List<Course> courses = new ArrayList<Course>();
