@@ -13,7 +13,6 @@
 
 		<dmtags:widget icon="icon-envelope" title="${i18nInvoices}">
 			<spring:message code="help.invoice" />
-			
 			<form:form method="post" action="invoice/preview"
 				commandName="invoice" class="form-horizontal">
 				

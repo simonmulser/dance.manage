@@ -1366,6 +1366,28 @@ color: #333;
 	background-color:orange;
 }
 
+div.newestRatings{
+	float:left;
+	margin-left:10px;
+}
+
+.newestRatings .icon-plus-sign{
+	color:#74DF00;
+}
+.newestRatings .icon-minus-sign{
+	color:#FF4000;
+}
+
+.messages_layout .shortcut-icon{
+	position: absolute;
+	left: 0;
+	top: 0;
+	margin-top: .25em;
+	margin-left: .40em;
+	font-size: 32px;
+	color: #545454;
+}
+
 /*-------------------------------------------------------------------
 [displayTag]
 */

@@ -64,6 +64,9 @@ public class Participant extends Person {
     @OneToMany(mappedBy = "participant")
     private List<Invoice> invoices = new ArrayList<Invoice>();
 
+    @OneToMany(mappedBy = "participant")
+    private List<Rating> ratings = new ArrayList<Rating>();
+
     @Transient
     private String tempSiblings;
 
@@ -187,6 +190,15 @@ public class Participant extends Person {
 
     public void setInvoices(List<Invoice> invoices) {
         this.invoices = invoices;
+    }
+
+    @JsonIgnore
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<Rating> ratings) {
+        this.ratings = ratings;
     }
 
     public boolean hasParent() {

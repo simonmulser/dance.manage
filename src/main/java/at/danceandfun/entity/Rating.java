@@ -22,6 +22,9 @@ public class Rating extends EntityBase {
     @GeneratedValue
     private Integer rid;
 
+    @Column(name = "ENABLED")
+    private boolean enabled;
+
     @Column(name = "COURSE_RATING")
     private Integer courseRating;
 
@@ -121,6 +124,14 @@ public class Rating extends EntityBase {
 
     public void setParticipant(Participant participant) {
         this.participant = participant;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
 }

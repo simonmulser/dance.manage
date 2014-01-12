@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import at.danceandfun.dao.DaoBaseImpl;
 import at.danceandfun.entity.CourseParticipant;
+import at.danceandfun.entity.Participant;
 import at.danceandfun.entity.Position;
 
 @Service
@@ -40,6 +41,15 @@ public class CourseParticipantManagerImpl extends
         List<CourseParticipant> courseParticipants = mainDao
                 .getListByCriteria(criteria);
         return courseParticipants.get(0);
+    }
+
+    @Override
+    public List<CourseParticipant> getEnabeledCourseParticipants(
+            Participant participant) {
+        return mainDao
+                .getQueryResults("select cp from CourseParticipant as cp where cp.enabled=true and cp.participant.pid="
+                        + participant.getPid()
+                        + " group by cp.participant.pid,cp.course.cid");
     }
 
 }
