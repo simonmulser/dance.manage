@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,6 +20,8 @@ import at.danceandfun.service.RatingManager;
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminHomeController {
+
+    private Logger logger = Logger.getLogger(AdminHomeController.class);
 
     @Autowired
     private CourseManager courseManager;
@@ -48,4 +51,5 @@ public class AdminHomeController {
 
         return "admin/index";
     }
+
 }
