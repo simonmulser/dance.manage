@@ -13,7 +13,7 @@
 		<c:if test="${searchResults.searchedParticipants.size() gt 0}">
 			<spring:message var="i18nSearchParticipants" code="widget.participants" />
 			<dmtags:widget title="${i18nSearchParticipants}" style="table"
-					icon="icon-list">
+					icon="icon-female">
 					<table class="table table-striped table-bordered">
 						<tbody>
 							<c:forEach items="${searchResults.searchedParticipants}"
@@ -30,7 +30,7 @@
 		<c:if test="${searchResults.searchedCourses.size() gt 0}">
 			<spring:message var="i18nSearchCourses" code="widget.courses" />
 				<dmtags:widget title="${i18nSearchCourses}" style="table"
-					icon="icon-list">
+					icon="icon-calendar">
 					<table class="table table-striped table-bordered">
 						<tbody>
 							<c:forEach items="${searchResults.searchedCourses}"
@@ -49,7 +49,7 @@
 		<c:if test="${searchResults.searchedParents.size() gt 0}">
 			<spring:message var="i18nSearchParents" code="widget.parents" />			
 				<dmtags:widget title="${i18nSearchParents}" style="table"
-					icon="icon-list">
+					icon="icon-parents">
 					<table class="table table-striped table-bordered">
 						<tbody>
 							<c:forEach items="${searchResults.searchedParents}"
@@ -66,7 +66,7 @@
 		<spring:message var="i18nSearchTeachers" code="widget.teachers" />
 			<c:if test="${searchResults.searchedTeachers.size() gt 0}">
 				<dmtags:widget title="${i18nSearchTeachers}" style="table"
-					icon="icon-list">
+					icon="icon-user">
 					<table class="table table-striped table-bordered">
 						<tbody>
 							<c:forEach items="${searchResults.searchedTeachers}"

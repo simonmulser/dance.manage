@@ -277,7 +277,9 @@ $(document).ready(
 														return {
 															label : item.name,
 															value : item.name,
-															classs : item.icon
+															id : item.id,
+															image : item.icon,
+															oname : item.objectName
 														};
 											}));
 										});
@@ -285,13 +287,13 @@ $(document).ready(
 
 									select : function(event, ui) {
 										if (ui.item) {
-											window.location.href = '/dancemanage/admin/invoice/getDetailsForParticipant/' + ui.item.pid;
+											window.location.href = '/dancemanage/admin/' + ui.item.oname + '/edit/' + ui.item.id;
 										}
 									}
 		}).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
         return $( "<li>" )
         	.data( "item.autocomplete", item )
-        	.append( "<a> <i class='"+ item.classs +"''></i>&nbsp;" + item.label + " </a>" )
+        	.append( "<a> <i class='"+ item.image +"''></i>&nbsp;" + item.label + " </a>" )
         	.appendTo( ul );
     });
 </script>

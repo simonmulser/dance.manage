@@ -61,7 +61,12 @@ public class Parent extends Person {
 
     @Transient
     public String getIcon() {
-        return "icon-female";
+        return "icon-group";
+    }
+
+    @Transient
+    public String getObjectName() {
+        return "parent";
     }
 
     @Override

@@ -498,7 +498,17 @@ public class Course extends EntityBase {
 
     @Transient
     public String getIcon() {
-        return "icon-female";
+        return "icon-calendar";
+    }
+
+    @Transient
+    public Integer getID() {
+        return cid;
+    }
+
+    @Transient
+    public String getObjectName() {
+        return "course";
     }
 
     @Override

@@ -187,7 +187,12 @@ public class Teacher extends Person {
 
     @Transient
     public String getIcon() {
-        return "icon-female";
+        return "icon-user";
+    }
+
+    @Transient
+    public String getObjectName() {
+        return "teacher";
     }
 
     @Override

@@ -190,6 +190,11 @@ public class Participant extends Person {
         return "icon-female";
     }
 
+    @Transient
+    public String getObjectName() {
+        return "participant";
+    }
+
     public void setInvoices(List<Invoice> invoices) {
         this.invoices = invoices;
     }

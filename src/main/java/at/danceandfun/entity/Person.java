@@ -180,6 +180,11 @@ public abstract class Person extends EntityBase implements UserDetails {
         return firstname + " " + lastname;
     }
 
+    @Transient
+    public Integer getID() {
+        return pid;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
