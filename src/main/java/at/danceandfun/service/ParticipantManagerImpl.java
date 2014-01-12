@@ -32,18 +32,6 @@ public class ParticipantManagerImpl extends ManagerBaseImpl<Participant>
         setMainDao(participantDao);
     }
 
-    @Override
-    public List<Participant> getParticipantsByNumberOfCourses() {
-        logger.info("getParticipantsByNumberOfCourses");
-        return mainDao
-                .getQueryResults("select p"
-                        + " from Participant as p"
-                        + " inner join p.courseParticipants as cp inner join cp.course as c"
-                        + " group by p.pid, p.enabled, p.firstname, p.lastname, p.address, p.telephone, p.password, p.email, p.birthday, p.created, p.updated"
-                        + " order by count(p.id) desc, p.lastname, p.firstname");
-
-    }
-
     public List<Participant> getParticipantsByNumberOfSiblings() {
         DetachedCriteria criteria = DetachedCriteria
                 .forClass(Participant.class);
