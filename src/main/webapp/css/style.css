@@ -1454,3 +1454,10 @@ span.pagelinks {
 	width:7%;
 }
 
+.widgetcaret {
+	right: 0px;
+	position: absolute;
+	margin-right: 13px !important;
+	margin-top: 12px;
+}
+

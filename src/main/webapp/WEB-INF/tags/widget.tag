@@ -28,6 +28,9 @@
 	<div class="widget-header" id="widget-header-${widgetId}" ${retractable ? 'style="cursor: pointer;"' : ''}>
 		<i class="${icon}"></i>
 		<h3>${title}</h3>
+		<c:if test="${retractable}">
+			<i id="widget-retractIcon-${widgetId}" class="widgetcaret ${retractedPerDefault ? 'icon-caret-up' : 'icon-caret-down'}"></i>
+		</c:if>
 	</div>
 	<!-- /widget-header -->
 	<div class="widget-content" id="widget-content-${widgetId}" ${retractedPerDefault ? 'style="display:none"' : ''}>
@@ -40,9 +43,16 @@
 <c:if test="${retractable}">
 	<script>
 		$('#widget-header-${widgetId}').click(function() {
-			$('#widget-content-${widgetId}').toggle('slide', {
+			var content = $('#widget-content-${widgetId}');
+			var retractIcon = $('#widget-retractIcon-${widgetId}');
+			content.toggle('slide', {
 				direction : 'up'
 			});
+			if(retractIcon.attr('class') == 'widgetcaret icon-caret-up') {
+				retractIcon.attr('class', 'widgetcaret icon-caret-down');
+			} else {
+				retractIcon.attr('class', 'widgetcaret icon-caret-up');
+			}
 		});
 	</script>
 </c:if>

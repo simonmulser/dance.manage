@@ -179,7 +179,7 @@
 					</display:column>
 					<display:column>
 						<c:set var="pid" value="${row.pid}" />
-						<a href="participant/edit/${pid}"><spring:message
+						<a href="participant/edit/${pid}#add"><spring:message
 								code="label.edit" /></a>
 						<br />
 						<a href="participant/delete/${pid}" class="openDialog"

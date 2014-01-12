@@ -74,7 +74,7 @@
 					</display:column>
 					<display:column>
 						<c:set var="pid" value="${row.pid}" />
-						<a href="parent/edit/${pid}"><spring:message code="label.edit" /></a>
+						<a href="parent/edit/${pid}#add"><spring:message code="label.edit" /></a>
 						<br />
 						<a href="parent/delete/${pid}" class="openDialog" id="${pid }"><spring:message
 								code="label.delete" /></a>

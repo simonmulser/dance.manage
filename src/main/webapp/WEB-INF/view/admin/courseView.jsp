@@ -221,7 +221,7 @@
 				</display:column>
 					<display:column>
 						<c:set var="cid" value="${course.cid}" />
-						<a href="course/edit/${cid}"><spring:message code="label.edit" /></a>
+						<a href="course/edit/${cid}#add"><spring:message code="label.edit" /></a>
 						<br />
 						<a href="course/delete/${cid}" class="openDialog" id="${cid}"><spring:message
 								code="label.delete" /></a>
