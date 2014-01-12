@@ -31,8 +31,8 @@
 			</div>
 			<div class="control-group">
 				<form:label path="courseRating" class="control-label">
-					<spring:message code="label.courseRating" />
-			                </form:label>*
+					<spring:message code="label.courseRating" />*
+			                </form:label>
 				<div class="span6">
 					<c:forEach var="i" begin="1" end="5">
 						<form:radiobutton path="courseRating" class="star" name="star1" value="${i}"/>
@@ -41,8 +41,8 @@
 			</div>
 			<div class="control-group">
 				<form:label path="teacherRating" class="control-label">
-					<spring:message code="label.teacherRating" />
-			                </form:label>*
+					<spring:message code="label.teacherRating" />*
+			                </form:label>
 				<div class="span6">
 					<c:forEach var="i" begin="1" end="5">
 						<form:radiobutton path="teacherRating" class="star" name="star2" value="${i}"/>
@@ -51,8 +51,8 @@
 			</div>
 			<div class="control-group">
 				<form:label path="serviceRating" class="control-label">
-					<spring:message code="label.serviceRating" />
-			                </form:label>*
+					<spring:message code="label.serviceRating" />*
+			                </form:label>
 				<div class="span6">
 					<c:forEach var="i" begin="1" end="5">
 						<form:radiobutton path="serviceRating" class="star" name="star3" value="${i}"/>
