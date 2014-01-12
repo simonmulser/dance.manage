@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import at.danceandfun.entity.Address;
 import at.danceandfun.entity.Course;
-import at.danceandfun.service.CourseManager;
 import at.danceandfun.service.AddressManager;
+import at.danceandfun.service.CourseManager;
+import at.danceandfun.service.RatingManager;
 
 @Controller
 @RequestMapping(value = "/admin")
@@ -24,6 +25,9 @@ public class AdminHomeController {
 
     @Autowired
     private AddressManager addressManager;
+
+    @Autowired
+    private RatingManager ratingManager;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String showIndex(ModelMap map) {
@@ -40,6 +44,7 @@ public class AdminHomeController {
                     courseManager.getCoursesByStudioAddress(currentAddress));
         }
         map.addAttribute("courseByAddressList", coursePerAddress);
+        map.addAttribute("newestRatingList", ratingManager.getNewestRatings());
 
         return "admin/index";
     }

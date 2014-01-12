@@ -1,6 +1,7 @@
 package at.danceandfun.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -99,6 +100,17 @@ public class InvoiceController {
                 posID.setCourse(cp.getCourse());
                 posID.setInvoice(invoice);
                 pos.setKey(posID);
+                List<Duration> possibleDurations = new ArrayList<Duration>();
+                if (cp.getDuration() == Duration.NONE) {
+                    possibleDurations = Arrays.asList(Duration.values());
+                } else if (cp.getDuration() == Duration.SUMMER) {
+                    possibleDurations.add(Duration.WINTER);
+                    possibleDurations.add(Duration.NONE);
+                } else if (cp.getDuration() == Duration.WINTER) {
+                    possibleDurations.add(Duration.SUMMER);
+                    possibleDurations.add(Duration.NONE);
+                }
+                pos.setPossibleDurations(possibleDurations);
                 invoice.getPositions().add(pos);
             }
         }
@@ -130,21 +142,11 @@ public class InvoiceController {
         double totalAmount = 0;
         int noneCounts = 0;
         for (CourseParticipant cp : actualParticipant.getCourseParticipants()) {
-            int courseCount = courseParticipantManager
-                    .getCourseCountByParticipant(cp.getCourse().getCid(),
-                            actualParticipant.getPid());
             for (Position pos : invoice.getPositions()) {
                 if (cp.isEnabled()
                         && cp.getCourse().getCid() == pos.getKey().getCourse()
                                 .getCid()) {
-                    if (pos.getDuration() == cp.getDuration()) {
-                        pos.setErrorMessage(geti18nMessage("message.invoiceExisting"));
-                        status = 0; // preview
-                    } else if (pos.getDuration() == Duration.YEAR
-                            && courseCount != 0) {
-                        pos.setErrorMessage(geti18nMessage("message.invoiceOneSemester"));
-                        status = 0; // preview
-                    } else if (pos.getDuration() == Duration.NONE) {
+                    if (pos.getDuration() == Duration.NONE) {
                         pos.setErrorMessage(geti18nMessage("message.notRelevatPosition"));
                         noneCounts++;
                     } else {
@@ -167,14 +169,15 @@ public class InvoiceController {
             }
         }
         invoice.setPositions(positionsWithErrors);
-        if (noneCounts == invoice.getPositions().size()) { // alle Positionen
-                                                           // NONE
+        if (noneCounts == invoice.getPositions().size()) { // alle Pos NONE
             status = 0;
         }
         if (status != 0) {
             if (invoice.getReduction() != null) {
+                invoice.setReductionAmount(totalAmount
+                        * (invoice.getReduction() / 100));
                 invoice.setTotalAmount(totalAmount
-                        - (totalAmount * (invoice.getReduction() / 100)));
+                        - invoice.getReductionAmount());
             } else {
                 invoice.setTotalAmount(totalAmount);
             }
