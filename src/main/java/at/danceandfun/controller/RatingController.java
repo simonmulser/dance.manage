@@ -34,6 +34,8 @@ public class RatingController {
     @Autowired
     private RatingManager ratingManager;
 
+    private boolean editTrue = false;
+
     private Rating rating;
 
     @PostConstruct
@@ -43,16 +45,21 @@ public class RatingController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String listRatings(ModelMap map) {
+
+        if (!editTrue) {
+            rating = new Rating();
+        }
+
         map.addAttribute("rating", rating);
         map.addAttribute("ratingList", ratingManager.getEnabledList());
-
+        editTrue = false;
         return "admin/ratingView";
     }
 
     @RequestMapping(value = "/addAnswer/{rid}", method = RequestMethod.GET)
     public String addRating(ModelMap map, @PathVariable("rid") int rid) {
         logger.debug("addAnswer");
-
+        editTrue = true;
         rating = ratingManager.get(rid);
         return "redirect:/admin/rating";
     }
@@ -64,6 +71,7 @@ public class RatingController {
         this.rating.setAnswer(rating.getAnswer());
         ratingManager.merge(this.rating);
         this.rating = new Rating();
+        editTrue = false;
         return "redirect:/admin/rating";
     }
 

@@ -12,7 +12,8 @@
 <dmtags:base title="${i18nTitle}" activesection="rating">
 	<spring:message var="i18nRating" code="widget.rating" />
 	<dmtags:widget title="${i18nRating}" style="noTable" icon="icon-thumbs-up">
-		<spring:message code="help.rating" />
+		<spring:message code="help.rating" /><br />
+		<spring:message code="help.required" />
 		<form:form method="post" action="add/${participant.pid}"
 				commandName="rating" class="form-horizontal">
 			<form:input path="participant.pid" value="${participant.pid}" type="hidden" />
@@ -31,32 +32,32 @@
 			<div class="control-group">
 				<form:label path="courseRating" class="control-label">
 					<spring:message code="label.courseRating" />
-			                </form:label>
+			                </form:label>*
 				<div class="span6">
 					<c:forEach var="i" begin="1" end="5">
 						<form:radiobutton path="courseRating" class="star" name="star1" value="${i}"/>
 					</c:forEach>
-				</div>*
+				</div>
 			</div>
 			<div class="control-group">
 				<form:label path="teacherRating" class="control-label">
 					<spring:message code="label.teacherRating" />
-			                </form:label>
+			                </form:label>*
 				<div class="span6">
 					<c:forEach var="i" begin="1" end="5">
 						<form:radiobutton path="teacherRating" class="star" name="star2" value="${i}"/>
 					</c:forEach>
-				</div>*
+				</div>
 			</div>
 			<div class="control-group">
 				<form:label path="serviceRating" class="control-label">
 					<spring:message code="label.serviceRating" />
-			                </form:label>
+			                </form:label>*
 				<div class="span6">
 					<c:forEach var="i" begin="1" end="5">
 						<form:radiobutton path="serviceRating" class="star" name="star3" value="${i}"/>
 					</c:forEach>
-				</div>*
+				</div>
 			</div>
 			<div class="control-group">
 				<form:label path="proCritique" class="control-label">

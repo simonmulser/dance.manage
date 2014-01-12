@@ -26,72 +26,101 @@
 <dmtags:base title="${title}" activesection="dashboard">
 
 	<dmtags:span width="6">
-		<dmtags:widget icon="icon-comment" title="${i18nWidgetLatestFeedback}">
+		<dmtags:widget icon="icon-thumbs-up" title="${i18nWidgetLatestFeedback}">
 			<ul class="messages_layout">
 				<c:forEach items="${newestRatingList}" var="rating">
 					<li class="from_user left"><i class="shortcut-icon icon-user"></i>
-					<div class="message_wrap">
-						<span class="arrow"></span>
-						<div class="info">
-							<a class="name"><spring:message code="label.anonym" /></a> <span class="time">${rating.created}</span>
-							<div class="options_arrow">
-								<div class="dropdown pull-right">
-									<a class="dropdown-toggle " id="dLabel" role="button"
-										data-toggle="dropdown" data-target="#" href="#"> <i
-										class=" icon-caret-down"></i>
-									</a>
-									<ul class="dropdown-menu " role="menu" aria-labelledby="dLabel">
-										<li><a href="admin/rating/addAnswer/${rating.rid }"><i class=" icon-share-alt icon-large"></i>
-												<spring:message code="label.reply" /></a></li>
-									</ul>
+						<div class="message_wrap">
+							<span class="arrow"></span>
+							<div class="info">
+								<a class="name"><spring:message code="label.anonym" /></a> <span
+									class="time">${rating.created}</span>
+								<div class="options_arrow">
+									<div class="dropdown pull-right">
+										<a class="dropdown-toggle " id="dLabel" role="button"
+											data-toggle="dropdown" data-target="#" href="#"> <i
+											class=" icon-caret-down"></i>
+										</a>
+										<ul class="dropdown-menu " role="menu"
+											aria-labelledby="dLabel">
+											<li><a href="admin/rating/addAnswer/${rating.rid }"><i
+													class=" icon-share-alt icon-large"></i> <spring:message
+														code="label.reply" /></a></li>
+										</ul>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="text">
-							${rating.course.name}<br />
-							<div class="newestRatings"><spring:message code="label.course" /></div>
+							<div class="text">
+								${rating.course.name}<br />
 								<div class="newestRatings">
-								<c:forEach var="i" begin="1" end="5">
-									<c:choose>
-										<c:when test="${i eq rating.courseRating }">
-											<input name="star_${rating.rid}_1" type="radio" class="star" disabled="disabled" checked="checked"/>
-										</c:when>
-										<c:otherwise>
-											<input name="star_${rating.rid}_1" type="radio" class="star" disabled="disabled"/>
-										</c:otherwise>
-									</c:choose>
-								</c:forEach>
+									<spring:message code="label.course" />
 								</div>
-							<div class="newestRatings"><spring:message code="label.teacher" /></div>
 								<div class="newestRatings">
-								<c:forEach var="i" begin="1" end="5">
-									<c:choose>
-										<c:when test="${i eq rating.teacherRating }">
-											<input name="star_${rating.rid}_2" type="radio" class="star" disabled="disabled" checked="checked"/>
-										</c:when>
-										<c:otherwise>
-											<input name="star_${rating.rid}_2" type="radio" class="star" disabled="disabled"/>
-										</c:otherwise>
-									</c:choose>
-								</c:forEach>
+									<c:forEach var="i" begin="1" end="5">
+										<c:choose>
+											<c:when test="${i eq rating.courseRating }">
+												<input name="star_${rating.rid}_1" type="radio" class="star"
+													disabled="disabled" checked="checked" />
+											</c:when>
+											<c:otherwise>
+												<input name="star_${rating.rid}_1" type="radio" class="star"
+													disabled="disabled" />
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
 								</div>
-							<div class="newestRatings"><spring:message code="label.service" /></div>
 								<div class="newestRatings">
-								<c:forEach var="i" begin="1" end="5">
-									<c:choose>
-										<c:when test="${i eq rating.serviceRating }">
-											<input name="star_${rating.rid}_3" type="radio" class="star" disabled="disabled" checked="checked"/>
-										</c:when>
-										<c:otherwise>
-											<input name="star_${rating.rid}_3" type="radio" class="star" disabled="disabled"/>
-										</c:otherwise>
-									</c:choose>
-								</c:forEach>
+									<spring:message code="label.teacher" />
 								</div>
-							<div class="newestRatings"><i class="icon-large icon-plus-sign"></i>&nbsp;${rating.proCritique }</div>
-							<div class="newestRatings" ><i class="icon-large icon-minus-sign"></i>&nbsp;${rating.contraCritique}</div>
-						</div>
-					</div></li>
+								<div class="newestRatings">
+									<c:forEach var="i" begin="1" end="5">
+										<c:choose>
+											<c:when test="${i eq rating.teacherRating }">
+												<input name="star_${rating.rid}_2" type="radio" class="star"
+													disabled="disabled" checked="checked" />
+											</c:when>
+											<c:otherwise>
+												<input name="star_${rating.rid}_2" type="radio" class="star"
+													disabled="disabled" />
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
+								</div>
+								<div class="newestRatings">
+									<spring:message code="label.service" />
+								</div>
+								<div class="newestRatings">
+									<c:forEach var="i" begin="1" end="5">
+										<c:choose>
+											<c:when test="${i eq rating.serviceRating }">
+												<input name="star_${rating.rid}_3" type="radio" class="star"
+													disabled="disabled" checked="checked" />
+											</c:when>
+											<c:otherwise>
+												<input name="star_${rating.rid}_3" type="radio" class="star"
+													disabled="disabled" />
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
+								</div>
+								<c:choose>
+									<c:when test="${!empty rating.proCritique }">
+										<div class="newestRatings">
+											<i class="icon-large icon-plus-sign"></i>&nbsp;${rating.proCritique }
+										</div>
+									</c:when>
+									<c:otherwise></c:otherwise>
+								</c:choose>
+								<c:choose>
+									<c:when test="${!empty rating.contraCritique }">
+										<div class="newestRatings">
+											<i class="icon-large icon-minus-sign"></i>&nbsp;${rating.contraCritique}
+										</div>
+									</c:when>
+									<c:otherwise></c:otherwise>
+								</c:choose>
+							</div>
+						</div></li>
 				</c:forEach>
 			</ul>
 		</dmtags:widget>
