@@ -1,4 +1,5 @@
-$(document).ready(
+$(function () {
+	$(document).ready(
 		$("#searchQuery").autocomplete({
 			
 									minLength : 1,
@@ -30,3 +31,4 @@ $(document).ready(
         	.append( "<a> <i class='"+ item.image +"''></i>&nbsp;" + item.label + " </a>" )
         	.appendTo( ul );
     });
+});

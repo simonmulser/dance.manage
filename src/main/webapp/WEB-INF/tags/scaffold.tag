@@ -65,6 +65,7 @@
 	<script type="text/javascript"
 		src="<c:url value="/js/full-calendar/fullcalendar.min.js" />"></script>
 	<script src="<c:url value="/js/jquery.rating.js" />"></script>	
+	<script src="<c:url value="/js/searchBoxAutoComplete.js" />"></script>
 
 </body>
 </html>
