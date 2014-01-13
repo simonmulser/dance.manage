@@ -31,7 +31,6 @@
 					<c:choose>
 						<c:when test="${!empty invoice.positions }">
 							<table cellpadding="10">
-								
 								<form:input path="participant.pid" id="participantPid" type="hidden" />
 								<tr>
 									<c:choose>

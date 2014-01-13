@@ -114,6 +114,18 @@ public class InvoiceController {
             @ModelAttribute(value = "invoice") @Valid Invoice invoice,
             BindingResult result, RedirectAttributes redirectAttributes,
             ModelMap map) {
+
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.invoice",
+                    result);
+            redirectAttributes.addFlashAttribute("invoice", invoice);
+            this.invoice = invoice;
+            editTrue = true;
+            return "redirect:/admin/invoice";
+
+        }
+
         editTrue = true;
         Participant actualParticipant = participantManager.get(invoice
                 .getParticipant().getPid());

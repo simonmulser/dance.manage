@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDateTime;
@@ -51,6 +53,8 @@ public class Invoice extends EntityBase {
     private List<Position> positions = new ArrayList<Position>();
 
     @Column(name = "REDUCTION")
+    @Min(value = 0, message = "{min.invoice.reduction}")
+    @Max(value = 100, message = "{max.invoice.reduction}")
     private Double reduction;
 
     @Column(name = "TOTAL_AMOUNT")

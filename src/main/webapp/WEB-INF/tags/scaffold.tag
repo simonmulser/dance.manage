@@ -63,7 +63,6 @@
 	<script src="<c:url value="/js/base.js" />"></script>
 	<script type="text/javascript"
 		src="<c:url value="/js/full-calendar/fullcalendar.min.js" />"></script>
-	<script src="<c:url value="/js/searchBoxAutoComplete.js"/>" type="text/javascript" ></script>
 
 </body>
 </html>
