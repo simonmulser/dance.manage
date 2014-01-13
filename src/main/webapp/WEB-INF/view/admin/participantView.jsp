@@ -195,7 +195,7 @@
 	</dmtags:span>
 </dmtags:base>
 
-
+<script src="<c:url value="/js/searchBoxAutoComplete.js" />"></script>
 <script type="text/javascript">
 	// this section is needed if the url contains an anchor hash to a widget which is retracted by default
 	$(document).ready(

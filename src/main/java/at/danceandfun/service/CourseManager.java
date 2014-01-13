@@ -23,7 +23,5 @@ public interface CourseManager extends ManagerBase<Course> {
 
     public List<Course> getCoursesByStudioAddress(Address address);
 
-    public List<Course> getEnabledCoursesByTeacher(Teacher teacher);
-
     public List<Course> getEnabledCourses(Teacher teacher);
 }

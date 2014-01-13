@@ -82,5 +82,6 @@
 	</dmtags:span>
 </dmtags:base>
 
+<script src="<c:url value="/js/searchBoxAutoComplete.js" />"></script>
 
 

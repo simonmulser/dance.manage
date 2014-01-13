@@ -265,6 +265,8 @@
 		</dmtags:widget>
 	</dmtags:span>
 </dmtags:base>
+
+<script src="<c:url value="/js/searchBoxAutoComplete.js" />"></script>
 <script type="text/javascript">
 	
 	$("#dialog-cancelError").dialog({ // Fehler bei Stornierung

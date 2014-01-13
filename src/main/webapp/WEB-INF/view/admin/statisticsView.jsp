@@ -52,6 +52,7 @@
 	</dmtags:span>
 </dmtags:base>
 
+<script src="<c:url value="/js/searchBoxAutoComplete.js" />"></script>
 <script>
 function rand(min, max) {
     return parseInt(Math.random() * (max-min+1), 10) + min;

@@ -109,20 +109,16 @@ public class CourseManagerImpl extends ManagerBaseImpl<Course> implements
         return courses;
     }
 
-    public List<Course> getEnabledCoursesByTeacher(Teacher teacher) {
+    @Override
+    public List<Course> getEnabledCourses(Teacher teacher) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Course.class);
 
         criteria.add(Restrictions.eq("enabled", true));
         criteria.add(Restrictions.eq("teacher", teacher));
 
         List<Course> courses = mainDao.getListByCriteria(criteria);
+        logger.debug("Received list from courseDAO with " + courses.size()
+                + " elements");
         return courses;
-    }
-
-    @Override
-    public List<Course> getEnabledCourses(Teacher teacher) {
-        return mainDao
-                .getQueryResults("select cou from Course as cou where cou.enabled=true and cou.teacher.pid="
-                        + teacher.getPid());
     }
 }

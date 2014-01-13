@@ -190,6 +190,8 @@
 		</display:table>
 	</dmtags:widget>
 </dmtags:base>
+
+<script src="<c:url value="/js/searchBoxAutoComplete.js" />"></script>
 <script type="text/javascript">
 	$('i').tooltip();
 </script>

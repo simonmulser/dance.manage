@@ -39,8 +39,7 @@ public class TeacherHomeController {
         Teacher teacher = getLoggedInTeacher();
 
         map.put("teacher", teacher);
-        map.put("enabledCourses",
-                courseManager.getEnabledCoursesByTeacher(teacher));
+        map.put("enabledCourses", courseManager.getEnabledCourses(teacher));
         return "teacher/index";
     }
 

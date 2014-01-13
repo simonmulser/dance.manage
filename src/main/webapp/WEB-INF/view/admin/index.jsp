@@ -180,7 +180,7 @@
 
 </dmtags:base>
 
-
+<script src="<c:url value="/js/searchBoxAutoComplete.js" />"></script>
 <script>
 $('a[data-toggle="tab"]').on('shown', function (e) {
 	<c:forEach items="${addressList}" var="element">
