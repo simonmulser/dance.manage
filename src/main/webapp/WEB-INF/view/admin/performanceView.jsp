@@ -3,11 +3,13 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
+<%@taglib uri="http://displaytag.sf.net" prefix="display"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 <%@taglib prefix="joda" uri="http://www.joda.org/joda/time/tags"%>
 
 <spring:message var="i18nTitle" code="nav.performances" />
 <spring:message var="i18nCreatePlan" code="widget.createPlan" />
+<spring:message var="i18nShowPlan" code="widget.showPlan" />
 <spring:message var="i18nScheduleProposal"
 	code="widget.scheduleproposal" />
 	
@@ -59,6 +61,41 @@
 			</form:form>
 		</dmtags:widget>
 	</dmtags:span>
+	
+	<div>
+	<dmtags:span width="6">
+		<dmtags:widget title="${i18nShowPlan}" icon="icon-camera">
+			<c:if test="${!empty performancePlanList}">
+			<spring:message var="i18nOverview" code="widget.overview" />
+				<display:table name="performancePlanList" id="row"
+					class="table table-striped table-bordered displaytag" pagesize="4"
+					requestURI="/admin/performance" defaultsort="1">
+					<display:column sortable="true" titleKey="label.date"
+						class="colName" style="width: 90%">
+						<c:out value="${row.dateTime}" />
+					</display:column>
+					<display:column style="width: 10%">
+						<c:set var="planid" value="${row.planid}" />
+						<a href="performance/show/${planid}"><spring:message
+								code="label.show" /></a>
+						<br />
+						<a href="performance/delete/${planid}" class="openDialog"
+							id="${planid}"><spring:message code="label.delete" /></a>
+						<div id="deleteId" style="display: none;"></div>
+					</display:column>
+					</display:table>
+					<div id="dialog-confirm"
+					title="<spring:message code="delete.title" />">
+					<p>
+						<span class="ui-icon ui-icon-alert"
+							style="float: left; margin: 0 7px 20px 0;"></span>
+						<spring:message code="delete.performanceplan" />
+					</p>
+				</div>
+		</c:if>
+		</dmtags:widget>
+	</dmtags:span>
+	</div>
 	
 	<dmtags:span width="12">
 		<c:if test="${!empty performanceList1}">

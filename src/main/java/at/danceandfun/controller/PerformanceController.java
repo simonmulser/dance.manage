@@ -10,9 +10,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -52,6 +54,7 @@ public class PerformanceController {
     private Performance tempPerformance3 = new Performance();
     private Map<Integer, Performance> performancePlanMap;
     private PerformancePlan performancePlan;
+    private List<PerformancePlan> performancePlanList;
     private boolean balletRestriction = true;
     private boolean twoBreaksRestriction = true;
     private boolean advancedAtEndRestriction = true;
@@ -77,7 +80,10 @@ public class PerformanceController {
         map.addAttribute("multipleGroupsSamePerformance",
                 multipleGroupsSamePerformance);
         map.addAttribute("sibsSamePerformance", sibsSamePerformance);
-        map.addAttribute("PerformancePlan", performancePlan);
+        map.addAttribute("performancePlan", performancePlan);
+        map.addAttribute("performancePlanList", performancePlanList);
+
+        performancePlanList = performancePlanManager.getEnabledList();
 
         return "admin/performanceView";
     }
@@ -121,37 +127,6 @@ public class PerformanceController {
         tempPerformance2 = performancePlanMap.get(2);
         tempPerformance3 = performancePlanMap.get(3);
 
-        //
-        List<Performance> fetchedPerformances = performanceManager
-                .getEnabledList();
-
-        for (Performance cur : fetchedPerformances) {
-            List<Course> courseList = new ArrayList<Course>();
-            for (Integer curI : cur.getCourseIds()) {
-                for (Course curC : courses) {
-                    if (curC.getCid() == curI) {
-                        courseList.add(curC);
-                        continue;
-                    }
-                }
-            }
-            cur.setCourses(courseList);
-        }
-        //
-
-        // System.out.println("Performance 1");
-        // for (Course cur : tempPerformance1.getCourses()) {
-        // System.out.println(cur.getCid());
-        // }
-        // System.out.println("Performance 2");
-        // for (Course cur : tempPerformance2.getCourses()) {
-        // System.out.println(cur.getCid());
-        // }
-        // System.out.println("Performance 3");
-        // for (Course cur : tempPerformance3.getCourses()) {
-        // System.out.println(cur.getCid());
-        // }
-
         performance = new Performance();
 
         return "redirect:/admin/performance";
@@ -177,7 +152,7 @@ public class PerformanceController {
         return "redirect:/admin/performance";
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/save")
     public String savePerformancePlan() {
         logger.debug("SAVE the performanceplan");
 
@@ -192,8 +167,59 @@ public class PerformanceController {
 
         performancePlan.setPerformances(performances);
 
+        performancePlan.setDateTime(LocalDate.now());
         performancePlan.setEnabled(true);
         performancePlanManager.persist(performancePlan);
+
+        performance = new Performance();
+
+        return "redirect:/admin/performance";
+    }
+
+    @RequestMapping(value = "/show/{planid}")
+    public String showPerformancePlan(@PathVariable("planid") Integer planid,
+            ModelMap map) {
+        logger.debug("Show Performanceplan with id " + planid);
+
+        PerformancePlan plan = performancePlanManager.get(planid);
+
+        List<Course> fetchedCourses = courseManager.getEnabledList();
+        List<Performance> fetchedPerformances = plan.getPerformances();
+
+        if (fetchedPerformances.size() == 3) {
+            return "redirect:/admin/performance";
+        }
+
+        for (Performance currentPerformance : fetchedPerformances) {
+            List<Course> courseList = new ArrayList<Course>();
+            for (Integer currentID : currentPerformance.getCourseIds()) {
+                for (Course currrentCourse : fetchedCourses) {
+                    if (currrentCourse.getCid() == currentID) {
+                        courseList.add(currrentCourse);
+                        continue;
+                    }
+                }
+            }
+            currentPerformance.setCourses(courseList);
+        }
+
+        tempPerformance1 = fetchedPerformances.get(0);
+        tempPerformance2 = fetchedPerformances.get(1);
+        tempPerformance3 = fetchedPerformances.get(2);
+
+        performance = new Performance();
+
+        return "redirect:/admin/performance";
+    }
+
+    @RequestMapping(value = "/delete/{planid}")
+    public String deletePerformancePlan(@PathVariable("planid") Integer planid) {
+        logger.debug("Delete Performanceplan with id " + planid);
+
+        PerformancePlan plan = performancePlanManager.get(planid);
+        plan.setEnabled(false);
+
+        performancePlanManager.merge(plan);
 
         return "redirect:/admin/performance";
     }

@@ -14,7 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 @Entity
 @Table(name = "PERFORMANCEPLAN")
@@ -31,8 +31,8 @@ public class PerformancePlan extends EntityBase {
     private Integer planid;
 
     @Column(name = "DATETIME")
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
-    private DateTime dateTime;
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+    private LocalDate dateTime;
 
     @Column(name = "ENABLED")
     private boolean enabled;
@@ -52,11 +52,11 @@ public class PerformancePlan extends EntityBase {
         this.planid = planid;
     }
 
-    public DateTime getDateTime() {
+    public LocalDate getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(DateTime dateTime) {
+    public void setDateTime(LocalDate dateTime) {
         this.dateTime = dateTime;
     }
 
