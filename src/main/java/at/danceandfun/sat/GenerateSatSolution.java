@@ -864,12 +864,72 @@ public class GenerateSatSolution {
         System.out.println("Anzahl an Participants mit mehr als einem Kurs: "
                 + idList.size());
 
-        // System.out.println("Mein Name lautet: "
-        // + participants.get(idList.get(0)).getFirstname() + " "
-        // + participants.get(idList.get(0)).getLastname());
+        List<Integer> idList_copy = new ArrayList<Integer>();
+        idList_copy = idList;
+        int counter = 0;
 
+        // Remove all participants where the sibs are not in the idList
+        for (int k = idList.size() - 1; k >= 0; k--) {
+            System.out.println("k " + k);
+            for (Participant sib : participants.get(idList.get(k))
+                    .getSiblings()) {
+                counter = 0;
+                for (int h = idList.size() - 1; h >= 0; h--) {
+                    System.out.println("Vergleiche " + sib.getFirstname() + " "
+                            + sib.getLastname() + " " + sib.getPid() + " mit "
+                            + participants.get(idList.get(h)).getFirstname()
+                            + " "
+                            + participants.get(idList.get(h)).getLastname()
+                            + " " + sib.getPid());
+                    if (sib.getPid() == participants.get(idList.get(h))
+                            .getPid()) {
+                        counter++;
+                    }
+                }
+            }
+            System.out.println("Geschwisteranzahl: "
+                    + participants.get(idList.get(k)).getSiblings().size());
+            System.out.println("Counter" + counter);
+            if (counter != participants.get(idList.get(k)).getSiblings().size()) {
+                idList_copy.remove(k);
+            }
+        }
+        idList = idList_copy;
+        System.out.println("HIER: Laenge: " + idList.size());
+        List<Integer> idList_copyX = new ArrayList<Integer>();
+        boolean siblingsAlreadyIn;
+        // Delete id's from siblings out of idList (= no double entries)
+        for (int i = 0; i < idList.size(); i++) {
+            siblingsAlreadyIn = false;
+            for (Participant sibl : participants.get(idList.get(i))
+                    .getSiblings()) {
+                for (int j = 0; j < idList_copyX.size(); j++) {
+                    System.out.println("Hier vergleichen wir ID: "
+                            + sibl.getPid() + " mit "
+                            + participants.get(idList_copyX.get(j)).getPid());
+                    if (sibl.getPid() == participants.get(idList_copyX.get(j))
+                            .getPid()) {
+                        System.out.println("Sibl der nicht aufgenommen wird: "
+                                + participants.get(idList.get(i)).getLastname()
+                                + " "
+                                + participants.get(idList.get(i)).getPid());
+                        siblingsAlreadyIn = true;
+                    }
+                }
+            }
+            if (!siblingsAlreadyIn) {
+                idList_copyX.add(idList.get(i));
+                System.out.println("+1 Teilnehmer die darein fallen, zwar: "
+                        + participants.get(idList.get(i)).getPid()
+                        + " abgespeichert als: " + idList.get(i));
+            }
+        }
+        idList = idList_copyX;
+        System.out.println("Groesse IDList: " + idList.size());
+        int counterX = -1;
         // Now count the amount of the courses in the different performances
         for (int id : idList) {
+            counterX++;
             List<Integer> courseIDList = new ArrayList<Integer>();
             Participant currentParticipant = participants.get(id);
             List<Integer> amount1 = new ArrayList<Integer>();
@@ -881,9 +941,36 @@ public class GenerateSatSolution {
                 for (int i = 0; i < courses.size(); i++) {
                     if (courses.get(i).equals(currentCP.getCourse())) {
                         courseIDList.add(i);
+                        System.out.println("XXXXXXXXXXXX----> "
+                                + currentCP.getCourse());
                     }
                 }
             }
+            System.out.println("Wem ladet er rein? " + idList.get(counterX));
+            // add courses of the siblings (but just one time)
+            boolean courseIsIn;
+            for (Participant sib : participants.get(idList.get(counterX))
+                    .getSiblings()) {
+                for (CourseParticipant currentCP : sib.getCourseParticipants()) {
+                    courseIsIn = false;
+                    for (int i = 0; i < courses.size(); i++) {
+                        if (courses.get(i).equals(currentCP.getCourse())) {
+                            for (int j = 0; j < courseIDList.size(); j++) {
+                                if (courseIDList.get(j).equals(
+                                        currentCP.getCourse())) {
+                                    courseIsIn = true;
+                                }
+                            }
+                            if (!courseIsIn) {
+                                System.out.println(currentCP.getCourse()
+                                        .getName() + " einerVonSiblingKursen");
+                                courseIDList.add(i);
+                            }
+                        }
+                    }
+                }
+            }
+
             for (int j = 0; j < courseIDList.size(); j++) {
                 if (courseIDList.get(j) < this.numberOfSlots) {
                     amount1.add(courseIDList.get(j));
