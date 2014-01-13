@@ -121,7 +121,7 @@
 				id="list">
 				<display:table name="participantList" id="row"
 					class="table table-striped table-bordered displaytag" pagesize="15"
-					requestURI="/admin/participant" defaultsort="1">
+					requestURI="/admin/participant">
 					<display:column sortable="true" titleKey="label.name"
 						class="colName">
 						<c:out value="${row.firstname} ${row.lastname}" />

@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +14,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import at.danceandfun.entity.Course;
 import at.danceandfun.enumeration.CourseLevel;
 import at.danceandfun.service.CourseManager;
 import at.danceandfun.service.CourseParticipantManager;
@@ -36,7 +39,11 @@ public class StatisticsController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String showStatistics(ModelMap map) {
-        map.addAttribute("statistics", courseManager.getEnabledList());
+        DetachedCriteria criteria = DetachedCriteria.forClass(Course.class);
+        criteria.addOrder(Order.desc("year"));
+        criteria.addOrder(Order.asc("name"));
+        map.addAttribute("statistics",
+                courseManager.getListByCriteria(criteria));
 
         List<String> participantsPerStyle = courseManager
                 .getParticipantPerStyle(styleManager.getEnabledList(),

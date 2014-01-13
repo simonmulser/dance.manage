@@ -91,6 +91,15 @@
 					<form:errors path="time" cssClass="error" />
 				</div>
 				<div class="control-group">
+					<form:label path="inPerformance" class="control-label">
+						<spring:message code="label.inPerformance" />*
+				</form:label>
+					<div class="span6">
+						<form:checkbox path="inPerformance" />
+					</div>
+					<form:errors path="inPerformance" cssClass="error" />
+				</div>
+				<div class="control-group">
 					<form:label path="estimatedSpectators" class="control-label">
 						<spring:message code="label.estimatedSpectators" />
 					</form:label>
@@ -135,7 +144,7 @@
 
 				<div id="find_keyword" class="control-group">
 					<form:label path="style.sid" class="control-label">
-						<spring:message code="label.styles" />*
+						<spring:message code="label.style" />*
 				</form:label>
 					<div class="ui-widget span6">
 						<input id="stylesQuery" type="text" value="" /><i

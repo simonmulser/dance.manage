@@ -1454,7 +1454,6 @@ div.newestRatings{
 span.pagebanner {
         background-color: #eee;
         padding: 2px 4px 2px 4px;
-        width: 35%;
         margin-top: 10px;
         display: block;
         border-bottom: none;
@@ -1465,7 +1464,6 @@ span.pagebanner {
 span.pagelinks {
         background-color: #eee;
         padding: 2px 4px 2px 4px;
-        width: 35%;
         display: block;
         border-top: none;
         margin-bottom: -5px;

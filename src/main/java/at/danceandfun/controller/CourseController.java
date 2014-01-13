@@ -6,6 +6,8 @@ import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -59,7 +61,10 @@ public class CourseController {
         }
 
         map.addAttribute("course", course);
-        map.addAttribute("courseList", courseManager.getEnabledList());
+        DetachedCriteria criteria = DetachedCriteria.forClass(Course.class);
+        criteria.addOrder(Order.asc("name"));
+        map.addAttribute("courseList",
+                courseManager.getEnabledListWithCriteria(criteria));
         map.addAttribute("addressList", addressManager.getStudioAddresses());
         editTrue = false;
         return "admin/courseView";
