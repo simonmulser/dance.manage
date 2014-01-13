@@ -10,7 +10,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
@@ -41,7 +40,7 @@ import at.danceandfun.util.PatternConstants;
 @Entity
 @Table(name = "COURSE")
 @ScriptAssert(lang = "javascript", script = "_this.semesterPrice <= _this.yearPrice", message = "{course.price.assertion}")
-public class Course extends EntityBase {
+public class Course extends EntityBase implements Cloneable {
 
     /**
      * 
@@ -121,8 +120,8 @@ public class Course extends EntityBase {
     @Valid
     private Style style;
 
-    @ManyToMany(mappedBy = "courses")
-    private List<Performance> performances = new ArrayList<Performance>();
+    // @ManyToMany(mappedBy = "courses")
+    // private List<Performance> performances = new ArrayList<Performance>();
 
     @OneToMany(mappedBy = "key.course", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     private List<Position> positions = new ArrayList<Position>();
@@ -160,40 +159,6 @@ public class Course extends EntityBase {
 
     @Transient
     private Boolean violationOfRestriktions = false;
-
-    public Course(Course another) {
-        this.cid = another.cid;
-        this.name = another.name;
-        this.slug = another.slug;
-        this.duration = another.duration;
-        this.semesterPrice = another.semesterPrice;
-        this.yearPrice = another.yearPrice;
-        this.weekday = another.weekday;
-        this.time = another.time;
-        this.estimatedSpectators = another.estimatedSpectators;
-        this.ageGroup = another.ageGroup;
-        this.amountPerformances = another.amountPerformances;
-        this.enabled = another.enabled;
-        this.level = another.level;
-        this.year = another.year;
-        this.ratings = another.ratings;
-        this.address = another.address;
-        this.teacher = another.teacher;
-        this.style = another.style;
-        this.performances = another.performances;
-        this.positions = another.positions;
-        this.courseParticipants = another.courseParticipants;
-        this.appointments = another.appointments;
-        this.dummyCourse = another.dummyCourse;
-        this.balletRestriction = another.balletRestriction;
-        this.twoBreaksRestriction = another.twoBreaksRestriction;
-        this.advancedAtEndRestriction = another.advancedAtEndRestriction;
-        this.balancedAmountOfSpectators = another.balancedAmountOfSpectators;
-        this.balancedAgeGroup = another.balancedAgeGroup;
-        this.multipleGroupsSamePerformance = another.multipleGroupsSamePerformance;
-        this.sibsSamePerformance = another.sibsSamePerformance;
-        this.violationOfRestriktions = another.violationOfRestriktions;
-    }
 
     public Course() {
     }
@@ -335,14 +300,14 @@ public class Course extends EntityBase {
         this.style = style;
     }
 
-    @JsonIgnore
-    public List<Performance> getPerformances() {
-        return performances;
-    }
-
-    public void setPerformances(List<Performance> performances) {
-        this.performances = performances;
-    }
+    // @JsonIgnore
+    // public List<Performance> getPerformances() {
+    // return performances;
+    // }
+    //
+    // public void setPerformances(List<Performance> performances) {
+    // this.performances = performances;
+    // }
 
     @JsonIgnore
     public List<CourseParticipant> getCourseParticipants() {
@@ -524,6 +489,11 @@ public class Course extends EntityBase {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
 }

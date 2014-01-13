@@ -14,6 +14,7 @@ import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IProblem;
 import org.sat4j.specs.ISolver;
 import org.sat4j.specs.TimeoutException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import at.danceandfun.entity.Course;
 import at.danceandfun.entity.CourseParticipant;
@@ -23,6 +24,7 @@ import at.danceandfun.entity.Style;
 import at.danceandfun.enumeration.AgeGroup;
 import at.danceandfun.enumeration.CourseLevel;
 import at.danceandfun.exception.SatException;
+import at.danceandfun.service.CourseManager;
 
 public class GenerateSatSolution {
 
@@ -38,6 +40,9 @@ public class GenerateSatSolution {
     private int dummies;
     private int movedCourses;
     private List<Integer> swappedCourses;
+
+    @Autowired
+    private CourseManager courseManager;
 
     /**
      * @precondition An amount of minimal 3 courses as input.
@@ -74,8 +79,17 @@ public class GenerateSatSolution {
             } else {
                 newOrderOfCourses.add(c);
                 if (c.getAmountPerformances() == 2) {
-                    newOrderOfCourses.add(r.nextInt(newOrderOfCourses.size()),
-                            new Course(c));
+                    try {
+                        newOrderOfCourses
+                                .add(
+
+                                r.nextInt(newOrderOfCourses.size()),
+                                        (Course) c.clone());
+
+                    } catch (CloneNotSupportedException e) {
+                        System.out.println("CLONE NOT SUPPORTED");
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -554,9 +568,9 @@ public class GenerateSatSolution {
         System.out.println("Anzahl an Participants mit mehr als einem Kurs: "
                 + idList.size());
 
-//        System.out.println("Mein Name lautet: "
-//                + participants.get(idList.get(0)).getFirstname() + " "
-//                + participants.get(idList.get(0)).getLastname());
+        // System.out.println("Mein Name lautet: "
+        // + participants.get(idList.get(0)).getFirstname() + " "
+        // + participants.get(idList.get(0)).getLastname());
 
         // Now count the amount of the courses in the different performances
         for (int id : idList) {
@@ -850,9 +864,9 @@ public class GenerateSatSolution {
         System.out.println("Anzahl an Participants mit mehr als einem Kurs: "
                 + idList.size());
 
-//        System.out.println("Mein Name lautet: "
-//                + participants.get(idList.get(0)).getFirstname() + " "
-//                + participants.get(idList.get(0)).getLastname());
+        // System.out.println("Mein Name lautet: "
+        // + participants.get(idList.get(0)).getFirstname() + " "
+        // + participants.get(idList.get(0)).getLastname());
 
         // Now count the amount of the courses in the different performances
         for (int id : idList) {
@@ -1189,6 +1203,10 @@ public class GenerateSatSolution {
         List<Course> list1 = new ArrayList<Course>();
         List<Course> list2 = new ArrayList<Course>();
         List<Course> list3 = new ArrayList<Course>();
+        List<Integer> courseId1 = new ArrayList<Integer>();
+        List<Integer> courseId2 = new ArrayList<Integer>();
+        List<Integer> courseId3 = new ArrayList<Integer>();
+
         int perf;
         int course;
 
@@ -1201,12 +1219,15 @@ public class GenerateSatSolution {
                 switch (perf) {
                 case 1:
                     list1.add(courses.get(course - 1));
+                    courseId1.add(courses.get(course - 1).getCid());
                     break;
                 case 2:
                     list2.add(courses.get(course - 1));
+                    courseId2.add(courses.get(course - 1).getCid());
                     break;
                 case 3:
                     list3.add(courses.get(course - 1));
+                    courseId3.add(courses.get(course - 1).getCid());
                     break;
                 default:
                     System.out
@@ -1223,6 +1244,10 @@ public class GenerateSatSolution {
         p1.setCourses(list1);
         p2.setCourses(list2);
         p3.setCourses(list3);
+
+        p1.setCourseIds(courseId1);
+        p2.setCourseIds(courseId2);
+        p3.setCourseIds(courseId3);
 
         plan.put(1, p1);
         plan.put(2, p2);

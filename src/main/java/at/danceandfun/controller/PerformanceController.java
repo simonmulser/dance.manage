@@ -1,6 +1,7 @@
 package at.danceandfun.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +50,8 @@ public class PerformanceController {
     private Performance tempPerformance1 = new Performance();
     private Performance tempPerformance2 = new Performance();
     private Performance tempPerformance3 = new Performance();
-    private Map<Integer, Performance> performancePlan;
+    private Map<Integer, Performance> performancePlan2;
+    private PerformancePlan performancePlan;
     private boolean balletRestriction = true;
     private boolean twoBreaksRestriction = true;
     private boolean advancedAtEndRestriction = true;
@@ -75,6 +77,7 @@ public class PerformanceController {
         map.addAttribute("multipleGroupsSamePerformance",
                 multipleGroupsSamePerformance);
         map.addAttribute("sibsSamePerformance", sibsSamePerformance);
+        map.addAttribute("PerformancePlan", performancePlan);
 
         return "admin/performanceView";
     }
@@ -82,22 +85,12 @@ public class PerformanceController {
     @RequestMapping(value = "/build", method = RequestMethod.POST)
     public String buildPerformance(ModelMap map, HttpServletRequest request) {
         logger.debug("BUILD performance");
-        performancePlan = new HashMap<Integer, Performance>();
+        performancePlan2 = new HashMap<Integer, Performance>();
+        performancePlan = new PerformancePlan();
         List<Course> courses = courseManager.getEnabledList();
         List<Participant> participantList = participantManager.getEnabledList();
 
         setCheckedRestrictions(request);
-
-        List<PerformancePlan> performancesPerPlan = performancePlanManager
-                .getEnabledList();
-
-        System.out.println("---------------" + performancesPerPlan.size());
-
-        PerformancePlan plan = performancesPerPlan.get(0);
-
-        for (Performance cur : plan.getPerformances()) {
-            System.out.println("Performance: " + cur.getPerid());
-        }
 
         Collections.shuffle(courses);
 
@@ -105,7 +98,7 @@ public class PerformanceController {
 
         while (true) {
             try {
-                performancePlan = sat.generatePerformance(courses,
+                performancePlan2 = sat.generatePerformance(courses,
                         participantList, balletRestriction,
                         twoBreaksRestriction, advancedAtEndRestriction,
                         balancedAmountOfSpectators, balancedAgeGroup,
@@ -120,17 +113,53 @@ public class PerformanceController {
             }
         }
 
-        SatValidator validator = new SatValidator(performancePlan,
+        SatValidator validator = new SatValidator(performancePlan2,
                 participantList);
-        performancePlan = validator.validatePerformancePlan();
+        performancePlan2 = validator.validatePerformancePlan();
 
-        tempPerformance1 = performancePlan.get(1);
-        tempPerformance2 = performancePlan.get(2);
-        tempPerformance3 = performancePlan.get(3);
+        tempPerformance1 = performancePlan2.get(1);
+        tempPerformance2 = performancePlan2.get(2);
+        tempPerformance3 = performancePlan2.get(3);
 
-        // performanceManager.save(tempPerformance1);
-        // performanceManager.save(tempPerformance2);
-        // performanceManager.save(tempPerformance3);
+        // delete dummy courses
+        if (tempPerformance2.getCourses().get(0).getName().equals("Dummy")) {
+            tempPerformance2.getCourses().remove(0);
+            tempPerformance2.getCourseIds().remove(0);
+        }
+        if (tempPerformance3.getCourses().get(0).getName().equals("Dummy")) {
+            tempPerformance3.getCourses().remove(0);
+            tempPerformance3.getCourseIds().remove(0);
+        }
+
+        tempPerformance1.setEnabled(true);
+        tempPerformance2.setEnabled(true);
+        tempPerformance3.setEnabled(true);
+
+        List<Performance> performances = new ArrayList<Performance>();
+        performances.add(tempPerformance1);
+        performances.add(tempPerformance2);
+        performances.add(tempPerformance3);
+
+        performancePlan.setPerformances(performances);
+
+        performancePlanManager.persist(performancePlan);
+
+        List<Performance> fetchedPerformances = performanceManager
+                .getEnabledList();
+
+        for (Performance cur : fetchedPerformances) {
+            List<Course> courseList = new ArrayList<Course>();
+            for (Integer curI : cur.getCourseIds()) {
+                for (Course curC : courses) {
+                    if (curC.getCid() == curI) {
+                        courseList.add(curC);
+                        continue;
+                    }
+                }
+            }
+            cur.setCourses(courseList);
+        }
+
         performance = new Performance();
 
         return "redirect:/admin/performance";

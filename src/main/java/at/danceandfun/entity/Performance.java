@@ -3,16 +3,16 @@ package at.danceandfun.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
@@ -35,6 +35,9 @@ public class Performance extends EntityBase {
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
     private DateTime dateTime;
 
+    @ElementCollection
+    private List<Integer> courseIds;
+
     @Column(name = "ENABLED")
     private boolean enabled;
 
@@ -42,9 +45,16 @@ public class Performance extends EntityBase {
     @JoinColumn(name = "A_ID")
     private Address address;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(name = "COURSE_PERFORMANCE", joinColumns = { @JoinColumn(name = "PER_ID") }, inverseJoinColumns = { @JoinColumn(name = "C_ID") })
+    // @ManyToMany(cascade = { CascadeType.ALL })
+    // @JoinTable(name = "COURSE_PERFORMANCE", joinColumns = { @JoinColumn(name
+    // = "PER_ID") }, inverseJoinColumns = { @JoinColumn(name = "C_ID") })
+    // private List<Course> courses = new ArrayList<Course>();
+
+    @Transient
     private List<Course> courses = new ArrayList<Course>();
+
+    @ManyToMany(mappedBy = "performances")
+    private List<PerformancePlan> performancePlans = new ArrayList<PerformancePlan>();
 
     // TODO NiceToHave mapping with person/participant for ticket selling
 
@@ -83,12 +93,28 @@ public class Performance extends EntityBase {
         return courses;
     }
 
+    public List<Integer> getCourseIds() {
+        return courseIds;
+    }
+
+    public void setCourseIds(List<Integer> courseIds) {
+        this.courseIds = courseIds;
+    }
+
     public boolean isEnabled() {
         return enabled;
     }
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public List<PerformancePlan> getPerformancePlans() {
+        return performancePlans;
+    }
+
+    public void setPerformancePlans(List<PerformancePlan> performancePlans) {
+        this.performancePlans = performancePlans;
     }
 
 }
