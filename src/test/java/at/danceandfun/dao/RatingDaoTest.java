@@ -24,6 +24,9 @@ public class RatingDaoTest {
         rating.setParticipant(ParticipantDaoTest.getValidParticipant());
         rating.setCourse(CourseDaoTest.getValidCourse());
         rating.setEnabled(true);
+        rating.setTeacherRating(1);
+        rating.setCourseRating(2);
+        rating.setServiceRating(3);
         return rating;
     }
 
