@@ -50,7 +50,7 @@ public class PerformanceController {
     private Performance tempPerformance1 = new Performance();
     private Performance tempPerformance2 = new Performance();
     private Performance tempPerformance3 = new Performance();
-    private Map<Integer, Performance> performancePlan2;
+    private Map<Integer, Performance> performancePlanMap;
     private PerformancePlan performancePlan;
     private boolean balletRestriction = true;
     private boolean twoBreaksRestriction = true;
@@ -85,7 +85,7 @@ public class PerformanceController {
     @RequestMapping(value = "/build", method = RequestMethod.POST)
     public String buildPerformance(ModelMap map, HttpServletRequest request) {
         logger.debug("BUILD performance");
-        performancePlan2 = new HashMap<Integer, Performance>();
+        performancePlanMap = new HashMap<Integer, Performance>();
         performancePlan = new PerformancePlan();
         List<Course> courses = courseManager.getEnabledList();
         List<Participant> participantList = participantManager.getEnabledList();
@@ -98,7 +98,7 @@ public class PerformanceController {
 
         while (true) {
             try {
-                performancePlan2 = sat.generatePerformance(courses,
+                performancePlanMap = sat.generatePerformance(courses,
                         participantList, balletRestriction,
                         twoBreaksRestriction, advancedAtEndRestriction,
                         balancedAmountOfSpectators, balancedAgeGroup,
@@ -113,37 +113,15 @@ public class PerformanceController {
             }
         }
 
-        SatValidator validator = new SatValidator(performancePlan2,
+        SatValidator validator = new SatValidator(performancePlanMap,
                 participantList);
-        performancePlan2 = validator.validatePerformancePlan();
+        performancePlanMap = validator.validatePerformancePlan();
 
-        tempPerformance1 = performancePlan2.get(1);
-        tempPerformance2 = performancePlan2.get(2);
-        tempPerformance3 = performancePlan2.get(3);
+        tempPerformance1 = performancePlanMap.get(1);
+        tempPerformance2 = performancePlanMap.get(2);
+        tempPerformance3 = performancePlanMap.get(3);
 
-        // delete dummy courses
-        if (tempPerformance2.getCourses().get(0).getName().equals("Dummy")) {
-            tempPerformance2.getCourses().remove(0);
-            tempPerformance2.getCourseIds().remove(0);
-        }
-        if (tempPerformance3.getCourses().get(0).getName().equals("Dummy")) {
-            tempPerformance3.getCourses().remove(0);
-            tempPerformance3.getCourseIds().remove(0);
-        }
-
-        tempPerformance1.setEnabled(true);
-        tempPerformance2.setEnabled(true);
-        tempPerformance3.setEnabled(true);
-
-        List<Performance> performances = new ArrayList<Performance>();
-        performances.add(tempPerformance1);
-        performances.add(tempPerformance2);
-        performances.add(tempPerformance3);
-
-        performancePlan.setPerformances(performances);
-
-        performancePlanManager.persist(performancePlan);
-
+        //
         List<Performance> fetchedPerformances = performanceManager
                 .getEnabledList();
 
@@ -159,6 +137,20 @@ public class PerformanceController {
             }
             cur.setCourses(courseList);
         }
+        //
+
+        // System.out.println("Performance 1");
+        // for (Course cur : tempPerformance1.getCourses()) {
+        // System.out.println(cur.getCid());
+        // }
+        // System.out.println("Performance 2");
+        // for (Course cur : tempPerformance2.getCourses()) {
+        // System.out.println(cur.getCid());
+        // }
+        // System.out.println("Performance 3");
+        // for (Course cur : tempPerformance3.getCourses()) {
+        // System.out.println(cur.getCid());
+        // }
 
         performance = new Performance();
 
@@ -168,6 +160,40 @@ public class PerformanceController {
     @RequestMapping(value = "/validate", method = RequestMethod.POST)
     public String buildPerformance() {
         logger.debug("VALDIATE performancePlan");
+        List<Participant> participantList = participantManager.getEnabledList();
+
+        performancePlanMap.put(1, tempPerformance1);
+        performancePlanMap.put(2, tempPerformance2);
+        performancePlanMap.put(3, tempPerformance3);
+
+        SatValidator validator = new SatValidator(performancePlanMap,
+                participantList);
+        performancePlanMap = validator.validatePerformancePlan();
+
+        tempPerformance1 = performancePlanMap.get(1);
+        tempPerformance2 = performancePlanMap.get(2);
+        tempPerformance3 = performancePlanMap.get(3);
+
+        return "redirect:/admin/performance";
+    }
+
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    public String savePerformancePlan() {
+        logger.debug("SAVE the performanceplan");
+
+        tempPerformance1.setEnabled(true);
+        tempPerformance2.setEnabled(true);
+        tempPerformance3.setEnabled(true);
+
+        List<Performance> performances = new ArrayList<Performance>();
+        performances.add(tempPerformance1);
+        performances.add(tempPerformance2);
+        performances.add(tempPerformance3);
+
+        performancePlan.setPerformances(performances);
+
+        performancePlan.setEnabled(true);
+        performancePlanManager.persist(performancePlan);
 
         return "redirect:/admin/performance";
     }

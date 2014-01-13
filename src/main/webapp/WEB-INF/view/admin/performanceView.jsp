@@ -37,19 +37,19 @@
 					</label>
 					<label class="checkbox">
 						<input type="checkbox" value="Spectators"	id="CheckboxBalancedSpectators" name="CheckboxBalancedSpectators" <c:if test="${balancedAmountOfSpectators}">checked</c:if>>
-						<div style="float:left; margin-left: 4px"><i class="icon-group <c:if test="${performanceList1[0].balancedAmountOfSpectators}">restriction-icon-bad</c:if>"></i></div><div style="margin-left: 25px"><spring:message code='help.restriction.balancedSpectators' /></div>
+						<div style="float:left; margin-left: 4px"><i class="icon-group"></i></div><div style="margin-left: 25px"><spring:message code='help.restriction.balancedSpectators' /></div>
 					</label>
 					<label class="checkbox">
 						<input type="checkbox" value="AgeGroupd"	id="CheckboxBalancedAgeGroup" name="CheckboxBalancedAgeGroup" <c:if test="${balancedAgeGroup}">checked</c:if>>
-						<div style="float:left; margin-left: 4px"><i class="icon-adn <c:if test="${performanceList1[0].balancedAgeGroup}">restriction-icon-bad</c:if>"></i></div><div style="margin-left: 25px"><spring:message code='help.restriction.balancedAgeGroup' /></div>
+						<div style="float:left; margin-left: 4px"><i class="icon-adn"></i></div><div style="margin-left: 25px"><spring:message code='help.restriction.balancedAgeGroup' /></div>
 					</label>
 					<label class="checkbox">
 						<input type="checkbox" value="MultipleGroups"	id="CheckboxMultipleGroupsSamePerformance" name="CheckboxMultipleGroupsSamePerformance" <c:if test="${multipleGroupsSamePerformance}">checked</c:if>>
-						<div style="float:left; margin-left: 4px"><i class="icon-sitemap <c:if test="${performanceList1[0].multipleGroupsSamePerformance}">restriction-icon-bad</c:if>"></i></div><div style="margin-left: 25px"><spring:message code='help.restriction.multipleGroupsSamePerformance' /></div>
+						<div style="float:left; margin-left: 4px"><i class="icon-sitemap"></i></div><div style="margin-left: 25px"><spring:message code='help.restriction.multipleGroupsSamePerformance' /></div>
 					</label>
 					<label class="checkbox">
 						<input type="checkbox" value="Sibs"	id="CheckboxSibsSamePerformance" name="CheckboxSibsSamePerformance" <c:if test="${sibsSamePerformance}">checked</c:if>>
-						<div style="float:left; margin-left: 4px"><i class="icon-adn <c:if test="${performanceList1[0].sibsSamePerformance}">restriction-icon-bad</c:if>"></i></div><div style="margin-left: 25px"><spring:message code='help.restriction.sibsSamePerformance' /></div>
+						<div style="float:left; margin-left: 4px"><i class="icon-adn"></i></div><div style="margin-left: 25px"><spring:message code='help.restriction.sibsSamePerformance' /></div>
 					</label>
 				</div>
 				<div style="margin-top: 20px">
@@ -75,13 +75,11 @@
 
 					<div class="tab-content">
 						<div class="tab-pane active" id="hall1">
-							<table class="table table-striped table-bordered">
+							<table class="table table-bordered table-striped">
 								<thead>
 									<tr>
 										<th style="width: 60%"><spring:message
 												code="label.coursename" /></th>
-										<th style="width: 25%"><spring:message
-												code="label.courselevel" /></th>
 										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.noconsecutiveballett' />"
 											class="inline-tooltip icon icon-female"></i></th>
@@ -91,6 +89,12 @@
 										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.advancedAtEnd' />"
 											class="inline-tooltip icon icon-star"></i></th>
+										<th style="width: 4%"><i
+											title="<spring:message code='help.restriction.balancedSpectators' />"
+											class="inline-tooltip icon icon-group"></i></th>
+										<th style="width: 4%"><i
+											title="<spring:message code='help.restriction.balancedAgeGroup' />"
+											class="inline-tooltip icon icon-adn"></i></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -106,7 +110,6 @@
 												</c:when>
 												<c:otherwise>
 													<td>${validatedCourse.name}</td>
-													<td><spring:message code ="${validatedCourse.level.i18nIdentifier}" /></td>
 													<td>
 														<c:choose>
 															<c:when test="${validatedCourse.balletRestriction}">
@@ -130,6 +133,26 @@
 													<td>
 														<c:choose>
 															<c:when test="${validatedCourse.advancedAtEndRestriction}">
+																<i class="icon-frown restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.balancedAmountOfSpectators}">
+																<i class="icon-frown restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.balancedAgeGroup}">
 																<i class="icon-frown restriction-icon-bad"></i>
 															</c:when>
 															<c:otherwise>
@@ -146,13 +169,11 @@
 						</div>
 
 						<div class="tab-pane" id="hall2">
-							<table class="table table-striped table-bordered">
+							<table class="table table-bordered table-striped">
 								<thead>
 									<tr>
 										<th style="width: 60%"><spring:message
 												code="label.coursename" /></th>
-										<th style="width: 25%"><spring:message
-												code="label.courselevel" /></th>
 										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.noconsecutiveballett' />"
 											class="inline-tooltip icon icon-female"></i></th>
@@ -162,6 +183,12 @@
 										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.advancedAtEnd' />"
 											class="inline-tooltip icon icon-star"></i></th>
+										<th style="width: 4%"><i
+											title="<spring:message code='help.restriction.balancedSpectators' />"
+											class="inline-tooltip icon icon-group"></i></th>
+										<th style="width: 4%"><i
+											title="<spring:message code='help.restriction.balancedAgeGroup' />"
+											class="inline-tooltip icon icon-adn"></i></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -177,7 +204,6 @@
 												</c:when>
 												<c:otherwise>
 													<td>${validatedCourse.name}</td>
-													<td><spring:message code ="${validatedCourse.level.i18nIdentifier}" /></td>
 													<td>
 														<c:choose>
 															<c:when test="${validatedCourse.balletRestriction}">
@@ -201,6 +227,26 @@
 													<td>
 														<c:choose>
 															<c:when test="${validatedCourse.advancedAtEndRestriction}">
+																<i class="icon-frown restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.balancedAmountOfSpectators}">
+																<i class="icon-frown restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.balancedAgeGroup}">
 																<i class="icon-frown restriction-icon-bad"></i>
 															</c:when>
 															<c:otherwise>
@@ -217,13 +263,11 @@
 						</div>
 
 						<div class="tab-pane" id="hall3">
-							<table class="table table-striped table-bordered">
+							<table class="table table-bordered table-striped">
 								<thead>
 									<tr>
 										<th style="width: 60%"><spring:message
 												code="label.coursename" /></th>
-										<th style="width: 25%"><spring:message
-												code="label.courselevel" /></th>
 										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.noconsecutiveballett' />"
 											class="inline-tooltip icon icon-female"></i></th>
@@ -233,6 +277,12 @@
 										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.advancedAtEnd' />"
 											class="inline-tooltip icon icon-star"></i></th>
+										<th style="width: 4%"><i
+											title="<spring:message code='help.restriction.balancedSpectators' />"
+											class="inline-tooltip icon icon-group"></i></th>
+										<th style="width: 4%"><i
+											title="<spring:message code='help.restriction.balancedAgeGroup' />"
+											class="inline-tooltip icon icon-adn"></i></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -248,7 +298,6 @@
 												</c:when>
 												<c:otherwise>
 													<td>${validatedCourse.name}</td>
-													<td><spring:message code ="${validatedCourse.level.i18nIdentifier}" /></td>
 													<td>
 														<c:choose>
 															<c:when test="${validatedCourse.balletRestriction}">
@@ -279,6 +328,26 @@
 															</c:otherwise>
 														</c:choose>
 													</td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.balancedAmountOfSpectators}">
+																<i class="icon-frown restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.balancedAgeGroup}">
+																<i class="icon-frown restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
 												</c:otherwise>
 											</c:choose>
 										</tr>
@@ -288,6 +357,26 @@
 						</div>
 
 					</div>
+				</div>
+				<div style="float: left; margin-left: 15px">
+					<form:form method="post" action="performance/save"
+					commandName="performance" class="form-horizontal">
+					
+						<div style="margin-top: 20px">
+							<input type="submit" value="<spring:message code="label.save"/>"
+								class="btn btn-primary" />
+						</div>
+					</form:form>
+				</div>
+				<div style="margin-left: 120px">
+					<form:form method="post" action="performance/validate"
+					commandName="performance" class="form-horizontal">
+					
+						<div style="margin-top: 20px">
+							<input type="submit" value="<spring:message code="label.validate"/>"
+								class="btn btn-primary" />
+						</div>
+					</form:form>
 				</div>
 			</dmtags:widget>
 		</c:if>

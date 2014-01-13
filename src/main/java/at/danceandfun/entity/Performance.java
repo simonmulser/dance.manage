@@ -3,6 +3,7 @@ package at.danceandfun.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -36,6 +37,7 @@ public class Performance extends EntityBase {
     private DateTime dateTime;
 
     @ElementCollection
+    @CollectionTable(name = "COURSEID", joinColumns = @JoinColumn(name = "PERFORMANCE_ID"))
     private List<Integer> courseIds;
 
     @Column(name = "ENABLED")

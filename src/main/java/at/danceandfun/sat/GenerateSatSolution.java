@@ -122,6 +122,8 @@ public class GenerateSatSolution {
         solution = executeSingleSAT();
         plan = backMapping(solution, newOrderOfCourses);
 
+        plan = deleteDummies(plan);
+
         return plan;
     }
 
@@ -467,7 +469,9 @@ public class GenerateSatSolution {
         int amount3 = 0;
 
         for (int i = 0; i < this.numberOfSlots; i++) {
-            amount1 += courses.get(i).getEstimatedSpectators().getValue() + 1;
+            if (!courses.get(i).isDummyCourse()) {
+                amount1 += courses.get(i).getEstimatedSpectators().getValue() + 1;
+            }
         }
         for (int i = this.numberOfSlots; i < 2 * this.numberOfSlots; i++) {
             if (!courses.get(i).isDummyCourse()) {
@@ -494,7 +498,9 @@ public class GenerateSatSolution {
         int amount3 = 0;
 
         for (int i = 0; i < this.numberOfSlots; i++) {
-            amount1 += courses.get(i).getAgeGroup().getValue() + 1;
+            if (!courses.get(i).isDummyCourse()) {
+                amount1 += courses.get(i).getAgeGroup().getValue() + 1;
+            }
         }
         for (int i = this.numberOfSlots; i < 2 * this.numberOfSlots; i++) {
             if (!courses.get(i).isDummyCourse()) {
@@ -506,10 +512,6 @@ public class GenerateSatSolution {
                 amount3 += courses.get(i).getAgeGroup().getValue() + 1;
             }
         }
-
-        System.out.println("Agegroup 1: " + amount1);
-        System.out.println("Agegroup 2: " + amount2);
-        System.out.println("Agegroup 3: " + amount3);
 
         double meanAmount = (amount1 + amount2 + amount3) / 3;
         if (Math.abs(amount1 - meanAmount) > 3
@@ -1368,7 +1370,6 @@ public class GenerateSatSolution {
         IProblem problem = solver;
         try {
             if (problem.isSatisfiable()) {
-                System.out.println("Satisfiable !");
                 int[] model = problem.model();
                 return model;
             } else {
@@ -1434,6 +1435,33 @@ public class GenerateSatSolution {
                 }
             }
         }
+    }
+
+    private Map<Integer, Performance> deleteDummies(
+            Map<Integer, Performance> performanceMap) {
+        Performance tempPerformance1 = performanceMap.get(1);
+        Performance tempPerformance2 = performanceMap.get(2);
+        Performance tempPerformance3 = performanceMap.get(3);
+
+        // delete dummy courses
+        if (tempPerformance1.getCourses().get(0).isDummyCourse()) {
+            tempPerformance1.getCourses().remove(0);
+            tempPerformance1.getCourseIds().remove(0);
+        }
+        if (tempPerformance2.getCourses().get(0).isDummyCourse()) {
+            tempPerformance2.getCourses().remove(0);
+            tempPerformance2.getCourseIds().remove(0);
+        }
+        if (tempPerformance3.getCourses().get(0).isDummyCourse()) {
+            tempPerformance3.getCourses().remove(0);
+            tempPerformance3.getCourseIds().remove(0);
+        }
+
+        performanceMap.put(1, tempPerformance1);
+        performanceMap.put(2, tempPerformance2);
+        performanceMap.put(3, tempPerformance3);
+
+        return performanceMap;
     }
 
 }
