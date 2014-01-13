@@ -135,8 +135,9 @@
 								    <td class="input-append">
 								    	<form:input class="span1" path="reduction" />
 									 	<span class="add-on">%</span>
-										<form:errors path="reduction" cssClass="error" />
 									</td>
+									<td></td>
+									<td><form:errors path="reduction" cssClass="error" /></td>
 								</tr>
 								<tr>
 									<td></td>

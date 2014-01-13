@@ -105,6 +105,7 @@
 						<div class="span6">
 							<form:textarea path="answer" rows="6" />
 						</div>
+						<form:errors path="answer" cssClass="error" />		
 					</div>
 					<div class="form-actions">
 						<input type="submit" value="<spring:message code="label.save"/>"

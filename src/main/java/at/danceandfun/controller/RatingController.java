@@ -10,10 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import at.danceandfun.entity.Rating;
 import at.danceandfun.service.InvoiceManager;
@@ -23,6 +26,7 @@ import at.danceandfun.util.AppContext;
 
 @Controller
 @RequestMapping(value = "admin/rating")
+@SessionAttributes("rating")
 public class RatingController {
 
     private static Logger logger = Logger.getLogger(RatingController.class);
@@ -66,7 +70,19 @@ public class RatingController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addRating(
-            @ModelAttribute(value = "rating") @Valid Rating rating) {
+            @ModelAttribute(value = "rating") @Valid Rating rating,
+            BindingResult result, RedirectAttributes redirectAttributes) {
+
+        if (result.hasErrors()) {
+            logger.error("VALIDATION ERRORS: " + result.getAllErrors().size());
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.rating",
+                    result);
+            redirectAttributes.addFlashAttribute("rating", rating);
+            editTrue = true;
+            return "redirect:/admin/rating";
+        }
+
         this.rating = ratingManager.get(rating.getRid());
         this.rating.setAnswer(rating.getAnswer());
         ratingManager.merge(this.rating);

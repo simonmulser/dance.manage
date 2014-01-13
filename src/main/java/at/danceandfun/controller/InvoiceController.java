@@ -130,17 +130,6 @@ public class InvoiceController {
             BindingResult result, RedirectAttributes redirectAttributes,
             ModelMap map) {
 
-        if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute(
-                    "org.springframework.validation.BindingResult.invoice",
-                    result);
-            redirectAttributes.addFlashAttribute("invoice", invoice);
-            this.invoice = invoice;
-            editTrue = true;
-            return "redirect:/admin/invoice";
-
-        }
-
         editTrue = true;
         Participant actualParticipant = participantManager.get(invoice
                 .getParticipant().getPid());
@@ -184,6 +173,19 @@ public class InvoiceController {
             }
         }
         invoice.setPositions(positionsWithErrors);
+
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.invoice",
+                    result);
+            redirectAttributes.addFlashAttribute("invoice", invoice);
+            this.invoice = invoice;
+            editTrue = true;
+            status = 0;
+            return "redirect:/admin/invoice";
+
+        }
+
         if (noneCounts == invoice.getPositions().size()) { // alle Pos NONE
             status = 0;
         }

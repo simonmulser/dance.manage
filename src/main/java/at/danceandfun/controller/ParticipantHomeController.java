@@ -6,7 +6,6 @@ import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -53,6 +52,8 @@ public class ParticipantHomeController {
     private RatingManager ratingManager;
 
     private Rating rating;
+
+    private boolean editTrue = false;
 
     @RequestMapping(value = "/{pid}", method = RequestMethod.GET)
     public String showIndex(ModelMap map, @PathVariable int pid) {
@@ -159,7 +160,11 @@ public class ParticipantHomeController {
         Participant participant = participantManager.get(pid);
         participant.setCourseParticipants(courseParticipantManager
                 .getEnabledDistinctCourseParticipants(participant));
-        this.rating = new Rating();
+
+        if (!editTrue) {
+            this.rating = new Rating();
+        }
+
         map.put("rating", this.rating);
         map.addAttribute("ratingList",
                 ratingManager.getEnabledRatings(participant));
@@ -169,15 +174,25 @@ public class ParticipantHomeController {
 
     @RequestMapping(value = "/rating/add/{pid}", method = RequestMethod.POST)
     public String addRating(ModelMap map, @PathVariable int pid,
-            @ModelAttribute(value = "rating") @Valid Rating rating) {
+            @ModelAttribute(value = "rating") @Valid Rating rating,
+            BindingResult result, RedirectAttributes redirectAttributes) {
         logger.debug("addRating");
-        Participant participant = participantManager.get(pid);
+
+        if (result.hasErrors()) {
+            logger.error("VALIDATION ERRORS: " + result.getAllErrors().size());
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.rating",
+                    result);
+            redirectAttributes.addFlashAttribute("rating", rating);
+            this.rating = rating;
+            editTrue = true;
+            return "redirect:/participant/rating/" + pid;
+        }
+
         rating.setEnabled(true);
         this.rating = rating;
         ratingManager.persist(rating);
-        rating = new Rating();
-        map.put("rating", rating);
-        map.put("participant", participant);
+        editTrue = false;
         return "redirect:/participant/rating/" + pid;
     }
 
@@ -190,11 +205,5 @@ public class ParticipantHomeController {
         ratingManager.merge(rating);
         map.put("participant", participant);
         return "redirect:/participant/rating/" + pid;
-    }
-
-    private Participant getLoggedInParticipant() {
-        Participant participant = (Participant) SecurityContextHolder
-                .getContext().getAuthentication().getPrincipal();
-        return participantManager.get(participant.getPid());
     }
 }

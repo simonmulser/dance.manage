@@ -7,6 +7,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import at.danceandfun.util.PatternConstants;
 
 @Entity
 @Table(name = "RATING")
@@ -26,21 +30,27 @@ public class Rating extends EntityBase {
     private boolean enabled;
 
     @Column(name = "COURSE_RATING")
+    @NotNull
     private Integer courseRating;
 
     @Column(name = "TEACHER_RATING")
+    @NotNull
     private Integer teacherRating;
 
     @Column(name = "SERVICE_RATING")
+    @NotNull
     private Integer serviceRating;
 
     @Column(name = "PROCRITIQUE")
+    @Pattern(regexp = PatternConstants.MESSAGE_PATTERN, message = "{pattern.characters.message}")
     private String proCritique;
 
     @Column(name = "CONTRACRITIQUE")
+    @Pattern(regexp = PatternConstants.MESSAGE_PATTERN, message = "{pattern.characters.message}")
     private String contraCritique;
 
     @Column(name = "ANSWER")
+    @Pattern(regexp = PatternConstants.MESSAGE_PATTERN, message = "{pattern.characters.message}")
     private String answer;
 
     @ManyToOne

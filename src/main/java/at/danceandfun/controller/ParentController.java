@@ -63,9 +63,9 @@ public class ParentController {
             BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute(
-                    "org.springframework.validation.BindingResult.participant",
+                    "org.springframework.validation.BindingResult.parent",
                     result);
-            redirectAttributes.addFlashAttribute("participant", parent);
+            redirectAttributes.addFlashAttribute("parent", parent);
             this.parent = parent;
             editTrue = true;
             return "redirect:/admin/parent";
@@ -80,14 +80,14 @@ public class ParentController {
 
             if (parent.getPid() == null) {
                 logger.debug("New parent");
+                parentManager.persist(parent);
+            } else {
+                logger.debug("Update parent");
                 parentManager.merge(parent);
             }
 
-            logger.debug("Update parent");
-            parentManager.merge(parent);
             logger.debug("Finished updating parent");
-
-            this.parent = new Parent();
+            editTrue = false;
         }
         return "redirect:/admin/parent";
 

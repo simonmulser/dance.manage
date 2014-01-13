@@ -38,6 +38,7 @@
 						<form:radiobutton path="courseRating" class="star" name="star1" value="${i}"/>
 					</c:forEach>
 				</div>
+				<form:errors path="courseRating" cssClass="error" />
 			</div>
 			<div class="control-group">
 				<form:label path="teacherRating" class="control-label">
@@ -48,6 +49,7 @@
 						<form:radiobutton path="teacherRating" class="star" name="star2" value="${i}"/>
 					</c:forEach>
 				</div>
+				<form:errors path="teacherRating" cssClass="error" />			
 			</div>
 			<div class="control-group">
 				<form:label path="serviceRating" class="control-label">
@@ -58,6 +60,7 @@
 						<form:radiobutton path="serviceRating" class="star" name="star3" value="${i}"/>
 					</c:forEach>
 				</div>
+				<form:errors path="serviceRating" cssClass="error" />	
 			</div>
 			<div class="control-group">
 				<form:label path="proCritique" class="control-label">
@@ -67,6 +70,7 @@
 					<form:textarea path="proCritique" maxlength="255" rows="6" /> <br />
 					<spring:message code="help.maxChars" />
 				</div>
+				<form:errors path="proCritique" cssClass="error" />	
 			</div>
 			<div class="control-group">
 				<form:label path="contraCritique" class="control-label">
@@ -76,6 +80,7 @@
 					<form:textarea path="contraCritique" maxlength="255" rows="6"/><br />
 					<spring:message code="help.maxChars" />
 				</div>
+				<form:errors path="contraCritique" cssClass="error" />	
 			</div>
 			<div class="form-actions">
 				<input type="submit" value="<spring:message code="label.save"/>"
