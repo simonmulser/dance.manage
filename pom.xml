@@ -329,6 +329,11 @@
         </dependency>
 
 
+        <dependency>
+        	<groupId>com.itextpdf</groupId>
+        	<artifactId>itextpdf</artifactId>
+        	<version>5.4.4</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

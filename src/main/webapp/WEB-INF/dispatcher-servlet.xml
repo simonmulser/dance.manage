@@ -27,9 +27,15 @@
 
     <mvc:annotation-driven />
     <mvc:default-servlet-handler />
+    
+    <bean id="pdfViewResolver" class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+        <property name="order" value="1"/>
+        <property name="basename" value="views"/>
+    </bean>
 
     <bean id="jspViewResolver"
         class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="order" value="2"/>
         <property name="viewClass"
             value="org.springframework.web.servlet.view.JstlView"></property>
         <property name="prefix" value="/WEB-INF/view/"></property>

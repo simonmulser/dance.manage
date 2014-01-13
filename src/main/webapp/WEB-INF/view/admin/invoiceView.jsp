@@ -211,7 +211,7 @@
 					class="table table-striped table-bordered displaytag" pagesize="15"
 					requestURI="/admin/invoice" defaultsort="1">
 					<display:column sortable="true" titleKey="label.invoiceID">
-						${invoice.iid}
+						<a href="invoice/viewInvoicePDF/${invoice.iid}">${invoice.iid}&nbsp;<i class="icon icon-print"></i></a>
 					</display:column>
 					<display:column sortable="true" titleKey="label.invoiceDate">
 						<joda:format value="${invoice.date}" pattern="dd.MM.yyyy" />
@@ -246,9 +246,7 @@
 							</c:otherwise>
 						</c:choose>
 					</display:column>
-					<display:column>
-						<c:set var="iid" value="${invoice.iid}" />
-						<br />
+					<display:column><c:set var="iid" value="${invoice.iid}" />
 						<a href="invoice/delete/${iid}" class="openDialog" id="${iid}"><spring:message
 								code="label.cancelInvoice" /></a>
 								<i title="<spring:message code='help.invoiceDelete' />" class="inline-tooltip icon icon-question-sign"></i>
