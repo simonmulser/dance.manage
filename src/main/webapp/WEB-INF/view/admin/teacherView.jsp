@@ -136,17 +136,15 @@
 								<c:when test="${!empty teacher.courses}">
 									<td><c:forEach items="${teacher.courses}" var="cou"
 											varStatus="loop">
-											<c:if test="${cou.enabled }">
 											${cou.name}
-											
-											${!loop.last ? ', ' : ''}</c:if>
+											${!loop.last ? ', ' : ''}
 										</c:forEach></td>
 								</c:when>
 								<c:otherwise>
 									<td></td>
 								</c:otherwise>
 							</c:choose>
-							<td><a href="teacher/edit/${teacher.pid}"><spring:message
+							<td><a href="teacher/edit/${teacher.pid}#add"><spring:message
 										code="label.edit" /></a><br /> <a
 								href="teacher/delete/${teacher.pid}" class="openDialog"
 								id="${teacher.pid }"><spring:message code="label.delete" /></a>

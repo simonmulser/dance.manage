@@ -8,8 +8,8 @@
 			<a class="btn btn-navbar" data-toggle="collapse"
 				data-target=".nav-collapse"><span class="icon-bar"></span><span
 				class="icon-bar"></span><span class="icon-bar"></span> </a><a
-				class="brand" href="<c:url value="${homeLink}" />"><spring:message
-					code="nav.title" /></a>
+				class="brand" href="<c:url value="${homeLink}" />"><spring:message code="nav.title" /></a>
+			<c:if test="${user != null}">
 			<div class="nav-collapse">
 				<ul class="nav pull-right">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -31,6 +31,7 @@
 				</c:if>
 			</div>
 			<!--/.nav-collapse -->
+			</c:if>
 		</div>
 		<!-- /container -->
 	</div>

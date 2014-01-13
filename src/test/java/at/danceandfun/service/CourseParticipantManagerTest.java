@@ -5,8 +5,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.Mockito.mock;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,35 +14,26 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import at.danceandfun.dao.DaoBase;
-import at.danceandfun.entity.Participant;
+import at.danceandfun.entity.CourseParticipant;
 
 @Transactional
 @ContextConfiguration("classpath:test/test-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
-public class ParticipantManagerTest {
+public class CourseParticipantManagerTest {
 
     private static Logger logger = Logger
-            .getLogger(ParticipantManagerTest.class);
+            .getLogger(CourseParticipantManagerImpl.class);
 
     @Autowired
-    private ParticipantManager participantManager;
+    private CourseParticipantManager courseParticipantManager;
 
     @SuppressWarnings("unchecked")
-    private DaoBase<Participant> dao = (DaoBase<Participant>) mock(DaoBase.class);
+    private DaoBase<CourseParticipant> dao = (DaoBase<CourseParticipant>) mock(DaoBase.class);
 
     @Test
-    public void testGetParticipantsByNumberOfSiblings() {
-        assertThat(participantManager.getParticipantsByNumberOfSiblings(),
+    public void testGetCourseCountByParticipant() {
+        assertThat(courseParticipantManager.getCourseCountByParticipant(1, 1),
                 is(notNullValue()));
-    }
-
-    @Test
-    public void searchForSiblings() {
-        Participant actualParticipant = participantManager.get(3);
-        List<Participant> possibleSiblings = participantManager
-                .searchForSiblings(actualParticipant, "Fra");
-
-        assertThat(possibleSiblings.get(0), is(notNullValue()));
     }
 
 }

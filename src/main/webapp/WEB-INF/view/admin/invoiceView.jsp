@@ -13,7 +13,6 @@
 
 		<dmtags:widget icon="icon-envelope" title="${i18nInvoices}">
 			<spring:message code="help.invoice" />
-			
 			<form:form method="post" action="invoice/preview"
 				commandName="invoice" class="form-horizontal">
 				
@@ -37,21 +36,23 @@
 										<c:when test="${!empty invoice.parent.pid}">
 											
 												<td colspan="2">
-													<spring:message code="label.invoiceAddress" /><br />
-													<form:input path="parent.pid" id="parentPid" type="hidden" />
-													${invoice.parent.firstname }&nbsp;${invoice.parent.lastname }<br />
-													${invoice.parent.address.street}&nbsp;${invoice.parent.address.number}
-													<c:if test="${!empty invoice.parent.address.stair}">
-														/ ${invoice.parent.address.stair }
-													</c:if>	
-													<c:if test="${!empty invoice.parent.address.door}">
-														/ ${invoice.parent.address.door }
-													</c:if>
-													<br />
-													${invoice.parent.address.zip},&nbsp;${invoice.parent.address.city }
+													<address>
+														<em><spring:message code="label.invoiceAddress" /></em><br />
+														<form:input path="parent.pid" id="parentPid" type="hidden" />
+														<strong>${invoice.parent.firstname }&nbsp;${invoice.parent.lastname }</strong><br />
+														${invoice.parent.address.street}&nbsp;${invoice.parent.address.number}
+														<c:if test="${!empty invoice.parent.address.stair}">
+															/ ${invoice.parent.address.stair }
+														</c:if>	
+														<c:if test="${!empty invoice.parent.address.door}">
+															/ ${invoice.parent.address.door }
+														</c:if>
+														<br />
+														${invoice.parent.address.zip},&nbsp;${invoice.parent.address.city }
+													</address>
 												</td>
 												<td colspan="2">
-													<spring:message code="label.senderAddress" /><br />
+													<em><spring:message code="label.senderAddress" /></em><br />
 													Dance &amp; Fun<br />
 													${user.address.street}&nbsp;${user.address.number }<br />
 													${user.address.zip }&nbsp;${user.address.city }
@@ -59,8 +60,8 @@
 										</c:when>
 										<c:when test="${!empty invoice.participant.pid}">
 												<td colspan="2">
-													<spring:message code="label.invoiceAddress" /><br />
-													${invoice.participant.firstname }&nbsp;${invoice.participant.lastname }<br />
+													<em><spring:message code="label.invoiceAddress" /></em><br />
+													<strong>${invoice.participant.firstname }&nbsp;${invoice.participant.lastname }</strong><br />
 													${invoice.participant.address.street}&nbsp;${invoice.participant.address.number}
 													<c:if test="${!empty invoice.participant.address.stair}">
 														/ ${invoice.participant.address.stair }
@@ -72,7 +73,7 @@
 													${invoice.participant.address.zip},&nbsp;${invoice.participant.address.city }
 												</td>
 												<td colspan="2">
-													<spring:message code="label.senderAddress" /><br />
+													<em><spring:message code="label.senderAddress" /></em><br />
 													Dance &amp; Fun<br />
 													${user.address.street}&nbsp;${user.address.number }<br />
 													${user.address.zip }&nbsp;${user.address.city }
@@ -101,8 +102,10 @@
 											<form:input path="positions[${status.index }].key.course.cid" type="hidden" />
 										</td>
 										<td>
+												<c:set var="index" value="${status.index }" />
+												<form:input path="positions[${status.index }].possibleDurations" type="hidden"/>
 												<form:select path="positions[${status.index }].duration">
-													<form:options items="${Duration}" itemLabel="label" />
+													<form:options items="${invoice.positions[index].possibleDurations}" itemLabel="label" />
 												</form:select>
 										</td>
 										<td>
@@ -129,10 +132,25 @@
 											<spring:message code="label.reduction" />
 									    </form:label>
 									    </td>
-								    <td>
-										<form:input path="reduction" /> %
+								    <td class="input-append">
+								    	<form:input class="span1" path="reduction" />
+									 	<span class="add-on">%</span>
 										<form:errors path="reduction" cssClass="error" />
 									</td>
+								</tr>
+								<tr>
+									<td></td>
+									<c:if test="${!empty invoice.reductionAmount }">
+										<td>
+											<form:label path="reductionAmount">
+												<spring:message code="label.reduction" />
+											</form:label>
+										</td>
+										<td>	
+											${invoice.reductionAmount} &euro;
+										</td>
+									</c:if>
+									<td></td>
 								</tr>
 								<tr>
 									<td></td>
@@ -192,7 +210,7 @@
 					class="table table-striped table-bordered displaytag" pagesize="15"
 					requestURI="/admin/invoice" defaultsort="1">
 					<display:column sortable="true" titleKey="label.invoiceID">
-						${invoice.iid}
+						<a href="invoice/viewInvoicePDF/${invoice.iid}">${invoice.iid}&nbsp;<i class="icon icon-print"></i></a>
 					</display:column>
 					<display:column sortable="true" titleKey="label.invoiceDate">
 						<joda:format value="${invoice.date}" pattern="dd.MM.yyyy" />
@@ -220,16 +238,14 @@
 					<display:column titleKey="label.reduction">
 						<c:choose>
 							<c:when test="${!empty invoice.reduction }">
-								${invoice.reduction}%
+								${invoice.reductionAmount }&euro;&nbsp;(${invoice.reduction}%)
 							</c:when>
 							<c:otherwise>
 								-
 							</c:otherwise>
 						</c:choose>
 					</display:column>
-					<display:column>
-						<c:set var="iid" value="${invoice.iid}" />
-						<br />
+					<display:column><c:set var="iid" value="${invoice.iid}" />
 						<a href="invoice/delete/${iid}" class="openDialog" id="${iid}"><spring:message
 								code="label.cancelInvoice" /></a>
 								<i title="<spring:message code='help.invoiceDelete' />" class="inline-tooltip icon icon-question-sign"></i>
@@ -287,11 +303,6 @@
 		}
 	});
 	$(document).ready(function() {
-		$("#showParticipant").on("click", "i", function() { //Participant löschen
-			$(this).parent().remove();
-			$("#participantPid").val(null);
-		});
-
 		$("#participantQuery").autocomplete({
 			minLength : 1,
 			delay : 500,

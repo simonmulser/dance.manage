@@ -64,8 +64,16 @@ public class ParticipantController {
         if (!editTrue) {
             participant = new Participant();
         }
+        List<Participant> participantList = new ArrayList<Participant>();
+        for (Participant p : participantManager.getEnabledList()) {
+            if (p.getCourseParticipants().size() > 0) {
+                p.setCourseParticipants(courseParticipantManager
+                        .getEnabledDistinctCourseParticipants(p));
+                participantList.add(p);
+            }
+        }
         map.addAttribute("participant", participant);
-        map.addAttribute("participantList", participantManager.getEnabledList());
+        map.addAttribute("participantList", participantList);
         editTrue = false;
 
         return "admin/participantView";
@@ -129,8 +137,9 @@ public class ParticipantController {
 
             if (!participant.getTempCourses().equals("")) {
                 if (participant.getPid() != null) {
-                    participant.setCourseParticipants(participantManager.get(
-                            participant.getPid()).getCourseParticipants());
+                    participant.setCourseParticipants(courseParticipantManager
+                            .getEnabledCourseParticipants(participantManager
+                                    .get(participant.getPid())));
                 }
                 String[] courses = participant.getTempCourses().split(";");
                 for (String s : courses) {
@@ -138,16 +147,18 @@ public class ParticipantController {
                             .parseInt(s)));
 
                     if (Integer.parseInt(s) < 0) {
-                        if (participant.getCourseById(actualCourse) != null) {
-                            CourseParticipant deleteCP = participant
-                                    .getCourseById(actualCourse);
-                            participant.getCourseParticipants()
-                                    .remove(deleteCP);
-                            deleteCP.setEnabled(false);
-                            courseParticipantManager.merge(deleteCP);
+                        if (participant.getCourseParticipantsById(actualCourse) != null) {
+                            List<CourseParticipant> deleteCPs = participant
+                                    .getCourseParticipantsById(actualCourse);
+                            for (CourseParticipant cp : deleteCPs) {
+                                participant.getCourseParticipants().remove(cp);
+                                cp.setEnabled(false);
+                                courseParticipantManager.merge(cp);
+                            }
+
                         }
-                    } else if (participant.getCourseById(actualCourse) == null) {
-                        logger.debug("Neuen Kurs hinzufügen");
+                    } else if (participant
+                            .getCourseParticipantsById(actualCourse) == null) {
                         CourseParticipant newCP = new CourseParticipant();
                         newCP.setCourse(actualCourse);
                         newCP.setParticipant(participant);
@@ -156,11 +167,7 @@ public class ParticipantController {
                     }
                 }
             }
-
-            logger.debug("Update participant");
             participantManager.merge(participant);
-            logger.debug("Finished updating participant");
-
             this.participant = new Participant();
         }
         return "redirect:/admin/participant";
@@ -185,11 +192,12 @@ public class ParticipantController {
             participant.setTempSiblingNames(actualSiblingNames);
         }
 
-        if (participantManager.get(pid).getCourseParticipants().size() > 0) {
+        participant.setCourseParticipants(courseParticipantManager
+                .getEnabledDistinctCourseParticipants(participant));
+        if (participant.getCourseParticipants().size() > 0) {
             String actualCourses = "";
             String actualCourseNames = "";
-            for (CourseParticipant cp : participantManager.get(pid)
-                    .getCourseParticipants()) {
+            for (CourseParticipant cp : participant.getCourseParticipants()) {
                 if (cp.isEnabled()) {
                     Course actualCourse = cp.getCourse();
                     actualCourses += actualCourse.getCid().toString() + ";";
@@ -217,6 +225,8 @@ public class ParticipantController {
             }
             participant.setSiblings(new HashSet<Participant>());
         }
+        participant.setCourseParticipants(courseParticipantManager
+                .getEnabledCourseParticipants(participant));
         if (participant.getCourseParticipants().size() > 0) {
             for (CourseParticipant cp : participant.getCourseParticipants()) {
                 cp.setEnabled(false);
@@ -234,24 +244,18 @@ public class ParticipantController {
     @RequestMapping(value = "/getParents", method = RequestMethod.GET)
     public @ResponseBody
     List<Parent> getParents(@RequestParam("term") String query) {
-        logger.debug("Entered :" + query);
-
         return parentManager.searchForParents(participant, query);
     }
 
     @RequestMapping(value = "/getSiblings", method = RequestMethod.GET)
     public @ResponseBody
     List<Participant> getSiblings(@RequestParam("term") String query) {
-        logger.debug("Entered :" + query);
-
         return participantManager.searchForSiblings(participant, query);
     }
 
     @RequestMapping(value = "/getCourses", method = RequestMethod.GET)
     public @ResponseBody
     List<Course> getCourses(@RequestParam("term") String query) {
-        logger.debug("Entered coursname:" + query);
-
         return courseManager.searchForCourses(participant, query);
     }
 

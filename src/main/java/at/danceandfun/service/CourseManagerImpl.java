@@ -119,4 +119,10 @@ public class CourseManagerImpl extends ManagerBaseImpl<Course> implements
         return courses;
     }
 
+    @Override
+    public List<Course> getEnabledCourses(Teacher teacher) {
+        return mainDao
+                .getQueryResults("select cou from Course as cou where cou.enabled=true and cou.teacher.pid="
+                        + teacher.getPid());
+    }
 }

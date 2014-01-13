@@ -11,6 +11,7 @@
 <dmtags:base title="${i18nTitle}" activesection="absence">
 	<spring:message var="i18nAbsence" code="widget.absence" />
 	<dmtags:widget title="${i18nMyCourses}" style="noTable" icon="icon-edit">
+		<spring:message code="help.absence" />
 		<c:choose>
 			<c:when test="${participant.courseParticipants.size() gt 0}">
 				<div class="tabbable">
