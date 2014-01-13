@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,7 +54,10 @@ public class ListController {
         }
 
         List<Course> courses = new ArrayList<Course>();
-        for (Course course : courseManager.getEnabledList()) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Course.class);
+        criteria.addOrder(Order.asc("name"));
+        criteria.add(Restrictions.eq("inPerformance", true));
+        for (Course course : courseManager.getEnabledListWithCriteria(criteria)) {
             if (course.getCourseParticipants().size() > 0) {
                 course.setCourseParticipants(courseParticipantManager
                         .getEnabledDistinctCourseParticipants(course));

@@ -6,6 +6,8 @@ import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -52,7 +54,12 @@ public class ParentController {
             parent = new Parent();
         }
         map.addAttribute("parent", parent);
-        map.addAttribute("parentList", parentManager.getEnabledList());
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(Parent.class);
+        criteria.addOrder(Order.asc("lastname"));
+        criteria.addOrder(Order.asc("firstname"));
+        map.addAttribute("parentList",
+                parentManager.getEnabledListWithCriteria(criteria));
         editTrue = false;
 
         return "admin/parentView";

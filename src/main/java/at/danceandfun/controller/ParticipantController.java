@@ -8,6 +8,8 @@ import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -65,12 +67,17 @@ public class ParticipantController {
             participant = new Participant();
         }
         List<Participant> participantList = new ArrayList<Participant>();
-        for (Participant p : participantManager.getEnabledList()) {
+        DetachedCriteria criteria = DetachedCriteria
+                .forClass(Participant.class);
+        criteria.addOrder(Order.asc("lastname"));
+        criteria.addOrder(Order.asc("firstname"));
+        for (Participant p : participantManager
+                .getEnabledListWithCriteria(criteria)) {
             if (p.getCourseParticipants().size() > 0) {
                 p.setCourseParticipants(courseParticipantManager
                         .getEnabledDistinctCourseParticipants(p));
-                participantList.add(p);
             }
+            participantList.add(p);
         }
         map.addAttribute("participant", participant);
         map.addAttribute("participantList", participantList);
