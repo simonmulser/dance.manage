@@ -97,6 +97,9 @@ public class Course extends EntityBase {
     @Column(name = "ENABLED")
     private boolean enabled;
 
+    @Column(name = "IN_PERFORMANCE", columnDefinition = "boolean default true")
+    private boolean inPerformance = true;
+
     @Column(name = "LEVEL")
     private Integer level;
 
@@ -400,6 +403,14 @@ public class Course extends EntityBase {
 
     public void setLevel(Integer level) {
         this.level = level;
+    }
+
+    public boolean isInPerformance() {
+        return inPerformance;
+    }
+
+    public void setInPerformance(boolean inPerformance) {
+        this.inPerformance = inPerformance;
     }
 
     @JsonIgnore

@@ -7,6 +7,8 @@ import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -58,11 +60,17 @@ public class TeacherController {
         if (!editTrue) {
             teacher = new Teacher();
         }
-        List<Teacher> teacherList = teacherManager.getEnabledList();
-        for (Teacher teacher : teacherList) {
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(Teacher.class);
+        criteria.addOrder(Order.asc("lastname"));
+        criteria.addOrder(Order.asc("firstname"));
+        List<Teacher> teacherList = new ArrayList<Teacher>();
+        for (Teacher teacher : teacherManager
+                .getEnabledListWithCriteria(criteria)) {
             if (teacher.getCourses().size() > 0) {
                 teacher.setCourses(courseManager.getEnabledCourses(teacher));
             }
+            teacherList.add(teacher);
         }
         map.addAttribute("teacher", teacher);
         map.addAttribute("teacherList", teacherList);
