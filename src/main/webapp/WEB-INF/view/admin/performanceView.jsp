@@ -78,8 +78,8 @@
 						<a href="performance/show/${planid}"><spring:message
 								code="label.show" /></a>
 						<br />
-						<a href="performance/delete/${planid}" class="openDialog"
-							id="${planid}"><spring:message code="label.delete" /></a>
+						<a href="performance/delete/${planid}" class="openDialog" id="${plandid}"><spring:message
+								code="label.delete" /></a>
 						<div id="deleteId" style="display: none;"></div>
 					</display:column>
 					</display:table>
@@ -393,27 +393,55 @@
 
 					</div>
 				</div>
-				<div style="float: left; margin-left: 15px">
-					<form:form method="post" action="performance/save"
-					commandName="performance" class="form-horizontal">
-					
-						<div style="margin-top: 20px">
-							<input type="submit" value="<spring:message code="label.save"/>"
-								class="btn btn-primary" />
-						</div>
-					</form:form>
-				</div>
-				<div style="margin-left: 120px">
-					<form:form method="post" action="performance/validate"
-					commandName="performance" class="form-horizontal">
-					
-						<div style="margin-top: 20px">
-							<input type="submit" value="<spring:message code="label.validate"/>"
-								class="btn btn-primary" />
-						</div>
-					</form:form>
-				</div>
+				<c:if test="${!isSavedPlan}">
+					<div style="float: left; margin-left: 15px">
+						<form:form method="post" action="performance/save"
+						commandName="performance" class="form-horizontal">
+						
+							<div style="margin-top: 20px">
+								<input type="submit" value="<spring:message code="label.save"/>"
+									class="btn btn-primary" />
+							</div>
+						</form:form>
+					</div>
+					<div style="margin-left: 120px">
+						<form:form method="post" action="performance/validate"
+						commandName="performance" class="form-horizontal">
+						
+							<div style="margin-top: 20px">
+								<input type="submit" value="<spring:message code="label.validate"/>"
+									class="btn btn-primary" />
+							</div>
+						</form:form>
+					</div>
+				</c:if>
 			</dmtags:widget>
 		</c:if>
 	</dmtags:span>
 </dmtags:base>
+
+<script type="text/javascript">
+$(".openDialog").click(function() { //Loeschen rueckbestaetigen
+	$("#deleteId").text($(this).attr("id"));
+	$("#dialog-confirm").dialog("open");
+	return false;
+});
+$("#dialog-confirm").dialog(
+		{
+			autoOpen : false,
+			resizable : false,
+			modal : true,
+			buttons : {
+				"OK" : function() {
+					document.location = "performance/delete/"
+							+ $("#deleteId").text();
+
+					$(this).dialog("close");
+				},
+				Cancel : function() {
+					$(this).dialog("close");
+				}
+			}
+		});
+	
+</script>

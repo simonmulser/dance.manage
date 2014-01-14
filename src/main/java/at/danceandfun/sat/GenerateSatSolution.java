@@ -213,16 +213,16 @@ public class GenerateSatSolution {
         // Vi = Einzelne Slots
         // 1,2,3 .. = Kurse
         // (Vi1 v Vi2 v Vi3 ..)
-        // for (int i = 1; i <= p; i++) {
-        // for (int j = 1; j <= t; j++) {
-        // tempList.clear();
-        // for (int l = 1; l <= k; l++) {
-        // tempList.add(buildMappingVariable(i, j, l));
-        //
-        // }
-        // clauses.add(convertToIntegerArray(tempList));
-        // }
-        // }
+        for (int i = 1; i <= p; i++) {
+            for (int j = 1; j <= t; j++) {
+                tempList.clear();
+                for (int l = 1; l <= k; l++) {
+                    tempList.add(buildMappingVariable(i, j, l));
+
+                }
+                clauses.add(convertToIntegerArray(tempList));
+            }
+        }
 
         // Jeder Kurs muss verwendet werden
         // v = Logisches ODER

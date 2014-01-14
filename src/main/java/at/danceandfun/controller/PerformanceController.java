@@ -62,6 +62,7 @@ public class PerformanceController {
     private boolean balancedAgeGroup = true;
     private boolean multipleGroupsSamePerformance = true;
     private boolean sibsSamePerformance = true;
+    private boolean isSavedPlan = false;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String listPerformances(ModelMap map) {
@@ -80,6 +81,7 @@ public class PerformanceController {
         map.addAttribute("multipleGroupsSamePerformance",
                 multipleGroupsSamePerformance);
         map.addAttribute("sibsSamePerformance", sibsSamePerformance);
+        map.addAttribute("isSavedPlan", isSavedPlan);
         map.addAttribute("performancePlan", performancePlan);
         map.addAttribute("performancePlanList",
                 performancePlanManager.getEnabledList());
@@ -128,6 +130,8 @@ public class PerformanceController {
 
         performance = new Performance();
 
+        isSavedPlan = false;
+
         return "redirect:/admin/performance";
     }
 
@@ -168,6 +172,14 @@ public class PerformanceController {
 
         performancePlan.setDateTime(LocalDate.now());
         performancePlan.setEnabled(true);
+
+        // funktioniert irgendwie noch nicht
+        // if (performancePlanManager.contains(performancePlan)) {
+        // performancePlanManager.merge(performancePlan);
+        // } else {
+        // performancePlanManager.persist(performancePlan);
+        // }
+
         performancePlanManager.persist(performancePlan);
 
         performance = new Performance();
@@ -205,6 +217,8 @@ public class PerformanceController {
         tempPerformance1 = fetchedPerformances.get(0);
         tempPerformance2 = fetchedPerformances.get(1);
         tempPerformance3 = fetchedPerformances.get(2);
+
+        isSavedPlan = true;
 
         performance = new Performance();
 

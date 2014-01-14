@@ -9,6 +9,8 @@ public interface ManagerBase<T> {
 
     public void persist(T domain);
 
+    public boolean contains(T domain);
+
     public T merge(T domain);
 
     public T get(Serializable id);
