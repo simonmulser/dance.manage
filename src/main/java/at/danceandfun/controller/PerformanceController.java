@@ -81,9 +81,8 @@ public class PerformanceController {
                 multipleGroupsSamePerformance);
         map.addAttribute("sibsSamePerformance", sibsSamePerformance);
         map.addAttribute("performancePlan", performancePlan);
-        map.addAttribute("performancePlanList", performancePlanList);
-
-        performancePlanList = performancePlanManager.getEnabledList();
+        map.addAttribute("performancePlanList",
+                performancePlanManager.getEnabledList());
 
         return "admin/performanceView";
     }
@@ -186,7 +185,7 @@ public class PerformanceController {
         List<Course> fetchedCourses = courseManager.getEnabledList();
         List<Performance> fetchedPerformances = plan.getPerformances();
 
-        if (fetchedPerformances.size() == 3) {
+        if (fetchedPerformances.size() != 3) {
             return "redirect:/admin/performance";
         }
 
