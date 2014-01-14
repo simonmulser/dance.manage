@@ -52,7 +52,7 @@
 					
 					<label class="checkbox">
 						<input type="checkbox" value="Sibs"	id="CheckboxSibsSamePerformance" name="CheckboxSibsSamePerformance" <c:if test="${sibsSamePerformance}">checked</c:if>>
-						<div style="float:left; margin-left: 4px"><i class="icon-adn"></i></div><div style="margin-left: 25px"><spring:message code='help.restriction.sibsSamePerformance' /></div>
+						<div style="float:left; margin-left: 4px"><i class="icon-heart"></i></div><div style="margin-left: 25px"><spring:message code='help.restriction.sibsSamePerformance' /></div>
 					</label>
 				</div>
 				<div style="margin-top: 20px">
@@ -133,10 +133,10 @@
 											class="inline-tooltip icon icon-adn"></i></th>
 										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.multipleGroupsSamePerformance' />"
-											class="inline-tooltip icon icon-group"></i></th>
+											class="inline-tooltip icon icon-sitemap"></i></th>
 										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.sibsSamePerformance' />"
-											class="inline-tooltip icon icon-adn"></i></th>
+											class="inline-tooltip icon icon-heart"></i></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -253,10 +253,10 @@
 											class="inline-tooltip icon icon-adn"></i></th>
 										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.multipleGroupsSamePerformance' />"
-											class="inline-tooltip icon icon-group"></i></th>
+											class="inline-tooltip icon icon-sitemap"></i></th>
 										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.sibsSamePerformance' />"
-											class="inline-tooltip icon icon-adn"></i></th>
+											class="inline-tooltip icon icon-heart"></i></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -373,10 +373,10 @@
 											class="inline-tooltip icon icon-adn"></i></th>
 										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.multipleGroupsSamePerformance' />"
-											class="inline-tooltip icon icon-group"></i></th>
+											class="inline-tooltip icon icon-sitemap"></i></th>
 										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.sibsSamePerformance' />"
-											class="inline-tooltip icon icon-adn"></i></th>
+											class="inline-tooltip icon icon-heart"></i></th>
 									</tr>
 								</thead>
 								<tbody>

@@ -21,7 +21,6 @@ import at.danceandfun.entity.Performance;
 
 public class SatValidator {
 
-
 	private Map<Integer, Performance> performancePlan;
 	private List<Participant> participantList;
 	private List<Course> courseList1;
@@ -45,15 +44,21 @@ public class SatValidator {
 	 *         for the restrictions are stored for every course.
 	 */
 	public Map<Integer, Performance> validatePerformancePlan() {
-		//Restriction - siblingsInSamePerformance
-		this.courseList1 = validateSiblingsInSamePerformance(this.courseList1, this.participantList);
-		this.courseList2 = validateSiblingsInSamePerformance(this.courseList2, this.participantList);
-		this.courseList3 = validateSiblingsInSamePerformance(this.courseList3, this.participantList);
-		
-		//Restriction - MultipleCourseInSamePerformance
-		this.courseList1 = validateMultipleCoursesInSamePerformance(this.courseList1, this.participantList);
-		this.courseList2 = validateMultipleCoursesInSamePerformance(this.courseList2, this.participantList);
-		this.courseList3 = validateMultipleCoursesInSamePerformance(this.courseList3, this.participantList);
+		// Restriction - siblingsInSamePerformance
+		this.courseList1 = validateSiblingsInSamePerformance(this.courseList1,
+				this.participantList);
+		this.courseList2 = validateSiblingsInSamePerformance(this.courseList2,
+				this.participantList);
+		this.courseList3 = validateSiblingsInSamePerformance(this.courseList3,
+				this.participantList);
+
+		// Restriction - MultipleCourseInSamePerformance
+		this.courseList1 = validateMultipleCoursesInSamePerformance(
+				this.courseList1, this.participantList);
+		this.courseList2 = validateMultipleCoursesInSamePerformance(
+				this.courseList2, this.participantList);
+		this.courseList3 = validateMultipleCoursesInSamePerformance(
+				this.courseList3, this.participantList);
 
 		// Restriction - Not two of a kind
 		this.courseList1 = validateNotTwoOfAKindRestriktion(this.courseList1);
@@ -108,7 +113,7 @@ public class SatValidator {
 				if (countGap == 0) {
 					if (lastBallet != -1) {
 						validatedCourseList.get(lastBallet)
-						.setBalletRestriction(true);
+								.setBalletRestriction(true);
 					}
 					validatedCourseList.get(i).setBalletRestriction(true);
 					validatedCourseList.get(i).setViolationOfRestriktions(true);
@@ -169,13 +174,13 @@ public class SatValidator {
 				for (int i = 0; i < courseIDList.size() - 1; i++) {
 					if (!(courseIDList.get(i) + 2 < courseIDList.get(i + 1))) {
 						validatedCourseList.get(courseIDList.get(i))
-						.setTwoBreaksRestriction(true);
+								.setTwoBreaksRestriction(true);
 						validatedCourseList.get(courseIDList.get(i + 1))
-						.setTwoBreaksRestriction(true);
+								.setTwoBreaksRestriction(true);
 						validatedCourseList.get(i).setViolationOfRestriktions(
 								true);
 						validatedCourseList.get(courseIDList.get(i + 1))
-						.setViolationOfRestriktions(true);
+								.setViolationOfRestriktions(true);
 					}
 				}
 			}
@@ -213,9 +218,9 @@ public class SatValidator {
 		for (int i = 0; i < idList.size(); i++) {
 			if (!(idList.get(i) == sizeOfValidatedCourseList - (i + 1))) {
 				validatedCourseList.get(idList.get(i))
-				.setAdvancedAtEndRestriction(true);
+						.setAdvancedAtEndRestriction(true);
 				validatedCourseList.get(idList.get(i))
-				.setViolationOfRestriktions(true);
+						.setViolationOfRestriktions(true);
 
 			}
 		}
@@ -332,28 +337,29 @@ public class SatValidator {
 			List<Course> validatedCourseList, List<Participant> participantList) {
 		List<Integer> notValidated = new ArrayList<Integer>();
 
-		for(int i = 0; i < participantList.size(); i++) {		
+		for (int i = 0; i < participantList.size(); i++) {
 			boolean fitsRestriction = true;
 			if (participantList.get(i).getCourseParticipants().size() > 1) {
 				for (CourseParticipant currentCoPa : participantList.get(i)
 						.getCourseParticipants()) {
-					if(currentCoPa.getCourse().isEnabled()) { 
-						if(currentCoPa.getCourse().getAmountPerformances() == 1) {
+					if (currentCoPa.getCourse().isEnabled()) {
+						if (currentCoPa.getCourse().getAmountPerformances() == 1) {
 							fitsRestriction = false;
-						}else {
+						} else {
 							break;
 						}
 					}
 				}
-				if(!fitsRestriction) {
+				if (!fitsRestriction) {
 					notValidated.add(i);
 				}
-			}			
+			}
 		}
 
-		for(int k = 0; k < notValidated.size(); k++) {
-			for(CourseParticipant currentCP : participantList.get(notValidated.get(k)).getCourseParticipants()) {
-				currentCP.getCourse().setMultipleGroupsSamePerformance(true);		
+		for (int k = 0; k < notValidated.size(); k++) {
+			for (CourseParticipant currentCP : participantList.get(
+					notValidated.get(k)).getCourseParticipants()) {
+				currentCP.getCourse().setMultipleGroupsSamePerformance(true);
 			}
 		}
 		return validatedCourseList;
@@ -365,77 +371,129 @@ public class SatValidator {
 		List<Integer> siblingIDs = new ArrayList<Integer>();
 		List<Integer> notValidated = new ArrayList<Integer>();
 
-		for(int i = 0; i < participantList.size(); i++) {		
-			//			boolean fitsRestriction = true;
+		for (int i = 0; i < participantList.size(); i++) {
 			if (participantList.get(i).getSiblings().size() > 0) {
 				sibCourses.add(i);
-			}			
+			}
 		}
 
-		for(int j = 0; j < sibCourses.size(); j++) {
+		for (int j = 0; j < sibCourses.size(); j++) {
 			boolean alreadyIn = false;
-			for(Participant sib : participantList.get(sibCourses.get(j)).getSiblings()) {
-				for(int h = 0; h < siblingIDs.size(); h++) {
-					if(participantList.get(siblingIDs.get(h)).getPid() == sib.getPid()) {
+			for (Participant sib : participantList.get(sibCourses.get(j))
+					.getSiblings()) {
+				for (int h = 0; h < siblingIDs.size(); h++) {
+					if (participantList.get(siblingIDs.get(h)).getPid() == sib
+							.getPid()) {
 						alreadyIn = true;
 					}
 				}
 			}
-			if(!alreadyIn) {
+			if (!alreadyIn) {
 				siblingIDs.add(sibCourses.get(j));
 			}
 		}
-		
-		for(int i = 0; i < siblingIDs.size(); i++) {		
+
+		for (int i = 0; i < siblingIDs.size(); i++) {
 			boolean fitsRestriction = true;
-			if (participantList.get(siblingIDs.get(i)).getCourseParticipants().size() > 1) {
-				for (CourseParticipant currentCoPa : participantList.get(siblingIDs.get(i))
-						.getCourseParticipants()) {
-					if(currentCoPa.getCourse().isEnabled()) { 
-						if(currentCoPa.getCourse().getAmountPerformances() == 1) {
-						}else {
+			if (participantList.get(siblingIDs.get(i)).getCourseParticipants()
+					.size() > 1) {
+				for (CourseParticipant currentCoPa : participantList.get(
+						siblingIDs.get(i)).getCourseParticipants()) {
+					if (currentCoPa.getCourse().isEnabled()) {
+						if (currentCoPa.getCourse().getAmountPerformances() == 1) {
+						} else {
 							break;
 						}
 					}
 				}
-				for(Participant participant : participantList.get(siblingIDs.get(i)).getSiblings()){
-					System.out.println("Teilnehmer: " + participantList.get(siblingIDs.get(i)).getFirstname() + " "+ participantList.get(siblingIDs.get(i)).getLastname());
-					for (CourseParticipant currentCoPa : participant.getCourseParticipants()) {
-						if(currentCoPa.getCourse().isEnabled()) { 
-							System.out.println("Kurs: " +currentCoPa.getCourse().getName());
-							if(currentCoPa.getCourse().getAmountPerformances() == 1) {
+				for (Participant participant : participantList.get(
+						siblingIDs.get(i)).getSiblings()) {
+					for (CourseParticipant currentCoPa : participant
+							.getCourseParticipants()) {
+						if (currentCoPa.getCourse().isEnabled()) {
+							if (currentCoPa.getCourse().getAmountPerformances() == 1) {
 								fitsRestriction = false;
-							}else {
+							} else {
 								break;
 							}
 						}
 					}
 				}
 
-				if(!fitsRestriction) {
+				if (!fitsRestriction) {
 					notValidated.add(siblingIDs.get(i));
 				}
-			}			
-		}
-
-		for(int u = 0; u < notValidated.size(); u++) {
-			System.out.println("VALIDATED-Teilnehmer: " + participantList.get(notValidated.get(u)).getFirstname() + " "+ participantList.get(notValidated.get(u)).getLastname());
-		}
-		
-//		System.out.println("NotValidated: " + notValidated.size());
-//		System.out.println("Person 1: " + participantList.get(notValidated.get(0)).getLastname() + " Person2: " + participantList.get(notValidated.get(1)).getLastname());
-		for(int k = 0; k < notValidated.size(); k++) {
-			for(CourseParticipant currentCP : participantList.get(notValidated.get(k)).getCourseParticipants()) {
-				currentCP.getCourse().setSibsSamePerformance(true);		
 			}
 		}
 
-		for(int k = 0; k < notValidated.size(); k++) {
-			for(Participant participantt : participantList.get(notValidated.get(k)).getSiblings())
-				for(CourseParticipant currentCP : participantt.getCourseParticipants()) {
-					currentCP.getCourse().setSibsSamePerformance(true);		
+		List<Integer> finalIDs = new ArrayList<Integer>();
+		for (int h = 0; h < notValidated.size(); h++) {
+			int counter = 0;
+			boolean somethingWrong = false;
+			for (CourseParticipant currentCP : participantList.get(
+					notValidated.get(h)).getCourseParticipants()) {
+				for (int i = 0; i < validatedCourseList.size(); i++) {
+					if (currentCP.getCourse().getID() == validatedCourseList
+							.get(i).getID()) {
+						counter++;
+					}
 				}
-		}		
+			}
+			if (counter != participantList.get(notValidated.get(h))
+					.getCourseParticipants().size()) {
+				somethingWrong = true;
+			}
+
+			for (Participant sibl : participantList.get(notValidated.get(h))
+					.getSiblings()) {
+				counter = 0;
+				int courseAmount = 0;
+				for (CourseParticipant currentCoP : sibl
+						.getCourseParticipants()) {
+					courseAmount++;
+					for (int y = 0; y < validatedCourseList.size(); y++) {
+						if (currentCoP.getCourse().getID() == validatedCourseList
+								.get(y).getID()) {
+							counter++;
+						}
+					}
+				}
+				if (counter != courseAmount) {
+					somethingWrong = true;
+				}
+			}
+
+			if (somethingWrong) {
+				finalIDs.add(notValidated.get(h));
+			}
+		}
+
+		for (int k = 0; k < finalIDs.size(); k++) {
+			for (CourseParticipant currentCP : participantList.get(
+					finalIDs.get(k)).getCourseParticipants()) {
+				for (int u = 0; u < validatedCourseList.size(); u++) {
+					if (currentCP.getCourse().getCid() == validatedCourseList
+							.get(u).getCid()) {
+						validatedCourseList.get(u).setSibsSamePerformance(true);
+					}
+				}
+			}
+		}
+
+		for (int k = 0; k < finalIDs.size(); k++) {
+			for (Participant participantt : participantList
+					.get(finalIDs.get(k)).getSiblings())
+				for (CourseParticipant currentCP : participantt
+						.getCourseParticipants()) {
+					for (int u = 0; u < validatedCourseList.size(); u++) {
+						if (currentCP.getCourse().getCid() == validatedCourseList
+								.get(u).getCid()) {
+							validatedCourseList.get(u).setSibsSamePerformance(
+									true);
+						}
+					}
+				}
+		}
 
 		return validatedCourseList;
 	}
