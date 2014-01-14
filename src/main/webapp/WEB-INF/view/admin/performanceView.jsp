@@ -132,6 +132,12 @@
 										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.balancedAgeGroup' />"
 											class="inline-tooltip icon icon-adn"></i></th>
+										<th style="width: 4%"><i
+											title="<spring:message code='help.restriction.multipleGroupsSamePerformance' />"
+											class="inline-tooltip icon icon-group"></i></th>
+										<th style="width: 4%"><i
+											title="<spring:message code='help.restriction.sibsSamePerformance' />"
+											class="inline-tooltip icon icon-adn"></i></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -197,6 +203,26 @@
 															</c:otherwise>
 														</c:choose>
 													</td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.multipleGroupsSamePerformance}">
+																<i class="icon-frown restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.sibsSamePerformance}">
+																<i class="icon-frown restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
 												</c:otherwise>
 											</c:choose>
 										</tr>
@@ -225,6 +251,12 @@
 											class="inline-tooltip icon icon-group"></i></th>
 										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.balancedAgeGroup' />"
+											class="inline-tooltip icon icon-adn"></i></th>
+										<th style="width: 4%"><i
+											title="<spring:message code='help.restriction.multipleGroupsSamePerformance' />"
+											class="inline-tooltip icon icon-group"></i></th>
+										<th style="width: 4%"><i
+											title="<spring:message code='help.restriction.sibsSamePerformance' />"
 											class="inline-tooltip icon icon-adn"></i></th>
 									</tr>
 								</thead>
@@ -291,6 +323,26 @@
 															</c:otherwise>
 														</c:choose>
 													</td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.multipleGroupsSamePerformance}">
+																<i class="icon-frown restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.sibsSamePerformance}">
+																<i class="icon-frown restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
 												</c:otherwise>
 											</c:choose>
 										</tr>
@@ -319,6 +371,12 @@
 											class="inline-tooltip icon icon-group"></i></th>
 										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.balancedAgeGroup' />"
+											class="inline-tooltip icon icon-adn"></i></th>
+										<th style="width: 4%"><i
+											title="<spring:message code='help.restriction.multipleGroupsSamePerformance' />"
+											class="inline-tooltip icon icon-group"></i></th>
+										<th style="width: 4%"><i
+											title="<spring:message code='help.restriction.sibsSamePerformance' />"
 											class="inline-tooltip icon icon-adn"></i></th>
 									</tr>
 								</thead>
@@ -378,6 +436,26 @@
 													<td>
 														<c:choose>
 															<c:when test="${validatedCourse.balancedAgeGroup}">
+																<i class="icon-frown restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.multipleGroupsSamePerformance}">
+																<i class="icon-frown restriction-icon-bad"></i>
+															</c:when>
+															<c:otherwise>
+																<i class="icon-smile restriction-icon-good"></i>
+															</c:otherwise>
+														</c:choose>
+													</td>
+													<td>
+														<c:choose>
+															<c:when test="${validatedCourse.sibsSamePerformance}">
 																<i class="icon-frown restriction-icon-bad"></i>
 															</c:when>
 															<c:otherwise>
