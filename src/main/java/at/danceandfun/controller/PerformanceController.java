@@ -193,6 +193,7 @@ public class PerformanceController {
         logger.debug("Show Performanceplan with id " + planid);
 
         PerformancePlan plan = performancePlanManager.get(planid);
+        List<Participant> participantList = participantManager.getEnabledList();
 
         List<Course> fetchedCourses = courseManager.getEnabledList();
         List<Performance> fetchedPerformances = plan.getPerformances();
@@ -217,6 +218,20 @@ public class PerformanceController {
         tempPerformance1 = fetchedPerformances.get(0);
         tempPerformance2 = fetchedPerformances.get(1);
         tempPerformance3 = fetchedPerformances.get(2);
+
+        performancePlanMap = new HashMap<Integer, Performance>();
+
+        performancePlanMap.put(1, tempPerformance1);
+        performancePlanMap.put(2, tempPerformance2);
+        performancePlanMap.put(3, tempPerformance3);
+
+        SatValidator validator = new SatValidator(performancePlanMap,
+                participantList);
+        performancePlanMap = validator.validatePerformancePlan();
+
+        tempPerformance1 = performancePlanMap.get(1);
+        tempPerformance2 = performancePlanMap.get(2);
+        tempPerformance3 = performancePlanMap.get(3);
 
         isSavedPlan = true;
 
