@@ -18,6 +18,11 @@ public abstract class ManagerBaseImpl<T> implements ManagerBase<T> {
     }
 
     @Override
+    public boolean contains(T domain) {
+        return mainDao.contains(domain);
+    }
+
+    @Override
     public T merge(T domain) {
         return mainDao.merge(domain);
     }
