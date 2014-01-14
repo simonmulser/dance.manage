@@ -6,6 +6,8 @@ import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -59,7 +61,10 @@ public class CourseController {
         }
 
         map.addAttribute("course", course);
-        map.addAttribute("courseList", courseManager.getEnabledList());
+        DetachedCriteria criteria = DetachedCriteria.forClass(Course.class);
+        criteria.addOrder(Order.asc("name"));
+        map.addAttribute("courseList",
+                courseManager.getEnabledListWithCriteria(criteria));
         map.addAttribute("addressList", addressManager.getStudioAddresses());
         editTrue = false;
         return "admin/courseView";
@@ -79,43 +84,31 @@ public class CourseController {
             editTrue = true;
             return "redirect:/admin/course";
         }
-        logger.debug("ADD Course with id " + course.getCid());
         course.setEnabled(true);
 
         if (!(course.getAddress().getAid() == null)) {
-            logger.debug("SET address to course with id: "
-                    + course.getAddress().getAid());
             course.setAddress(addressManager.get(course.getAddress().getAid()));
         }
 
         if (!(course.getTeacher().getPid() == null)) {
-            logger.debug("Teacher neu setzen mit pid: "
-                    + course.getTeacher().getPid());
             Teacher newTeacher = teacherManager.get(course.getTeacher()
                     .getPid());
             course.setTeacher(newTeacher);
         } else {
-            logger.debug("Teacher ist null: " + course.getTeacher().getPid());
             course.setTeacher(null);
         }
 
         if (!(course.getStyle().getSid() == null)) {
-            logger.debug("Style neu setzen mit pid: "
-                    + course.getStyle().getSid());
             Style newStyle = styleManager.get(course.getStyle().getSid());
             course.setStyle(newStyle);
         }
 
         if (course.getCid() == null) {
-            logger.debug("New course");
             courseManager.persist(course);
         } else {
-            logger.debug("Update course");
             courseManager.merge(course);
-            logger.debug("Finished updating course");
         }
         this.course = new Course();
-
         return "redirect:/admin/course";
     }
 
@@ -140,16 +133,12 @@ public class CourseController {
     @RequestMapping(value = "/getStyles", method = RequestMethod.GET)
     public @ResponseBody
     List<Style> getStyles(@RequestParam("term") String query) {
-        logger.debug("Entered :" + query);
-
         return styleManager.searchForStyles(course, query);
     }
 
     @RequestMapping(value = "/getTeachers", method = RequestMethod.GET)
     public @ResponseBody
     List<Teacher> getTeachers(@RequestParam("term") String query) {
-        logger.debug("Entered :" + query);
-
         return teacherManager.searchForTeachers(course, query);
     }
 

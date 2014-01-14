@@ -7,7 +7,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import at.danceandfun.util.AppContext;
 
 public enum Duration {
-    YEAR(0), WINTER(1), SUMMER(2);
+    YEAR(0), WINTER(1), SUMMER(2), NONE(null);
 
     private Integer value;
 

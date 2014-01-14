@@ -40,7 +40,7 @@
 
 		</dmtags:widget>
 
-		<c:if test="${!empty participantsByNumberOfCourses}">
+		<c:if test="${!empty participantsByCourseCount}">
 			<spring:message var="i18nParticipantCourseAmount"
 				code="widget.participantCourseAmount" />
 			<dmtags:widget title="${i18nParticipantCourseAmount}" style="table"
@@ -55,9 +55,8 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${participantsByNumberOfCourses}"
+						<c:forEach items="${participantsByCourseCount}"
 							var="participant" varStatus="loop">
-							<c:if test="${fn:length(participant.courseParticipants)>1 }">
 								<tr>
 									<td>${participant.courseParticipants.size()}</td>
 									<td><c:forEach items="${participant.courseParticipants}"
@@ -65,10 +64,9 @@
 	                                ${courseParticipant.course.name}
 	                                ${!loop.last ? ', ' : ''}
 	                                </c:forEach></td>
-									<td>${participant.lastname}</td>
 									<td>${participant.firstname}</td>
+									<td>${participant.lastname}</td>
 								</tr>
-							</c:if>
 						</c:forEach>
 					</tbody>
 				</table>
@@ -119,3 +117,5 @@
 		</c:if>
 	</dmtags:span>
 </dmtags:base>
+
+<script src="<c:url value="/js/searchBoxAutoComplete.js" />"></script>

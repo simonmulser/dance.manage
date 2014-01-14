@@ -7,8 +7,6 @@ import at.danceandfun.entity.Participant;
 
 public interface ParticipantManager extends ManagerBase<Participant> {
 
-    public List<Participant> getParticipantsByNumberOfCourses();
-
     public List<Participant> getParticipantsByNumberOfSiblings();
 
     public List<Participant> searchForSiblings(Participant actualParticipant,
@@ -17,4 +15,5 @@ public interface ParticipantManager extends ManagerBase<Participant> {
     public void mergeAbsence(Absence absence);
 
     public List<Participant> searchForParticipants(String query);
+
 }

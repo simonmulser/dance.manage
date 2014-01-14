@@ -1,6 +1,12 @@
 package at.danceandfun.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,7 +14,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import at.danceandfun.entity.Course;
+import at.danceandfun.entity.CourseParticipant;
+import at.danceandfun.entity.Participant;
 import at.danceandfun.service.CourseManager;
+import at.danceandfun.service.CourseParticipantManager;
 import at.danceandfun.service.ParticipantManager;
 
 @Controller
@@ -22,18 +32,43 @@ public class ListController {
     private ParticipantManager participantManager;
 
     @Autowired
+    private CourseParticipantManager courseParticipantManager;
+
+    @Autowired
     private CourseManager courseManager;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String showLists(ModelMap map) {
         logger.debug("SHOWLISTS");
-        map.addAttribute("participantsByNumberOfCourses",
-                participantManager.getParticipantsByNumberOfCourses());
+        List<CourseParticipant> courseParticipants = courseParticipantManager
+                .getCourseParticipantsByCount();
+        List<Participant> participantsByCourseCount = new ArrayList<Participant>();
+        for (CourseParticipant cp : courseParticipants) {
+            Participant participant = participantManager.get(cp
+                    .getParticipant().getPid());
+            participant.setCourseParticipants(courseParticipantManager
+                    .getEnabledDistinctCourseParticipants(participant));
+            if (participant.getCourseParticipants().size() > 1) {
+                participantsByCourseCount.add(participant);
+            }
+        }
+
+        List<Course> courses = new ArrayList<Course>();
+        DetachedCriteria criteria = DetachedCriteria.forClass(Course.class);
+        criteria.addOrder(Order.asc("name"));
+        criteria.add(Restrictions.eq("inPerformance", true));
+        for (Course course : courseManager.getEnabledListWithCriteria(criteria)) {
+            if (course.getCourseParticipants().size() > 0) {
+                course.setCourseParticipants(courseParticipantManager
+                        .getEnabledDistinctCourseParticipants(course));
+            }
+            courses.add(course);
+        }
+        map.addAttribute("participantsByCourseCount", participantsByCourseCount);
         map.addAttribute("participantsByNumberOfSiblings",
                 participantManager.getParticipantsByNumberOfSiblings());
-        map.addAttribute("courses", courseManager.getEnabledList());
+        map.addAttribute("courses", courses);
         return "admin/listView";
 
     }
-
 }

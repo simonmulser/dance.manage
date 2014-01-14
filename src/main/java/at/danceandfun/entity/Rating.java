@@ -7,6 +7,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import at.danceandfun.util.PatternConstants;
 
 @Entity
 @Table(name = "RATING")
@@ -22,27 +26,40 @@ public class Rating extends EntityBase {
     @GeneratedValue
     private Integer rid;
 
+    @Column(name = "ENABLED")
+    private boolean enabled;
+
     @Column(name = "COURSE_RATING")
+    @NotNull
     private Integer courseRating;
 
     @Column(name = "TEACHER_RATING")
+    @NotNull
     private Integer teacherRating;
 
     @Column(name = "SERVICE_RATING")
+    @NotNull
     private Integer serviceRating;
 
     @Column(name = "PROCRITIQUE")
+    @Pattern(regexp = PatternConstants.MESSAGE_PATTERN, message = "{pattern.characters.message}")
     private String proCritique;
 
     @Column(name = "CONTRACRITIQUE")
+    @Pattern(regexp = PatternConstants.MESSAGE_PATTERN, message = "{pattern.characters.message}")
     private String contraCritique;
 
     @Column(name = "ANSWER")
+    @Pattern(regexp = PatternConstants.MESSAGE_PATTERN, message = "{pattern.characters.message}")
     private String answer;
 
     @ManyToOne
     @JoinColumn(name = "C_ID")
     private Course course;
+
+    @ManyToOne
+    @JoinColumn(name = "P_ID")
+    private Participant participant;
 
     public Rating() {
     }
@@ -109,6 +126,22 @@ public class Rating extends EntityBase {
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public Participant getParticipant() {
+        return participant;
+    }
+
+    public void setParticipant(Participant participant) {
+        this.participant = participant;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
 }

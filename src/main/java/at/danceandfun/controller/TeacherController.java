@@ -7,6 +7,8 @@ import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -58,8 +60,20 @@ public class TeacherController {
         if (!editTrue) {
             teacher = new Teacher();
         }
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(Teacher.class);
+        criteria.addOrder(Order.asc("lastname"));
+        criteria.addOrder(Order.asc("firstname"));
+        List<Teacher> teacherList = new ArrayList<Teacher>();
+        for (Teacher teacher : teacherManager
+                .getEnabledListWithCriteria(criteria)) {
+            if (teacher.getCourses().size() > 0) {
+                teacher.setCourses(courseManager.getEnabledCourses(teacher));
+            }
+            teacherList.add(teacher);
+        }
         map.addAttribute("teacher", teacher);
-        map.addAttribute("teacherList", teacherManager.getEnabledList());
+        map.addAttribute("teacherList", teacherList);
         editTrue = false;
         return "admin/teacherView";
     }
@@ -78,7 +92,6 @@ public class TeacherController {
             editTrue = true;
             return "redirect:/admin/teacher";
         } else {
-            logger.debug("ADD Teacher with id " + teacher.getPid());
             teacher.setEnabled(true);
 
             if (!teacher.getTempCourses().equals("")) {
@@ -86,11 +99,9 @@ public class TeacherController {
                 for (String s : courses) {
                     Course actualCourse = courseManager.get(Math.abs(Integer
                             .parseInt(s)));
-
+                    teacher.setCourses(courseManager.getEnabledCourses(teacher));
                     if (Integer.parseInt(s) < 0) {
-                        // TODO: was passiert mit Course?
                         teacher.getCourses().remove(actualCourse);
-
                         actualCourse.setTeacher(null);
                         courseManager.merge(actualCourse);
 
@@ -157,7 +168,7 @@ public class TeacherController {
         this.teacher = teacherManager.get(pid);
         editTrue = true;
 
-        if (teacherManager.get(pid).getStyles().size() > 0) {
+        if (teacher.getStyles().size() > 0) {
             String actualStyles = "";
             String actualStyleNames = "";
             for (Style s : teacher.getStyles()) {
@@ -168,8 +179,8 @@ public class TeacherController {
             teacher.setTempStyles(actualStyles);
             teacher.setTempStyleNames(actualStyleNames);
         }
-
-        if (teacherManager.get(pid).getCourses().size() > 0) {
+        teacher.setCourses(courseManager.getEnabledCourses(teacher));
+        if (teacher.getCourses().size() > 0) {
             String actualCourses = "";
             String actualCourseNames = "";
             for (Course c : teacher.getCourses()) {
@@ -197,8 +208,8 @@ public class TeacherController {
             }
             teacher.setStyles(new ArrayList<Style>());
         }
+        teacher.setCourses(courseManager.getEnabledCourses(teacher));
         if (teacher.getCourses().size() > 0) {
-            // TODO: P_ID bleibt in Course derzeit enthalten
             for (Course c : teacher.getCourses()) {
                 c.setTeacher(null);
                 courseManager.merge(c);
@@ -214,16 +225,12 @@ public class TeacherController {
     @RequestMapping(value = "/getStyles", method = RequestMethod.GET)
     public @ResponseBody
     List<Style> getStyles(@RequestParam("term") String query) {
-        logger.debug("Entered :" + query);
-
         return styleManager.searchForStyles(teacher, query);
     }
 
     @RequestMapping(value = "/getCourses", method = RequestMethod.GET)
     public @ResponseBody
     List<Course> getCourses(@RequestParam("term") String query) {
-        logger.debug("Entered coursname:" + query);
-
         return courseManager.searchForCourses(teacher, query);
     }
 

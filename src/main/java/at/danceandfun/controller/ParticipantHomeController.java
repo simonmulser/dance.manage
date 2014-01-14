@@ -6,25 +6,30 @@ import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import at.danceandfun.entity.Absence;
 import at.danceandfun.entity.Appointment;
 import at.danceandfun.entity.Participant;
+import at.danceandfun.entity.Rating;
 import at.danceandfun.service.AppointmentManager;
 import at.danceandfun.service.CourseManager;
+import at.danceandfun.service.CourseParticipantManager;
 import at.danceandfun.service.ParticipantManager;
+import at.danceandfun.service.RatingManager;
 
 @Controller
 @RequestMapping(value = "/participant")
+@SessionAttributes("participant")
 @PreAuthorize("hasPermission(#pid, 'owner') or hasPermission(#pid, 'isParent')")
 public class ParticipantHomeController {
 
@@ -38,7 +43,17 @@ public class ParticipantHomeController {
     private CourseManager courseManager;
 
     @Autowired
+    private CourseParticipantManager courseParticipantManager;
+
+    @Autowired
     private AppointmentManager appointmentManager;
+
+    @Autowired
+    private RatingManager ratingManager;
+
+    private Rating rating;
+
+    private boolean editTrue = false;
 
     @RequestMapping(value = "/{pid}", method = RequestMethod.GET)
     public String showIndex(ModelMap map, @PathVariable int pid) {
@@ -64,11 +79,16 @@ public class ParticipantHomeController {
             BindingResult result, RedirectAttributes redirectAttributes,
             @PathVariable int pid) {
         if (result.hasErrors()) {
+            for (ObjectError oe : result.getAllErrors()) {
+                logger.error("ERROR TOSTRING: " + oe.toString());
+                logger.error("ERRORS: " + oe.getCode() + " "
+                        + oe.getDefaultMessage());
+            }
             redirectAttributes.addFlashAttribute(
                     "org.springframework.validation.BindingResult.participant",
                     result);
             redirectAttributes.addFlashAttribute("participant", participant);
-            return "redirect:/participant/" + pid;
+            return "participant/editParticipant";
         }
 
         logger.debug("updateParticipant");
@@ -134,9 +154,56 @@ public class ParticipantHomeController {
         return "participant/absenceView";
     }
 
-    private Participant getLoggedInParticipant() {
-        Participant participant = (Participant) SecurityContextHolder
-                .getContext().getAuthentication().getPrincipal();
-        return participantManager.get(participant.getPid());
+    @RequestMapping(value = "/rating/{pid}", method = RequestMethod.GET)
+    public String showRating(ModelMap map, @PathVariable int pid) {
+        logger.debug("showRating");
+        Participant participant = participantManager.get(pid);
+        participant.setCourseParticipants(courseParticipantManager
+                .getEnabledDistinctCourseParticipants(participant));
+
+        if (!editTrue) {
+            this.rating = new Rating();
+        }
+
+        map.put("rating", this.rating);
+        map.addAttribute("ratingList",
+                ratingManager.getEnabledRatings(participant));
+        map.put("participant", participant);
+        return "participant/ratingView";
+    }
+
+    @RequestMapping(value = "/rating/add/{pid}", method = RequestMethod.POST)
+    public String addRating(ModelMap map, @PathVariable int pid,
+            @ModelAttribute(value = "rating") @Valid Rating rating,
+            BindingResult result, RedirectAttributes redirectAttributes) {
+        logger.debug("addRating");
+
+        if (result.hasErrors()) {
+            logger.error("VALIDATION ERRORS: " + result.getAllErrors().size());
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.rating",
+                    result);
+            redirectAttributes.addFlashAttribute("rating", rating);
+            this.rating = rating;
+            editTrue = true;
+            return "redirect:/participant/rating/" + pid;
+        }
+
+        rating.setEnabled(true);
+        this.rating = rating;
+        ratingManager.persist(rating);
+        editTrue = false;
+        return "redirect:/participant/rating/" + pid;
+    }
+
+    @RequestMapping(value = "rating/delete/{pid}/{rid}")
+    public String deleteRating(ModelMap map, @PathVariable("rid") Integer rid,
+            @PathVariable("pid") Integer pid) {
+        rating = ratingManager.get(rid);
+        Participant participant = participantManager.get(pid);
+        rating.setEnabled(false);
+        ratingManager.merge(rating);
+        map.put("participant", participant);
+        return "redirect:/participant/rating/" + pid;
     }
 }

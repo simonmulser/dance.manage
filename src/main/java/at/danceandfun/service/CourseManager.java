@@ -20,6 +20,8 @@ public interface CourseManager extends ManagerBase<Course> {
             List<CourseParticipant> enabledCourseParticipants, int year);
 
     public List<Long> getParticipantPerLevel(int year);
-    
+
     public List<Course> getCoursesByStudioAddress(Address address);
+
+    public List<Course> getEnabledCourses(Teacher teacher);
 }

@@ -91,6 +91,15 @@
 					<form:errors path="time" cssClass="error" />
 				</div>
 				<div class="control-group">
+					<form:label path="inPerformance" class="control-label">
+						<spring:message code="label.inPerformance" />*
+				</form:label>
+					<div class="span6">
+						<form:checkbox path="inPerformance" />
+					</div>
+					<form:errors path="inPerformance" cssClass="error" />
+				</div>
+				<div class="control-group">
 					<form:label path="estimatedSpectators" class="control-label">
 						<spring:message code="label.estimatedSpectators" />
 					</form:label>
@@ -135,7 +144,7 @@
 
 				<div id="find_keyword" class="control-group">
 					<form:label path="style.sid" class="control-label">
-						<spring:message code="label.styles" />*
+						<spring:message code="label.style" />*
 				</form:label>
 					<div class="ui-widget span6">
 						<input id="stylesQuery" type="text" value="" /><i
@@ -221,7 +230,7 @@
 				</display:column>
 					<display:column>
 						<c:set var="cid" value="${course.cid}" />
-						<a href="course/edit/${cid}"><spring:message code="label.edit" /></a>
+						<a href="course/edit/${cid}#add"><spring:message code="label.edit" /></a>
 						<br />
 						<a href="course/delete/${cid}" class="openDialog" id="${cid}"><spring:message
 								code="label.delete" /></a>
@@ -257,7 +266,7 @@
 	</dmtags:span>
 </dmtags:base>
 
-
+<script src="<c:url value="/js/searchBoxAutoComplete.js" />"></script>
 <script type="text/javascript">
 
 	// this section is needed if the url contains an anchor hash to a widget which is retracted by default

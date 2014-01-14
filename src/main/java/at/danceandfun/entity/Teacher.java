@@ -121,6 +121,18 @@ public class Teacher extends Person {
         return courses;
     }
 
+    @JsonIgnore
+    public List<Course> getEnabledCourses() {
+        List<Course> enabledCourses = new ArrayList<Course>();
+        for (Course course : courses) {
+            if (course.isEnabled()) {
+                enabledCourses.add(course);
+            }
+        }
+        return enabledCourses;
+
+    }
+
     public void setCourses(List<Course> courses) {
         this.courses = courses;
     }
@@ -171,6 +183,16 @@ public class Teacher extends Person {
 
     public void setTempCourseNames(String tempCourseNames) {
         this.tempCourseNames = tempCourseNames;
+    }
+
+    @Transient
+    public String getIcon() {
+        return "icon-user";
+    }
+
+    @Transient
+    public String getObjectName() {
+        return "teacher";
     }
 
     @Override

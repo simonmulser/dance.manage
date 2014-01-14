@@ -107,6 +107,7 @@ textarea {
 	width: 150px;
 	font-size: 11px;
 	font-weight: bold;
+	box-sizing: content-box;
 }
 
 .navbar .search-query::-webkit-input-placeholder {
@@ -1365,6 +1366,32 @@ color: #333;
 	background-color:orange;
 }
 
+div.newestRatings{
+	float:left;
+	margin-left:10px;
+}
+
+.newestRatings .icon-plus-sign{
+	color:#74DF00;
+}
+.newestRatings .icon-minus-sign{
+	color:#FF4000;
+}
+
+.messages_layout .shortcut-icon{
+	position: absolute;
+	left: 0;
+	top: 0;
+	margin-top: .25em;
+	margin-left: .40em;
+	font-size: 32px;
+	color: #545454;
+}
+
+.noAnswerYet{
+	color:#FF4000;
+}
+
 /*-------------------------------------------------------------------
 [displayTag]
 */
@@ -1427,7 +1454,6 @@ color: #333;
 span.pagebanner {
         background-color: #eee;
         padding: 2px 4px 2px 4px;
-        width: 35%;
         margin-top: 10px;
         display: block;
         border-bottom: none;
@@ -1438,7 +1464,6 @@ span.pagebanner {
 span.pagelinks {
         background-color: #eee;
         padding: 2px 4px 2px 4px;
-        width: 35%;
         display: block;
         border-top: none;
         margin-bottom: -5px;
@@ -1451,5 +1476,12 @@ span.pagelinks {
 }
 .displaytag .colCity{
 	width:7%;
+}
+
+.widgetcaret {
+	right: 0px;
+	position: absolute;
+	margin-right: 13px !important;
+	margin-top: 12px;
 }
 

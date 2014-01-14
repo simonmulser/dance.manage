@@ -92,9 +92,14 @@ public class SecurityController {
         return "redirect:/login";
     }
 
-    @RequestMapping(value = "/accessDenied", method = RequestMethod.GET)
+    @RequestMapping(value = "error/accessDenied", method = RequestMethod.GET)
     public String accessDenied() {
         logger.info("accessDenied");
-        return "accessDenied";
+        return "error/accessDenied";
+    }
+
+    @RequestMapping(value = "error/error404")
+    public String get404() {
+        return "error/error404";
     }
 }

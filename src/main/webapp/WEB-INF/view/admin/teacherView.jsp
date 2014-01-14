@@ -61,11 +61,13 @@
 						<div id="duplicateCourse" class="duplicateError">
 							<spring:message code='error.duplicateCourse' />
 						</div>
-						<div id="showCourses">
+						<div id="showCoursesss">
 							<span id="selectedCourses"> <c:forEach
 									items="${teacher.courses}" var="cou">
-									<span class="courseTag">${cou.name}&nbsp;<i
-										id="${cou.cid}" class="icon icon-remove"></i></span>
+									${cou.name} ${cou.cid} ${cou.enabled}
+									<c:if test="${cou.enabled }">
+									<span class="courseTaggg">${cou.name}&nbsp;<i
+										id="${cou.cid}" class="icon icon-remove"></i></span></c:if>
 								</c:forEach>
 							</span>
 						</div>
@@ -134,17 +136,15 @@
 								<c:when test="${!empty teacher.courses}">
 									<td><c:forEach items="${teacher.courses}" var="cou"
 											varStatus="loop">
-											<c:if test="${cou.enabled }">
 											${cou.name}
-											
-											${!loop.last ? ', ' : ''}</c:if>
+											${!loop.last ? ', ' : ''}
 										</c:forEach></td>
 								</c:when>
 								<c:otherwise>
 									<td></td>
 								</c:otherwise>
 							</c:choose>
-							<td><a href="teacher/edit/${teacher.pid}"><spring:message
+							<td><a href="teacher/edit/${teacher.pid}#add"><spring:message
 										code="label.edit" /></a><br /> <a
 								href="teacher/delete/${teacher.pid}" class="openDialog"
 								id="${teacher.pid }"><spring:message code="label.delete" /></a>
@@ -166,7 +166,7 @@
 	</dmtags:span>
 </dmtags:base>
 
-
+<script src="<c:url value="/js/searchBoxAutoComplete.js" />"></script>
 <script type="text/javascript">
 	// this section is needed if the url contains an anchor hash to a widget which is retracted by default
 	$(document).ready(

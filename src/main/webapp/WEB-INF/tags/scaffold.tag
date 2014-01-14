@@ -22,6 +22,7 @@
 <link href="<c:url value="/css/font-awesome.css" />" rel="stylesheet">
 <link href="<c:url value="/css/style.css" />" rel="stylesheet">
 <link href="<c:url value="/css/ui/jquery-ui.css" />" rel="stylesheet">
+<link href="<c:url value="/css/rating/jquery.rating.css" />" rel="stylesheet">
 
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
@@ -63,6 +64,7 @@
 	<script src="<c:url value="/js/base.js" />"></script>
 	<script type="text/javascript"
 		src="<c:url value="/js/full-calendar/fullcalendar.min.js" />"></script>
+	<script src="<c:url value="/js/jquery.rating.js" />"></script>	
 
 </body>
 </html>

@@ -93,11 +93,9 @@
 							<div id="selectedCourses">
 								<c:forEach items="${participant.courseParticipants}"
 								var="courseParticipant">
-								<c:if test="${courseParticipant.enabled}">
 									<div class="courseTag">${courseParticipant.course.name}&nbsp;<i
 										id="${courseParticipant.course.cid}"
 										class="icon icon-remove tagCloseIcon"></i></div>
-								</c:if>
 							</c:forEach>
 							 </div>
 						</div>
@@ -123,7 +121,7 @@
 				id="list">
 				<display:table name="participantList" id="row"
 					class="table table-striped table-bordered displaytag" pagesize="15"
-					requestURI="/admin/participant" defaultsort="1">
+					requestURI="/admin/participant">
 					<display:column sortable="true" titleKey="label.name"
 						class="colName">
 						<c:out value="${row.firstname} ${row.lastname}" />
@@ -169,17 +167,14 @@
 						<c:if test="${!empty row.courseParticipants}">
 							<c:forEach items="${row.courseParticipants}"
 								var="courseParticipant" varStatus="loop">
-								<c:if test="${courseParticipant.enabled}">
 								${courseParticipant.course.name}
-								${!loop.last ? ', ' : ''}
-								</c:if>
-								
+								${!loop.last ? ', ' : ''}								
 						</c:forEach>
 						</c:if>
 					</display:column>
 					<display:column>
 						<c:set var="pid" value="${row.pid}" />
-						<a href="participant/edit/${pid}"><spring:message
+						<a href="participant/edit/${pid}#add"><spring:message
 								code="label.edit" /></a>
 						<br />
 						<a href="participant/delete/${pid}" class="openDialog"
@@ -200,7 +195,7 @@
 	</dmtags:span>
 </dmtags:base>
 
-
+<script src="<c:url value="/js/searchBoxAutoComplete.js" />"></script>
 <script type="text/javascript">
 	// this section is needed if the url contains an anchor hash to a widget which is retracted by default
 	$(document).ready(

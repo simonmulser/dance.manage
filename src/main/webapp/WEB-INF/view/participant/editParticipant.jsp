@@ -19,8 +19,6 @@
 			<dmtags:participantForm />
 
 			<dmtags:addressForm />
-			
-			<form:input path="parent" type="hidden"/>
 
 			<div class="form-actions">
 				<input type="submit" value="<spring:message code="label.save"/>"

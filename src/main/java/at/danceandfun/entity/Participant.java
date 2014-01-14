@@ -38,15 +38,6 @@ public class Participant extends Person {
      */
     private static final long serialVersionUID = 1L;
 
-    /*
-     * @Column(name = "EMERGENCYNUMBER") private String emergencyNumber;
-     * 
-     * @Column(name = "CONTACTPERSON")
-     * 
-     * @Pattern(regexp = PatternConstants.CHARACTER_PATTERN_CONTACT, message =
-     * "{pattern.contactperson}") private String contactPerson;
-     */
-
     @ManyToOne(cascade = { CascadeType.ALL })
     @JoinColumn(name = "PARENT_ID")
     private Parent parent;
@@ -70,6 +61,12 @@ public class Participant extends Person {
     @ManyToMany(mappedBy = "siblings")
     private Set<Participant> siblingsReverse = new HashSet<Participant>();
 
+    @OneToMany(mappedBy = "participant")
+    private List<Invoice> invoices = new ArrayList<Invoice>();
+
+    @OneToMany(mappedBy = "participant")
+    private List<Rating> ratings = new ArrayList<Rating>();
+
     @Transient
     private String tempSiblings;
 
@@ -83,22 +80,10 @@ public class Participant extends Person {
     private String tempCourseNames;
 
     @Transient
-    private List<String> tempCourseDuration;
+    private List<Course> actualCourses = new ArrayList<Course>();
 
     public Participant() {
     }
-
-    /*
-     * public String getEmergencyNumber() { return emergencyNumber; }
-     * 
-     * public void setEmergencyNumber(String emergencyNumber) {
-     * this.emergencyNumber = emergencyNumber; }
-     * 
-     * public String getContactPerson() { return contactPerson; }
-     * 
-     * public void setContactPerson(String contactPerson) { this.contactPerson =
-     * contactPerson; }
-     */
 
     public LocalDate getBirthday() {
         return birthday;
@@ -125,15 +110,21 @@ public class Participant extends Person {
         this.courseParticipants = courseParticipants;
     }
 
-    public CourseParticipant getCourseById(Course course) {
+    public List<CourseParticipant> getCourseParticipantsById(Course course) {
+        List<CourseParticipant> containedCourseParticipants = new ArrayList<CourseParticipant>();
         for (CourseParticipant cp : courseParticipants) {
             if (cp.getCourse().getCid() == course.getCid()) {
-                return cp;
+                containedCourseParticipants.add(cp);
             }
         }
-        return null;
+        if (containedCourseParticipants.size() > 0) {
+            return containedCourseParticipants;
+        } else {
+            return null;
+        }
     }
 
+    @JsonIgnore
     public List<Absence> getAbsences() {
         return absences;
     }
@@ -184,17 +175,53 @@ public class Participant extends Person {
         this.tempCourseNames = tempCourseNames;
     }
 
-    public List<String> getTempCourseDuration() {
-        return tempCourseDuration;
+    public List<Course> getActualCourses() {
+        return actualCourses;
     }
 
-    public void setTempCourseDuration(List<String> tempCourseDuration) {
-        this.tempCourseDuration = tempCourseDuration;
+    public void setActualCourses(List<Course> actualCourses) {
+        this.actualCourses = actualCourses;
     }
 
     @JsonIgnore
     public Set<Participant> getReverseSiblings() {
         return this.siblingsReverse;
+    }
+
+    @JsonIgnore
+    public List<Invoice> getInvoices() {
+        return invoices;
+    }
+
+    @Transient
+    public String getIcon() {
+        return "icon-female";
+    }
+
+    @Transient
+    public String getObjectName() {
+        return "participant";
+    }
+
+    public void setInvoices(List<Invoice> invoices) {
+        this.invoices = invoices;
+    }
+
+    @JsonIgnore
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<Rating> ratings) {
+        this.ratings = ratings;
+    }
+
+    public boolean hasParent() {
+        if (this.parent == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @Override

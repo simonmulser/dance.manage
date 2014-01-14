@@ -96,6 +96,9 @@ public class Course extends EntityBase implements Cloneable {
     @Column(name = "ENABLED")
     private boolean enabled;
 
+    @Column(name = "IN_PERFORMANCE", columnDefinition = "boolean default true")
+    private boolean inPerformance = true;
+
     @Column(name = "LEVEL")
     private Integer level;
 
@@ -367,6 +370,14 @@ public class Course extends EntityBase implements Cloneable {
         this.level = level;
     }
 
+    public boolean isInPerformance() {
+        return inPerformance;
+    }
+
+    public void setInPerformance(boolean inPerformance) {
+        this.inPerformance = inPerformance;
+    }
+
     @JsonIgnore
     public List<Appointment> getAppointments() {
         return appointments;
@@ -459,6 +470,21 @@ public class Course extends EntityBase implements Cloneable {
     @PostPersist
     public void postCreate() {
         slug = Helpers.toSlug(name + " " + cid);
+    }
+
+    @Transient
+    public String getIcon() {
+        return "icon-calendar";
+    }
+
+    @Transient
+    public Integer getID() {
+        return cid;
+    }
+
+    @Transient
+    public String getObjectName() {
+        return "course";
     }
 
     @Override

@@ -108,4 +108,17 @@ public class CourseManagerImpl extends ManagerBaseImpl<Course> implements
         List<Course> courses = mainDao.getListByCriteria(criteria);
         return courses;
     }
+
+    @Override
+    public List<Course> getEnabledCourses(Teacher teacher) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Course.class);
+
+        criteria.add(Restrictions.eq("enabled", true));
+        criteria.add(Restrictions.eq("teacher", teacher));
+
+        List<Course> courses = mainDao.getListByCriteria(criteria);
+        logger.debug("Received list from courseDAO with " + courses.size()
+                + " elements");
+        return courses;
+    }
 }

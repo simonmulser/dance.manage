@@ -74,7 +74,7 @@
 					</display:column>
 					<display:column>
 						<c:set var="pid" value="${row.pid}" />
-						<a href="parent/edit/${pid}"><spring:message code="label.edit" /></a>
+						<a href="parent/edit/${pid}#add"><spring:message code="label.edit" /></a>
 						<br />
 						<a href="parent/delete/${pid}" class="openDialog" id="${pid }"><spring:message
 								code="label.delete" /></a>
@@ -93,6 +93,8 @@
 		</c:if>
 	</dmtags:span>
 </dmtags:base>
+
+<script src="<c:url value="/js/searchBoxAutoComplete.js" />"></script>
 <script type="text/javascript">
 	// this section is needed if the url contains an anchor hash to a widget which is retracted by default
 	$(document).ready(

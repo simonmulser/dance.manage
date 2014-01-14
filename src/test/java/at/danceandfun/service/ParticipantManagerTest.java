@@ -24,7 +24,7 @@ import at.danceandfun.entity.Participant;
 public class ParticipantManagerTest {
 
     private static Logger logger = Logger
-            .getLogger(ParticipantManagerImpl.class);
+            .getLogger(ParticipantManagerTest.class);
 
     @Autowired
     private ParticipantManager participantManager;
@@ -35,12 +35,6 @@ public class ParticipantManagerTest {
     @Test
     public void testGetParticipantsByNumberOfSiblings() {
         assertThat(participantManager.getParticipantsByNumberOfSiblings(),
-                is(notNullValue()));
-    }
-
-    @Test
-    public void testGetParticipantsByNumberOfCourses() {
-        assertThat(participantManager.getParticipantsByNumberOfCourses(),
                 is(notNullValue()));
     }
 

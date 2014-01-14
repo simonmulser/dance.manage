@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,6 +28,9 @@ public class Parent extends Person {
     @OneToMany(mappedBy = "parent")
     private List<Participant> children = new ArrayList<Participant>();
 
+    @OneToMany(mappedBy = "parent")
+    private List<Invoice> invoices = new ArrayList<Invoice>();
+
     public Parent() {
     }
 
@@ -44,6 +48,25 @@ public class Parent extends Person {
 
     public void setChildren(List<Participant> children) {
         this.children = children;
+    }
+
+    @JsonIgnore
+    public List<Invoice> getInvoices() {
+        return invoices;
+    }
+
+    public void setInvoices(List<Invoice> invoices) {
+        this.invoices = invoices;
+    }
+
+    @Transient
+    public String getIcon() {
+        return "icon-group";
+    }
+
+    @Transient
+    public String getObjectName() {
+        return "parent";
     }
 
     @Override

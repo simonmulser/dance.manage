@@ -90,7 +90,7 @@
         <!-- countEmpty - whether to count empty lines and single line comments 
             - default=false -->
         <module name="MethodLength">
-            <property name="max" value="250" />
+            <property name="max" value="350" />
         </module>
 
         <!-- Checks the number of parameters of a method | constructor -->

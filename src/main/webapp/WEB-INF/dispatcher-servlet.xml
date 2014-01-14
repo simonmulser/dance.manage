@@ -18,22 +18,30 @@
 
     <context:annotation-config />
     <context:component-scan base-package="at.danceandfun.controller" />
-    
+
     <!-- enable support for Expression-based annotations in Spring Security -->
     <sec:global-method-security
         pre-post-annotations="enabled">
         <sec:expression-handler ref="expressionHandler" />
     </sec:global-method-security>
-    
+
     <mvc:annotation-driven />
     <mvc:default-servlet-handler />
+    
+    <bean id="pdfViewResolver" class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+        <property name="order" value="1"/>
+        <property name="basename" value="views"/>
+    </bean>
 
     <bean id="jspViewResolver"
         class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="order" value="2"/>
         <property name="viewClass"
             value="org.springframework.web.servlet.view.JstlView"></property>
         <property name="prefix" value="/WEB-INF/view/"></property>
         <property name="suffix" value=".jsp"></property>
     </bean>
+    
+    <bean id="globalExceptionController" class="at.danceandfun.controller.GlobalExceptionController" />
 
 </beans>

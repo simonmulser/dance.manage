@@ -49,6 +49,7 @@
 						<input type="checkbox" value="MultipleGroups"	id="CheckboxMultipleGroupsSamePerformance" name="CheckboxMultipleGroupsSamePerformance" <c:if test="${multipleGroupsSamePerformance}">checked</c:if>>
 						<div style="float:left; margin-left: 4px"><i class="icon-sitemap"></i></div><div style="margin-left: 25px"><spring:message code='help.restriction.multipleGroupsSamePerformance' /></div>
 					</label>
+					
 					<label class="checkbox">
 						<input type="checkbox" value="Sibs"	id="CheckboxSibsSamePerformance" name="CheckboxSibsSamePerformance" <c:if test="${sibsSamePerformance}">checked</c:if>>
 						<div style="float:left; margin-left: 4px"><i class="icon-adn"></i></div><div style="margin-left: 25px"><spring:message code='help.restriction.sibsSamePerformance' /></div>
@@ -521,3 +522,4 @@ $("#dialog-confirm").dialog({
 	}
 });
 </script>
+<script src="<c:url value="/js/searchBoxAutoComplete.js" />"></script>

@@ -9,6 +9,7 @@
 				data-target=".nav-collapse"><span class="icon-bar"></span><span
 				class="icon-bar"></span><span class="icon-bar"></span> </a><a
 				class="brand" href="<c:url value="${homeLink}" />"><spring:message code="nav.title" /></a>
+			<c:if test="${user != null}">
 			<div class="nav-collapse">
 				<ul class="nav pull-right">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -21,15 +22,20 @@
 										code="nav.logout" /></a></li>
 						</ul></li>
 				</ul>
-				<form class="navbar-search pull-right">
-					<input type="text" class="search-query"
-						placeholder="<spring:message code="nav.search" />">
-				</form>
+				<c:if test="${userType eq 'admin'}">
+					<form action="<c:url value='/admin/search/request' />"
+						class="navbar-search pull-right">
+						<input type="text" id="searchQuery" value="" name="query" class="search-query"
+							placeholder="<spring:message code="nav.search" />" />
+					</form>
+				</c:if>
 			</div>
 			<!--/.nav-collapse -->
+			</c:if>
 		</div>
 		<!-- /container -->
 	</div>
 	<!-- /navbar-inner -->
 </div>
 <!-- /navbar -->
+
