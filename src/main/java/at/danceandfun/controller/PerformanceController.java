@@ -62,6 +62,7 @@ public class PerformanceController {
     private boolean balancedAgeGroup = true;
     private boolean multipleGroupsSamePerformance = true;
     private boolean sibsSamePerformance = true;
+    private boolean isSavedPlan = false;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String listPerformances(ModelMap map) {
@@ -80,10 +81,10 @@ public class PerformanceController {
         map.addAttribute("multipleGroupsSamePerformance",
                 multipleGroupsSamePerformance);
         map.addAttribute("sibsSamePerformance", sibsSamePerformance);
+        map.addAttribute("isSavedPlan", isSavedPlan);
         map.addAttribute("performancePlan", performancePlan);
-        map.addAttribute("performancePlanList", performancePlanList);
-
-        performancePlanList = performancePlanManager.getEnabledList();
+        map.addAttribute("performancePlanList",
+                performancePlanManager.getEnabledList());
 
         return "admin/performanceView";
     }
@@ -129,6 +130,8 @@ public class PerformanceController {
 
         performance = new Performance();
 
+        isSavedPlan = false;
+
         return "redirect:/admin/performance";
     }
 
@@ -169,7 +172,17 @@ public class PerformanceController {
 
         performancePlan.setDateTime(LocalDate.now());
         performancePlan.setEnabled(true);
-        performancePlanManager.persist(performancePlan);
+
+        // funktioniert irgendwie noch nicht
+        // if (performancePlanManager.contains(performancePlan)) {
+        // performancePlanManager.merge(performancePlan);
+        // } else {
+        // performancePlanManager.persist(performancePlan);
+        // }
+
+        performancePlanManager.merge(performancePlan);
+
+        isSavedPlan = true;
 
         performance = new Performance();
 
@@ -182,11 +195,12 @@ public class PerformanceController {
         logger.debug("Show Performanceplan with id " + planid);
 
         PerformancePlan plan = performancePlanManager.get(planid);
+        List<Participant> participantList = participantManager.getEnabledList();
 
         List<Course> fetchedCourses = courseManager.getEnabledList();
         List<Performance> fetchedPerformances = plan.getPerformances();
 
-        if (fetchedPerformances.size() == 3) {
+        if (fetchedPerformances.size() != 3) {
             return "redirect:/admin/performance";
         }
 
@@ -206,6 +220,22 @@ public class PerformanceController {
         tempPerformance1 = fetchedPerformances.get(0);
         tempPerformance2 = fetchedPerformances.get(1);
         tempPerformance3 = fetchedPerformances.get(2);
+
+        performancePlanMap = new HashMap<Integer, Performance>();
+
+        performancePlanMap.put(1, tempPerformance1);
+        performancePlanMap.put(2, tempPerformance2);
+        performancePlanMap.put(3, tempPerformance3);
+
+        SatValidator validator = new SatValidator(performancePlanMap,
+                participantList);
+        performancePlanMap = validator.validatePerformancePlan();
+
+        tempPerformance1 = performancePlanMap.get(1);
+        tempPerformance2 = performancePlanMap.get(2);
+        tempPerformance3 = performancePlanMap.get(3);
+
+        isSavedPlan = true;
 
         performance = new Performance();
 

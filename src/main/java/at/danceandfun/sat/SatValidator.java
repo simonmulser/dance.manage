@@ -21,6 +21,7 @@ import at.danceandfun.entity.Performance;
 
 public class SatValidator {
 
+
 	private Map<Integer, Performance> performancePlan;
 	private List<Participant> participantList;
 	private List<Course> courseList1;

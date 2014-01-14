@@ -30,6 +30,11 @@ public class DaoBaseImpl<T> implements DaoBase<T> {
         entityManager.persist(domain);
     }
 
+    public boolean contains(T domain) {
+        logger.debug("check if persisted");
+        return entityManager.contains(domain);
+    }
+
     public T merge(T domain) {
         logger.debug("update");
         return entityManager.merge(domain);
