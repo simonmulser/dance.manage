@@ -180,7 +180,9 @@ public class PerformanceController {
         // performancePlanManager.persist(performancePlan);
         // }
 
-        performancePlanManager.persist(performancePlan);
+        performancePlanManager.merge(performancePlan);
+
+        isSavedPlan = true;
 
         performance = new Performance();
 
