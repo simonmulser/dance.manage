@@ -1,13 +1,17 @@
 package at.danceandfun.controller;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import at.danceandfun.entity.Appointment;
 import at.danceandfun.entity.Course;
@@ -32,19 +36,30 @@ public class AppointmentController {
     public String editAppointments(ModelMap map, @PathVariable String slug) {
         logger.info("edit appointments for course:" + slug);
 
-        Course course = courseManager.get(Helpers.extractId(slug));
+        List<Appointment> appointments = appointmentManager
+                .getEnabledAppointmentsForCourseId(Helpers.extractId(slug));
 
         AppointmentsWrapper appointmentsWrapper = new AppointmentsWrapper();
-        appointmentsWrapper.setAppointments(course.getAppointments());
+        appointmentsWrapper.setAppointments(appointments);
 
-        map.put("course", course);
+        // map.put("course", course);
         map.put("wrapper", appointmentsWrapper);
         return "admin/appointmentView";
     }
 
     @RequestMapping(value = "edit/{slug}", method = RequestMethod.POST)
     public String saveAppointments(ModelMap map, @PathVariable String slug,
-            @ModelAttribute(value = "wrapper") AppointmentsWrapper wrapper) {
+            @ModelAttribute(value = "wrapper") AppointmentsWrapper wrapper,
+            BindingResult result, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            logger.info("appointment form has errors");
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.wrapper",
+                    result);
+            redirectAttributes.addFlashAttribute("wrapper", wrapper);
+            return "admin/appointmentView";
+        }
+
         logger.info("saving appointments for course:" + slug);
         Course course = courseManager.get(Helpers.extractId(slug));
 
@@ -55,7 +70,14 @@ public class AppointmentController {
             appointmentManager.merge(appointment);
         }
 
+        for (Appointment appointment : course.getAppointments()) {
+            if (!wrapper.getAppointments().contains(appointment)) {
+                logger.info("deleting appointment:" + appointment);
+                appointment.setEnabled(false);
+            }
+        }
+
         map.put("course", course);
-        return "admin/appointmentView";
+        return "redirect:/admin/course";
     }
 }

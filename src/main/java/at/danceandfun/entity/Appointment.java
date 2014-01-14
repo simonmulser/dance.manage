@@ -107,4 +107,34 @@ public class Appointment extends EntityBase {
     public String toString() {
         return "course(" + course + ") number:" + number;
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((apid == null) ? 0 : apid.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Appointment other = (Appointment) obj;
+        if (apid == null) {
+            if (other.apid != null) {
+                return false;
+            }
+        } else if (!apid.equals(other.apid)) {
+            return false;
+        }
+        return true;
+    }
 }
