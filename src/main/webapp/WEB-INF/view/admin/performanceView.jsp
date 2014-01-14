@@ -78,7 +78,7 @@
 						<a href="performance/show/${planid}"><spring:message
 								code="label.show" /></a>
 						<br />
-						<a href="performance/delete/${planid}" class="openDialog" id="${plandid}"><spring:message
+						<a href="performance/delete/${planid}" class="openDialog" id="${planid}"><spring:message
 								code="label.delete" /></a>
 						<div id="deleteId" style="display: none;"></div>
 					</display:column>
@@ -421,27 +421,25 @@
 </dmtags:base>
 
 <script type="text/javascript">
-$(".openDialog").click(function() { //Loeschen rueckbestaetigen
+
+$(".openDialog").click(function() { //Löschen rückbestätigen
 	$("#deleteId").text($(this).attr("id"));
 	$("#dialog-confirm").dialog("open");
 	return false;
 });
-$("#dialog-confirm").dialog(
-		{
-			autoOpen : false,
-			resizable : false,
-			modal : true,
-			buttons : {
-				"OK" : function() {
-					document.location = "performance/delete/"
-							+ $("#deleteId").text();
+$("#dialog-confirm").dialog({
+	autoOpen : false,
+	resizable : false,
+	modal : true,
+	buttons : {
+		"OK" : function() {
+			document.location = "performance/delete/" + $("#deleteId").text();
 
-					$(this).dialog("close");
-				},
-				Cancel : function() {
-					$(this).dialog("close");
-				}
-			}
-		});
-	
+			$(this).dialog("close");
+		},
+		Cancel : function() {
+			$(this).dialog("close");
+		}
+	}
+});
 </script>
