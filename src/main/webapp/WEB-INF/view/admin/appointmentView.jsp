@@ -24,16 +24,23 @@
 						<spring:message code="label.appointment" />
 						&nbsp;&nbsp;
 						<form:input path="appointments[${loop.index}].appointmentDate" class="datepicker" />
+						&nbsp;&nbsp;<form:errors path="appointments[${loop.index}].appointmentDate" cssClass="error" />
 					</div>
 				</c:forEach>
+				<c:if test="${wrapper.appointments.size() == 0}">
+					<div class="alert alert-info inputField" style="">
+						<button type="button" class="close">-</button>
+						<input id="appointments0.enabled" name="appointments[0].enabled" type="hidden" value="true"> <input id="appointments0.number" name="appointments[0].number" type="hidden" value="1">
+						<span class="display-number">1</span>.&nbsp; Einheit &nbsp;&nbsp; <input id="appointments[0].appointmentDate" name="appointments[0].appointmentDate" type="text" value="" class="datepicker">
+					</div>
+					&nbsp;&nbsp;<form:errors path="appointments0.appointmentDate" cssClass="error" />
+				</c:if>
 				<div class="form-actions">
 					<input type="submit" value="<spring:message code="label.save"/>" class="btn btn-primary" />
 					<button id="add" class="btn btn-info">
 						<spring:message code="label.addAppointment" />
 					</button>
-					<button class="btn">
-						<spring:message code="label.cancel" />
-					</button>
+					<a href="/dancemanage/admin/course" class="btn"><spring:message code="label.cancel" /> </a>
 
 				</div>
 			</form:form>

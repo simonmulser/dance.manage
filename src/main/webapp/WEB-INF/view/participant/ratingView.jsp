@@ -23,7 +23,7 @@
 			                </form:label>
 				<div class="span6">
 					<form:select path="course.cid">
-						<c:forEach items="${participant.courseParticipants}" var="cP">
+						<c:forEach items="${enabledCourses}" var="cP">
 							<form:option value="${cP.course.cid}">${cP.course.name}</form:option>
 						</c:forEach>
 					</form:select>

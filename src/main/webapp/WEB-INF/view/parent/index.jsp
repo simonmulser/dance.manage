@@ -98,9 +98,8 @@
 
 
 $(document).ready(function() {
-    var courseData = [
-    <c:forEach items="${user.children}" var="child">            
-    <c:forEach items="${child.courseParticipants}" var="courseParticipant"
+    var courseData = [   
+    <c:forEach items="${enabledCoursesofChildren}" var="courseParticipant"
         varStatus="loop">
                 {
                   title: '${courseParticipant.course.name}',
@@ -109,7 +108,6 @@ $(document).ready(function() {
                   allDay: false,
                   color: '#FF8106',
                 },
-       </c:forEach>
     </c:forEach>
     ];
     

@@ -10,7 +10,6 @@ import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDateTime;
-import org.joda.time.Period;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
@@ -54,7 +53,6 @@ public class InvoiceController {
     private Invoice invoice;
     private int status; // 0=preview, 1=readyToSave, 2=Save, 3=Saved
     private boolean editTrue = false;
-    private boolean cancelErrorMessage = false;
 
     @PostConstruct
     public void init() {
@@ -74,9 +72,7 @@ public class InvoiceController {
         map.addAttribute("invoice", invoice);
         map.addAttribute("invoiceList", invoiceManager.getEnabledList());
         map.addAttribute("status", status);
-        map.addAttribute("cancelErrorMessage", cancelErrorMessage);
         editTrue = false;
-        cancelErrorMessage = false;
         return "admin/invoiceView";
     }
 
@@ -219,29 +215,6 @@ public class InvoiceController {
             status = 3;
         }
         this.invoice = invoice;
-        return "redirect:/admin/invoice";
-    }
-
-    @RequestMapping(value = "/delete/{iid}")
-    public String deleteInvoice(@PathVariable("iid") Integer iid) {
-        logger.debug("Delete Invoice with id " + iid);
-        invoice = invoiceManager.get(iid);
-        logger.debug("DURATION HERE:"
-                + invoice.getPositions().get(0).getDuration());
-        if (Period.fieldDifference(new LocalDateTime(), invoice.getDate())
-                .getMonths() > 3) {
-            cancelErrorMessage = true;
-        } else {
-            invoice.setEnabled(false);
-            invoiceManager.merge(invoice);
-            for (Position pos : invoice.getPositions()) {
-                CourseParticipant cpToUpdate = courseParticipantManager
-                        .getCourseParticipantByPosition(pos);
-                cpToUpdate.setEnabled(false);
-                courseParticipantManager.merge(cpToUpdate);
-            }
-        }
-        invoice = new Invoice();
         return "redirect:/admin/invoice";
     }
 
