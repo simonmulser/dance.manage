@@ -94,10 +94,7 @@
 
 				<div class="login-actions">
 
-					<span class="login-checkbox"> <input id="Field" name="Field"
-						type="checkbox" class="field login-checkbox" value="First Choice"
-						tabindex="4" /> <label class="choice" for="Field"><spring:message
-								code="login.keepsignedin" /></label><br /> <a href="#"><spring:message code="login.reset" /></a>
+					<span class="login-checkbox"> <a href="#"><spring:message code="login.reset" /></a>
 					</span>
 				
 					<button class="button btn btn-success btn-large">
