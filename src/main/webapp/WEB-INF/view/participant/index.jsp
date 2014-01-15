@@ -125,7 +125,30 @@
 						<td>${participant.parent.telephone}</td>
 					</tr>
 
-					<dmtags:addressInformation />
+					<tr>
+					    <td><spring:message code="label.street" /></td>
+					    <td>${participant.address.street}</td>
+					</tr>
+					<tr>
+					    <td><spring:message code="label.number" /></td>
+					    <td>${participant.address.number}</td>
+					</tr>
+					<tr>
+						<td><spring:message code="label.stair" /></td>
+						<td>${participant.address.stair}</td>
+					</tr>
+					<tr>
+					    <td><spring:message code="label.door" /></td>
+					    <td>${participant.address.door}</td>
+					</tr>
+					<tr>
+					    <td><spring:message code="label.zip" /></td>
+					    <td>${participant.address.zip}</td>
+					</tr>
+					<tr>
+					    <td><spring:message code="label.city" /></td>
+					    <td>${participant.address.city}</td>
+					</tr>
 				</table>
 			</div>
 		</div>
@@ -143,7 +166,7 @@
 <script>
 $(document).ready(function() {
 	var courseData = [
-	<c:forEach items="${participant.courseParticipants}" var="courseParticipant"
+	<c:forEach items="${enabledCourses}" var="courseParticipant"
 		varStatus="loop">
 		        {
 	              title: '${courseParticipant.course.name}',

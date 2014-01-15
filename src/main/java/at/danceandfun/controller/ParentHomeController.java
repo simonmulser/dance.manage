@@ -1,5 +1,8 @@
 package at.danceandfun.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
@@ -14,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import at.danceandfun.entity.CourseParticipant;
 import at.danceandfun.entity.Parent;
 import at.danceandfun.entity.Participant;
+import at.danceandfun.service.CourseParticipantManager;
 import at.danceandfun.service.ParentManager;
 import at.danceandfun.service.ParticipantManager;
 
@@ -31,12 +36,22 @@ public class ParentHomeController {
     @Autowired
     private ParticipantManager paticipantManager;
 
+    @Autowired
+    private CourseParticipantManager courseParticipantManager;
+
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String showIndex(ModelMap map) {
         logger.debug("showIndex");
         Parent parent = getLoggedInParent();
 
+        List<CourseParticipant> enabledCoursesofChildren = new ArrayList<CourseParticipant>();
+        for (Participant participant : parent.getChildren()) {
+            enabledCoursesofChildren.addAll(courseParticipantManager
+                    .getEnabledDistinctCourseParticipants(participant));
+        }
+
         map.put("user", parent);
+        map.put("enabledCoursesofChildren", enabledCoursesofChildren);
         return "parent/index";
     }
 
@@ -58,7 +73,7 @@ public class ParentHomeController {
                     "org.springframework.validation.BindingResult.participant",
                     result);
             redirectAttributes.addFlashAttribute("parent", parent);
-            return "redirect:/parent/edit";
+            return "parent/editParent";
         }
 
         logger.debug("updateParent");
@@ -81,12 +96,7 @@ public class ParentHomeController {
             @RequestParam("childId") String childId,
             @RequestParam("childPassword") String childPassword,
             BindingResult result, RedirectAttributes redirectAttributes) {
-        /*
-         * if (result.hasErrors()) { redirectAttributes.addFlashAttribute(
-         * "org.springframework.validation.BindingResult.participant", result);
-         * redirectAttributes.addFlashAttribute("parent", parent); return
-         * "redirect:/parent/editChildren"; }
-         */
+
         logger.debug("addChildParent");
         Parent parent = getLoggedInParent();
         Participant particpant = paticipantManager.get(Integer

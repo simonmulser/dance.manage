@@ -103,8 +103,13 @@ public class PerformanceController {
 
         GenerateSatSolution sat = new GenerateSatSolution();
 
+        int countTries = 0;
         while (true) {
             try {
+                if (countTries == 2) {
+                    sibsSamePerformance = false;
+                    multipleGroupsSamePerformance = false;
+                }
                 performancePlanMap = sat.generatePerformance(courses,
                         participantList, balletRestriction,
                         twoBreaksRestriction, advancedAtEndRestriction,
@@ -115,6 +120,10 @@ public class PerformanceController {
                 e.printStackTrace();
             } catch (SatException s) {
                 System.out.println(s.getMessage());
+                if (s.getMessage().equals("Execution too long")) {
+                    countTries++;
+                }
+
                 Collections.shuffle(courses);
                 continue;
             }
