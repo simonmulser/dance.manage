@@ -156,11 +156,11 @@ public class GenerateSatSolution {
             boolean balancedAmountOfSpectators, boolean balancedAgeGroup,
             boolean multipleGroupsSamePerformance, boolean sibsSamePerformance)
             throws SatException {
-        if (multipleGroupsSamePerformance) {
-            multipleGroupsInSamePerformance(newOrderOfCourses, participantList);
-        }
         if (sibsSamePerformance) {
             sibsInSamePerformance(newOrderOfCourses, participantList);
+        }
+        if (multipleGroupsSamePerformance) {
+            multipleGroupsInSamePerformance(newOrderOfCourses, participantList);
         }
         if (balancedAmountOfSpectators) {
             arrangeAmountOfSpectators(newOrderOfCourses);
@@ -1106,9 +1106,9 @@ public class GenerateSatSolution {
      * @summary Execution of the SAT Solver, finding of solutions.
      * @return
      */
-    private int[] executeSingleSAT() {
+    private int[] executeSingleSAT() throws SatException {
         solver = SolverFactory.newDefault();
-        solver.setTimeout(3600); // 1 hour timeout
+        solver.setTimeout(2); // 2 seconds timeout
 
         solver.newVar(buildMappingVariable(numberOfPlays, numberOfSlots,
                 numberOfCourses));
@@ -1131,12 +1131,11 @@ public class GenerateSatSolution {
                 return model;
             } else {
                 System.out.println("Unsatisfiable !");
-
+                throw new SatException();
             }
         } catch (TimeoutException e) {
-            e.printStackTrace();
+            throw new SatException("Execution too long");
         }
-        return null;
     }
 
     /**
@@ -1220,5 +1219,10 @@ public class GenerateSatSolution {
 
         return performanceMap;
     }
+
+    // @Override
+    // public String call() throws Exception {
+    //
+    // }
 
 }
