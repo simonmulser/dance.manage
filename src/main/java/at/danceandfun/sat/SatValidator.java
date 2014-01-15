@@ -359,7 +359,13 @@ public class SatValidator {
 		for (int k = 0; k < notValidated.size(); k++) {
 			for (CourseParticipant currentCP : participantList.get(
 					notValidated.get(k)).getCourseParticipants()) {
-				currentCP.getCourse().setMultipleGroupsSamePerformance(true);
+				for (int u = 0; u < validatedCourseList.size(); u++) {
+					if (currentCP.getCourse().getCid() == validatedCourseList
+							.get(u).getCid()) {
+						validatedCourseList.get(u)
+								.setMultipleGroupsSamePerformance(true);
+					}
+				}
 			}
 		}
 		return validatedCourseList;
@@ -482,7 +488,7 @@ public class SatValidator {
 
 		for (int k = 0; k < finalIDs.size(); k++) {
 			for (Participant participantt : participantList
-					.get(finalIDs.get(k)).getSiblings())
+					.get(finalIDs.get(k)).getSiblings()) {
 				for (CourseParticipant currentCP : participantt
 						.getCourseParticipants()) {
 					for (int u = 0; u < validatedCourseList.size(); u++) {
@@ -493,6 +499,7 @@ public class SatValidator {
 						}
 					}
 				}
+			}
 		}
 
 		return validatedCourseList;
