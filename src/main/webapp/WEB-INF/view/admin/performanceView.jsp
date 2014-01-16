@@ -20,10 +20,11 @@
 	<dmtags:span width="6">
 		<dmtags:widget title="${i18nCreatePlan}" icon="icon-camera">
 			<form:form method="post" action="performance/build"
-				commandName="performance" class="form-horizontal">
+				commandName="performancePlan" class="form-horizontal">
 				<div>
 					<spring:message code="label.createPerformancePlan" />
 				</div>
+				
 				<div style="margin-top: 20px">
 					<label class="checkbox">
 						<input type="checkbox" value="Ballet"	id="CheckboxBallet" name="CheckboxBallet" <c:if test="${balletRestriction}">checked</c:if>>
@@ -55,6 +56,15 @@
 						<div style="float:left; margin-left: 4px"><i class="icon-heart"></i></div><div style="margin-left: 25px"><spring:message code='help.restriction.sibsSamePerformance' /></div>
 					</label>
 				</div>
+				
+				<div class="control-group" style="margin-left: -30px">
+					<form:label path="dateTime" class="control-label">
+				                </form:label>
+					<div class="span6">
+						<form:input path="dateTime" id="datepicker" />
+					</div>
+				</div>
+				
 				<div style="margin-top: 20px">
 					<input type="submit" value="<spring:message code="label.create"/>"
 						class="btn btn-primary" />
@@ -68,11 +78,11 @@
 		<dmtags:widget title="${i18nShowPlan}" icon="icon-camera">
 			<spring:message var="i18nOverview" code="widget.overview" />
 				<display:table name="performancePlanList" id="row"
-					class="table table-striped table-bordered displaytag" pagesize="4"
+					class="table table-striped table-bordered displaytag" pagesize="5"
 					requestURI="/admin/performance" defaultsort="1">
 					<display:column sortable="true" titleKey="label.date"
 						class="colName" style="width: 90%">
-						<c:out value="${row.dateTime}" />
+						<joda:format value="${row.dateTime}" pattern="dd.MM.yyyy" />
 					</display:column>
 					<display:column style="width: 10%">
 						<c:set var="planid" value="${row.planid}" />
@@ -98,7 +108,7 @@
 	
 	<dmtags:span width="12">
 		<c:if test="${!empty performanceList1}">
-			<dmtags:widget title="${i18nScheduleProposal}" style="table"
+			<dmtags:widget title="${i18nScheduleProposal}&nbsp;&nbsp;${dateTime.toString('dd.MM.yyyy')}" style="table"
 				icon="icon-list">
 				<br />
 				<div class="tabbable">
@@ -506,6 +516,7 @@ $(".openDialog").click(function() { //Löschen rückbestätigen
 	$("#dialog-confirm").dialog("open");
 	return false;
 });
+
 $("#dialog-confirm").dialog({
 	autoOpen : false,
 	resizable : false,
@@ -520,6 +531,17 @@ $("#dialog-confirm").dialog({
 			$(this).dialog("close");
 		}
 	}
+});
+
+$("#datepicker").datepicker({
+	showOn : "button",
+	buttonImage : "/dancemanage/css/ui/images/calendar.gif",
+	buttonImageOnly : true,
+	dateFormat : "dd.mm.yy",
+	changeMonth : true,
+	changeYear : true,
+	yearRange : "2012:2025",
+	defaultDate : 0
 });
 </script>
 <script src="<c:url value="/js/searchBoxAutoComplete.js" />"></script>

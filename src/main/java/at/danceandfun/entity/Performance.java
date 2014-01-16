@@ -15,9 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
-
 @Entity
 @Table(name = "PERFORMANCE")
 public class Performance extends EntityBase {
@@ -32,9 +29,10 @@ public class Performance extends EntityBase {
     @GeneratedValue
     private Integer perid;
 
-    @Column(name = "DATETIME")
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
-    private DateTime dateTime;
+    // @Column(name = "DATETIME")
+    // @Type(type =
+    // "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+    // private LocalTime dateTime;
 
     @ElementCollection
     @CollectionTable(name = "COURSEID", joinColumns = @JoinColumn(name = "PERFORMANCE_ID"))
@@ -46,11 +44,6 @@ public class Performance extends EntityBase {
     @ManyToOne
     @JoinColumn(name = "A_ID")
     private Address address;
-
-    // @ManyToMany(cascade = { CascadeType.ALL })
-    // @JoinTable(name = "COURSE_PERFORMANCE", joinColumns = { @JoinColumn(name
-    // = "PER_ID") }, inverseJoinColumns = { @JoinColumn(name = "C_ID") })
-    // private List<Course> courses = new ArrayList<Course>();
 
     @Transient
     private List<Course> courses = new ArrayList<Course>();
@@ -71,13 +64,13 @@ public class Performance extends EntityBase {
         this.perid = perid;
     }
 
-    public DateTime getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(DateTime dateTime) {
-        this.dateTime = dateTime;
-    }
+    // public LocalTime getDateTime() {
+    // return dateTime;
+    // }
+    //
+    // public void setDateTime(LocalTime dateTime) {
+    // this.dateTime = dateTime;
+    // }
 
     public Address getAddress() {
         return address;

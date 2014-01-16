@@ -8,15 +8,19 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import at.danceandfun.entity.Course;
 import at.danceandfun.entity.Participant;
@@ -55,6 +59,7 @@ public class PerformanceController {
     private Map<Integer, Performance> performancePlanMap;
     private PerformancePlan performancePlan;
     private List<PerformancePlan> performancePlanList;
+    private LocalDate dateTime;
     private boolean balletRestriction = true;
     private boolean twoBreaksRestriction = true;
     private boolean advancedAtEndRestriction = true;
@@ -67,6 +72,8 @@ public class PerformanceController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String listPerformances(ModelMap map) {
         logger.debug("LIST performances with id " + performance.getPerid());
+
+        performancePlan = new PerformancePlan();
 
         map.addAttribute("performance", performance);
         map.addAttribute("performanceList1", tempPerformance1.getCourses());
@@ -85,17 +92,24 @@ public class PerformanceController {
         map.addAttribute("performancePlan", performancePlan);
         map.addAttribute("performancePlanList",
                 performancePlanManager.getEnabledList());
+        map.addAttribute("dateTime", dateTime);
 
         return "admin/performanceView";
     }
 
     @RequestMapping(value = "/build", method = RequestMethod.POST)
-    public String buildPerformance(ModelMap map, HttpServletRequest request) {
+    public String buildPerformance(
+            ModelMap map,
+            HttpServletRequest request,
+            @ModelAttribute(value = "performancePlan") @Valid PerformancePlan plan,
+            BindingResult result, RedirectAttributes redirectAttributes) {
         logger.debug("BUILD performance");
         performancePlanMap = new HashMap<Integer, Performance>();
-        performancePlan = new PerformancePlan();
+
         List<Course> courses = courseManager.getEnabledList();
         List<Participant> participantList = participantManager.getEnabledList();
+
+        dateTime = plan.getDateTime();
 
         setCheckedRestrictions(request);
 
@@ -136,6 +150,13 @@ public class PerformanceController {
         tempPerformance1 = performancePlanMap.get(1);
         tempPerformance2 = performancePlanMap.get(2);
         tempPerformance3 = performancePlanMap.get(3);
+
+        // for (int i = 1; i <= 3; i++) {
+        // System.out.println("Performance: " + i);
+        // for (Course cur : performancePlanMap.get(i).getCourses()) {
+        // System.out.println(cur.getCid());
+        // }
+        // }
 
         performance = new Performance();
 
@@ -179,15 +200,8 @@ public class PerformanceController {
 
         performancePlan.setPerformances(performances);
 
-        performancePlan.setDateTime(LocalDate.now());
+        performancePlan.setDateTime(dateTime);
         performancePlan.setEnabled(true);
-
-        // funktioniert irgendwie noch nicht
-        // if (performancePlanManager.contains(performancePlan)) {
-        // performancePlanManager.merge(performancePlan);
-        // } else {
-        // performancePlanManager.persist(performancePlan);
-        // }
 
         performancePlanManager.merge(performancePlan);
 
