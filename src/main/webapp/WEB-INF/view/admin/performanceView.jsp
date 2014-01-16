@@ -4,6 +4,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
 <%@taglib uri="http://displaytag.sf.net" prefix="display"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 <%@taglib prefix="joda" uri="http://www.joda.org/joda/time/tags"%>
 
@@ -80,8 +81,11 @@
 				<display:table name="performancePlanList" id="row"
 					class="table table-striped table-bordered displaytag" pagesize="5"
 					requestURI="/admin/performance" defaultsort="1">
+					<display:column sortable="true" titleKey="label.performanceCreated">
+						<fmt:formatDate value="${row.created}" pattern="dd.MM.yyyy HH:mm:ss" />
+					</display:column>
 					<display:column sortable="true" titleKey="label.date"
-						class="colName" style="width: 90%">
+						class="colName" style="width: 45%">
 						<joda:format value="${row.dateTime}" pattern="dd.MM.yyyy" />
 					</display:column>
 					<display:column style="width: 10%">

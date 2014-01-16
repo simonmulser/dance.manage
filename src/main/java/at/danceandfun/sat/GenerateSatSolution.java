@@ -178,6 +178,13 @@ public class GenerateSatSolution {
         if (balancedAgeGroup) {
             arrangeAgeGroup(newOrderOfCourses);
         }
+        if (!multipleGroupsSamePerformance && !sibsSamePerformance
+                && !balancedAmountOfSpectators && !advancedAtEndRestriction
+                && !balletRestriction && !twoBreaksRestriction
+                && !balancedAgeGroup) {
+            add2SlotBrake(newOrderOfCourses, participantList, numberOfCourses,
+                    numberOfSlots, numberOfPlays);
+        }
     }
 
     /**
