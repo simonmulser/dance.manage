@@ -23,6 +23,8 @@ import at.danceandfun.entity.Participant;
 import at.danceandfun.service.AddressManager;
 import at.danceandfun.service.ParentManager;
 import at.danceandfun.service.ParticipantManager;
+import at.danceandfun.service.PersonManager;
+import at.danceandfun.util.Helpers;
 
 @Controller
 @RequestMapping(value = "admin/parent")
@@ -34,6 +36,8 @@ public class ParentController {
 
     @Autowired
     private ParentManager parentManager;
+    @Autowired
+    private PersonManager personManager;
     @Autowired
     private ParticipantManager participantManager;
     @Autowired
@@ -87,7 +91,10 @@ public class ParentController {
 
             if (parent.getPid() == null) {
                 logger.debug("New parent");
+                parent = (Parent) personManager.getURLToken(parent);
+                parent.setPassword(Helpers.PASSWORD_FOR_DUMMY_ACCOUNTS);
                 parentManager.persist(parent);
+                personManager.sendURL(parent);
             } else {
                 logger.debug("Update parent");
                 parentManager.merge(parent);

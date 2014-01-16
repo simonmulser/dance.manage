@@ -4,22 +4,29 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import at.danceandfun.entity.Admin;
 import at.danceandfun.entity.Parent;
 import at.danceandfun.entity.Participant;
+import at.danceandfun.entity.Person;
 import at.danceandfun.entity.SuperUser;
 import at.danceandfun.entity.Teacher;
+import at.danceandfun.service.PersonManager;
 
 @Controller
 public class SecurityController {
 
     private static Logger logger = Logger.getLogger(SecurityController.class);
+
+    @Autowired
+    private PersonManager personManager;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(ModelMap map) {
@@ -101,5 +108,25 @@ public class SecurityController {
     @RequestMapping(value = "error/error404")
     public String get404() {
         return "error/error404";
+    }
+
+    @RequestMapping(value = "/validation", method = RequestMethod.GET)
+    public String checkAccess(@RequestParam("access") String access,
+            ModelMap model) {
+
+        Person person = personManager.getPersonByActivationUUID(access);
+        if (person != null) {
+            if (!person.isActivated()) {
+                person.setActivated(true);
+                personManager.update(person);
+                model.put("statuscode", 0);
+            }else{
+                model.put("statuscode", 1);
+            }
+
+        } else {
+            model.put("statuscode", 2);
+        }
+        return "validation";
     }
 }

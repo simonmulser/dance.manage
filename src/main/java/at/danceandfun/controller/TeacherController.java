@@ -26,8 +26,10 @@ import at.danceandfun.entity.Style;
 import at.danceandfun.entity.Teacher;
 import at.danceandfun.service.AddressManager;
 import at.danceandfun.service.CourseManager;
+import at.danceandfun.service.PersonManager;
 import at.danceandfun.service.StyleManager;
 import at.danceandfun.service.TeacherManager;
+import at.danceandfun.util.Helpers;
 
 @Controller
 @RequestMapping(value = "admin/teacher")
@@ -45,6 +47,9 @@ public class TeacherController {
     private StyleManager styleManager;
     @Autowired
     private CourseManager courseManager;
+    @Autowired
+    private PersonManager personManager;
+
 
     private Teacher teacher;
 
@@ -144,7 +149,10 @@ public class TeacherController {
 
             if (teacher.getPid() == null) {
                 logger.debug("New teacher");
+                teacher = (Teacher) personManager.getURLToken(teacher);
+                teacher.setPassword(Helpers.PASSWORD_FOR_DUMMY_ACCOUNTS);
                 teacherManager.persist(teacher);
+                personManager.sendURL(teacher);
 
             } else {
                 logger.debug("Update teacher");

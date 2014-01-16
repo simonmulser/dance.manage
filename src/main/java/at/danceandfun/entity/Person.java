@@ -73,6 +73,12 @@ public abstract class Person extends EntityBase implements UserDetails {
     @Column(name = "ENABLED")
     private boolean enabled;
 
+    @Column(name = "ACTIVATED", columnDefinition = "boolean default true")
+    private boolean activated;
+
+    @Column(name = "ACTIVATIONUUID")
+    private String activationUUID;
+
     @ManyToOne(cascade = { CascadeType.ALL })
     @JoinColumn(name = "A_ID")
     @NotNull
@@ -144,7 +150,7 @@ public abstract class Person extends EntityBase implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return activated;
     }
 
     @Override
@@ -165,6 +171,22 @@ public abstract class Person extends EntityBase implements UserDetails {
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
+    }
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
+    }
+
+    public String getActivationUUID() {
+        return activationUUID;
+    }
+
+    public void setActivationUUID(String activationUUID) {
+        this.activationUUID = activationUUID;
     }
 
     @Override
