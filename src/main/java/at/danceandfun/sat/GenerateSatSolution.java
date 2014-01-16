@@ -91,7 +91,6 @@ public class GenerateSatSolution {
                                         (Course) c.clone());
 
                     } catch (CloneNotSupportedException e) {
-                        System.out.println("CLONE NOT SUPPORTED");
                         e.printStackTrace();
                     }
                 }
@@ -380,7 +379,6 @@ public class GenerateSatSolution {
                     throw new SatException(
                             "At least one participant dances at too many courses! Had to reshuffle!");
                 }
-
             }
         }
 
@@ -421,9 +419,7 @@ public class GenerateSatSolution {
                     }
                 }
             }
-
         }
-
     }
 
     /**
@@ -727,13 +723,6 @@ public class GenerateSatSolution {
                     amount3.add(courseIDList.get(j));
                 }
             }
-            System.out.println("Groesse der swappedList: "
-                    + swappedCourses.size());
-            System.out.println("Teilnehmer: "
-                    + participants.get(id).getLastname() + " ID: " + id);
-            System.out.println("amount1: " + amount1.size());
-            System.out.println("amount2: " + amount2.size());
-            System.out.println("amount3: " + amount3.size());
             swapCourses(amount1, amount2, amount3);
         }
     }
@@ -746,7 +735,6 @@ public class GenerateSatSolution {
         if (amount1.size() == amount2.size()
                 && amount1.size() == amount3.size()) {
             int random = (int) (Math.random() * 3 + 1);
-            System.out.println("Die Randomzahl ist " + random);
 
             if (random == 1) {
                 while (amount3.size() != 0) {
@@ -802,8 +790,6 @@ public class GenerateSatSolution {
         }
 
         if (amount1.size() > amount2.size() && amount1.size() > amount3.size()) {
-            System.out
-                    .println("Du bist hier: amount1.size() > amount2.size() && amount1.size() > amount3.size()");
             while (amount2.size() != 0) {
                 checkAlreadySwapped(swappedCourses, amount2.get(0));
                 Collections.swap(newOrderOfCourses, amount2.get(0),
@@ -822,8 +808,6 @@ public class GenerateSatSolution {
             return;
         }
         if (amount2.size() > amount1.size() && amount2.size() > amount3.size()) {
-            System.out
-                    .println("Du bist hier: amount2.size() > amount1.size() && amount2.size() > amount3.size()");
             while (amount1.size() != 0) {
                 checkAlreadySwapped(swappedCourses, amount1.get(0));
                 Collections.swap(newOrderOfCourses, amount1.get(0),
@@ -838,15 +822,9 @@ public class GenerateSatSolution {
                 amount2.add(amount3.get(0));
                 swappedCourses.add(amount3.remove(0));
             }
-            for (int i = 0; i < amount2.size(); i++) {
-                System.out.println("Diese Kurse sind drinnen: "
-                        + newOrderOfCourses.get(amount2.get(i)).getName());
-            }
             return;
         }
         if (amount3.size() > amount2.size() && amount3.size() > amount1.size()) {
-            System.out
-                    .println("Du bist hier: amount3.size() > amount2.size() && amount3.size() > amount1.size()");
             while (amount1.size() != 0) {
                 checkAlreadySwapped(swappedCourses, amount1.get(0));
                 Collections.swap(newOrderOfCourses, amount1.get(0),
@@ -866,7 +844,6 @@ public class GenerateSatSolution {
 
         // special case, the amount of 2 is even --> random selection
         if (amount1.size() == amount2.size() && amount1.size() > amount3.size()) {
-            System.out.println("Spezialfall1");
             if (r.nextBoolean()) {
                 while (amount1.size() != 0) {
                     checkAlreadySwapped(swappedCourses, amount1.get(0));
@@ -903,7 +880,6 @@ public class GenerateSatSolution {
         }
 
         if (amount2.size() == amount3.size() && amount2.size() > amount1.size()) {
-            System.out.println("Spezialfall2");
             if (r.nextBoolean()) {
                 while (amount2.size() != 0) {
                     checkAlreadySwapped(swappedCourses, amount2.get(0));
@@ -939,7 +915,6 @@ public class GenerateSatSolution {
             return;
         }
         if (amount1.size() == amount3.size() && amount1.size() > amount2.size()) {
-            System.out.println("Spezialfall3");
             if (r.nextBoolean()) {
                 while (amount1.size() != 0) {
                     checkAlreadySwapped(swappedCourses, amount1.get(0));
@@ -1076,12 +1051,6 @@ public class GenerateSatSolution {
                     courseId3.add(courses.get(course - 1).getCid());
                     break;
                 default:
-                    System.out
-                            .println("INVALID VARIABLE: Invalid performance variable "
-                                    + perf
-                                    + " "
-                                    + course
-                                    + " while mapping to courses");
                     break;
                 }
             }
@@ -1106,9 +1075,9 @@ public class GenerateSatSolution {
      * @summary Execution of the SAT Solver, finding of solutions.
      * @return
      */
-    private int[] executeSingleSAT() {
+    private int[] executeSingleSAT() throws SatException {
         solver = SolverFactory.newDefault();
-        solver.setTimeout(3600); // 1 hour timeout
+        solver.setTimeout(2); // 2 seconds timeout
 
         solver.newVar(buildMappingVariable(numberOfPlays, numberOfSlots,
                 numberOfCourses));
@@ -1131,12 +1100,11 @@ public class GenerateSatSolution {
                 return model;
             } else {
                 System.out.println("Unsatisfiable !");
-
+                throw new SatException();
             }
         } catch (TimeoutException e) {
-            e.printStackTrace();
+            throw new SatException("Execution too long");
         }
-        return null;
     }
 
     /**
@@ -1146,11 +1114,7 @@ public class GenerateSatSolution {
         dummyCourse = new Course();
         Style dummyStyle = new Style();
         dummyStyle.setName(" ");
-        // Address address = new Address();
-        // address.setStreet("Platzhalter");
-        // address.setCity("Platzhalter");
-        // address.setZip(10);
-        // address.setNumber(10);
+
         dummyCourse.setName("Dummy");
         dummyCourse.setStyle(dummyStyle);
         dummyCourse.setAmountPerformances(1);
@@ -1158,10 +1122,6 @@ public class GenerateSatSolution {
         dummyCourse.setLevel(CourseLevel.BEGINNER);
         dummyCourse.setAgeGroup(AgeGroup.SMALL);
         dummyCourse.setDummyCourse(true);
-        // dummyCourse.setAddress(address);
-        // dummyCourse.setDuration(CourseDuration.FIFTY);
-        // dummyCourse.setSemesterPrice(10.0);
-        // dummyCourse.setWeekday(WeekDay.MONDAY);
 
         return dummyCourse;
     }
@@ -1196,27 +1156,16 @@ public class GenerateSatSolution {
 
     private Map<Integer, Performance> deleteDummies(
             Map<Integer, Performance> performanceMap) {
-        Performance tempPerformance1 = performanceMap.get(1);
-        Performance tempPerformance2 = performanceMap.get(2);
-        Performance tempPerformance3 = performanceMap.get(3);
 
-        // delete dummy courses
-        if (tempPerformance1.getCourses().get(0).isDummyCourse()) {
-            tempPerformance1.getCourses().remove(0);
-            tempPerformance1.getCourseIds().remove(0);
+        for (int i = 1; i <= 3; i++) {
+            Performance currentPerformance = performanceMap.get(i);
+            for (int j = 0; j < currentPerformance.getCourses().size(); j++) {
+                if (currentPerformance.getCourses().get(j).isDummyCourse()) {
+                    currentPerformance.getCourses().remove(j);
+                    currentPerformance.getCourseIds().remove(j);
+                }
+            }
         }
-        if (tempPerformance2.getCourses().get(0).isDummyCourse()) {
-            tempPerformance2.getCourses().remove(0);
-            tempPerformance2.getCourseIds().remove(0);
-        }
-        if (tempPerformance3.getCourses().get(0).isDummyCourse()) {
-            tempPerformance3.getCourses().remove(0);
-            tempPerformance3.getCourseIds().remove(0);
-        }
-
-        performanceMap.put(1, tempPerformance1);
-        performanceMap.put(2, tempPerformance2);
-        performanceMap.put(3, tempPerformance3);
 
         return performanceMap;
     }

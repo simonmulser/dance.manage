@@ -137,7 +137,17 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc-portlet</artifactId>
             <version>${org.springframework.version}</version>
-        </dependency>
+        </dependency><dependency>
+  <groupId>com.jcabi</groupId>
+  <artifactId>jcabi-aspects</artifactId>
+  <version>0.12</version>
+</dependency>
+<dependency>
+  <groupId>org.aspectj</groupId>
+  <artifactId>aspectjrt</artifactId>
+  <version>1.6.12</version>
+  <scope>runtime</scope>
+</dependency>
 
         <!-- Support for testing Spring applications with tools such as JUnit 
             and TestNG This artifact is generally always defined with a 'test' scope 

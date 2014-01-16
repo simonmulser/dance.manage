@@ -246,65 +246,14 @@
 							</c:otherwise>
 						</c:choose>
 					</display:column>
-					<display:column><c:set var="iid" value="${invoice.iid}" />
-						<a href="invoice/delete/${iid}" class="openDialog" id="${iid}"><spring:message
-								code="label.cancelInvoice" /></a>
-								<i title="<spring:message code='help.invoiceDelete' />" class="inline-tooltip icon icon-question-sign"></i>
-						<div id="deleteId" style="display:none;"></div>		
-					</display:column>
 			</display:table>
-			<div id="dialog-confirm"
-				title="<spring:message code="delete.title" />">
-				<p>
-					<span class="ui-icon ui-icon-alert"
-						style="float: left; margin: 0 7px 20px 0;"></span>
-					<spring:message code="delete.invoice" />
-				</p>
-			</div>
-			<div id="dialog-cancelError" title="<spring:message code="message.deleteTitle" />"><spring:message code="message.cannotBeDeleted" /></div>
 		</dmtags:widget>
 	</dmtags:span>
 </dmtags:base>
 
 <script src="<c:url value="/js/searchBoxAutoComplete.js" />"></script>
 <script type="text/javascript">
-	
-	$("#dialog-cancelError").dialog({ // Fehler bei Stornierung
-		autoOpen : false,
-		resizable : false,
-		modal: true,
-	      buttons: {
-	        "OK": function() {
-	          $( this ).dialog( "close" );
-	        }
-	      }
-	});
-	var cEM = "${cancelErrorMessage}";
-	if( cEM == 'true' ){
-		$("#dialog-cancelError").dialog("open");
-	}
 	$('i').tooltip();
-	$(".openDialog").click(function() { // Rückbestätigung bei Löschen 
-		$("#deleteId").text($(this).attr("id"));
-		$("#dialog-confirm").dialog("open");
-		return false;
-	});
-	$("#dialog-confirm").dialog({
-		autoOpen : false,
-		resizable : false,
-		modal : true,
-		buttons : {
-			"OK" : function() {
-				document.location = "invoice/delete/"+$("#deleteId").text();
-				$("#deleteId").text("");
-
-				$(this).dialog("close");
-			},
-			Cancel : function() {
-				$(this).dialog("close");
-			}
-		}
-	});
 	$(document).ready(function() {
 		$("#participantQuery").autocomplete({
 			minLength : 1,

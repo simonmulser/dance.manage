@@ -8,15 +8,19 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import at.danceandfun.entity.Course;
 import at.danceandfun.entity.Participant;
@@ -29,8 +33,6 @@ import at.danceandfun.service.CourseManager;
 import at.danceandfun.service.ParticipantManager;
 import at.danceandfun.service.PerformanceManager;
 import at.danceandfun.service.PerformancePlanManager;
-
-//import at.danceandfund.exception.SatException;
 
 @Controller
 @RequestMapping(value = "admin/performance")
@@ -55,6 +57,7 @@ public class PerformanceController {
     private Map<Integer, Performance> performancePlanMap;
     private PerformancePlan performancePlan;
     private List<PerformancePlan> performancePlanList;
+    private LocalDate dateTime;
     private boolean balletRestriction = true;
     private boolean twoBreaksRestriction = true;
     private boolean advancedAtEndRestriction = true;
@@ -67,6 +70,8 @@ public class PerformanceController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String listPerformances(ModelMap map) {
         logger.debug("LIST performances with id " + performance.getPerid());
+
+        performancePlan = new PerformancePlan();
 
         map.addAttribute("performance", performance);
         map.addAttribute("performanceList1", tempPerformance1.getCourses());
@@ -85,17 +90,30 @@ public class PerformanceController {
         map.addAttribute("performancePlan", performancePlan);
         map.addAttribute("performancePlanList",
                 performancePlanManager.getEnabledList());
+        map.addAttribute("dateTime", dateTime);
 
         return "admin/performanceView";
     }
 
     @RequestMapping(value = "/build", method = RequestMethod.POST)
-    public String buildPerformance(ModelMap map, HttpServletRequest request) {
+    public String buildPerformance(
+            ModelMap map,
+            HttpServletRequest request,
+            @ModelAttribute(value = "performancePlan") @Valid PerformancePlan plan,
+            BindingResult result, RedirectAttributes redirectAttributes) {
         logger.debug("BUILD performance");
         performancePlanMap = new HashMap<Integer, Performance>();
-        performancePlan = new PerformancePlan();
+
         List<Course> courses = courseManager.getEnabledList();
         List<Participant> participantList = participantManager.getEnabledList();
+
+        for (Course course : courses) {
+            if (!course.isInPerformance()) {
+                courses.remove(course);
+            }
+        }
+
+        dateTime = plan.getDateTime();
 
         setCheckedRestrictions(request);
 
@@ -103,8 +121,13 @@ public class PerformanceController {
 
         GenerateSatSolution sat = new GenerateSatSolution();
 
+        int countTries = 0;
         while (true) {
             try {
+                if (countTries == 2) {
+                    sibsSamePerformance = false;
+                    multipleGroupsSamePerformance = false;
+                }
                 performancePlanMap = sat.generatePerformance(courses,
                         participantList, balletRestriction,
                         twoBreaksRestriction, advancedAtEndRestriction,
@@ -115,6 +138,10 @@ public class PerformanceController {
                 e.printStackTrace();
             } catch (SatException s) {
                 System.out.println(s.getMessage());
+                if (s.getMessage().equals("Execution too long")) {
+                    countTries++;
+                }
+
                 Collections.shuffle(courses);
                 continue;
             }
@@ -127,6 +154,13 @@ public class PerformanceController {
         tempPerformance1 = performancePlanMap.get(1);
         tempPerformance2 = performancePlanMap.get(2);
         tempPerformance3 = performancePlanMap.get(3);
+
+        // for (int i = 1; i <= 3; i++) {
+        // System.out.println("Performance: " + i);
+        // for (Course cur : performancePlanMap.get(i).getCourses()) {
+        // System.out.println(cur.getCid());
+        // }
+        // }
 
         performance = new Performance();
 
@@ -170,15 +204,8 @@ public class PerformanceController {
 
         performancePlan.setPerformances(performances);
 
-        performancePlan.setDateTime(LocalDate.now());
+        performancePlan.setDateTime(dateTime);
         performancePlan.setEnabled(true);
-
-        // funktioniert irgendwie noch nicht
-        // if (performancePlanManager.contains(performancePlan)) {
-        // performancePlanManager.merge(performancePlan);
-        // } else {
-        // performancePlanManager.persist(performancePlan);
-        // }
 
         performancePlanManager.merge(performancePlan);
 
@@ -295,4 +322,5 @@ public class PerformanceController {
     public void setPerformanceManager(PerformanceManager performanceManager) {
         this.performanceManager = performanceManager;
     }
+
 }
