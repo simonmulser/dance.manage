@@ -72,5 +72,50 @@
     <bean id="contextApplicationContextProvider" class="at.danceandfun.util.ApplicationContextProvider" />
 
     <import resource="classpath:dao.xml" />
+    
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="username" value="ewald.n@gmail.com" />
+		<property name="password" value="ewaldewald" />
+		
+		<property name="javaMailProperties">
+			<props>
+            	<prop key="mail.smtp.auth">true</prop>
+            	<prop key="mail.smtp.starttls.enable">true</prop>
+        	</props>
+		</property>
+		
+	</bean>
+	
+	<bean id="EMailAuthentication" class="at.danceandfun.util.EMailAuthentication">
+		<property name="mailSender" ref="mailSender" />
+		<property name="simpleMailMessage" ref="simpleMailMessage" />
+	</bean>
+	
+	<bean id="simpleMailMessage"
+		class="org.springframework.mail.SimpleMailMessage">
+		<property name="subject" value="Freischaltung Account" />
+		<property name="text">
+		<value>
+			<![CDATA[
+				Sehr geehrte/r Frau/Herr %s,
+				vielen Dank für Ihre Registrierung bei Dance&Fun.
+				
+				Klicken Sie auf den unten stehenden Link, um Ihren Account freizuschalten
+				%s
+				
+				Falls Klicken des Links nicht funktioniert, können Sie den Link in Ihr Browserfenster kopieren bzw. direkt dort hineinschreiben.
+				
+				Nach der Aktivierung ist ihr Account mit Ihrer EMail-Adresse und folgendem Passwort erreichbar:
+				Passwort: abc
+
+				Mit freundlichen Grüßen,
+				Ihr Dance&Fun Team
+				
+			]]>
+		</value>
+	</property>
+	</bean>
 
 </beans>

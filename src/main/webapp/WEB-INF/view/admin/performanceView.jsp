@@ -62,7 +62,8 @@
 					<form:label path="dateTime" class="control-label">
 				                </form:label>
 					<div class="span6">
-						<form:input path="dateTime" id="datepicker" placeholder="01.10.2013" />
+						<form:input path="dateTime" id="datepicker" placeholder="01.10.2013" /><br/>
+						<form:errors path="dateTime" cssClass="error" />
 					</div>
 				</div>
 				

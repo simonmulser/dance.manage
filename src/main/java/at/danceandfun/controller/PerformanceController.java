@@ -67,11 +67,15 @@ public class PerformanceController {
     private boolean sibsSamePerformance = true;
     private boolean isSavedPlan = false;
 
+    private boolean editTrue = false;
+
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String listPerformances(ModelMap map) {
         logger.debug("LIST performances with id " + performance.getPerid());
 
-        performancePlan = new PerformancePlan();
+        if (!editTrue) {
+            performancePlan = new PerformancePlan();
+        }
 
         map.addAttribute("performance", performance);
         map.addAttribute("performanceList1", tempPerformance1.getCourses());
@@ -92,6 +96,7 @@ public class PerformanceController {
                 performancePlanManager.getEnabledList());
         map.addAttribute("dateTime", dateTime);
 
+        editTrue = false;
         return "admin/performanceView";
     }
 
@@ -102,6 +107,18 @@ public class PerformanceController {
             @ModelAttribute(value = "performancePlan") @Valid PerformancePlan plan,
             BindingResult result, RedirectAttributes redirectAttributes) {
         logger.debug("BUILD performance");
+
+        if (result.hasErrors()) {
+            redirectAttributes
+                    .addFlashAttribute(
+                            "org.springframework.validation.BindingResult.performancePlan",
+                            result);
+            redirectAttributes.addFlashAttribute("performancePlan", plan);
+            this.performancePlan = plan;
+            editTrue = true;
+            return "redirect:/admin/performance";
+
+        }
         performancePlanMap = new HashMap<Integer, Performance>();
 
         List<Course> courses = courseManager.getEnabledList();
