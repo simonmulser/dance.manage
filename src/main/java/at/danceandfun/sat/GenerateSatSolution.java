@@ -178,6 +178,13 @@ public class GenerateSatSolution {
         if (balancedAgeGroup) {
             arrangeAgeGroup(newOrderOfCourses);
         }
+        if (!multipleGroupsSamePerformance && !sibsSamePerformance
+                && !balancedAmountOfSpectators && !advancedAtEndRestriction
+                && !balletRestriction && !twoBreaksRestriction
+                && !balancedAgeGroup) {
+            add2SlotBrake(newOrderOfCourses, participantList, numberOfCourses,
+                    numberOfSlots, numberOfPlays);
+        }
     }
 
     /**
@@ -1016,7 +1023,8 @@ public class GenerateSatSolution {
      * @return
      */
     private Map<Integer, Performance> backMapping(int[] solution,
-            List<Course> courses) {
+            List<Course> courses) throws SatException {
+
         Map<Integer, Performance> plan = new HashMap<Integer, Performance>();
         Performance p1 = new Performance();
         Performance p2 = new Performance();
@@ -1100,7 +1108,7 @@ public class GenerateSatSolution {
                 return model;
             } else {
                 System.out.println("Unsatisfiable !");
-                throw new SatException();
+                throw new SatException("Problem is unsatisfiable");
             }
         } catch (TimeoutException e) {
             throw new SatException("Execution too long");
@@ -1156,27 +1164,16 @@ public class GenerateSatSolution {
 
     private Map<Integer, Performance> deleteDummies(
             Map<Integer, Performance> performanceMap) {
-        Performance tempPerformance1 = performanceMap.get(1);
-        Performance tempPerformance2 = performanceMap.get(2);
-        Performance tempPerformance3 = performanceMap.get(3);
 
-        // delete dummy courses
-        if (tempPerformance1.getCourses().get(0).isDummyCourse()) {
-            tempPerformance1.getCourses().remove(0);
-            tempPerformance1.getCourseIds().remove(0);
+        for (int i = 1; i <= 3; i++) {
+            Performance currentPerformance = performanceMap.get(i);
+            for (int j = 0; j < currentPerformance.getCourses().size(); j++) {
+                if (currentPerformance.getCourses().get(j).isDummyCourse()) {
+                    currentPerformance.getCourses().remove(j);
+                    currentPerformance.getCourseIds().remove(j);
+                }
+            }
         }
-        if (tempPerformance2.getCourses().get(0).isDummyCourse()) {
-            tempPerformance2.getCourses().remove(0);
-            tempPerformance2.getCourseIds().remove(0);
-        }
-        if (tempPerformance3.getCourses().get(0).isDummyCourse()) {
-            tempPerformance3.getCourses().remove(0);
-            tempPerformance3.getCourseIds().remove(0);
-        }
-
-        performanceMap.put(1, tempPerformance1);
-        performanceMap.put(2, tempPerformance2);
-        performanceMap.put(3, tempPerformance3);
 
         return performanceMap;
     }

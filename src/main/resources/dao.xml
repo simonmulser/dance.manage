@@ -46,11 +46,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="teacherDao" class="at.danceandfun.dao.DaoBaseImpl">
         <property name="classz" value="at.danceandfun.entity.Teacher" />
     </bean>
-        <bean id="appointmentDao" class="at.danceandfun.dao.DaoBaseImpl">
+    <bean id="appointmentDao" class="at.danceandfun.dao.DaoBaseImpl">
         <property name="classz" value="at.danceandfun.entity.Appointment" />
     </bean>
-        <bean id="absenceDao" class="at.danceandfun.dao.DaoBaseImpl">
+    <bean id="absenceDao" class="at.danceandfun.dao.DaoBaseImpl">
         <property name="classz" value="at.danceandfun.entity.Absence" />
+    </bean>
+    <bean id="personDao" class="at.danceandfun.dao.DaoBaseImpl">
+        <property name="classz" value="at.danceandfun.entity.Person" />
     </bean>
 
 </beans>

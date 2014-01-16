@@ -31,6 +31,8 @@ import at.danceandfun.service.CourseManager;
 import at.danceandfun.service.CourseParticipantManager;
 import at.danceandfun.service.ParentManager;
 import at.danceandfun.service.ParticipantManager;
+import at.danceandfun.service.PersonManager;
+import at.danceandfun.util.Helpers;
 
 @Controller
 @RequestMapping(value = "admin/participant")
@@ -51,6 +53,8 @@ public class ParticipantController {
     private CourseParticipantManager courseParticipantManager;
     @Autowired
     private ParentManager parentManager;
+    @Autowired
+    private PersonManager personManager;
 
     private Participant participant;
 
@@ -121,7 +125,11 @@ public class ParticipantController {
 
             if (participant.getPid() == null) {
                 logger.debug("New participant");
+                participant = (Participant) personManager
+                        .getURLToken(participant);
+                participant.setPassword(Helpers.PASSWORD_FOR_DUMMY_ACCOUNTS);
                 participantManager.persist(participant);
+                personManager.sendURL(participant);
             }
 
             if (!participant.getTempSiblings().equals("")) {
@@ -174,6 +182,7 @@ public class ParticipantController {
                     }
                 }
             }
+
             participantManager.merge(participant);
             this.participant = new Participant();
         }
