@@ -34,8 +34,6 @@ import at.danceandfun.service.ParticipantManager;
 import at.danceandfun.service.PerformanceManager;
 import at.danceandfun.service.PerformancePlanManager;
 
-//import at.danceandfund.exception.SatException;
-
 @Controller
 @RequestMapping(value = "admin/performance")
 public class PerformanceController {
@@ -108,6 +106,12 @@ public class PerformanceController {
 
         List<Course> courses = courseManager.getEnabledList();
         List<Participant> participantList = participantManager.getEnabledList();
+
+        for (Course course : courses) {
+            if (!course.isInPerformance()) {
+                courses.remove(course);
+            }
+        }
 
         dateTime = plan.getDateTime();
 
@@ -318,4 +322,5 @@ public class PerformanceController {
     public void setPerformanceManager(PerformanceManager performanceManager) {
         this.performanceManager = performanceManager;
     }
+
 }
