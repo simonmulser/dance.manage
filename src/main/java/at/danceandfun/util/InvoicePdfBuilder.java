@@ -1,11 +1,16 @@
 package at.danceandfun.util;
 
+import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import at.danceandfun.entity.Invoice;
 import at.danceandfun.entity.Person;
@@ -70,7 +75,7 @@ public class InvoicePdfBuilder extends AbstractITextPdfView {
 				.getWidth() - doc.leftMargin() - doc.rightMargin(), 5f);
 		cb.fill();
 
-		Paragraph studioName = new Paragraph("Dance & Fun");
+		Paragraph studioName = new Paragraph("dance.manage");
 		studioName.setAlignment(Element.ALIGN_RIGHT);
 		doc.add(studioName);
 
@@ -81,8 +86,30 @@ public class InvoicePdfBuilder extends AbstractITextPdfView {
 		table.setSpacingBefore(10);
 
 		// space before address
-		printNewLine(doc, 4);
+		printNewLine(doc, 3);
 
+		Paragraph p = new Paragraph("Dance & Fun", times);
+		p.setAlignment(Element.ALIGN_RIGHT);
+		doc.add(p);
+		p = new Paragraph("Währingerstraße 125", times);
+		p.setAlignment(Element.ALIGN_RIGHT);
+		doc.add(p);
+		p = new Paragraph("1180 Wien", times);
+		p.setAlignment(Element.ALIGN_RIGHT);
+		doc.add(p);
+
+		printNewLine(doc, 1);
+
+		p = new Paragraph("Rechnungsnummer: " + invoice.getIid(), times);
+		p.setAlignment(Element.ALIGN_LEFT);
+		doc.add(p);
+		DateTimeFormatter fmt = DateTimeFormat.forPattern("dd.MM.yyyy");
+		p = new Paragraph(fmt.print(invoice.getDate()), times);
+		p.setAlignment(Element.ALIGN_LEFT);
+		doc.add(p);
+
+		printNewLine(doc, 1);
+		
 		// addressee
 		if (invoice.getParent() != null) {
 			printAddress(doc, times, invoice.getParent());
