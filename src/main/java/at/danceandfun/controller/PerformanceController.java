@@ -36,272 +36,279 @@ import at.danceandfun.service.PerformancePlanManager;
 @RequestMapping(value = "admin/performance")
 public class PerformanceController {
 
-    private static Logger logger = Logger
-            .getLogger(PerformanceController.class);
+	private static Logger logger = Logger
+			.getLogger(PerformanceController.class);
 
-    @Autowired
-    private PerformanceManager performanceManager;
-    @Autowired
-    private CourseManager courseManager;
-    @Autowired
-    private ParticipantManager participantManager;
-    @Autowired
-    private PerformancePlanManager performancePlanManager;
+	@Autowired
+	private PerformanceManager performanceManager;
+	@Autowired
+	private CourseManager courseManager;
+	@Autowired
+	private ParticipantManager participantManager;
+	@Autowired
+	private PerformancePlanManager performancePlanManager;
 
-    private Performance performance = new Performance();
-    private Performance tempPerformance1 = new Performance();
-    private Performance tempPerformance2 = new Performance();
-    private Performance tempPerformance3 = new Performance();
-    private Map<Integer, Performance> performancePlanMap;
-    private PerformancePlan performancePlan;
-    private List<PerformancePlan> performancePlanList;
-    private boolean balletRestriction = true;
-    private boolean twoBreaksRestriction = true;
-    private boolean advancedAtEndRestriction = true;
-    private boolean balancedAmountOfSpectators = true;
-    private boolean balancedAgeGroup = true;
-    private boolean multipleGroupsSamePerformance = true;
-    private boolean sibsSamePerformance = true;
-    private boolean isSavedPlan = false;
+	private Performance performance = new Performance();
+	private Performance tempPerformance1 = new Performance();
+	private Performance tempPerformance2 = new Performance();
+	private Performance tempPerformance3 = new Performance();
+	private Map<Integer, Performance> performancePlanMap;
+	private PerformancePlan performancePlan;
+	private List<PerformancePlan> performancePlanList;
+	private boolean balletRestriction = true;
+	private boolean twoBreaksRestriction = true;
+	private boolean advancedAtEndRestriction = true;
+	private boolean balancedAmountOfSpectators = true;
+	private boolean balancedAgeGroup = true;
+	private boolean multipleGroupsSamePerformance = true;
+	private boolean sibsSamePerformance = true;
+	private boolean isSavedPlan = false;
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public String listPerformances(ModelMap map) {
-        logger.debug("LIST performances with id " + performance.getPerid());
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public String listPerformances(ModelMap map) {
+		logger.debug("LIST performances with id " + performance.getPerid());
 
-        map.addAttribute("performance", performance);
-        map.addAttribute("performanceList1", tempPerformance1.getCourses());
-        map.addAttribute("performanceList2", tempPerformance2.getCourses());
-        map.addAttribute("performanceList3", tempPerformance3.getCourses());
-        map.addAttribute("balletRestriction", balletRestriction);
-        map.addAttribute("twoBreaksRestriction", twoBreaksRestriction);
-        map.addAttribute("advancedAtEndRestriction", advancedAtEndRestriction);
-        map.addAttribute("balancedAmountOfSpectators",
-                balancedAmountOfSpectators);
-        map.addAttribute("balancedAgeGroup", balancedAgeGroup);
-        map.addAttribute("multipleGroupsSamePerformance",
-                multipleGroupsSamePerformance);
-        map.addAttribute("sibsSamePerformance", sibsSamePerformance);
-        map.addAttribute("isSavedPlan", isSavedPlan);
-        map.addAttribute("performancePlan", performancePlan);
-        map.addAttribute("performancePlanList",
-                performancePlanManager.getEnabledList());
+		map.addAttribute("performance", performance);
+		map.addAttribute("performanceList1", tempPerformance1.getCourses());
+		map.addAttribute("performanceList2", tempPerformance2.getCourses());
+		map.addAttribute("performanceList3", tempPerformance3.getCourses());
+		map.addAttribute("balletRestriction", balletRestriction);
+		map.addAttribute("twoBreaksRestriction", twoBreaksRestriction);
+		map.addAttribute("advancedAtEndRestriction", advancedAtEndRestriction);
+		map.addAttribute("balancedAmountOfSpectators",
+				balancedAmountOfSpectators);
+		map.addAttribute("balancedAgeGroup", balancedAgeGroup);
+		map.addAttribute("multipleGroupsSamePerformance",
+				multipleGroupsSamePerformance);
+		map.addAttribute("sibsSamePerformance", sibsSamePerformance);
+		map.addAttribute("isSavedPlan", isSavedPlan);
+		map.addAttribute("performancePlan", performancePlan);
+		map.addAttribute("performancePlanList",
+				performancePlanManager.getEnabledList());
 
-        return "admin/performanceView";
-    }
+		return "admin/performanceView";
+	}
 
-    @RequestMapping(value = "/build", method = RequestMethod.POST)
-    public String buildPerformance(ModelMap map, HttpServletRequest request) {
-        logger.debug("BUILD performance");
-        performancePlanMap = new HashMap<Integer, Performance>();
-        performancePlan = new PerformancePlan();
-        List<Course> courses = courseManager.getEnabledList();
-        List<Participant> participantList = participantManager.getEnabledList();
+	@RequestMapping(value = "/build", method = RequestMethod.POST)
+	public String buildPerformance(ModelMap map, HttpServletRequest request) {
+		logger.debug("BUILD performance");
+		performancePlanMap = new HashMap<Integer, Performance>();
+		performancePlan = new PerformancePlan();
+		List<Course> courses = courseManager.getEnabledList();
 
-        setCheckedRestrictions(request);
+		for (Course course : courses) {
+			if (!course.isInPerformance()) {
+				courses.remove(course);
+			}
+		}
 
-        Collections.shuffle(courses);
+		List<Participant> participantList = participantManager.getEnabledList();
 
-        GenerateSatSolution sat = new GenerateSatSolution();
+		setCheckedRestrictions(request);
 
-        int countTries = 0;
-        while (true) {
-            try {
-                if (countTries == 2) {
-                    sibsSamePerformance = false;
-                    multipleGroupsSamePerformance = false;
-                }
-                performancePlanMap = sat.generatePerformance(courses,
-                        participantList, balletRestriction,
-                        twoBreaksRestriction, advancedAtEndRestriction,
-                        balancedAmountOfSpectators, balancedAgeGroup,
-                        multipleGroupsSamePerformance, sibsSamePerformance);
-                break;
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (SatException s) {
-                System.out.println(s.getMessage());
-                if (s.getMessage().equals("Execution too long")) {
-                    countTries++;
-                }
+		Collections.shuffle(courses);
 
-                Collections.shuffle(courses);
-                continue;
-            }
-        }
+		GenerateSatSolution sat = new GenerateSatSolution();
 
-        SatValidator validator = new SatValidator(performancePlanMap,
-                participantList);
-        performancePlanMap = validator.validatePerformancePlan();
+		int countTries = 0;
+		while (true) {
+			try {
+				if (countTries == 2) {
+					sibsSamePerformance = false;
+					multipleGroupsSamePerformance = false;
+				}
+				performancePlanMap = sat.generatePerformance(courses,
+						participantList, balletRestriction,
+						twoBreaksRestriction, advancedAtEndRestriction,
+						balancedAmountOfSpectators, balancedAgeGroup,
+						multipleGroupsSamePerformance, sibsSamePerformance);
+				break;
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (SatException s) {
+				System.out.println(s.getMessage());
+				if (s.getMessage().equals("Execution too long")) {
+					countTries++;
+				}
 
-        tempPerformance1 = performancePlanMap.get(1);
-        tempPerformance2 = performancePlanMap.get(2);
-        tempPerformance3 = performancePlanMap.get(3);
+				Collections.shuffle(courses);
+				continue;
+			}
+		}
 
-        performance = new Performance();
+		SatValidator validator = new SatValidator(performancePlanMap,
+				participantList);
+		performancePlanMap = validator.validatePerformancePlan();
 
-        isSavedPlan = false;
+		tempPerformance1 = performancePlanMap.get(1);
+		tempPerformance2 = performancePlanMap.get(2);
+		tempPerformance3 = performancePlanMap.get(3);
 
-        return "redirect:/admin/performance";
-    }
+		performance = new Performance();
 
-    @RequestMapping(value = "/validate", method = RequestMethod.POST)
-    public String buildPerformance() {
-        logger.debug("VALDIATE performancePlan");
-        List<Participant> participantList = participantManager.getEnabledList();
+		isSavedPlan = false;
 
-        performancePlanMap.put(1, tempPerformance1);
-        performancePlanMap.put(2, tempPerformance2);
-        performancePlanMap.put(3, tempPerformance3);
+		return "redirect:/admin/performance";
+	}
 
-        SatValidator validator = new SatValidator(performancePlanMap,
-                participantList);
-        performancePlanMap = validator.validatePerformancePlan();
+	@RequestMapping(value = "/validate", method = RequestMethod.POST)
+	public String buildPerformance() {
+		logger.debug("VALDIATE performancePlan");
+		List<Participant> participantList = participantManager.getEnabledList();
 
-        tempPerformance1 = performancePlanMap.get(1);
-        tempPerformance2 = performancePlanMap.get(2);
-        tempPerformance3 = performancePlanMap.get(3);
+		performancePlanMap.put(1, tempPerformance1);
+		performancePlanMap.put(2, tempPerformance2);
+		performancePlanMap.put(3, tempPerformance3);
 
-        return "redirect:/admin/performance";
-    }
+		SatValidator validator = new SatValidator(performancePlanMap,
+				participantList);
+		performancePlanMap = validator.validatePerformancePlan();
 
-    @RequestMapping(value = "/save")
-    public String savePerformancePlan() {
-        logger.debug("SAVE the performanceplan");
+		tempPerformance1 = performancePlanMap.get(1);
+		tempPerformance2 = performancePlanMap.get(2);
+		tempPerformance3 = performancePlanMap.get(3);
 
-        tempPerformance1.setEnabled(true);
-        tempPerformance2.setEnabled(true);
-        tempPerformance3.setEnabled(true);
+		return "redirect:/admin/performance";
+	}
 
-        List<Performance> performances = new ArrayList<Performance>();
-        performances.add(tempPerformance1);
-        performances.add(tempPerformance2);
-        performances.add(tempPerformance3);
+	@RequestMapping(value = "/save")
+	public String savePerformancePlan() {
+		logger.debug("SAVE the performanceplan");
 
-        performancePlan.setPerformances(performances);
+		tempPerformance1.setEnabled(true);
+		tempPerformance2.setEnabled(true);
+		tempPerformance3.setEnabled(true);
 
-        performancePlan.setDateTime(LocalDate.now());
-        performancePlan.setEnabled(true);
+		List<Performance> performances = new ArrayList<Performance>();
+		performances.add(tempPerformance1);
+		performances.add(tempPerformance2);
+		performances.add(tempPerformance3);
 
-        // funktioniert irgendwie noch nicht
-        // if (performancePlanManager.contains(performancePlan)) {
-        // performancePlanManager.merge(performancePlan);
-        // } else {
-        // performancePlanManager.persist(performancePlan);
-        // }
+		performancePlan.setPerformances(performances);
 
-        performancePlanManager.merge(performancePlan);
+		performancePlan.setDateTime(LocalDate.now());
+		performancePlan.setEnabled(true);
 
-        isSavedPlan = true;
+		// funktioniert irgendwie noch nicht
+		// if (performancePlanManager.contains(performancePlan)) {
+		// performancePlanManager.merge(performancePlan);
+		// } else {
+		// performancePlanManager.persist(performancePlan);
+		// }
 
-        performance = new Performance();
+		performancePlanManager.merge(performancePlan);
 
-        return "redirect:/admin/performance";
-    }
+		isSavedPlan = true;
 
-    @RequestMapping(value = "/show/{planid}")
-    public String showPerformancePlan(@PathVariable("planid") Integer planid,
-            ModelMap map) {
-        logger.debug("Show Performanceplan with id " + planid);
+		performance = new Performance();
 
-        PerformancePlan plan = performancePlanManager.get(planid);
-        List<Participant> participantList = participantManager.getEnabledList();
+		return "redirect:/admin/performance";
+	}
 
-        List<Course> fetchedCourses = courseManager.getEnabledList();
-        List<Performance> fetchedPerformances = plan.getPerformances();
+	@RequestMapping(value = "/show/{planid}")
+	public String showPerformancePlan(@PathVariable("planid") Integer planid,
+			ModelMap map) {
+		logger.debug("Show Performanceplan with id " + planid);
 
-        if (fetchedPerformances.size() != 3) {
-            return "redirect:/admin/performance";
-        }
+		PerformancePlan plan = performancePlanManager.get(planid);
+		List<Participant> participantList = participantManager.getEnabledList();
 
-        for (Performance currentPerformance : fetchedPerformances) {
-            List<Course> courseList = new ArrayList<Course>();
-            for (Integer currentID : currentPerformance.getCourseIds()) {
-                for (Course currrentCourse : fetchedCourses) {
-                    if (currrentCourse.getCid() == currentID) {
-                        courseList.add(currrentCourse);
-                        continue;
-                    }
-                }
-            }
-            currentPerformance.setCourses(courseList);
-        }
+		List<Course> fetchedCourses = courseManager.getEnabledList();
+		List<Performance> fetchedPerformances = plan.getPerformances();
 
-        tempPerformance1 = fetchedPerformances.get(0);
-        tempPerformance2 = fetchedPerformances.get(1);
-        tempPerformance3 = fetchedPerformances.get(2);
+		if (fetchedPerformances.size() != 3) {
+			return "redirect:/admin/performance";
+		}
 
-        performancePlanMap = new HashMap<Integer, Performance>();
+		for (Performance currentPerformance : fetchedPerformances) {
+			List<Course> courseList = new ArrayList<Course>();
+			for (Integer currentID : currentPerformance.getCourseIds()) {
+				for (Course currrentCourse : fetchedCourses) {
+					if (currrentCourse.getCid() == currentID) {
+						courseList.add(currrentCourse);
+						continue;
+					}
+				}
+			}
+			currentPerformance.setCourses(courseList);
+		}
 
-        performancePlanMap.put(1, tempPerformance1);
-        performancePlanMap.put(2, tempPerformance2);
-        performancePlanMap.put(3, tempPerformance3);
+		tempPerformance1 = fetchedPerformances.get(0);
+		tempPerformance2 = fetchedPerformances.get(1);
+		tempPerformance3 = fetchedPerformances.get(2);
 
-        SatValidator validator = new SatValidator(performancePlanMap,
-                participantList);
-        performancePlanMap = validator.validatePerformancePlan();
+		performancePlanMap = new HashMap<Integer, Performance>();
 
-        tempPerformance1 = performancePlanMap.get(1);
-        tempPerformance2 = performancePlanMap.get(2);
-        tempPerformance3 = performancePlanMap.get(3);
+		performancePlanMap.put(1, tempPerformance1);
+		performancePlanMap.put(2, tempPerformance2);
+		performancePlanMap.put(3, tempPerformance3);
 
-        isSavedPlan = true;
+		SatValidator validator = new SatValidator(performancePlanMap,
+				participantList);
+		performancePlanMap = validator.validatePerformancePlan();
 
-        performance = new Performance();
+		tempPerformance1 = performancePlanMap.get(1);
+		tempPerformance2 = performancePlanMap.get(2);
+		tempPerformance3 = performancePlanMap.get(3);
 
-        return "redirect:/admin/performance";
-    }
+		isSavedPlan = true;
 
-    @RequestMapping(value = "/delete/{planid}")
-    public String deletePerformancePlan(@PathVariable("planid") Integer planid) {
-        logger.debug("Delete Performanceplan with id " + planid);
+		performance = new Performance();
 
-        PerformancePlan plan = performancePlanManager.get(planid);
-        plan.setEnabled(false);
+		return "redirect:/admin/performance";
+	}
 
-        performancePlanManager.merge(plan);
+	@RequestMapping(value = "/delete/{planid}")
+	public String deletePerformancePlan(@PathVariable("planid") Integer planid) {
+		logger.debug("Delete Performanceplan with id " + planid);
 
-        return "redirect:/admin/performance";
-    }
+		PerformancePlan plan = performancePlanManager.get(planid);
+		plan.setEnabled(false);
 
-    private void setCheckedRestrictions(HttpServletRequest request) {
-        if (request.getParameter("CheckboxBallet") != null) {
-            this.balletRestriction = true;
-        } else {
-            this.balletRestriction = false;
-        }
-        if (request.getParameter("CheckboxTwoCourseBreak") != null) {
-            this.twoBreaksRestriction = true;
-        } else {
-            this.twoBreaksRestriction = false;
-        }
-        if (request.getParameter("CheckboxAdvancedAtEnd") != null) {
-            this.advancedAtEndRestriction = true;
-        } else {
-            this.advancedAtEndRestriction = false;
-        }
-        if (request.getParameter("CheckboxBalancedSpectators") != null) {
-            this.balancedAmountOfSpectators = true;
-        } else {
-            this.balancedAmountOfSpectators = false;
-        }
-        if (request.getParameter("CheckboxBalancedAgeGroup") != null) {
-            this.balancedAgeGroup = true;
-        } else {
-            this.balancedAgeGroup = false;
-        }
-        if (request.getParameter("CheckboxMultipleGroupsSamePerformance") != null) {
-            this.multipleGroupsSamePerformance = true;
-        } else {
-            this.multipleGroupsSamePerformance = false;
-        }
-        if (request.getParameter("CheckboxSibsSamePerformance") != null) {
-            this.sibsSamePerformance = true;
-        } else {
-            this.sibsSamePerformance = false;
-        }
-    }
+		performancePlanManager.merge(plan);
 
-    public void setPerformanceManager(PerformanceManager performanceManager) {
-        this.performanceManager = performanceManager;
-    }
+		return "redirect:/admin/performance";
+	}
+
+	private void setCheckedRestrictions(HttpServletRequest request) {
+		if (request.getParameter("CheckboxBallet") != null) {
+			this.balletRestriction = true;
+		} else {
+			this.balletRestriction = false;
+		}
+		if (request.getParameter("CheckboxTwoCourseBreak") != null) {
+			this.twoBreaksRestriction = true;
+		} else {
+			this.twoBreaksRestriction = false;
+		}
+		if (request.getParameter("CheckboxAdvancedAtEnd") != null) {
+			this.advancedAtEndRestriction = true;
+		} else {
+			this.advancedAtEndRestriction = false;
+		}
+		if (request.getParameter("CheckboxBalancedSpectators") != null) {
+			this.balancedAmountOfSpectators = true;
+		} else {
+			this.balancedAmountOfSpectators = false;
+		}
+		if (request.getParameter("CheckboxBalancedAgeGroup") != null) {
+			this.balancedAgeGroup = true;
+		} else {
+			this.balancedAgeGroup = false;
+		}
+		if (request.getParameter("CheckboxMultipleGroupsSamePerformance") != null) {
+			this.multipleGroupsSamePerformance = true;
+		} else {
+			this.multipleGroupsSamePerformance = false;
+		}
+		if (request.getParameter("CheckboxSibsSamePerformance") != null) {
+			this.sibsSamePerformance = true;
+		} else {
+			this.sibsSamePerformance = false;
+		}
+	}
+
+	public void setPerformanceManager(PerformanceManager performanceManager) {
+		this.performanceManager = performanceManager;
+	}
 }
