@@ -1023,7 +1023,8 @@ public class GenerateSatSolution {
      * @return
      */
     private Map<Integer, Performance> backMapping(int[] solution,
-            List<Course> courses) {
+            List<Course> courses) throws SatException {
+
         Map<Integer, Performance> plan = new HashMap<Integer, Performance>();
         Performance p1 = new Performance();
         Performance p2 = new Performance();
@@ -1107,7 +1108,7 @@ public class GenerateSatSolution {
                 return model;
             } else {
                 System.out.println("Unsatisfiable !");
-                throw new SatException();
+                throw new SatException("Problem is unsatisfiable");
             }
         } catch (TimeoutException e) {
             throw new SatException("Execution too long");
