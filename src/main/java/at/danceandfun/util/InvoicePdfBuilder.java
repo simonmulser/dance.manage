@@ -100,7 +100,7 @@ public class InvoicePdfBuilder extends AbstractITextPdfView {
 
 		printNewLine(doc, 1);
 
-		p = new Paragraph("Rechnungsnummer: " + invoice.getIid(), times);
+		p = new Paragraph("Belegnummer: " + invoice.getIid(), times);
 		p.setAlignment(Element.ALIGN_LEFT);
 		doc.add(p);
 		DateTimeFormatter fmt = DateTimeFormat.forPattern("dd.MM.yyyy");
