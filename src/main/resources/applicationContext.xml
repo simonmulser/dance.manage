@@ -62,7 +62,7 @@
 
     <bean id="persistenceExceptionTranslationPostProcessor"
         class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
-
+    
     <bean id="messageSource"
         class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
         <property name="basename" value="classpath:messages"></property>
