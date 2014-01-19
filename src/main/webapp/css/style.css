@@ -1369,12 +1369,24 @@ color: #333;
 div.newestRatings{
 	float:left;
 	margin-left:10px;
+	margin-bottom:10px;
+	margin-top:10px;
 }
 
-.newestRatings .icon-plus-sign{
+div.newestRatingsClear{
+	margin-left:10px;
+	margin-bottom:10px;
+	clear:both;
+}
+
+div.ratingName{
+	font-weight:bold;
+}
+
+.icon-plus-sign{
 	color:#74DF00;
 }
-.newestRatings .icon-minus-sign{
+.icon-minus-sign{
 	color:#FF4000;
 }
 

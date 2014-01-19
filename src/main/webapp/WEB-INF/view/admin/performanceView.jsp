@@ -4,6 +4,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
 <%@taglib uri="http://displaytag.sf.net" prefix="display"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 <%@taglib prefix="joda" uri="http://www.joda.org/joda/time/tags"%>
 
@@ -20,10 +21,11 @@
 	<dmtags:span width="6">
 		<dmtags:widget title="${i18nCreatePlan}" icon="icon-camera">
 			<form:form method="post" action="performance/build"
-				commandName="performance" class="form-horizontal">
+				commandName="performancePlan" class="form-horizontal">
 				<div>
 					<spring:message code="label.createPerformancePlan" />
 				</div>
+				
 				<div style="margin-top: 20px">
 					<label class="checkbox">
 						<input type="checkbox" value="Ballet"	id="CheckboxBallet" name="CheckboxBallet" <c:if test="${balletRestriction}">checked</c:if>>
@@ -52,9 +54,19 @@
 					
 					<label class="checkbox">
 						<input type="checkbox" value="Sibs"	id="CheckboxSibsSamePerformance" name="CheckboxSibsSamePerformance" <c:if test="${sibsSamePerformance}">checked</c:if>>
-						<div style="float:left; margin-left: 4px"><i class="icon-adn"></i></div><div style="margin-left: 25px"><spring:message code='help.restriction.sibsSamePerformance' /></div>
+						<div style="float:left; margin-left: 4px"><i class="icon-heart"></i></div><div style="margin-left: 25px"><spring:message code='help.restriction.sibsSamePerformance' /></div>
 					</label>
 				</div>
+				
+				<div class="control-group" style="margin-left: -30px">
+					<form:label path="dateTime" class="control-label">
+				                </form:label>
+					<div class="span6">
+						<form:input path="dateTime" id="datepicker" placeholder="01.10.2013" /><br/>
+						<form:errors path="dateTime" cssClass="error" />
+					</div>
+				</div>
+				
 				<div style="margin-top: 20px">
 					<input type="submit" value="<spring:message code="label.create"/>"
 						class="btn btn-primary" />
@@ -68,11 +80,14 @@
 		<dmtags:widget title="${i18nShowPlan}" icon="icon-camera">
 			<spring:message var="i18nOverview" code="widget.overview" />
 				<display:table name="performancePlanList" id="row"
-					class="table table-striped table-bordered displaytag" pagesize="4"
+					class="table table-striped table-bordered displaytag" pagesize="5"
 					requestURI="/admin/performance" defaultsort="1">
+					<display:column sortable="true" titleKey="label.performanceCreated">
+						<fmt:formatDate value="${row.created}" pattern="dd.MM.yyyy HH:mm:ss" />
+					</display:column>
 					<display:column sortable="true" titleKey="label.date"
-						class="colName" style="width: 90%">
-						<c:out value="${row.dateTime}" />
+						class="colName" style="width: 45%">
+						<joda:format value="${row.dateTime}" pattern="dd.MM.yyyy" />
 					</display:column>
 					<display:column style="width: 10%">
 						<c:set var="planid" value="${row.planid}" />
@@ -98,7 +113,7 @@
 	
 	<dmtags:span width="12">
 		<c:if test="${!empty performanceList1}">
-			<dmtags:widget title="${i18nScheduleProposal}" style="table"
+			<dmtags:widget title="${i18nScheduleProposal}&nbsp;&nbsp;${dateTime.toString('dd.MM.yyyy')}" style="table"
 				icon="icon-list">
 				<br />
 				<div class="tabbable">
@@ -133,10 +148,10 @@
 											class="inline-tooltip icon icon-adn"></i></th>
 										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.multipleGroupsSamePerformance' />"
-											class="inline-tooltip icon icon-group"></i></th>
+											class="inline-tooltip icon icon-sitemap"></i></th>
 										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.sibsSamePerformance' />"
-											class="inline-tooltip icon icon-adn"></i></th>
+											class="inline-tooltip icon icon-heart"></i></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -253,10 +268,10 @@
 											class="inline-tooltip icon icon-adn"></i></th>
 										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.multipleGroupsSamePerformance' />"
-											class="inline-tooltip icon icon-group"></i></th>
+											class="inline-tooltip icon icon-sitemap"></i></th>
 										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.sibsSamePerformance' />"
-											class="inline-tooltip icon icon-adn"></i></th>
+											class="inline-tooltip icon icon-heart"></i></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -373,10 +388,10 @@
 											class="inline-tooltip icon icon-adn"></i></th>
 										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.multipleGroupsSamePerformance' />"
-											class="inline-tooltip icon icon-group"></i></th>
+											class="inline-tooltip icon icon-sitemap"></i></th>
 										<th style="width: 4%"><i
 											title="<spring:message code='help.restriction.sibsSamePerformance' />"
-											class="inline-tooltip icon icon-adn"></i></th>
+											class="inline-tooltip icon icon-heart"></i></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -506,6 +521,7 @@ $(".openDialog").click(function() { //Löschen rückbestätigen
 	$("#dialog-confirm").dialog("open");
 	return false;
 });
+
 $("#dialog-confirm").dialog({
 	autoOpen : false,
 	resizable : false,
@@ -520,6 +536,17 @@ $("#dialog-confirm").dialog({
 			$(this).dialog("close");
 		}
 	}
+});
+
+$("#datepicker").datepicker({
+	showOn : "button",
+	buttonImage : "/dancemanage/css/ui/images/calendar.gif",
+	buttonImageOnly : true,
+	dateFormat : "dd.mm.yy",
+	changeMonth : true,
+	changeYear : true,
+	yearRange : "2014:2025",
+	defaultDate : 0
 });
 </script>
 <script src="<c:url value="/js/searchBoxAutoComplete.js" />"></script>
