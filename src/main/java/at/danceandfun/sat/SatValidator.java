@@ -162,7 +162,8 @@ public class SatValidator {
                 for (int i = 0; i < validatedCourseList.size(); i++) {
 
                     if (validatedCourseList.get(i)
-                            .equals(currentCP.getCourse())) {
+                            .equals(currentCP.getCourse())
+                            && currentCP.getCourse().isEnabled()) {
                         courseIDList.add(i);
                     }
                 }
