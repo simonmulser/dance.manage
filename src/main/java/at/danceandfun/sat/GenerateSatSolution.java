@@ -634,8 +634,8 @@ public class GenerateSatSolution {
             }
         }
 
-        List<Integer> idList_copy = new ArrayList<Integer>();
-        idList_copy = idList;
+        List<Integer> idListCopy = new ArrayList<Integer>();
+        idListCopy = idList;
         int counter = 0;
 
         // Remove all participants where the sibs are not in the idList
@@ -651,11 +651,11 @@ public class GenerateSatSolution {
                 }
             }
             if (counter != participants.get(idList.get(k)).getSiblings().size()) {
-                idList_copy.remove(k);
+                idListCopy.remove(k);
             }
         }
-        idList = idList_copy;
-        List<Integer> idList_copyX = new ArrayList<Integer>();
+        idList = idListCopy;
+        List<Integer> idListCopyX = new ArrayList<Integer>();
         boolean siblingsAlreadyIn;
 
         // Delete id's from siblings out of idList (= no double entries)
@@ -663,18 +663,18 @@ public class GenerateSatSolution {
             siblingsAlreadyIn = false;
             for (Participant sibl : participants.get(idList.get(i))
                     .getSiblings()) {
-                for (int j = 0; j < idList_copyX.size(); j++) {
-                    if (sibl.getPid() == participants.get(idList_copyX.get(j))
+                for (int j = 0; j < idListCopyX.size(); j++) {
+                    if (sibl.getPid() == participants.get(idListCopyX.get(j))
                             .getPid()) {
                         siblingsAlreadyIn = true;
                     }
                 }
             }
             if (!siblingsAlreadyIn) {
-                idList_copyX.add(idList.get(i));
+                idListCopyX.add(idList.get(i));
             }
         }
-        idList = idList_copyX;
+        idList = idListCopyX;
         int counterX = -1;
 
         // Now count the amount of the courses in the different performances

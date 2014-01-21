@@ -22,10 +22,10 @@ public class EMailAuthentication {
 
         SimpleMailMessage message = new SimpleMailMessage(simpleMailMessage);
 
-        String URL = "http://localhost:8080/dancemanage/validation?access="
+        String url = "http://localhost:8080/dancemanage/validation?access="
                 + p.getActivationUUID();
         message.setText(String.format(simpleMailMessage.getText(),
-                p.getLastname(), URL));
+                p.getLastname(), url));
 
         message.setTo(p.getEmail());
         mailSender.send(message);
