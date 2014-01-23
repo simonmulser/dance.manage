@@ -160,8 +160,7 @@
 		<c:if test="${!empty performanceList1}">
 			<dmtags:widget
 				title="${i18nScheduleProposal}&nbsp;&nbsp;${dateTime.toString('dd.MM.yyyy')}"
-				style="table" icon="icon-list"
-				pdfLink="performance/viewPerformancePdf/${null}">
+				style="table" icon="icon-list" pdfLink="performance/viewPerformancePdf/${currentPlanId}">
 				<br />
 				<div class="tabbable">
 					<ul class="nav nav-tabs">

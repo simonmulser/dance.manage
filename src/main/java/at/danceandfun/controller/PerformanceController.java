@@ -59,6 +59,7 @@ public class PerformanceController {
     private PerformancePlan performancePlan;
     private List<PerformancePlan> performancePlanList;
     private LocalDate dateTime;
+    private int currentPlanId;
     private boolean balletRestriction = true;
     private boolean twoBreaksRestriction = true;
     private boolean advancedAtEndRestriction = true;
@@ -96,6 +97,7 @@ public class PerformanceController {
         map.addAttribute("performancePlanList",
                 performancePlanManager.getEnabledList());
         map.addAttribute("dateTime", dateTime);
+        map.addAttribute("currentPlanId", currentPlanId);
 
         editTrue = false;
         return "admin/performanceView";
@@ -225,9 +227,11 @@ public class PerformanceController {
         performancePlan.setDateTime(dateTime);
         performancePlan.setEnabled(true);
 
-        performancePlanManager.merge(performancePlan);
+        performancePlanManager.persist(performancePlan);
 
         isSavedPlan = true;
+
+        currentPlanId = performancePlan.getPlanid();
 
         performance = new Performance();
 
@@ -280,7 +284,11 @@ public class PerformanceController {
         tempPerformance2 = performancePlanMap.get(2);
         tempPerformance3 = performancePlanMap.get(3);
 
+        dateTime = plan.getDateTime();
+
         isSavedPlan = true;
+
+        currentPlanId = planid;
 
         performance = new Performance();
 
