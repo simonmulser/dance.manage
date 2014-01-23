@@ -24,16 +24,16 @@
 					<br />
 
 					<div class="tab-content">
-						<c:forEach items="${enabledCourses}" var="courseParticipant" varStatus="loop">
-							<div class="tab-pane <c:if test="${loop.first}">active</c:if>" id="${courseParticipant.course.slug}">
+						<c:forEach items="${enabledCourses}" var="courseParticipant" varStatus="loopOuter">
+							<div class="tab-pane <c:if test="${loopOuter.first}">active</c:if>" id="${courseParticipant.course.slug}">
 								<c:choose>
 									<c:when test="${courseParticipant.course.appointments.size() gt 0}">
 										<div class="accordion" id="accordion2">
-											<c:forEach items="${courseParticipant.course.appointments}" var="appointment" varStatus="loop">
+											<c:forEach items="${courseParticipant.course.appointments}" var="appointment" varStatus="loopInner">
 												<c:set var="isAbsent" value="false" />
 												<div class="accordion-group">
 													<div class="accordion-heading">
-														<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse${loop.index}"> ${appointment.number}.&nbsp;<spring:message code="label.appointment" /> <c:if
+														<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse${loopOuter.index}_${loopInner.index}"> ${appointment.number}.&nbsp;<spring:message code="label.appointment" /> <c:if
 																test="${not empty appointment.appointmentDate}">&nbsp;(${appointment.appointmentDate})</c:if>
 														</a>
 													</div>
@@ -45,8 +45,7 @@
 															<c:set var="absenceForAppointment" value="${absence}" />
 														</c:if>
 													</c:forEach>
-
-													<div id="collapse${loop.index}" class="accordion-body collapse" style="height: 0px;">
+													<div id="collapse${loopOuter.index}_${loopInner.index}" class="accordion-body collapse" style="height: 0px;">
 														<div class="accordion-inner">
 															<c:choose>
 																<c:when test="${isAbsent}">
