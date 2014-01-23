@@ -118,7 +118,7 @@
 		<c:if test="${!empty participantList}">
 			<spring:message var="i18nOverview" code="widget.overview" />
 			<dmtags:widget title="${i18nOverview}" style="table" icon="icon-list"
-				id="list">
+				id="list" pdfLink="participant/viewParticipantListPdf">
 				<display:table name="participantList" id="row"
 					class="table table-striped table-bordered displaytag" pagesize="15"
 					requestURI="/admin/participant">

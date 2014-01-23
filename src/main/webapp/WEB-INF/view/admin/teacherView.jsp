@@ -66,8 +66,9 @@
 									items="${teacher.courses}" var="cou">
 									${cou.name} ${cou.cid} ${cou.enabled}
 									<c:if test="${cou.enabled }">
-									<span class="courseTaggg">${cou.name}&nbsp;<i
-										id="${cou.cid}" class="icon icon-remove"></i></span></c:if>
+										<span class="courseTaggg">${cou.name}&nbsp;<i
+											id="${cou.cid}" class="icon icon-remove"></i></span>
+									</c:if>
 								</c:forEach>
 							</span>
 						</div>
@@ -97,7 +98,8 @@
 		</dmtags:widget>
 		<c:if test="${!empty teacherList}">
 			<spring:message var="i18nOverview" code="widget.overview" />
-			<dmtags:widget title="${i18nOverview}" style="table" icon="icon-list">
+			<dmtags:widget title="${i18nOverview}" style="table" icon="icon-list"
+				pdfLink="teacher/viewTeacherListPdf">
 				<table class="table table-striped table-bordered">
 					<tr>
 						<th><spring:message code="label.name" /></th>

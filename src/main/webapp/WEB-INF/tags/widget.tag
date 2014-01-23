@@ -8,7 +8,8 @@
 <%@attribute name="retractable" required="false"
 	type="java.lang.Boolean"%>
 <%@attribute name="retractedPerDefault" required="false"
-	type="java.lang.Boolean"%>	
+	type="java.lang.Boolean"%>
+<%@attribute name="pdfLink" required="false" type="java.lang.String"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <jsp:useBean id="random" class="java.util.Random" scope="application" />
@@ -25,15 +26,23 @@
 </c:choose>
 
 <div class="${widgetStyle}" id="${not empty id ? id : ''}">
-	<div class="widget-header" id="widget-header-${widgetId}" ${retractable ? 'style="cursor: pointer;"' : ''}>
+	<div class="widget-header" id="widget-header-${widgetId}"
+		${retractable ? 'style="cursor: pointer;"' : ''}>
 		<i class="${icon}"></i>
 		<h3>${title}</h3>
+
+		<c:if test="${not empty pdfLink}">
+			<a href="${pdfLink}"><i class="widgetpdflink icon-print"></i></a>
+		</c:if>
+
 		<c:if test="${retractable}">
-			<i id="widget-retractIcon-${widgetId}" class="widgetcaret ${retractedPerDefault ? 'icon-caret-up' : 'icon-caret-down'}"></i>
+			<i id="widget-retractIcon-${widgetId}"
+				class="widgetcaret ${retractedPerDefault ? 'icon-caret-up' : 'icon-caret-down'}"></i>
 		</c:if>
 	</div>
 	<!-- /widget-header -->
-	<div class="widget-content" id="widget-content-${widgetId}" ${retractedPerDefault ? 'style="display:none"' : ''}>
+	<div class="widget-content" id="widget-content-${widgetId}"
+		${retractedPerDefault ? 'style="display:none"' : ''}>
 		<jsp:doBody />
 	</div>
 	<!-- /widget-content -->
@@ -48,7 +57,7 @@
 			content.toggle('slide', {
 				direction : 'up'
 			});
-			if(retractIcon.attr('class') == 'widgetcaret icon-caret-up') {
+			if (retractIcon.attr('class') == 'widgetcaret icon-caret-up') {
 				retractIcon.attr('class', 'widgetcaret icon-caret-down');
 			} else {
 				retractIcon.attr('class', 'widgetcaret icon-caret-up');

@@ -1,6 +1,7 @@
 package at.danceandfun.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import at.danceandfun.entity.Course;
@@ -49,7 +51,6 @@ public class TeacherController {
     private CourseManager courseManager;
     @Autowired
     private PersonManager personManager;
-
 
     private Teacher teacher;
 
@@ -240,6 +241,26 @@ public class TeacherController {
     public @ResponseBody
     List<Course> getCourses(@RequestParam("term") String query) {
         return courseManager.searchForCourses(teacher, query);
+    }
+
+    @RequestMapping(value = "/viewTeacherListPdf", method = RequestMethod.GET)
+    public ModelAndView viewTeacherListPdf() {
+        logger.debug("Creating teacher list pdf");
+
+        HashMap<String, Object> map = new HashMap<String, Object>(1);
+        DetachedCriteria criteria = DetachedCriteria.forClass(Teacher.class);
+        criteria.addOrder(Order.asc("lastname"));
+        criteria.addOrder(Order.asc("firstname"));
+        List<Teacher> teacherList = new ArrayList<Teacher>();
+        for (Teacher teacher : teacherManager
+                .getEnabledListWithCriteria(criteria)) {
+            if (teacher.getCourses().size() > 0) {
+                teacher.setCourses(courseManager.getEnabledCourses(teacher));
+            }
+            teacherList.add(teacher);
+        }
+        map.put("teacherList", teacherList);
+        return new ModelAndView("viewTeacherListPdf", map);
     }
 
     public void setTeacherManager(TeacherManager teacherManager) {

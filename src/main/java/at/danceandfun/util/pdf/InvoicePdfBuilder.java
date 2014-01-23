@@ -1,4 +1,4 @@
-package at.danceandfun.util;
+package at.danceandfun.util.pdf;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -11,21 +11,16 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import at.danceandfun.entity.Invoice;
-import at.danceandfun.entity.Person;
 import at.danceandfun.entity.Position;
+import at.danceandfun.util.AbstractITextPdfView;
 
 import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.CMYKColor;
-import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -49,28 +44,11 @@ public class InvoicePdfBuilder extends AbstractITextPdfView {
         Invoice invoice = (Invoice) model.get("invoice");
 
         // prepare font
-        Font times = FontFactory.getFont(FontFactory.TIMES);
-        times.setSize(11);
-        Font timesHeader = FontFactory.getFont(FontFactory.TIMES);
-        timesHeader.setSize(11);
+        Font times = PdfTemplateUtils.getDefaultSerifFont();
+        Font timesHeader = PdfTemplateUtils.getDefaultSerifFont();
         timesHeader.setColor(BaseColor.WHITE);
 
-        // draw upper bar
-        PdfContentByte cb = writer.getDirectContent();
-        cb.setColorFill(new CMYKColor(0f, 0.376f, 1f, 0f));
-        cb.rectangle(
-                doc.leftMargin(),
-                doc.getPageSize().getHeight() - doc.topMargin(),
-                doc.getPageSize().getWidth() - doc.leftMargin()
-                        - doc.rightMargin(), 5f);
-        cb.fill();
-
-        // draw lower bar
-        cb = writer.getDirectContent();
-        cb.setColorFill(new CMYKColor(0f, 0.376f, 1f, 0f));
-        cb.rectangle(doc.leftMargin(), doc.bottomMargin(), doc.getPageSize()
-                .getWidth() - doc.leftMargin() - doc.rightMargin(), 5f);
-        cb.fill();
+        PdfTemplateUtils.drawTemplateBars(doc, writer);
 
         Paragraph studioName = new Paragraph("dance.manage");
         studioName.setAlignment(Element.ALIGN_RIGHT);
@@ -83,7 +61,7 @@ public class InvoicePdfBuilder extends AbstractITextPdfView {
         table.setSpacingBefore(10);
 
         // space before address
-        printNewLine(doc, 3);
+        PdfTemplateUtils.printNewLine(doc, 3);
 
         Paragraph p = new Paragraph("Dance & Fun", times);
         p.setAlignment(Element.ALIGN_RIGHT);
@@ -95,7 +73,7 @@ public class InvoicePdfBuilder extends AbstractITextPdfView {
         p.setAlignment(Element.ALIGN_RIGHT);
         doc.add(p);
 
-        printNewLine(doc, 1);
+        PdfTemplateUtils.printNewLine(doc, 1);
 
         p = new Paragraph("Belegnummer: " + invoice.getIid(), times);
         p.setAlignment(Element.ALIGN_LEFT);
@@ -105,16 +83,16 @@ public class InvoicePdfBuilder extends AbstractITextPdfView {
         p.setAlignment(Element.ALIGN_LEFT);
         doc.add(p);
 
-        printNewLine(doc, 1);
+        PdfTemplateUtils.printNewLine(doc, 1);
 
         // addressee
         if (invoice.getParent() != null) {
-            printAddress(doc, times, invoice.getParent());
+            PdfTemplateUtils.printAddress(doc, times, invoice.getParent());
         } else {
-            printAddress(doc, times, invoice.getParticipant());
+            PdfTemplateUtils.printAddress(doc, times, invoice.getParticipant());
         }
 
-        printNewLine(doc, 2);
+        PdfTemplateUtils.printNewLine(doc, 2);
 
         // define table header cell
         PdfPCell cell = new PdfPCell();
@@ -192,70 +170,5 @@ public class InvoicePdfBuilder extends AbstractITextPdfView {
         table.addCell(cell);
 
         doc.add(table);
-
-    }
-
-    public static void printAddress(Document doc, Person person)
-            throws DocumentException {
-        doc.add(new Chunk(person.getFirstname() + " " + person.getLastname()));
-        doc.add(Chunk.NEWLINE);
-        if (person.getAddress().getStreet() != null
-                && person.getAddress().getNumber() != null
-                && person.getAddress().getStair() != null
-                && person.getAddress().getDoor() != null) {
-            doc.add(new Chunk(person.getAddress().getStreet() + " "
-                    + person.getAddress().getNumber() + "/"
-                    + person.getAddress().getStair() + "/"
-                    + person.getAddress().getDoor()));
-        } else if (person.getAddress().getStreet() != null
-                && person.getAddress().getNumber() != null
-                && person.getAddress().getDoor() != null) {
-            doc.add(new Chunk(person.getAddress().getStreet() + " "
-                    + person.getAddress().getNumber() + "/"
-                    + person.getAddress().getDoor()));
-        } else if (person.getAddress().getStreet() != null
-                && person.getAddress().getNumber() != null) {
-            doc.add(new Chunk(person.getAddress().getStreet() + " "
-                    + person.getAddress().getNumber()));
-        }
-        doc.add(Chunk.NEWLINE);
-        doc.add(new Chunk(person.getAddress().getZip() + " "
-                + person.getAddress().getCity()));
-    }
-
-    public static void printAddress(Document doc, Font font, Person person)
-            throws DocumentException {
-        doc.add(new Chunk(person.getFirstname() + " " + person.getLastname(),
-                font));
-        doc.add(Chunk.NEWLINE);
-        if (person.getAddress().getStreet() != null
-                && person.getAddress().getNumber() != null
-                && person.getAddress().getStair() != null
-                && person.getAddress().getDoor() != null) {
-            doc.add(new Chunk(person.getAddress().getStreet() + " "
-                    + person.getAddress().getNumber() + "/"
-                    + person.getAddress().getStair() + "/"
-                    + person.getAddress().getDoor(), font));
-        } else if (person.getAddress().getStreet() != null
-                && person.getAddress().getNumber() != null
-                && person.getAddress().getDoor() != null) {
-            doc.add(new Chunk(person.getAddress().getStreet() + " "
-                    + person.getAddress().getNumber() + "/"
-                    + person.getAddress().getDoor(), font));
-        } else if (person.getAddress().getStreet() != null
-                && person.getAddress().getNumber() != null) {
-            doc.add(new Chunk(person.getAddress().getStreet() + " "
-                    + person.getAddress().getNumber(), font));
-        }
-        doc.add(Chunk.NEWLINE);
-        doc.add(new Chunk(person.getAddress().getZip() + " "
-                + person.getAddress().getCity(), font));
-    }
-
-    public static void printNewLine(Document doc, int count)
-            throws DocumentException {
-        for (int i = 0; i < count; i++) {
-            doc.add(Chunk.NEWLINE);
-        }
     }
 }

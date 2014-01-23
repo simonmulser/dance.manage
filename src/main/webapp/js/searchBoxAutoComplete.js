@@ -22,7 +22,7 @@ $(function () {
 
 									select : function(event, ui) {
 										if (ui.item) {
-											window.location.href = '/dancemanage/admin/' + ui.item.oname + '/edit/' + ui.item.id;
+											window.location.href = '/dancemanage/admin/' + ui.item.oname + '/edit/' + ui.item.id + '#add';
 										}
 									}
 		}).data( "ui-autocomplete" )._renderItem = function( ul, item ) {

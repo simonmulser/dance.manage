@@ -195,7 +195,7 @@
 
 		<spring:message var="i18nOverview" code="widget.overview" />
 		<dmtags:widget title="${i18nOverview}" style="table" icon="icon-list"
-			id="list">
+			id="list" pdfLink="course/viewCourseListPdf">
 			<c:if test="${!empty courseList}">
 
 				<display:table name="courseList" id="course"
