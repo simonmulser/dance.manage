@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import at.danceandfun.entity.Course;
@@ -172,13 +173,6 @@ public class PerformanceController {
         tempPerformance2 = performancePlanMap.get(2);
         tempPerformance3 = performancePlanMap.get(3);
 
-        // for (int i = 1; i <= 3; i++) {
-        // System.out.println("Performance: " + i);
-        // for (Course cur : performancePlanMap.get(i).getCourses()) {
-        // System.out.println(cur.getCid());
-        // }
-        // }
-
         performance = new Performance();
 
         isSavedPlan = false;
@@ -187,21 +181,34 @@ public class PerformanceController {
     }
 
     @RequestMapping(value = "/validate", method = RequestMethod.POST)
-    public String buildPerformance() {
-        logger.debug("VALDIATE performancePlan");
-        List<Participant> participantList = participantManager.getEnabledList();
+    public String validatePerformance(
+            ModelMap map,
+            HttpServletRequest request,
+            @ModelAttribute(value = "performancePlan") @Valid PerformancePlan plan,
+            BindingResult result, RedirectAttributes redirectAttributes) {
+        // logger.debug("VALDIATE performancePlan");
+        // List<Participant> participantList =
+        // participantManager.getEnabledList();
+        //
+        // performancePlanMap.put(1, tempPerformance1);
+        // performancePlanMap.put(2, tempPerformance2);
+        // performancePlanMap.put(3, tempPerformance3);
+        //
+        // SatValidator validator = new SatValidator(performancePlanMap,
+        // participantList);
+        // performancePlanMap = validator.validatePerformancePlan();
+        //
+        // tempPerformance1 = performancePlanMap.get(1);
+        // tempPerformance2 = performancePlanMap.get(2);
+        // tempPerformance3 = performancePlanMap.get(3);
 
-        performancePlanMap.put(1, tempPerformance1);
-        performancePlanMap.put(2, tempPerformance2);
-        performancePlanMap.put(3, tempPerformance3);
+        System.out.println("MAP:");
+        System.out.println(request.getParameterMap().size());
 
-        SatValidator validator = new SatValidator(performancePlanMap,
-                participantList);
-        performancePlanMap = validator.validatePerformancePlan();
-
-        tempPerformance1 = performancePlanMap.get(1);
-        tempPerformance2 = performancePlanMap.get(2);
-        tempPerformance3 = performancePlanMap.get(3);
+        // System.out.println("KURSE: ");
+        // for (Course cur : tempPerformance1.getCourses()) {
+        // System.out.println(cur.getName());
+        // }
 
         return "redirect:/admin/performance";
     }
@@ -296,6 +303,12 @@ public class PerformanceController {
         performancePlanManager.merge(plan);
 
         return "redirect:/admin/performance";
+    }
+
+    @RequestMapping(value = "/swap", method = RequestMethod.POST)
+    public void swapCourses(@RequestParam(value = "test") String schaun) {
+        System.out.println("--------------BAM--------------");
+        // System.out.println(rows);
     }
 
     private void setCheckedRestrictions(HttpServletRequest request) {

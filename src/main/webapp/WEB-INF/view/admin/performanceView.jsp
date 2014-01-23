@@ -116,6 +116,7 @@
 			<dmtags:widget title="${i18nScheduleProposal}&nbsp;&nbsp;${dateTime.toString('dd.MM.yyyy')}" style="table"
 				icon="icon-list">
 				<br />
+								
 				<div class="tabbable">
 					<ul class="nav nav-tabs">
 						<li class="active"><a href="#hall1" data-toggle="tab">Saal
@@ -126,7 +127,7 @@
 
 					<div class="tab-content">
 						<div class="tab-pane active" id="hall1">
-							<table class="table table-bordered table-striped">
+							<table id="table1" class="table table-bordered table-striped">
 								<thead>
 									<tr>
 										<th style="width: 60%"><spring:message
@@ -395,8 +396,8 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${performanceList3}" var="validatedCourse">
-										<tr>
+									<c:forEach items="${performanceList3}" var="validatedCourse" varStatus="count">
+										<tr id="${count}">
 											<c:choose>
 												<c:when test="${validatedCourse.dummyCourse}">
 													<td>-</td>
@@ -514,11 +515,38 @@
 	</dmtags:span>
 </dmtags:base>
 
+<script src="<c:url value="/js/jquery.tablednd.js" />"></script>
 <script type="text/javascript">
+$(document).ready(function() {
+    $("#table1").tableDnD({
+    	onDrop: function(table, row) {
+    		var rows = table.tBodies[0].rows;
+    		    		
+    		var data = "test";
+    		
+    		$.post("performance/swap", data, function (theResponse) {
+                $("#response").html(theResponse);  
+            });
+    	}
+    });
+    
+    var row = 0;
+    $('tr').each(function () {
+       $(this).data('order',++row);
+       $(this).attr('id', 'was-at-'+$(this).data('order'));
+    });
+});
 
 $(".openDialog").click(function() { //Löschen rückbestätigen
 	$("#deleteId").text($(this).attr("id"));
 	$("#dialog-confirm").dialog("open");
+	
+	var data = "test";
+	
+	$.post("performance/swap", data, function (theResponse) {
+        $("#response").html(theResponse);  
+    });
+	
 	return false;
 });
 
