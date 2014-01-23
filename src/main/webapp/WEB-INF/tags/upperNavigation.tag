@@ -1,6 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<c:set var="localeCode" value="${pageContext.response.locale}" />
 
 <div class="navbar navbar-fixed-top">
 	<div class="navbar-inner">
@@ -10,11 +11,12 @@
 			<c:if test="${user != null}">
 				<div class="nav-collapse">
 					<ul class="nav pull-right">
-						<!-- <li  <c:if test="${pageContext.response.locale eq 'en'}">class="active"</c:if>><a href="?language=en">English</a></li>
-						<li <c:if test="${pageContext.response.locale eq 'de'}">class="active"</c:if>><a href="?language=de">Deutsch</a></li> -->
-						<li><a href="?language=en">English</a></li>
-                        <li><a href="?language=de">Deutsch</a></li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i> ${user.firstname} <b class="caret"></b></a>
+						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-flag"></i>&nbsp;<spring:message code="nav.language" />&nbsp;<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li <c:if test="${localeCode eq 'en'}">class="active"</c:if>><a href="?language=en">English</a></li>
+								<li <c:if test="${localeCode eq 'de'}">class="active"</c:if>><a href="?language=de">Deutsch</a></li>
+							</ul></li>
+						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i>&nbsp;${user.firstname}&nbsp;<b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<li><a href="<c:url value="${editProfileLink}" />"><spring:message code="nav.editProfile" /></a></li>
 								<li><a href="<c:url value='/j_spring_security_logout' />"><spring:message code="nav.logout" /></a></li>

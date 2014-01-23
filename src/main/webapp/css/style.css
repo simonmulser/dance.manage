@@ -1404,6 +1404,10 @@ div.ratingName{
 	color:#FF4000;
 }
 
+.navbar .nav .active>a, .navbar .nav .active>a:hover {
+background-color: #555;
+}
+
 /*-------------------------------------------------------------------
 [displayTag]
 */

@@ -5,10 +5,9 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@attribute name="activesection" required="true"
 	type="java.lang.String"%>
-
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<dmtags:scaffold title="${title}">
 
+<dmtags:scaffold title="${title}">
 <dmtags:navigation activesection="${activesection}"/>
 
 	<dmtags:center>
