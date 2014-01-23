@@ -14,7 +14,7 @@
 			code="widget.performanceInformation" />
 
 		<dmtags:widget title="${i18nPerformanceInformation}" style="table"
-			icon="icon-list">
+			icon="icon-list" pdfLink="lists/viewPerformanceDetailPdf">
 			<display:table name="courses" id="course"
 				class="table table-striped table-bordered displaytag" pagesize="15"
 				requestURI="/admin/lists" defaultsort="1">
@@ -44,7 +44,7 @@
 			<spring:message var="i18nParticipantCourseAmount"
 				code="widget.participantCourseAmount" />
 			<dmtags:widget title="${i18nParticipantCourseAmount}" style="table"
-				icon="icon-list">
+				icon="icon-list" pdfLink="lists/viewParticipantsByCourseCountPdf">
 				<table class="table table-striped table-bordered">
 					<thead>
 						<tr>
@@ -55,18 +55,18 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${participantsByCourseCount}"
-							var="participant" varStatus="loop">
-								<tr>
-									<td>${participant.courseParticipants.size()}</td>
-									<td><c:forEach items="${participant.courseParticipants}"
-											var="courseParticipant" varStatus="loop">
+						<c:forEach items="${participantsByCourseCount}" var="participant"
+							varStatus="loop">
+							<tr>
+								<td>${participant.courseParticipants.size()}</td>
+								<td><c:forEach items="${participant.courseParticipants}"
+										var="courseParticipant" varStatus="loop">
 	                                ${courseParticipant.course.name}
 	                                ${!loop.last ? ', ' : ''}
 	                                </c:forEach></td>
-									<td>${participant.firstname}</td>
-									<td>${participant.lastname}</td>
-								</tr>
+								<td>${participant.firstname}</td>
+								<td>${participant.lastname}</td>
+							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
@@ -76,7 +76,7 @@
 			<spring:message var="i18nSiblingRelationships"
 				code="widget.siblingRelationships" />
 			<dmtags:widget title="${i18nSiblingRelationships}" style="table"
-				icon="icon-list">
+				icon="icon-list" pdfLink="lists/viewParticipantsByNumberOfSiblingsPdf">
 				<table class="table table-striped table-bordered">
 					<thead>
 						<tr>

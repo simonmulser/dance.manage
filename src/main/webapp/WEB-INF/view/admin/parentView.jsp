@@ -34,7 +34,7 @@
 
 		<c:if test="${!empty parentList}">
 			<spring:message var="i18nOverview" code="widget.overview" />
-			<dmtags:widget title="${i18nOverview}" style="table" icon="icon-list">
+			<dmtags:widget title="${i18nOverview}" style="table" icon="icon-list" pdfLink="parent/viewParentListPdf">
 				<display:table name="parentList" id="row"
 					class="table table-striped table-bordered displaytag" pagesize="15"
 					requestURI="/admin/parent" defaultsort="1">

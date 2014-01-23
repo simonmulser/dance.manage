@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import at.danceandfun.entity.Course;
@@ -296,6 +297,58 @@ public class PerformanceController {
         performancePlanManager.merge(plan);
 
         return "redirect:/admin/performance";
+    }
+
+    @RequestMapping(value = "/viewPerformancePdf/{planid}", method = RequestMethod.GET)
+    public ModelAndView viewPerformancePdf(
+            @PathVariable("planid") Integer planid) {
+        logger.debug("Creating performance pdf");
+
+        HashMap<String, Object> map = new HashMap<String, Object>(1);
+        PerformancePlan plan = performancePlanManager.get(planid);
+        List<Participant> participantList = participantManager.getEnabledList();
+
+        List<Course> fetchedCourses = courseManager.getEnabledList();
+        List<Performance> fetchedPerformances = plan.getPerformances();
+
+        for (Performance currentPerformance : fetchedPerformances) {
+            List<Course> courseList = new ArrayList<Course>();
+            for (Integer currentID : currentPerformance.getCourseIds()) {
+                for (Course currrentCourse : fetchedCourses) {
+                    if (currrentCourse.getCid() == currentID) {
+                        courseList.add(currrentCourse);
+                        continue;
+                    }
+                }
+            }
+            currentPerformance.setCourses(courseList);
+        }
+
+        tempPerformance1 = fetchedPerformances.get(0);
+        tempPerformance2 = fetchedPerformances.get(1);
+        tempPerformance3 = fetchedPerformances.get(2);
+
+        performancePlanMap = new HashMap<Integer, Performance>();
+
+        performancePlanMap.put(1, tempPerformance1);
+        performancePlanMap.put(2, tempPerformance2);
+        performancePlanMap.put(3, tempPerformance3);
+
+        SatValidator validator = new SatValidator(performancePlanMap,
+                participantList);
+        performancePlanMap = validator.validatePerformancePlan();
+
+        tempPerformance1 = performancePlanMap.get(1);
+        tempPerformance2 = performancePlanMap.get(2);
+        tempPerformance3 = performancePlanMap.get(3);
+
+        isSavedPlan = true;
+
+        map.put("performanceList1", tempPerformance1.getCourses());
+        map.put("performanceList2", tempPerformance2.getCourses());
+        map.put("performanceList3", tempPerformance3.getCourses());
+
+        return new ModelAndView("viewPerformancePdf", map);
     }
 
     private void setCheckedRestrictions(HttpServletRequest request) {

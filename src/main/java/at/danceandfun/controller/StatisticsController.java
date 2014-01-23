@@ -2,6 +2,7 @@ package at.danceandfun.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import at.danceandfun.entity.Course;
 import at.danceandfun.enumeration.CourseLevel;
@@ -73,5 +75,17 @@ public class StatisticsController {
         map.addAttribute("participantsPerLevelLastYear",
                 participantsPerLevelLastYear);
         return "admin/statisticsView";
+    }
+
+    @RequestMapping(value = "/viewCourseStatisticsPdf", method = RequestMethod.GET)
+    public ModelAndView viewCourseStatisticsPdf() {
+        logger.debug("Creating course statistics pdf");
+
+        HashMap<String, Object> map = new HashMap<String, Object>(1);
+        DetachedCriteria criteria = DetachedCriteria.forClass(Course.class);
+        criteria.addOrder(Order.desc("year"));
+        criteria.addOrder(Order.asc("name"));
+        map.put("statistics", courseManager.getListByCriteria(criteria));
+        return new ModelAndView("viewCourseStatisticsPdf", map);
     }
 }

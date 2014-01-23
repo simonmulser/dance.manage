@@ -1,5 +1,6 @@
 package at.danceandfun.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import at.danceandfun.entity.Course;
@@ -140,6 +142,18 @@ public class CourseController {
     public @ResponseBody
     List<Teacher> getTeachers(@RequestParam("term") String query) {
         return teacherManager.searchForTeachers(course, query);
+    }
+
+    @RequestMapping(value = "/viewCourseListPdf", method = RequestMethod.GET)
+    public ModelAndView viewCourseListPdf() {
+        logger.debug("Creating course list pdf");
+
+        HashMap<String, Object> map = new HashMap<String, Object>(1);
+        DetachedCriteria criteria = DetachedCriteria.forClass(Course.class);
+        criteria.addOrder(Order.asc("name"));
+        map.put("courseList",
+                courseManager.getEnabledListWithCriteria(criteria));
+        return new ModelAndView("viewCourseListPdf", map);
     }
 
     public void setCourseManager(CourseManager courseManager) {

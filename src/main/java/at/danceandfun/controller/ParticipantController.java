@@ -1,6 +1,7 @@
 package at.danceandfun.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import at.danceandfun.entity.Course;
@@ -273,6 +275,28 @@ public class ParticipantController {
     public @ResponseBody
     List<Course> getCourses(@RequestParam("term") String query) {
         return courseManager.searchForCourses(participant, query);
+    }
+
+    @RequestMapping(value = "/viewParticipantListPdf", method = RequestMethod.GET)
+    public ModelAndView viewParticipantListPdf() {
+        logger.debug("Creating participants list pdf");
+
+        HashMap<String, Object> map = new HashMap<String, Object>(1);
+        List<Participant> participantList = new ArrayList<Participant>();
+        DetachedCriteria criteria = DetachedCriteria
+                .forClass(Participant.class);
+        criteria.addOrder(Order.asc("lastname"));
+        criteria.addOrder(Order.asc("firstname"));
+        for (Participant p : participantManager
+                .getEnabledListWithCriteria(criteria)) {
+            if (p.getCourseParticipants().size() > 0) {
+                p.setCourseParticipants(courseParticipantManager
+                        .getEnabledDistinctCourseParticipants(p));
+            }
+            participantList.add(p);
+        }
+        map.put("participantList", participantList);
+        return new ModelAndView("viewParticipantListPdf", map);
     }
 
     public void setParticipantManager(ParticipantManager participantManager) {

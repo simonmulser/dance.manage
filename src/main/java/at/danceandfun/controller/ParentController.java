@@ -1,6 +1,7 @@
 package at.danceandfun.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import at.danceandfun.entity.Parent;
@@ -132,6 +134,19 @@ public class ParentController {
         parentManager.merge(parent);
         parent = new Parent();
         return "redirect:/admin/parent";
+    }
+
+    @RequestMapping(value = "/viewParentListPdf", method = RequestMethod.GET)
+    public ModelAndView viewParentListPdf() {
+        logger.debug("Creating participants by course count pdf");
+
+        HashMap<String, Object> map = new HashMap<String, Object>(1);
+        DetachedCriteria criteria = DetachedCriteria.forClass(Parent.class);
+        criteria.addOrder(Order.asc("lastname"));
+        criteria.addOrder(Order.asc("firstname"));
+        map.put("parentList",
+                parentManager.getEnabledListWithCriteria(criteria));
+        return new ModelAndView("viewParentListPdf", map);
     }
 
     public void setParentManager(ParentManager parentManager) {
