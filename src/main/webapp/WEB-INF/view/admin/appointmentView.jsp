@@ -24,16 +24,19 @@
 						<spring:message code="label.appointment" />
 						&nbsp;&nbsp;
 						<form:input path="appointments[${loop.index}].appointmentDate" class="datepicker" />
-						&nbsp;&nbsp;<form:errors path="appointments[${loop.index}].appointmentDate" cssClass="error" />
+						&nbsp;&nbsp;
+						<form:errors path="appointments[${loop.index}].appointmentDate" cssClass="error" />
 					</div>
 				</c:forEach>
 				<c:if test="${wrapper.appointments.size() == 0}">
 					<div class="alert alert-info inputField" style="">
 						<button type="button" class="close">-</button>
-						<input id="appointments0.enabled" name="appointments[0].enabled" type="hidden" value="true"> <input id="appointments0.number" name="appointments[0].number" type="hidden" value="1">
-						<span class="display-number">1</span>.&nbsp; Einheit &nbsp;&nbsp; <input id="appointments[0].appointmentDate" name="appointments[0].appointmentDate" type="text" value="" class="datepicker">
+						<input id="appointments0.enabled" name="appointments[0].enabled" type="hidden" value="true">
+						<input id="appointments0.number" name="appointments[0].number" type="hidden" value="1">
+						<span class="display-number">1</span>.&nbsp; <spring:message code="label.appointment" />
+						 &nbsp;&nbsp;
+						 <input id="appointments0.appointmentDate" name="appointments[0].appointmentDate" type="text" value="" class="datepicker">
 					</div>
-					&nbsp;&nbsp;<form:errors path="appointments0.appointmentDate" cssClass="error" />
 				</c:if>
 				<div class="form-actions">
 					<input type="submit" value="<spring:message code="label.save"/>" class="btn btn-primary" />
@@ -46,8 +49,11 @@
 			</form:form>
 			<div id="prototyp" class="alert alert-info inputField" style="display: none;">
 				<button type="button" class="close">-</button>
-				<input id="appointments-1.enabled" name="appointments[-1].enabled" type="hidden" value="true"> <input id="appointments-1.number" name="appointments[-1].number" type="hidden" value="-1">
-				<span class="display-number">-1</span>.&nbsp; Einheit &nbsp;&nbsp; <input id="appointments-1.appointmentDate" name="appointments[-1].appointmentDate" type="text" value="">
+				<input id="appointments-1.enabled" name="appointments[-1].enabled" type="hidden" value="true">
+				<input id="appointments-1.number" name="appointments[-1].number" type="hidden" value="-1">
+				<span class="display-number">-1</span>.&nbsp; <spring:message code="label.appointment" />
+				&nbsp;&nbsp;
+				<input id="appointments-1.appointmentDate" name="appointments[-1].appointmentDate" type="text" value=""> &nbsp;&nbsp;
 			</div>
 		</dmtags:widget>
 	</dmtags:span>
@@ -76,6 +82,7 @@
 
                 	var clone = $("#prototyp").clone(true);
                 	var index = $('#wrapper .inputField:visible').size();
+                	console.log(index);
                 	var id = "appointments"+index;
                 	var name = "appointments["+index+"]";
                 	clone.children('[name$="enabled"]').attr("id", id+".enabled").attr("name", name+".enabled");
@@ -85,6 +92,7 @@
                     clone.removeAttr("id");
                 	
                     $(".form-actions").before(clone);
+                    
                     clone.slideDown(function(){
                         
                         $(".datepicker").datepicker({

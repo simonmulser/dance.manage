@@ -19,7 +19,7 @@
 							<c:forEach items="${searchResults.searchedParticipants}"
 								var="searchedParticipant" varStatus="loop">
 								<tr>
-									<td><a href="<c:url value='/admin/participant/edit/${searchedParticipant.pid}' />">${searchedParticipant.firstname}&nbsp;${searchedParticipant.lastname}</a></td>
+									<td><a href="<c:url value='/admin/participant/edit/${searchedParticipant.pid}#add' />">${searchedParticipant.firstname}&nbsp;${searchedParticipant.lastname}</a></td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -36,7 +36,7 @@
 							<c:forEach items="${searchResults.searchedCourses}"
 								var="searchedCourse" varStatus="loop">
 								<tr>
-									<td><a href="<c:url value='/admin/course/edit/${searchedCourse.cid}' />">${searchedCourse.name}</a></td>
+									<td><a href="<c:url value='/admin/course/edit/${searchedCourse.cid}#add' />">${searchedCourse.name}</a></td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -55,7 +55,7 @@
 							<c:forEach items="${searchResults.searchedParents}"
 								var="searchedParent" varStatus="loop">
 								<tr>
-									<td><a href="<c:url value='/admin/parent/edit/${searchedParent.pid}' />">${searchedParent.firstname}&nbsp;${searchedParent.lastname}</a></td>
+									<td><a href="<c:url value='/admin/parent/edit/${searchedParent.pid}#add' />">${searchedParent.firstname}&nbsp;${searchedParent.lastname}</a></td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -72,7 +72,7 @@
 							<c:forEach items="${searchResults.searchedTeachers}"
 								var="searchedTeacher" varStatus="loop">
 								<tr>
-									<td><a href="<c:url value='/admin/teacher/edit/${searchedTeacher.pid}' />">${searchedTeacher.firstname}&nbsp;${searchedTeacher.lastname}</a></td>
+									<td><a href="<c:url value='/admin/teacher/edit/${searchedTeacher.pid}#add' />">${searchedTeacher.firstname}&nbsp;${searchedTeacher.lastname}</a></td>
 								</tr>
 							</c:forEach>
 						</tbody>
