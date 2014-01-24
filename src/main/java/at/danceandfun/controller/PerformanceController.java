@@ -283,6 +283,8 @@ public class PerformanceController {
 
         isSavedPlan = true;
 
+        dateTime = plan.getDateTime();
+
         performance = new Performance();
 
         return "redirect:/admin/performance";
