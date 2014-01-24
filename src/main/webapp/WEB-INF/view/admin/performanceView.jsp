@@ -247,7 +247,7 @@
 						</div>
 
 						<div class="tab-pane" id="hall2">
-							<table class="table table-bordered table-striped">
+							<table id="table2" class="table table-bordered table-striped">
 								<thead>
 									<tr>
 										<th style="width: 60%"><spring:message
@@ -367,7 +367,7 @@
 						</div>
 
 						<div class="tab-pane" id="hall3">
-							<table class="table table-bordered table-striped">
+							<table id="table3" class="table table-bordered table-striped">
 								<thead>
 									<tr>
 										<th style="width: 60%"><spring:message
@@ -521,12 +521,7 @@ $(document).ready(function() {
     $("#table1").tableDnD({
     	onDrop: function(table, row) {
     		var rows = table.tBodies[0].rows;
-    		    		
-    		var data = "test";
     		
-    		$.post("performance/swap", data, function (theResponse) {
-                $("#response").html(theResponse);  
-            });
     	}
     });
     

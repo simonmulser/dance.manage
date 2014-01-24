@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import at.danceandfun.entity.Course;
@@ -186,24 +185,20 @@ public class PerformanceController {
             HttpServletRequest request,
             @ModelAttribute(value = "performancePlan") @Valid PerformancePlan plan,
             BindingResult result, RedirectAttributes redirectAttributes) {
-        // logger.debug("VALDIATE performancePlan");
-        // List<Participant> participantList =
-        // participantManager.getEnabledList();
-        //
-        // performancePlanMap.put(1, tempPerformance1);
-        // performancePlanMap.put(2, tempPerformance2);
-        // performancePlanMap.put(3, tempPerformance3);
-        //
-        // SatValidator validator = new SatValidator(performancePlanMap,
-        // participantList);
-        // performancePlanMap = validator.validatePerformancePlan();
-        //
-        // tempPerformance1 = performancePlanMap.get(1);
-        // tempPerformance2 = performancePlanMap.get(2);
-        // tempPerformance3 = performancePlanMap.get(3);
+        logger.debug("VALDIATE performancePlan");
+        List<Participant> participantList = participantManager.getEnabledList();
 
-        System.out.println("MAP:");
-        System.out.println(request.getParameterMap().size());
+        performancePlanMap.put(1, tempPerformance1);
+        performancePlanMap.put(2, tempPerformance2);
+        performancePlanMap.put(3, tempPerformance3);
+
+        SatValidator validator = new SatValidator(performancePlanMap,
+                participantList);
+        performancePlanMap = validator.validatePerformancePlan();
+
+        tempPerformance1 = performancePlanMap.get(1);
+        tempPerformance2 = performancePlanMap.get(2);
+        tempPerformance3 = performancePlanMap.get(3);
 
         // System.out.println("KURSE: ");
         // for (Course cur : tempPerformance1.getCourses()) {
@@ -306,9 +301,7 @@ public class PerformanceController {
     }
 
     @RequestMapping(value = "/swap", method = RequestMethod.POST)
-    public void swapCourses(@RequestParam(value = "test") String schaun) {
-        System.out.println("--------------BAM--------------");
-        // System.out.println(rows);
+    public void swapCourses() {
     }
 
     private void setCheckedRestrictions(HttpServletRequest request) {
