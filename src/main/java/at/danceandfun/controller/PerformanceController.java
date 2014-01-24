@@ -175,13 +175,6 @@ public class PerformanceController {
         tempPerformance2 = performancePlanMap.get(2);
         tempPerformance3 = performancePlanMap.get(3);
 
-        // for (int i = 1; i <= 3; i++) {
-        // System.out.println("Performance: " + i);
-        // for (Course cur : performancePlanMap.get(i).getCourses()) {
-        // System.out.println(cur.getCid());
-        // }
-        // }
-
         performance = new Performance();
 
         isSavedPlan = false;
@@ -190,7 +183,11 @@ public class PerformanceController {
     }
 
     @RequestMapping(value = "/validate", method = RequestMethod.POST)
-    public String buildPerformance() {
+    public String validatePerformance(
+            ModelMap map,
+            HttpServletRequest request,
+            @ModelAttribute(value = "performancePlan") @Valid PerformancePlan plan,
+            BindingResult result, RedirectAttributes redirectAttributes) {
         logger.debug("VALDIATE performancePlan");
         List<Participant> participantList = participantManager.getEnabledList();
 
@@ -205,6 +202,11 @@ public class PerformanceController {
         tempPerformance1 = performancePlanMap.get(1);
         tempPerformance2 = performancePlanMap.get(2);
         tempPerformance3 = performancePlanMap.get(3);
+
+        // System.out.println("KURSE: ");
+        // for (Course cur : tempPerformance1.getCourses()) {
+        // System.out.println(cur.getName());
+        // }
 
         return "redirect:/admin/performance";
     }
@@ -357,6 +359,10 @@ public class PerformanceController {
         map.put("performanceList3", tempPerformance3.getCourses());
 
         return new ModelAndView("viewPerformancePdf", map);
+    }
+
+    @RequestMapping(value = "/swap", method = RequestMethod.POST)
+    public void swapCourses() {
     }
 
     private void setCheckedRestrictions(HttpServletRequest request) {
