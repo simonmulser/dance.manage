@@ -83,8 +83,12 @@ public class CourseManagerImpl extends ManagerBaseImpl<Course> implements
                 }
 
             }
-            participantsPerStyle.add(style.getName() + "(" + participantCount
-                    + ")" + "," + participantCount);
+            if (participantCount > 0) {
+                participantsPerStyle.add(style.getName() + "("
+                        + participantCount + ")" + "," + participantCount);
+                logger.debug("ADDED: " + style.getName() + "("
+                        + participantCount + ")" + "," + participantCount);
+            }
             participantCount = 0;
         }
         return participantsPerStyle;

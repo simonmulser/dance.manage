@@ -18,7 +18,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -58,7 +57,6 @@ public abstract class Person extends EntityBase implements UserDetails {
     private String lastname;
 
     @Column(name = "EMAIL")
-    @NotEmpty
     @Pattern(regexp = PatternConstants.EMAIL_PATTERN, message = "{pattern.email}")
     private String email;
 

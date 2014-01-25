@@ -38,7 +38,7 @@
 
 <div class="control-group">
 	<form:label path="email" class="control-label">
-		<spring:message code="label.email" />*
+		<spring:message code="label.email" />
                 </form:label>
 	<div class="span6">
 		<form:input path="email" />
