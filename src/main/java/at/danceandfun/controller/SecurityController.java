@@ -44,7 +44,8 @@ public class SecurityController {
                     .getAuthentication().getPrincipal();
             session.setAttribute("user", admin);
             session.setAttribute("userType", "admin");
-            session.setAttribute("editProfileLink", "#");
+            session.setAttribute("editProfileLink", "/admin/edit");
+            session.setAttribute("editPasswordLink", "/admin/editPassword");
             session.setAttribute("homeLink", "/admin");
 
             return "redirect:/admin";
@@ -56,6 +57,8 @@ public class SecurityController {
             session.setAttribute("user", participant);
             session.setAttribute("userType", "participant");
             session.setAttribute("editProfileLink", "/participant/edit/" + pid);
+            session.setAttribute("editPasswordLink",
+                    "/participant/editPassword/" + pid);
             session.setAttribute("homeLink", "/participant/" + pid);
 
             return "redirect:/participant/" + pid;
@@ -66,6 +69,7 @@ public class SecurityController {
             session.setAttribute("user", parent);
             session.setAttribute("userType", "parent");
             session.setAttribute("editProfileLink", "/parent/edit");
+            session.setAttribute("editPasswordLink", "/parent/editPassword");
             session.setAttribute("homeLink", "/parent");
 
             return "redirect:/parent";
@@ -75,8 +79,9 @@ public class SecurityController {
                     .getAuthentication().getPrincipal();
             session.setAttribute("user", teacher);
             session.setAttribute("userType", "teacher");
-            session.setAttribute("editProfileLink", "#");
-            session.setAttribute("homeLink", "#");
+            session.setAttribute("editProfileLink", "/teacher/edit");
+            session.setAttribute("editPasswordLink", "/teacher/editPassword");
+            session.setAttribute("homeLink", "/teacher");
 
             return "redirect:/teacher";
         }
@@ -86,6 +91,7 @@ public class SecurityController {
             session.setAttribute("user", superUser);
             session.setAttribute("userType", "superUser");
             session.setAttribute("editProfileLink", "#");
+            session.setAttribute("editPasswordLink", "#");
             session.setAttribute("homeLink", "/admin");
 
             return "redirect:/admin";

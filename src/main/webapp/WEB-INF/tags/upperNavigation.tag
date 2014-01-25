@@ -19,6 +19,7 @@
 						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i>&nbsp;${user.firstname}&nbsp;<b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<li><a href="<c:url value="${editProfileLink}" />"><spring:message code="nav.editProfile" /></a></li>
+								<li><a href="<c:url value="${editPasswordLink}" />"><spring:message code="nav.changePassword" /></a></li>
 								<li><a href="<c:url value='/j_spring_security_logout' />"><spring:message code="nav.logout" /></a></li>
 							</ul></li>
 					</ul>
