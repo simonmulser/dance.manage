@@ -2,14 +2,17 @@ package at.danceandfun.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +23,9 @@ import at.danceandfun.entity.Participant;
 import at.danceandfun.entity.Person;
 import at.danceandfun.entity.SuperUser;
 import at.danceandfun.entity.Teacher;
+import at.danceandfun.util.AppContext;
 import at.danceandfun.util.EMailAuthentication;
+import at.danceandfun.util.PasswordBean;
 
 @Service
 @Transactional
@@ -48,6 +53,8 @@ public class PersonManagerImpl implements PersonManager {
 
     @Autowired
     private EMailAuthentication emailAuthentication;
+
+    private StandardPasswordEncoder passwordEncoder = new StandardPasswordEncoder();
 
     @SuppressWarnings("unchecked")
     @Override
@@ -117,5 +124,66 @@ public class PersonManagerImpl implements PersonManager {
     public Person update(Person person) {
         logger.info("Update person object with ID: " + person.getPid());
         return personDao.merge(person);
+    }
+
+    public Person get(int id) {
+        logger.info("Get person object with ID: " + id);
+        return personDao.get(id);
+    }
+
+    public void persist(Person person) {
+        logger.info("Presist person object");
+        personDao.persist(person);
+    }
+
+    public boolean changePassword(PasswordBean passwordBean) {
+        logger.info("Change password with ID: " + passwordBean.getId());
+        logger.info("Password Changes: " + passwordBean.getOldPassword()
+                + passwordBean.getNewPasswordFirst()
+                + passwordBean.getNewPasswordSecond());
+        Person person = personDao.get(passwordBean.getId());
+        
+        if (!passwordEncoder.matches(passwordBean.getOldPassword(),
+                person.getPassword())) {
+            logger.error("Old password not right from user: "
+                    + passwordBean.getId());
+            passwordBean
+                    .setErrorMessage(geti18nMessage("message.password.oldFalse"));
+
+            return false;
+        } else if (!passwordBean.getNewPasswordFirst().equals(
+                passwordBean.getNewPasswordSecond())) {
+            logger.error("Passwords not equal from user: "
+                    + passwordBean.getId());
+            passwordBean
+                    .setErrorMessage(geti18nMessage("message.password.equals"));
+
+            return false;
+
+        } else if (passwordEncoder.matches(passwordBean.getNewPasswordFirst(),
+                person.getPassword())) {
+            logger.error("New password not different from user: "
+                    + passwordBean.getId());
+
+            passwordBean
+                    .setErrorMessage(geti18nMessage("message.password.newPassword"));
+
+            return false;
+
+        } else {
+            logger.info("Change password with ID: " + passwordBean.getId());
+            passwordBean.setErrorMessage("");
+            person.setPassword(passwordEncoder.encode(passwordBean
+                    .getNewPasswordFirst()));
+            personDao.merge(person);
+
+            return true;
+        }
+    }
+
+    public String geti18nMessage(String identifier) {
+        Locale locale = LocaleContextHolder.getLocale();
+        return AppContext.getApplicationContext().getMessage(identifier, null,
+                locale);
     }
 }

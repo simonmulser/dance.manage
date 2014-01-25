@@ -8,6 +8,7 @@
 <spring:message var="i18nTitle" code="nav.home" />
 <spring:message var="i18nMyAccount" code="widget.myaccount" />
 <spring:message var="i18nEdit" code="label.edit" />
+<spring:message var="i18nChangePassword" code="label.changePassword" />
 <spring:message var="i18nInvoices" code="widget.invoices" />
 <spring:message var="i18nMyChildren" code="widget.myChildren" />
 <spring:message var="i18nAgendaAllChildren" code="widget.agendaAllChildren" />
@@ -73,6 +74,7 @@
 				<i class="icon-user"></i>
 				<h3>${i18nMyAccount}</h3>
 				<a href="<c:url value='/parent/edit' />"><button type="submit" class="btn btn-primary">${i18nEdit}</button></a>
+				<a href="<c:url value='/parent/editPassword' />"><button type="submit" class="btn btn-primary">${i18nChangePassword}</button></a>
 			</div>
 			<!-- /widget-header -->
 			<div class="widget-content">

@@ -51,5 +51,4 @@ public class AdminHomeController {
 
         return "admin/index";
     }
-
 }

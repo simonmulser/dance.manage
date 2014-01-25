@@ -71,6 +71,7 @@
 				<i class="icon-user"></i>
 				<h3>${i18nMyAccount}</h3>
 				<a href="<c:url value='/teacher/edit' />"><button type="submit" class="btn btn-primary">${i18nEdit}</button></a>
+				<a href="<c:url value='/parent/editPassword' />"><button type="submit" class="btn btn-primary">${i18nChangePassword}</button></a>		
 			</div>
 			<!-- /widget-header -->
 			<div class="widget-content">
