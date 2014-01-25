@@ -174,6 +174,8 @@ public class ParticipantHomeController {
         participantManager.mergeAbsence(absence);
 
         map.put("participant", participant);
+        map.put("enabledCourses", courseParticipantManager
+                .getEnabledDistinctCourseParticipants(participant));
         return "participant/absenceView";
     }
 
@@ -201,6 +203,8 @@ public class ParticipantHomeController {
         participantManager.mergeAbsence(absence);
 
         map.put("participant", participant);
+        map.put("enabledCourses", courseParticipantManager
+                .getEnabledDistinctCourseParticipants(participant));
         return "participant/absenceView";
     }
 

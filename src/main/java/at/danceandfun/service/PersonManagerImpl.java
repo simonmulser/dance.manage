@@ -60,6 +60,12 @@ public class PersonManagerImpl implements PersonManager {
     @Override
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
+
+        if (username.equals("")) {
+            throw new UsernameNotFoundException("no user found with username "
+                    + username);
+        }
+
         List<DaoBase<? extends Person>> personDaos = new ArrayList<>();
         personDaos.add(participantDao);
         personDaos.add(adminDao);
@@ -79,7 +85,6 @@ public class PersonManagerImpl implements PersonManager {
             }
         }
 
-        logger.info("no user found with username " + username);
         throw new UsernameNotFoundException("no user found with username "
                 + username);
     }

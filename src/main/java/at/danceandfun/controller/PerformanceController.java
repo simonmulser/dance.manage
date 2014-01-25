@@ -59,6 +59,7 @@ public class PerformanceController {
     private PerformancePlan performancePlan;
     private List<PerformancePlan> performancePlanList;
     private LocalDate dateTime;
+    private int currentPlanId;
     private boolean balletRestriction = true;
     private boolean twoBreaksRestriction = true;
     private boolean advancedAtEndRestriction = true;
@@ -96,6 +97,7 @@ public class PerformanceController {
         map.addAttribute("performancePlanList",
                 performancePlanManager.getEnabledList());
         map.addAttribute("dateTime", dateTime);
+        map.addAttribute("currentPlanId", currentPlanId);
 
         editTrue = false;
         return "admin/performanceView";
@@ -173,13 +175,6 @@ public class PerformanceController {
         tempPerformance2 = performancePlanMap.get(2);
         tempPerformance3 = performancePlanMap.get(3);
 
-        // for (int i = 1; i <= 3; i++) {
-        // System.out.println("Performance: " + i);
-        // for (Course cur : performancePlanMap.get(i).getCourses()) {
-        // System.out.println(cur.getCid());
-        // }
-        // }
-
         performance = new Performance();
 
         isSavedPlan = false;
@@ -188,7 +183,11 @@ public class PerformanceController {
     }
 
     @RequestMapping(value = "/validate", method = RequestMethod.POST)
-    public String buildPerformance() {
+    public String validatePerformance(
+            ModelMap map,
+            HttpServletRequest request,
+            @ModelAttribute(value = "performancePlan") @Valid PerformancePlan plan,
+            BindingResult result, RedirectAttributes redirectAttributes) {
         logger.debug("VALDIATE performancePlan");
         List<Participant> participantList = participantManager.getEnabledList();
 
@@ -203,6 +202,11 @@ public class PerformanceController {
         tempPerformance1 = performancePlanMap.get(1);
         tempPerformance2 = performancePlanMap.get(2);
         tempPerformance3 = performancePlanMap.get(3);
+
+        // System.out.println("KURSE: ");
+        // for (Course cur : tempPerformance1.getCourses()) {
+        // System.out.println(cur.getName());
+        // }
 
         return "redirect:/admin/performance";
     }
@@ -225,9 +229,11 @@ public class PerformanceController {
         performancePlan.setDateTime(dateTime);
         performancePlan.setEnabled(true);
 
-        performancePlanManager.merge(performancePlan);
+        performancePlanManager.persist(performancePlan);
 
         isSavedPlan = true;
+
+        currentPlanId = performancePlan.getPlanid();
 
         performance = new Performance();
 
@@ -280,7 +286,11 @@ public class PerformanceController {
         tempPerformance2 = performancePlanMap.get(2);
         tempPerformance3 = performancePlanMap.get(3);
 
+        dateTime = plan.getDateTime();
+
         isSavedPlan = true;
+
+        currentPlanId = planid;
 
         performance = new Performance();
 
@@ -349,6 +359,10 @@ public class PerformanceController {
         map.put("performanceList3", tempPerformance3.getCourses());
 
         return new ModelAndView("viewPerformancePdf", map);
+    }
+
+    @RequestMapping(value = "/swap", method = RequestMethod.POST)
+    public void swapCourses() {
     }
 
     private void setCheckedRestrictions(HttpServletRequest request) {

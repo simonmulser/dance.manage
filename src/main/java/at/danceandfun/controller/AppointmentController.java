@@ -36,13 +36,16 @@ public class AppointmentController {
     public String editAppointments(ModelMap map, @PathVariable String slug) {
         logger.info("edit appointments for course:" + slug);
 
+        Integer courseId = Helpers.extractId(slug);
+        Course course = courseManager.get(courseId);
+
         List<Appointment> appointments = appointmentManager
-                .getEnabledAppointmentsForCourseId(Helpers.extractId(slug));
+                .getEnabledAppointmentsForCourseId(courseId);
 
         AppointmentsWrapper appointmentsWrapper = new AppointmentsWrapper();
         appointmentsWrapper.setAppointments(appointments);
 
-        // map.put("course", course);
+        map.put("course", course);
         map.put("wrapper", appointmentsWrapper);
         return "admin/appointmentView";
     }
