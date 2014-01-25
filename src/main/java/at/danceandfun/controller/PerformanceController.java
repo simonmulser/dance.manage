@@ -362,7 +362,42 @@ public class PerformanceController {
     }
 
     @RequestMapping(value = "/swap", method = RequestMethod.POST)
-    public void swapCourses() {
+    public String swapCourses(int performance, int posSource, int posTarget) {
+        logger.info("Moving course in performance: " + performance);
+        switch (performance) {
+        case 1:
+            moveCourse(tempPerformance1.getCourses(), posSource, posTarget);
+            break;
+        case 2:
+            moveCourse(tempPerformance2.getCourses(), posSource, posTarget);
+            break;
+        case 3:
+            moveCourse(tempPerformance3.getCourses(), posSource, posTarget);
+            break;
+        }
+        
+        return "redirect:/admin/performance";
+    }
+
+    public void moveCourse(List<Course> courses, int posSource,
+            int posTarget) {
+        logger.info("Moving item from position " + posSource + " to position "
+                + posTarget);
+
+        editTrue = true;
+        Course courseToMove = courses.get(posSource);
+        logger.info("Switching object: " + courseToMove.getName());
+
+        if (posSource < posTarget) {
+            courses.add(posTarget + 1, courseToMove);
+            courses.remove(posSource);
+
+        } else {
+            courses.add(posTarget, courseToMove);
+            courses.remove(posSource + 1);
+        }
+
+        logger.info("Element on new position: " + courses.get(posTarget));
     }
 
     private void setCheckedRestrictions(HttpServletRequest request) {

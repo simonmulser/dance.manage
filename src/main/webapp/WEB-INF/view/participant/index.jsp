@@ -10,6 +10,7 @@
 <spring:message var="i18nTitle" code="nav.home" />
 <spring:message var="i18nMyAccount" code="widget.myaccount" />
 <spring:message var="i18nEdit" code="label.edit" />
+<spring:message var="i18nChangePassword" code="label.changePassword" />
 <spring:message var="i18nMyCourses" code="widget.mycourses" />
 <spring:message var="i18nAgenda" code="widget.agenda" />
 <spring:message var="i18nInvoices" code="widget.invoices" />
@@ -91,6 +92,8 @@
 				<i class="icon-user"></i>
 				<h3>${i18nMyAccount}</h3>
 				<a href="<c:url value='/participant/edit/${participant.pid}' />"><button type="submit" class="btn btn-primary">${i18nEdit}</button></a>
+				<a href="<c:url value='/participant/editPassword/${participant.pid}' />"><button type="submit" class="btn btn-primary">${i18nChangePassword}</button></a>
+				
 			</div>
 			<!-- /widget-header -->
 			<div class="widget-content">

@@ -160,7 +160,7 @@
 		<c:if test="${!empty performanceList1}">
 			<dmtags:widget
 				title="${i18nScheduleProposal}&nbsp;&nbsp;${dateTime.toString('dd.MM.yyyy')}"
-				style="table" icon="icon-list" pdfLink="performance/viewPerformancePdf/${currentPlanId}">
+				style="table" id="plan" icon="icon-list" pdfLink="performance/viewPerformancePdf/${currentPlanId}">
 				<br />
 								
 				<div class="tabbable">
@@ -202,8 +202,8 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${performanceList1}" var="validatedCourse">
-										<tr>
+									<c:forEach items="${performanceList1}" var="validatedCourse" varStatus="loop">
+										<tr id="${loop.index}" >
 											<c:choose>
 												<c:when test="${validatedCourse.dummyCourse}">
 													<td>-</td>
@@ -311,8 +311,8 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${performanceList2}" var="validatedCourse">
-										<tr>
+									<c:forEach items="${performanceList2}" var="validatedCourse" varStatus="loop">
+										<tr id="${loop.index}" >
 											<c:choose>
 												<c:when test="${validatedCourse.dummyCourse}">
 													<td>-</td>
@@ -420,8 +420,8 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${performanceList3}" var="validatedCourse" varStatus="count">
-										<tr id="${count}">
+									<c:forEach items="${performanceList3}" var="validatedCourse" varStatus="loop">
+										<tr id="${loop.index}">
 											<c:choose>
 												<c:when test="${validatedCourse.dummyCourse}">
 													<td>-</td>
@@ -535,14 +535,49 @@ $(document).ready(function() {
     $("#table1").tableDnD({
     	onDrop: function(table, row) {
     		var rows = table.tBodies[0].rows;
+    		var newPos;
+    		for (var i=0; i<rows.length; i++) {
+    			if (row.id == rows[i].id) {
+    				newPos = i;
+    			}
+            }
+    		$.post("performance/swap", { performance: "1", posSource: row.id, posTarget: newPos }, function (theResponse) {
+    			window.location.replace("/dancemanage/admin/performance");
+    	    });
     		
     	}
     });
     
-    var row = 0;
-    $('tr').each(function () {
-       $(this).data('order',++row);
-       $(this).attr('id', 'was-at-'+$(this).data('order'));
+    $("#table2").tableDnD({
+    	onDrop: function(table, row) {
+    		var rows = table.tBodies[0].rows;
+    		var newPos;
+    		for (var i=0; i<rows.length; i++) {
+    			if (row.id == rows[i].id) {
+    				newPos = i;
+    			}
+            }
+    		$.post("performance/swap", { performance: "2", posSource: row.id, posTarget: newPos }, function (theResponse) {
+    			window.location.replace("/dancemanage/admin/performance");
+    	    });
+    		
+    	}
+    });
+    
+    $("#table3").tableDnD({
+    	onDrop: function(table, row) {
+    		var rows = table.tBodies[0].rows;
+    		var newPos;
+    		for (var i=0; i<rows.length; i++) {
+    			if (row.id == rows[i].id) {
+    				newPos = i;
+    			}
+            }
+    		$.post("performance/swap", { performance: "3", posSource: row.id, posTarget: newPos }, function (theResponse) {
+    			window.location.replace("/dancemanage/admin/performance");
+    	    });
+    		
+    	}
     });
 });
 
