@@ -73,35 +73,7 @@ public class GenerateSatSolution {
 
         movedCourses = 0;
 
-        List<Course> helpList = new ArrayList<Course>();
-
-        Random r = new Random();
-
-        for (Course c : courses) {
-            if (c.getAmountPerformances() == 3) {
-                helpList.add(c);
-            } else {
-                newOrderOfCourses.add(c);
-                if (c.getAmountPerformances() == 2) {
-                    try {
-                        newOrderOfCourses
-                                .add(
-
-                                r.nextInt(newOrderOfCourses.size()),
-                                        (Course) c.clone());
-
-                    } catch (CloneNotSupportedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-
-        for (Course c : helpList) {
-            newOrderOfCourses.add(c);
-            newOrderOfCourses.add(newOrderOfCourses.size() / 3, c);
-            newOrderOfCourses.add(newOrderOfCourses.size() / 3 * 2, c);
-        }
+        handleMultipleCourses(courses);
 
         numberOfPlays = 3;
 
@@ -155,33 +127,39 @@ public class GenerateSatSolution {
             boolean balancedAmountOfSpectators, boolean balancedAgeGroup,
             boolean multipleGroupsSamePerformance, boolean sibsSamePerformance)
             throws SatException {
+        boolean empty = true;
+
         if (multipleGroupsSamePerformance) {
             multipleGroupsInSamePerformance(newOrderOfCourses, participantList);
+            empty = false;
         }
         if (sibsSamePerformance) {
             sibsInSamePerformance(newOrderOfCourses, participantList);
+            empty = false;
         }
         if (balancedAmountOfSpectators) {
             arrangeAmountOfSpectators(newOrderOfCourses);
+            empty = false;
         }
         if (advancedAtEndRestriction) {
             addAdvancedAtTheEnd(newOrderOfCourses, numberOfSlots);
+            empty = false;
         }
         if (balletRestriction) {
             addNotTwoOfAKind(newOrderOfCourses, numberOfCourses, numberOfSlots,
                     numberOfPlays, movedCourses);
+            empty = false;
         }
         if (twoBreaksRestriction) {
             add2SlotBrake(newOrderOfCourses, participantList, numberOfCourses,
                     numberOfSlots, numberOfPlays);
+            empty = false;
         }
         if (balancedAgeGroup) {
             arrangeAgeGroup(newOrderOfCourses);
+            empty = false;
         }
-        if (!multipleGroupsSamePerformance && !sibsSamePerformance
-                && !balancedAmountOfSpectators && !advancedAtEndRestriction
-                && !balletRestriction && !twoBreaksRestriction
-                && !balancedAgeGroup) {
+        if (empty) {
             add2SlotBrake(newOrderOfCourses, participantList, numberOfCourses,
                     numberOfSlots, numberOfPlays);
         }
@@ -263,6 +241,62 @@ public class GenerateSatSolution {
                     }
                 }
             }
+        }
+    }
+
+    private void handleMultipleCourses(List<Course> courses) {
+        List<Course> helpList = new ArrayList<Course>();
+
+        Random r = new Random();
+        int oldPosition;
+        int newPosition;
+
+        for (int i = 0; i < courses.size(); i++) {
+            Course c = courses.get(i);
+            if (c.getAmountPerformances() == 3) {
+                helpList.add(c);
+            } else {
+                newOrderOfCourses.add(c);
+                if (c.getAmountPerformances() == 2) {
+                    while (true) {
+                        oldPosition = i % (courses.size() / 3);
+                        newPosition = r.nextInt(3);
+
+                        if (oldPosition != newPosition) {
+                            break;
+                        }
+                        System.out.println(oldPosition + " " + newPosition);
+                    }
+                    try {
+                        switch (newPosition) {
+                        case 0:
+                            newOrderOfCourses.add(newOrderOfCourses.size() / 6,
+                                    (Course) c.clone());
+                            break;
+                        case 1:
+                            newOrderOfCourses.add(newOrderOfCourses.size() / 3
+                                    + newOrderOfCourses.size() / 6,
+                                    (Course) c.clone());
+                            break;
+                        case 2:
+                            newOrderOfCourses.add(newOrderOfCourses.size() / 3
+                                    * 2 + newOrderOfCourses.size() / 6,
+                                    (Course) c.clone());
+                            break;
+                        default:
+                            break;
+                        }
+                    } catch (CloneNotSupportedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        for (Course c : helpList) {
+            newOrderOfCourses.add(c);
+            newOrderOfCourses.add(newOrderOfCourses.size() / 3, c);
+            newOrderOfCourses.add(newOrderOfCourses.size() / 3 * 2, c);
         }
     }
 
