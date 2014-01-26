@@ -163,7 +163,8 @@ public class SatValidator {
 
                     if (validatedCourseList.get(i)
                             .equals(currentCP.getCourse())
-                            && currentCP.getCourse().isEnabled()) {
+                            && currentCP.getCourse().isEnabled()
+                            && currentCP.getCourse().isInPerformance()) {
                         courseIDList.add(i);
                     }
                 }
