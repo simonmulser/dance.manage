@@ -103,9 +103,10 @@ public class PerformanceController {
         return "admin/performanceView";
     }
 
-    @RequestMapping(value = "/jumpToPlan", method = RequestMethod.GET)
-    public String jumpToPlan() {
-        return "redirect:/admin/performance#plan";
+    @RequestMapping(value = "/jumpToPlan/{plan}", method = RequestMethod.GET)
+    public String jumpToPlan(@PathVariable("plan") Integer plan, ModelMap map) {
+
+        return "redirect:/admin/performance#plan" + plan;
     }
 
     @RequestMapping(value = "/build", method = RequestMethod.POST)
@@ -219,6 +220,10 @@ public class PerformanceController {
     @RequestMapping(value = "/save")
     public String savePerformancePlan() {
         logger.debug("SAVE the performanceplan");
+
+        for (Course c : tempPerformance1.getCourses()) {
+            System.out.println(c.getName());
+        }
 
         tempPerformance1.setEnabled(true);
         tempPerformance2.setEnabled(true);
@@ -371,37 +376,55 @@ public class PerformanceController {
         logger.info("Moving course in performance: " + performance);
         switch (performance) {
         case 1:
-            moveCourse(tempPerformance1.getCourses(), posSource, posTarget);
+            tempPerformance1 = moveCourse(tempPerformance1, posSource,
+                    posTarget);
             break;
         case 2:
-            moveCourse(tempPerformance2.getCourses(), posSource, posTarget);
+            tempPerformance2 = moveCourse(tempPerformance2, posSource,
+                    posTarget);
             break;
         case 3:
-            moveCourse(tempPerformance3.getCourses(), posSource, posTarget);
+            tempPerformance3 = moveCourse(tempPerformance3, posSource,
+                    posTarget);
             break;
         }
 
-        return "redirect:/admin/performance#plan";
+        return "redirect:/admin/performance";
+
     }
 
-    public void moveCourse(List<Course> courses, int posSource, int posTarget) {
+    private Performance moveCourse(Performance tempPerformance, int posSource,
+            int posTarget) {
         logger.info("Moving item from position " + posSource + " to position "
                 + posTarget);
 
         editTrue = true;
+
+        List<Course> courses = tempPerformance.getCourses();
+        List<Integer> courseIds = tempPerformance.getCourseIds();
+
         Course courseToMove = courses.get(posSource);
         logger.info("Switching object: " + courseToMove.getName());
 
         if (posSource < posTarget) {
             courses.add(posTarget + 1, courseToMove);
+            courseIds.add(posTarget + 1, courseToMove.getCid());
             courses.remove(posSource);
+            courseIds.remove(posSource);
 
         } else {
             courses.add(posTarget, courseToMove);
+            courseIds.add(posTarget, courseToMove.getCid());
             courses.remove(posSource + 1);
+            courseIds.remove(posSource);
         }
 
         logger.info("Element on new position: " + courses.get(posTarget));
+
+        tempPerformance.setCourses(courses);
+        tempPerformance.setCourseIds(courseIds);
+
+        return tempPerformance;
     }
 
     private void setCheckedRestrictions(HttpServletRequest request) {
@@ -440,6 +463,16 @@ public class PerformanceController {
         } else {
             this.sibsSamePerformance = false;
         }
+    }
+
+    private List<Integer> setCourseIds(List<Course> courses) {
+        List<Integer> courseID = new ArrayList<Integer>();
+
+        for (Course currentCourse : courses) {
+            courseID.add(currentCourse.getCid());
+        }
+
+        return courseID;
     }
 
     public void setPerformanceManager(PerformanceManager performanceManager) {

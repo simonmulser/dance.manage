@@ -173,7 +173,7 @@
 
 					<div class="tab-content">
 						<div class="tab-pane active" id="hall1">
-							<table id="table1" class="table table-bordered table-striped">
+							<table id="plan1" class="table table-bordered table-striped">
 								<thead>
 									<tr>
 										<th style="width: 60%"><spring:message
@@ -282,7 +282,7 @@
 						</div>
 
 						<div class="tab-pane" id="hall2">
-							<table id="table2" class="table table-bordered table-striped">
+							<table id="plan2" class="table table-bordered table-striped">
 								<thead>
 									<tr>
 										<th style="width: 60%"><spring:message
@@ -391,7 +391,7 @@
 						</div>
 
 						<div class="tab-pane" id="hall3">
-							<table id="table3" class="table table-bordered table-striped">
+							<table id="plan3" class="table table-bordered table-striped">
 								<thead>
 									<tr>
 										<th style="width: 60%"><spring:message
@@ -532,7 +532,7 @@
 <script src="<c:url value="/js/jquery.tablednd.js" />"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-    $("#table1").tableDnD({
+    $("#plan1").tableDnD({
     	onDrop: function(table, row) {
     		var rows = table.tBodies[0].rows;
     		var newPos;
@@ -542,13 +542,13 @@ $(document).ready(function() {
     			}
             }
     		$.post("performance/swap", { performance: "1", posSource: row.id, posTarget: newPos }, function (theResponse) {
-    			window.location.replace("/dancemanage/admin/performance/jumpToPlan");
+    			window.location.replace("/dancemanage/admin/performance/jumpToPlan/1");
     	    });
     		
     	}
     });
     
-    $("#table2").tableDnD({
+    $("#plan2").tableDnD({
     	onDrop: function(table, row) {
     		var rows = table.tBodies[0].rows;
     		var newPos;
@@ -558,13 +558,13 @@ $(document).ready(function() {
     			}
             }
     		$.post("performance/swap", { performance: "2", posSource: row.id, posTarget: newPos }, function (theResponse) {
-    			window.location.replace("/dancemanage/admin/performance/jumpToPlan");
+    			window.location.replace("/dancemanage/admin/performance/jumpToPlan/2");
     	    });
     		
     	}
     });
     
-    $("#table3").tableDnD({
+    $("#plan3").tableDnD({
     	onDrop: function(table, row) {
     		var rows = table.tBodies[0].rows;
     		var newPos;
@@ -574,7 +574,7 @@ $(document).ready(function() {
     			}
             }
     		$.post("performance/swap", { performance: "3", posSource: row.id, posTarget: newPos }, function (theResponse) {
-    			window.location.replace("/dancemanage/admin/performance/jumpToPlan");
+    			window.location.replace("/dancemanage/admin/performance/jumpToPlan/3");
     	    });
     		
     	}
