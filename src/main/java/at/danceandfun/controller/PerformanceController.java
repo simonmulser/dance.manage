@@ -103,6 +103,11 @@ public class PerformanceController {
         return "admin/performanceView";
     }
 
+    @RequestMapping(value = "/jumpToPlan", method = RequestMethod.GET)
+    public String jumpToPlan() {
+        return "redirect:/admin/performance#plan";
+    }
+
     @RequestMapping(value = "/build", method = RequestMethod.POST)
     public String buildPerformance(
             ModelMap map,
@@ -376,7 +381,7 @@ public class PerformanceController {
             break;
         }
 
-        return "redirect:/admin/performance";
+        return "redirect:/admin/performance#plan";
     }
 
     public void moveCourse(List<Course> courses, int posSource, int posTarget) {

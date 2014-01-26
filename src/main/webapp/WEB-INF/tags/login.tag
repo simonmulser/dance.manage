@@ -2,6 +2,8 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -30,27 +32,7 @@
 
 <body>
 
-	<div class="navbar navbar-fixed-top">
-
-		<div class="navbar-inner">
-
-			<div class="container">
-
-				<a class="btn btn-navbar" data-toggle="collapse"
-					data-target=".nav-collapse"> <span class="icon-bar"></span> <span
-					class="icon-bar"></span> <span class="icon-bar"></span>
-				</a> <a class="brand" href="#"> dance.manage </a>
-
-			</div>
-			<!-- /container -->
-
-		</div>
-		<!-- /navbar-inner -->
-
-	</div>
-	<!-- /navbar -->
-
-
+	<dmtags:upperNavigation />
 
 	<div class="account-container">
 
@@ -94,7 +76,7 @@
 
 				<div class="login-actions">
 
-					<span class="login-checkbox"> <a href="#"><spring:message code="login.reset" /></a>
+					<span class="login-checkbox"> <a href="<c:url value='resetPassword' />"><spring:message code="login.reset" /></a>
 					</span>
 				
 					<button class="button btn btn-success btn-large">

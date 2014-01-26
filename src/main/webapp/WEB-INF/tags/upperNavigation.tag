@@ -6,7 +6,8 @@
 <div class="navbar navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container">
-			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span> </a><a class="brand"
+			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span> </a>
+			<a class="brand"
 				href="<c:url value="${homeLink}" />"><spring:message code="nav.title" /></a>
 			<c:if test="${user != null}">
 				<div class="nav-collapse">

@@ -542,7 +542,7 @@ $(document).ready(function() {
     			}
             }
     		$.post("performance/swap", { performance: "1", posSource: row.id, posTarget: newPos }, function (theResponse) {
-    			window.location.replace("/dancemanage/admin/performance");
+    			window.location.replace("/dancemanage/admin/performance/jumpToPlan");
     	    });
     		
     	}
@@ -558,7 +558,7 @@ $(document).ready(function() {
     			}
             }
     		$.post("performance/swap", { performance: "2", posSource: row.id, posTarget: newPos }, function (theResponse) {
-    			window.location.replace("/dancemanage/admin/performance");
+    			window.location.replace("/dancemanage/admin/performance/jumpToPlan");
     	    });
     		
     	}
@@ -574,7 +574,7 @@ $(document).ready(function() {
     			}
             }
     		$.post("performance/swap", { performance: "3", posSource: row.id, posTarget: newPos }, function (theResponse) {
-    			window.location.replace("/dancemanage/admin/performance");
+    			window.location.replace("/dancemanage/admin/performance/jumpToPlan");
     	    });
     		
     	}

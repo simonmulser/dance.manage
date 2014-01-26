@@ -25,6 +25,7 @@ import at.danceandfun.entity.SuperUser;
 import at.danceandfun.entity.Teacher;
 import at.danceandfun.util.AppContext;
 import at.danceandfun.util.EMailAuthentication;
+import at.danceandfun.util.Helpers;
 import at.danceandfun.util.PasswordBean;
 
 @Service
@@ -93,6 +94,7 @@ public class PersonManagerImpl implements PersonManager {
         logger.info("Setting activation token to person with ID: "
                 + person.getPid());
         person.setActivated(false);
+        person.setPassword(Helpers.PASSWORD_FOR_DUMMY_ACCOUNTS);
         person.setActivationUUID(UUID.randomUUID().toString());
         return person;
     }

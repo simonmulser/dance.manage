@@ -1,13 +1,16 @@
 package at.danceandfun.controller;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +22,7 @@ import at.danceandfun.entity.Person;
 import at.danceandfun.entity.SuperUser;
 import at.danceandfun.entity.Teacher;
 import at.danceandfun.service.PersonManager;
+import at.danceandfun.util.UserNameBean;
 
 @Controller
 public class SecurityController {
@@ -28,12 +32,25 @@ public class SecurityController {
     @Autowired
     private PersonManager personManager;
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(ModelMap map) {
-        logger.debug("LOGIN");
+    private int resetCode = 0; // DEFAULT = 0, NO USER = 1, OK = 2
 
+    private UserNameBean usernameBean;
+
+    @PostConstruct
+    public void init() {
+        logger.info("INIT SecurityController");
+        usernameBean = new UserNameBean();
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login(HttpServletRequest request) {
+        logger.info("LoginPage loaded");
+        HttpSession session = request.getSession();
+        session.setAttribute("homeLink", "/login");
         return "login";
     }
+    
+
 
     @RequestMapping("/default")
     public String defaultAfterLogin(HttpServletRequest request) {
@@ -134,5 +151,39 @@ public class SecurityController {
             model.put("statuscode", 2);
         }
         return "validation";
+    }
+
+    @RequestMapping(value = "/resetPassword", method = RequestMethod.GET)
+    public String showEditPassword(ModelMap map) {
+        logger.debug("showEditPassword");
+
+        map.put("resetCode", resetCode);
+        map.put("usernameBean", usernameBean);
+        resetCode = 0;
+        return "resetPassword";
+    }
+
+    @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
+    public String changePassword(ModelMap map,
+            @ModelAttribute("usernameBean") UserNameBean usernameBean) {
+        logger.info("Try to reset password from user: "
+                + usernameBean.getUsername());
+        try {
+            Person person = (Person) personManager
+                    .loadUserByUsername(usernameBean.getUsername());
+            personManager.getURLToken(person);
+            personManager.update(person);
+
+            personManager.sendURL(person);
+            resetCode = 2;
+            this.usernameBean = new UserNameBean();
+            return "redirect:/resetPassword";
+
+        } catch (UsernameNotFoundException unnfe) {
+            logger.error("Username for password RESET not found");
+            resetCode = 1;
+            this.usernameBean = usernameBean;
+            return "redirect:/resetPassword";
+        }
     }
 }

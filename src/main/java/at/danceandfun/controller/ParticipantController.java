@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -34,10 +35,10 @@ import at.danceandfun.service.CourseParticipantManager;
 import at.danceandfun.service.ParentManager;
 import at.danceandfun.service.ParticipantManager;
 import at.danceandfun.service.PersonManager;
-import at.danceandfun.util.Helpers;
 
 @Controller
 @RequestMapping(value = "admin/participant")
+@SessionAttributes("participant")
 public class ParticipantController {
 
     private static Logger logger = Logger
@@ -129,9 +130,10 @@ public class ParticipantController {
                 logger.debug("New participant");
                 participant = (Participant) personManager
                         .getURLToken(participant);
-                participant.setPassword(Helpers.PASSWORD_FOR_DUMMY_ACCOUNTS);
                 participantManager.persist(participant);
-                personManager.sendURL(participant);
+                if (!participant.getEmail().equals("")) {
+                    personManager.sendURL(participant);
+                }
             }
 
             if (!participant.getTempSiblings().equals("")) {
@@ -185,7 +187,12 @@ public class ParticipantController {
                 }
             }
 
-            participantManager.merge(participant);
+            participant = participantManager.merge(participant);
+            if (!participant.isActivated()
+                    && !participant.getEmail().equals("")) {
+                personManager.sendURL(participant);
+            }
+
             this.participant = new Participant();
         }
         return "redirect:/admin/participant";
