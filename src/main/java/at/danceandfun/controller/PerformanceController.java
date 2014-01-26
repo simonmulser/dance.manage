@@ -375,12 +375,11 @@ public class PerformanceController {
             moveCourse(tempPerformance3.getCourses(), posSource, posTarget);
             break;
         }
-        
+
         return "redirect:/admin/performance";
     }
 
-    public void moveCourse(List<Course> courses, int posSource,
-            int posTarget) {
+    public void moveCourse(List<Course> courses, int posSource, int posTarget) {
         logger.info("Moving item from position " + posSource + " to position "
                 + posTarget);
 
