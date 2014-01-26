@@ -558,7 +558,6 @@ $(document).ready(function() {
     			}
             }
     		$.post("performance/swap", { performance: "2", posSource: row.id, posTarget: newPos }, function (theResponse) {
-    			window.location.replace("/dancemanage/admin/performance");
     	    });
     		
     	}
