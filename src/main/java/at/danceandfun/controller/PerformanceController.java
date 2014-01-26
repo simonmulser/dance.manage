@@ -117,6 +117,8 @@ public class PerformanceController {
             BindingResult result, RedirectAttributes redirectAttributes) {
         logger.debug("BUILD performance");
 
+        setCheckedRestrictions(request);
+
         if (result.hasErrors()) {
             redirectAttributes
                     .addFlashAttribute(
@@ -140,8 +142,6 @@ public class PerformanceController {
         }
 
         dateTime = plan.getDateTime();
-
-        setCheckedRestrictions(request);
 
         Collections.shuffle(courses);
 
@@ -208,11 +208,6 @@ public class PerformanceController {
         tempPerformance1 = performancePlanMap.get(1);
         tempPerformance2 = performancePlanMap.get(2);
         tempPerformance3 = performancePlanMap.get(3);
-
-        // System.out.println("KURSE: ");
-        // for (Course cur : tempPerformance1.getCourses()) {
-        // System.out.println(cur.getName());
-        // }
 
         return "redirect:/admin/performance";
     }
