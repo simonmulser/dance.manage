@@ -22,43 +22,45 @@
 				<br/><br/>
 				<c:choose>
 					<c:when test="${actualCourse.appointments.size() gt 0}">
-						<c:forEach items="${actualCourse.appointments}" var="appointment"
-							varStatus="loop">
-							<div class="accordion-group">
-								<div class="accordion-heading">
-									<a class="accordion-toggle" data-toggle="collapse"
-										data-parent="#accordion2" href="#collapse${loop.index}">
-										${appointment.number}.&nbsp;<spring:message
-											code="label.appointment" /> <c:if
-											test="${not empty appointment.appointmentDate}">&nbsp;(${appointment.appointmentDate})</c:if>
-									</a>
-								</div>
-								<div id="collapse${loop.index}" class="accordion-body collapse"
-									style="height: 0px;">
-									<div class="accordion-inner">
-										<c:choose>
-											<c:when test="${appointment.absences.size() gt 0}">
-												<table class="table table-striped table-bordered">
-													<tr>
-														<th><spring:message code="label.participant" /></th>
-														<th><spring:message code="label.reason" /></th>
-													</tr>
-													<c:forEach items="${appointment.absences}" var="absence">
+						<div class="accordion" id="accordion2">
+							<c:forEach items="${actualCourse.appointments}" var="appointment"
+								varStatus="loop">
+								<div class="accordion-group">
+									<div class="accordion-heading">
+										<a class="accordion-toggle" data-toggle="collapse"
+											data-parent="#accordion2" href="#collapse${loop.index}">
+											${appointment.number}.&nbsp;<spring:message
+												code="label.appointment" /> <c:if
+												test="${not empty appointment.appointmentDate}">&nbsp;(${appointment.appointmentDate})</c:if>
+										</a>
+									</div>
+									<div id="collapse${loop.index}" class="accordion-body collapse"
+										style="height: 0px;">
+										<div class="accordion-inner">
+											<c:choose>
+												<c:when test="${appointment.absences.size() gt 0}">
+													<table class="table table-striped table-bordered">
 														<tr>
-															<td>${absence.key.participant.firstname }&nbsp;${absence.key.participant.lastname }</td>
-															<td>${absence.reason}</td>
+															<th><spring:message code="label.participant" /></th>
+															<th><spring:message code="label.reason" /></th>
 														</tr>
-													</c:forEach>
-												</table>
-											</c:when>
-											<c:otherwise>
-												<spring:message code="appointment.noAbsences" />
-											</c:otherwise>
-										</c:choose>
+														<c:forEach items="${appointment.absences}" var="absence">
+															<tr>
+																<td>${absence.key.participant.firstname }&nbsp;${absence.key.participant.lastname }</td>
+																<td>${absence.reason}</td>
+															</tr>
+														</c:forEach>
+													</table>
+												</c:when>
+												<c:otherwise>
+													<spring:message code="appointment.noAbsences" />
+												</c:otherwise>
+											</c:choose>
+										</div>
 									</div>
 								</div>
-							</div>
-						</c:forEach>
+							</c:forEach>
+						</div>
 					</c:when>
 					<c:otherwise>
 						<spring:message code="admin.noAppointments" />
