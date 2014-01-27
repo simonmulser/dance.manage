@@ -42,21 +42,14 @@ public class SatValidatorTest {
     private ParticipantManager participantManager;
 
     private List<Course> fetchedCourses;
-    private List<PerformancePlan> fetchedPerformancePlans;
     private List<Performance> fetchedPerformances;
     private PerformancePlan plan;
     private Map<Integer, Performance> performancePlanMap;
 
     @Before
     public void setUp() {
-        fetchedPerformancePlans = performancePlanManager.getEnabledList();
         fetchedCourses = courseManager.getEnabledList();
-
-        for (PerformancePlan currentPlan : fetchedPerformancePlans) {
-            if (currentPlan.getPlanid() == 1) {
-                plan = currentPlan;
-            }
-        }
+        plan = performancePlanManager.get(2);
 
         fetchedPerformances = plan.getPerformances();
 
@@ -87,7 +80,6 @@ public class SatValidatorTest {
     @After
     public void tearDown() {
         fetchedCourses = new ArrayList<Course>();
-        fetchedPerformancePlans = new ArrayList<PerformancePlan>();
         fetchedPerformances = new ArrayList<Performance>();
         plan = new PerformancePlan();
     }

@@ -40,12 +40,12 @@
 					requestURI="/admin/parent" defaultsort="1">
 					<display:column sortable="true" titleKey="label.name"
 						class="colName">
-						<c:out value="${row.firstname} ${row.lastname}" />
+						<c:out value="${row.lastname} ${row.firstname}" />
 					</display:column>
-					<display:column sortable="true" titleKey="label.email">
+					<display:column titleKey="label.email">
 						<c:out value="${row.email}" />
 					</display:column>
-					<display:column sortable="true" titleKey="label.telephone">
+					<display:column titleKey="label.telephone">
 						<c:out value="${row.telephone}" />
 					</display:column>
 					<display:column sortable="true" titleKey="label.street">

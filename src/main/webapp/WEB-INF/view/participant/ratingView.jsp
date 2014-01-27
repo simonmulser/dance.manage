@@ -96,6 +96,9 @@
 					<display:column sortable="true" titleKey="label.course">
 						${rating.course.name}
 					</display:column>
+					<display:column sortable="true" titleKey="label.ratingDate">
+						<fmt:formatDate value="${rating.created}" pattern="dd.MM.yyy HH:mm" />
+					</display:column>
 					<display:column titleKey="label.courseRating">
 						<c:forEach var="i" begin="1" end="5">
 							<c:choose>

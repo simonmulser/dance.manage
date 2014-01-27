@@ -124,15 +124,15 @@
 					requestURI="/admin/participant">
 					<display:column sortable="true" titleKey="label.name"
 						class="colName">
-						<c:out value="${row.firstname} ${row.lastname}" />
+						<c:out value="${row.lastname} ${row.firstname}" />
 					</display:column>
-					<display:column sortable="true" titleKey="label.email">
+					<display:column titleKey="label.email">
 						<c:out value="${row.email}" />
 					</display:column>
-					<display:column sortable="true" titleKey="label.telephone">
+					<display:column titleKey="label.telephone">
 						<c:out value="${row.telephone}" />
 					</display:column>
-					<display:column sortable="true" titleKey="label.birthday"
+					<display:column titleKey="label.birthday"
 						class="colBirthday">
 						<joda:format value="${row.birthday}" pattern="dd.MM.yyyy" />
 					</display:column>
@@ -152,7 +152,7 @@
 						class="colCity">
 						<c:out value="${row.address.city}" />
 					</display:column>
-					<display:column sortable="true" titleKey="label.parent">
+					<display:column titleKey="label.parent">
 						<c:out value="${row.parent.firstname} ${row.parent.lastname}" />
 					</display:column>
 					<display:column titleKey="label.siblings">

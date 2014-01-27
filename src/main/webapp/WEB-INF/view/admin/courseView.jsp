@@ -211,8 +211,10 @@
 					&euro; <c:out value="${course.yearPrice}" />
 					</display:column>
 					<display:column sortable="true" titleKey="label.courseweekday">
-						<spring:message code="${course.weekday.i18nIdentifier}" />,&nbsp;
-					<joda:format value="${course.time}" pattern="HH:mm" />
+						<spring:message code="${course.weekday.i18nIdentifier}" />
+					</display:column>
+					<display:column sortable="true" titleKey="label.coursetime">
+						<joda:format value="${course.time}" pattern="HH:mm" />
 					</display:column>
 					<display:column sortable="true" titleKey="label.courseduration">
 						<spring:message code="${course.duration.i18nIdentifier}" />
