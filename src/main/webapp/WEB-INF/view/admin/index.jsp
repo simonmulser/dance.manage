@@ -3,6 +3,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.joda.org/joda/time/tags" prefix="joda"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="dmtags"%>
 
 <link href="<c:url value="/css/pages/dashboard.css" />" rel="stylesheet">
@@ -34,20 +35,16 @@
 						<div class="message_wrap">
 							<span class="arrow"></span>
 							<div class="info">
-								<a class="name"><spring:message code="label.anonym" /></a> <span
-									class="time">${rating.created}</span>
+								<span class="name"><spring:message code="label.anonym" /> </span>
+								<span class="time"><fmt:formatDate value="${rating.created}" pattern="dd.MM.yyy HH:mm" /></span>
+								
 								<div class="options_arrow">
+									
 									<div class="dropdown pull-right">
-										<a class="dropdown-toggle " id="dLabel" role="button"
-											data-toggle="dropdown" data-target="#" href="#"> <i
-											class=" icon-caret-down"></i>
-										</a>
-										<ul class="dropdown-menu " role="menu"
-											aria-labelledby="dLabel">
-											<li><a href="admin/rating/addAnswer/${rating.rid }"><i
+										<a href="admin/rating/addAnswer/${rating.rid }"><i
 													class=" icon-share-alt icon-large"></i> <spring:message
-														code="label.reply" /></a></li>
-										</ul>
+														code="label.reply" /></a>
+										
 									</div>
 								</div>
 							</div>

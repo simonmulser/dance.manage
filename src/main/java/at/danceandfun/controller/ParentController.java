@@ -82,7 +82,7 @@ public class ParentController {
             redirectAttributes.addFlashAttribute("parent", parent);
             this.parent = parent;
             editTrue = true;
-            return "redirect:/admin/parent";
+            return "redirect:/admin/parent#add";
 
         } else {
             logger.debug("ADD Participant with id " + parent.getPid());
@@ -120,7 +120,7 @@ public class ParentController {
         parent = parentManager.get(pid);
         editTrue = true;
 
-        return "redirect:/admin/parent";
+        return "redirect:/admin/parent#add";
     }
 
     @RequestMapping(value = "/delete/{pid}")
