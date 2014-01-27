@@ -408,8 +408,7 @@ public class SatValidator {
                 for (CourseParticipant currentCoPa : participantList.get(
                         siblingIDs.get(i)).getCourseParticipants()) {
                     if (currentCoPa.getCourse().isEnabled()) {
-                        if (currentCoPa.getCourse().getAmountPerformances() == 1) {
-                        } else {
+                        if (currentCoPa.getCourse().getAmountPerformances() != 1) {
                             break;
                         }
                     }

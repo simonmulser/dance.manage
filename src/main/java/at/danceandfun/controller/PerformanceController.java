@@ -382,6 +382,8 @@ public class PerformanceController {
             tempPerformance3 = moveCourse(tempPerformance3, posSource,
                     posTarget);
             break;
+        default:
+            break;
         }
 
         return "redirect:/admin/performance";
