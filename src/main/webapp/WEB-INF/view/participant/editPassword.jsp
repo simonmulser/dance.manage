@@ -11,7 +11,7 @@
 	<spring:message var="i18npassword" code="widget.password" />
 <dmtags:span width="12">
 	<dmtags:widget title="${i18npassword}" icon="icon-cogs">
-		<form:form method="post" action="editPassword" commandName="password"
+		<form:form method="post" action="" commandName="password"
 			class="form-horizontal">
 			
 			<dmtags:newPasswordForm />

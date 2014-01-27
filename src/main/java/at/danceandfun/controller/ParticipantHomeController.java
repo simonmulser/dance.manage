@@ -111,6 +111,7 @@ public class ParticipantHomeController {
     public String showEditPassword(ModelMap map, @PathVariable int pid) {
         logger.debug("showEditPassword");
 
+        map.put("participant", participantManager.get(pid));
         map.put("password", passwordBean);
         return "participant/editPassword";
     }
@@ -141,7 +142,7 @@ public class ParticipantHomeController {
         }
 
         this.passwordBean = new PasswordBean();
-        return "redirect:/participant";
+        return "redirect:/participant/" + pid;
 
     }
 
