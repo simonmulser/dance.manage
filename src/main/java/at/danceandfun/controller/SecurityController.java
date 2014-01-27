@@ -22,7 +22,7 @@ import at.danceandfun.entity.Person;
 import at.danceandfun.entity.SuperUser;
 import at.danceandfun.entity.Teacher;
 import at.danceandfun.service.PersonManager;
-import at.danceandfun.util.UserNameBean;
+import at.danceandfun.util.NameBean;
 
 @Controller
 public class SecurityController {
@@ -34,12 +34,12 @@ public class SecurityController {
 
     private int resetCode = 0; // DEFAULT = 0, NO USER = 1, OK = 2
 
-    private UserNameBean usernameBean;
+    private NameBean usernameBean;
 
     @PostConstruct
     public void init() {
         logger.info("INIT SecurityController");
-        usernameBean = new UserNameBean();
+        usernameBean = new NameBean();
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -165,18 +165,18 @@ public class SecurityController {
 
     @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
     public String changePassword(ModelMap map,
-            @ModelAttribute("usernameBean") UserNameBean usernameBean) {
+            @ModelAttribute("usernameBean") NameBean usernameBean) {
         logger.info("Try to reset password from user: "
-                + usernameBean.getUsername());
+                + usernameBean.getName());
         try {
             Person person = (Person) personManager
-                    .loadUserByUsername(usernameBean.getUsername());
+                    .loadUserByUsername(usernameBean.getName());
             personManager.getURLToken(person);
             personManager.update(person);
 
             personManager.sendURL(person);
             resetCode = 2;
-            this.usernameBean = new UserNameBean();
+            this.usernameBean = new NameBean();
             return "redirect:/resetPassword";
 
         } catch (UsernameNotFoundException unnfe) {

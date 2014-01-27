@@ -25,10 +25,10 @@
 	            	</c:if>
 	            	<form:form method="post" action="resetPassword" commandName="usernameBean" commclass="form-horizontal">
 						<div class="control-group">
-								<form:label path="username" class="control-label">
+								<form:label path="name" class="control-label">
 									<spring:message code="login.username" />
                 				</form:label>
-								<form:input path="username" /> <br/>
+								<form:input path="name" /> <br/>
 									
 								<input type="submit" value="<spring:message code="label.reset"/>" class="btn btn-primary" />
 						</div>
