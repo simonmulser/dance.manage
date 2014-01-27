@@ -97,7 +97,7 @@ public class TeacherController {
             redirectAttributes.addFlashAttribute("teacher", teacher);
             this.teacher = teacher;
             editTrue = true;
-            return "redirect:/admin/teacher";
+            return "redirect:/admin/teacher#add";
         } else {
             teacher.setEnabled(true);
 
@@ -205,7 +205,7 @@ public class TeacherController {
             teacher.setTempCourseNames(actualCourseNames);
         }
 
-        return "redirect:/admin/teacher";
+        return "redirect:/admin/teacher#add";
     }
 
     @RequestMapping(value = "/delete/{pid}")
