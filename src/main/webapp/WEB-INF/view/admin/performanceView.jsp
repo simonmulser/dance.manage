@@ -100,15 +100,21 @@
 					</label>
 				</div>
 
-				<div class="control-group" style="margin-left: -30px">
-					<form:label path="dateTime" class="control-label">
-					</form:label>
-					<div class="span6">
-						<form:input path="dateTime" id="datepicker" />
-						<br />
-						<form:errors path="dateTime" cssClass="error" />
+				<br />
+				
+				<spring:bind path="dateTime">
+					<c:set var="divClass" value="control-group" />
+					<c:if test="${status.error}">
+						<c:set var="divClass" value="control-group error" />
+					</c:if>
+					<div class="${divClass}">
+						<div class="span3">
+							<form:input path="dateTime" id="datepicker"
+								cssErrorClass="has-error" />
+						</div>
+						<form:errors path="dateTime" cssClass="help-inline" />
 					</div>
-				</div>
+				</spring:bind>
 
 				<div style="margin-top: 20px">
 					<input type="submit" value="<spring:message code="label.create"/>"
@@ -120,7 +126,7 @@
 
 	<div>
 		<dmtags:span width="6">
-			<dmtags:widget title="${i18nShowPlan}" icon="icon-camera">
+			<dmtags:widget title="${i18nShowPlan}" icon="icon-camera" style="table" >
 				<spring:message var="i18nOverview" code="widget.overview" />
 				<display:table name="performancePlanList" id="row"
 					class="table table-striped table-bordered displaytag" pagesize="5"
@@ -159,9 +165,10 @@
 		<c:if test="${!empty performanceList1}">
 			<dmtags:widget
 				title="${i18nScheduleProposal}&nbsp;&nbsp;${dateTime.toString('dd.MM.yyyy')}"
-				style="table" id="plan" icon="icon-list" pdfLink="performance/viewPerformancePdf/${currentPlanId}">
+				style="table" id="plan" icon="icon-list"
+				pdfLink="performance/viewPerformancePdf/${currentPlanId}">
 				<br />
-								
+
 				<div class="tabbable">
 					<ul class="nav nav-tabs">
 						<li class="active"><a href="#hall1" data-toggle="tab">Saal
@@ -201,8 +208,9 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${performanceList1}" var="validatedCourse" varStatus="loop">
-										<tr id="${loop.index}" >
+									<c:forEach items="${performanceList1}" var="validatedCourse"
+										varStatus="loop">
+										<tr id="${loop.index}">
 											<c:choose>
 												<c:when test="${validatedCourse.dummyCourse}">
 													<td>-</td>
@@ -310,8 +318,9 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${performanceList2}" var="validatedCourse" varStatus="loop">
-										<tr id="${loop.index}" >
+									<c:forEach items="${performanceList2}" var="validatedCourse"
+										varStatus="loop">
+										<tr id="${loop.index}">
 											<c:choose>
 												<c:when test="${validatedCourse.dummyCourse}">
 													<td>-</td>
@@ -419,7 +428,8 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${performanceList3}" var="validatedCourse" varStatus="loop">
+									<c:forEach items="${performanceList3}" var="validatedCourse"
+										varStatus="loop">
 										<tr id="${loop.index}">
 											<c:choose>
 												<c:when test="${validatedCourse.dummyCourse}">
@@ -528,76 +538,116 @@
 
 <script src="<c:url value="/js/jquery.tablednd.js" />"></script>
 <script type="text/javascript">
-$(document).ready(function() {
-    $("#plan1").tableDnD({
-    	onDrop: function(table, row) {
-    		var rows = table.tBodies[0].rows;
-    		var newPos;
-    		for (var i=0; i<rows.length; i++) {
-    			if (row.id == rows[i].id) {
-    				newPos = i;
-    			}
-            }
-    		$.post("performance/swap", { performance: "1", posSource: row.id, posTarget: newPos }, function (theResponse) {
-    			window.location.replace("/dancemanage/admin/performance/jumpToPlan/1");
-    	    });
-    		
-    	}
-    });
-    
-    $("#plan2").tableDnD({
-    	onDrop: function(table, row) {
-    		var rows = table.tBodies[0].rows;
-    		var newPos;
-    		for (var i=0; i<rows.length; i++) {
-    			if (row.id == rows[i].id) {
-    				newPos = i;
-    			}
-            }
-    		$.post("performance/swap", { performance: "2", posSource: row.id, posTarget: newPos }, function (theResponse) {
-    			window.location.replace("/dancemanage/admin/performance/jumpToPlan/2");
-    	    });
-    		
-    	}
-    });
-    
-    $("#plan3").tableDnD({
-    	onDrop: function(table, row) {
-    		var rows = table.tBodies[0].rows;
-    		var newPos;
-    		for (var i=0; i<rows.length; i++) {
-    			if (row.id == rows[i].id) {
-    				newPos = i;
-    			}
-            }
-    		$.post("performance/swap", { performance: "3", posSource: row.id, posTarget: newPos }, function (theResponse) {
-    			window.location.replace("/dancemanage/admin/performance/jumpToPlan/3");
-    	    });
-    		
-    	}
-    });
-});
+	$(document)
+			.ready(
+					function() {
+						$("#plan1")
+								.tableDnD(
+										{
+											onDrop : function(table, row) {
+												var rows = table.tBodies[0].rows;
+												var newPos;
+												for (var i = 0; i < rows.length; i++) {
+													if (row.id == rows[i].id) {
+														newPos = i;
+													}
+												}
+												$
+														.post(
+																"performance/swap",
+																{
+																	performance : "1",
+																	posSource : row.id,
+																	posTarget : newPos
+																},
+																function(
+																		theResponse) {
+																	window.location
+																			.replace("/dancemanage/admin/performance/jumpToPlan/1");
+																});
 
-$(".openDialog").click(function() { //Löschen rückbestätigen
-	$("#deleteId").text($(this).attr("id"));
-	$("#dialog-confirm").dialog("open");
-	
-	var data = "test";
-	
-	$.post("performance/swap", data, function (theResponse) {
-        $("#response").html(theResponse);  
-    });
-	
-	return false;
-});
+											}
+										});
 
-$("#dialog-confirm").dialog({
-	autoOpen : false,
-	resizable : false,
-	modal : true,
-	buttons : {
-		"OK" : function() {
-			document.location = "performance/delete/" + $("#deleteId").text();
+						$("#plan2")
+								.tableDnD(
+										{
+											onDrop : function(table, row) {
+												var rows = table.tBodies[0].rows;
+												var newPos;
+												for (var i = 0; i < rows.length; i++) {
+													if (row.id == rows[i].id) {
+														newPos = i;
+													}
+												}
+												$
+														.post(
+																"performance/swap",
+																{
+																	performance : "2",
+																	posSource : row.id,
+																	posTarget : newPos
+																},
+																function(
+																		theResponse) {
+																	window.location
+																			.replace("/dancemanage/admin/performance/jumpToPlan/2");
+																});
+
+											}
+										});
+
+						$("#plan3")
+								.tableDnD(
+										{
+											onDrop : function(table, row) {
+												var rows = table.tBodies[0].rows;
+												var newPos;
+												for (var i = 0; i < rows.length; i++) {
+													if (row.id == rows[i].id) {
+														newPos = i;
+													}
+												}
+												$
+														.post(
+																"performance/swap",
+																{
+																	performance : "3",
+																	posSource : row.id,
+																	posTarget : newPos
+																},
+																function(
+																		theResponse) {
+																	window.location
+																			.replace("/dancemanage/admin/performance/jumpToPlan/3");
+																});
+
+											}
+										});
+					});
+
+	$(".openDialog").click(function() { //Löschen rückbestätigen
+		$("#deleteId").text($(this).attr("id"));
+		$("#dialog-confirm").dialog("open");
+
+		var data = "test";
+
+		$.post("performance/swap", data, function(theResponse) {
+			$("#response").html(theResponse);
+		});
+
+		return false;
+	});
+
+	$("#dialog-confirm").dialog(
+			{
+				autoOpen : false,
+				resizable : false,
+				modal : true,
+				buttons : {
+					"OK" : function() {
+						document.location = "performance/delete/"
+								+ $("#deleteId").text();
 						$(this).dialog("close");
 					},
 					Cancel : function() {

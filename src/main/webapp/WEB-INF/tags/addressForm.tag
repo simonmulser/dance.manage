@@ -6,62 +6,98 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 
-<div class="control-group">
-	<form:label path="address.street" class="control-label">
-		<spring:message code="label.street" />*
+<spring:bind path="address.street">
+	<c:set var="divClass" value="control-group" />
+	<c:if test="${status.error}">
+		<c:set var="divClass" value="control-group error" />
+	</c:if>
+	<div class="${divClass}">
+		<form:label path="address.street" class="control-label">
+			<spring:message code="label.street" />*
                 </form:label>
-	<div class="span6">
-		<form:input path="address.street" />
+		<div class="span3">
+			<form:input path="address.street" cssErrorClass="has-error" />
+		</div>
+		<form:errors path="address.street" cssClass="help-inline" />
 	</div>
-	<form:errors path="address.street" cssClass="error" />
-</div>
+</spring:bind>
 
-<div class="control-group">
-	<form:label path="address.number" class="control-label">
-		<spring:message code="label.number" />*
+<spring:bind path="address.number">
+	<c:set var="divClass" value="control-group" />
+	<c:if test="${status.error}">
+		<c:set var="divClass" value="control-group error" />
+	</c:if>
+	<div class="${divClass}">
+		<form:label path="address.number" class="control-label">
+			<spring:message code="label.number" />*
                 </form:label>
-	<div class="span6">
-		<form:input path="address.number" />
+		<div class="span3">
+			<form:input path="address.number" cssErrorClass="has-error" />
+		</div>
+		<form:errors path="address.number" cssClass="help-inline" />
 	</div>
-	<form:errors path="address.number" cssClass="error" />
-</div>
+</spring:bind>
 
-<div class="control-group">
-	<form:label path="address.stair" class="control-label">
-		<spring:message code="label.stair" />
-	</form:label>
-	<div class="span6">
-		<form:input path="address.stair" />
+<spring:bind path="address.stair">
+	<c:set var="divClass" value="control-group" />
+	<c:if test="${status.error}">
+		<c:set var="divClass" value="control-group error" />
+	</c:if>
+	<div class="${divClass}">
+		<form:label path="address.stair" class="control-label">
+			<spring:message code="label.stair" />
+		</form:label>
+		<div class="span3">
+			<form:input path="address.stair" cssErrorClass="has-error" />
+		</div>
+		<form:errors path="address.stair" cssClass="help-inline" />
 	</div>
-	<form:errors path="address.stair" cssClass="error" />
-</div>
+</spring:bind>
 
-<div class="control-group">
-	<form:label path="address.door" class="control-label">
-		<spring:message code="label.door" />
-	</form:label>
-	<div class="span6">
-		<form:input path="address.door" />
+<spring:bind path="address.door">
+	<c:set var="divClass" value="control-group" />
+	<c:if test="${status.error}">
+		<c:set var="divClass" value="control-group error" />
+	</c:if>
+	<div class="${divClass}">
+		<form:label path="address.door" class="control-label">
+			<spring:message code="label.door" />
+		</form:label>
+		<div class="span3">
+			<form:input path="address.door" cssErrorClass="has-error" />
+		</div>
+		<form:errors path="address.door" cssClass="help-inline" />
 	</div>
-	<form:errors path="address.door" cssClass="error" />
-</div>
+</spring:bind>
 
-<div class="control-group">
-	<form:label path="address.zip" class="control-label">
-		<spring:message code="label.zip" />*
-                </form:label>
-	<div class="span6">
-		<form:input path="address.zip" />
+<spring:bind path="address.zip">
+	<c:set var="divClass" value="control-group" />
+	<c:if test="${status.error}">
+		<c:set var="divClass" value="control-group error" />
+	</c:if>
+	<div class="${divClass}">
+		<form:label path="address.zip" class="control-label">
+			<spring:message code="label.zip" />
+		</form:label>
+		<div class="span3">
+			<form:input path="address.zip" cssErrorClass="has-error" />
+		</div>
+		<form:errors path="address.zip" cssClass="help-inline" />
 	</div>
-	<form:errors path="address.zip" cssClass="error" />
-</div>
+</spring:bind>
 
-<div class="control-group">
-	<form:label path="address.city" class="control-label">
-		<spring:message code="label.city" />*
-                </form:label>
-	<div class="span6">
-		<form:input path="address.city" />
+<spring:bind path="address.city">
+	<c:set var="divClass" value="control-group" />
+	<c:if test="${status.error}">
+		<c:set var="divClass" value="control-group error" />
+	</c:if>
+	<div class="${divClass}">
+		<form:label path="address.city" class="control-label">
+			<spring:message code="label.city" />
+		</form:label>
+		<div class="span3">
+			<form:input path="address.city" cssErrorClass="has-error" />
+		</div>
+		<form:errors path="address.city" cssClass="help-inline" />
 	</div>
-	<form:errors path="address.city" cssClass="error" />
-</div>
+</spring:bind>

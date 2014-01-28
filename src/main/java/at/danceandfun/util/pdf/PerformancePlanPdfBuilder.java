@@ -6,6 +6,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import at.danceandfun.entity.Course;
 import at.danceandfun.util.AbstractITextPdfView;
 
@@ -36,22 +40,30 @@ public class PerformancePlanPdfBuilder extends AbstractITextPdfView {
         List<Course> performanceList3 = (List<Course>) model
                 .get("performanceList3");
 
+        LocalDate dateTime = (LocalDate) model.get("dateTime");
+
         // prepare font
         Font helvetica = PdfTemplateUtils.getDefaultSansFont();
         Font helveticaHeader = PdfTemplateUtils.getDefaultSansFont();
         helveticaHeader.setColor(BaseColor.WHITE);
 
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("dd.MM.yyyy");
+        String date = fmt.print(dateTime);
+
         PdfTemplateUtils.drawTemplateBars(doc, writer);
 
-        printPerformanceTable(doc, helvetica, helveticaHeader, "Saal 1",
-                performanceList1);
+        printPerformanceTable(doc, helvetica, helveticaHeader, "Saal 1 - "
+                + date, performanceList1);
         doc.newPage();
-        printPerformanceTable(doc, helvetica, helveticaHeader, "Saal 2",
-                performanceList2);
+
+        PdfTemplateUtils.drawTemplateBars(doc, writer);
+        printPerformanceTable(doc, helvetica, helveticaHeader, "Saal 2 - "
+                + date, performanceList2);
         doc.newPage();
-        printPerformanceTable(doc, helvetica, helveticaHeader, "Saal 3",
-                performanceList3);
-        doc.newPage();
+
+        PdfTemplateUtils.drawTemplateBars(doc, writer);
+        printPerformanceTable(doc, helvetica, helveticaHeader, "Saal 3 - "
+                + date, performanceList3);
     }
 
     private void printPerformanceTable(Document doc, Font font,

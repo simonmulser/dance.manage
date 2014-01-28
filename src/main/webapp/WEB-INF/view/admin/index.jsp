@@ -141,10 +141,10 @@
 					class="shortcut-icon icon-list"></i><span class="shortcut-label">${i18nSCCourseList}</span>
 				</a><a href="admin/statistics" class="shortcut"><i
 					class="shortcut-icon icon-signal"></i><span class="shortcut-label">${i18nSCDailyStats}</span>
-				</a><a href="javascript:;" class="shortcut"><i
+				</a><a href="admin/parent#add" class="shortcut"><i
 					class="shortcut-icon icon-user"></i> <span
 					class="shortcut-label">${i18nSCNewParents}</span> </a><a
-					href="javascript:;" class="shortcut"> <i
+					href="admin/teacher#add" class="shortcut"> <i
 					class="shortcut-icon icon-user"></i><span class="shortcut-label">${i18nSCNewTeacher}</span>
 				</a>
 			</div>
