@@ -32,6 +32,8 @@
 						</ul></li>
 					<li <c:if test="${activesection eq 'rating'}">class="active"</c:if>><a href="/dancemanage/admin/rating"><i class="icon-thumbs-up"></i><span><spring:message code="nav.rating" /></span>
 					</a></li>
+					<li <c:if test="${activesection eq 'absence'}">class="active"</c:if>><a href="/dancemanage/admin/absence"><i class="icon-edit"></i><span><spring:message
+									code="nav.absence" /></span> </a></li>
 					<li <c:if test="${activesection eq 'performances'}">class="active"</c:if>><a href="/dancemanage/admin/performance"><i class="icon-camera"></i><span><spring:message
 									code="nav.performances" /></span> </a></li>
 				</c:if>

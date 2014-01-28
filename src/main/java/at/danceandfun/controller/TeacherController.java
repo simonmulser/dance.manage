@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -31,10 +32,10 @@ import at.danceandfun.service.CourseManager;
 import at.danceandfun.service.PersonManager;
 import at.danceandfun.service.StyleManager;
 import at.danceandfun.service.TeacherManager;
-import at.danceandfun.util.Helpers;
 
 @Controller
 @RequestMapping(value = "admin/teacher")
+@SessionAttributes("teacher")
 public class TeacherController {
 
     private static Logger logger = Logger.getLogger(TeacherController.class);
@@ -96,7 +97,7 @@ public class TeacherController {
             redirectAttributes.addFlashAttribute("teacher", teacher);
             this.teacher = teacher;
             editTrue = true;
-            return "redirect:/admin/teacher";
+            return "redirect:/admin/teacher#add";
         } else {
             teacher.setEnabled(true);
 
@@ -151,13 +152,16 @@ public class TeacherController {
             if (teacher.getPid() == null) {
                 logger.debug("New teacher");
                 teacher = (Teacher) personManager.getURLToken(teacher);
-                teacher.setPassword(Helpers.PASSWORD_FOR_DUMMY_ACCOUNTS);
                 teacherManager.persist(teacher);
-                personManager.sendURL(teacher);
-
+                if (!teacher.getEmail().equals("")) {
+                    personManager.sendURL(teacher);
+                }
             } else {
                 logger.debug("Update teacher");
-                teacherManager.merge(teacher);
+                teacher = teacherManager.merge(teacher);
+                if (!teacher.isActivated() && !teacher.getEmail().equals("")) {
+                    personManager.sendURL(teacher);
+                }
             }
 
             if (teacher.getCourses().size() > 0) {
@@ -201,7 +205,7 @@ public class TeacherController {
             teacher.setTempCourseNames(actualCourseNames);
         }
 
-        return "redirect:/admin/teacher";
+        return "redirect:/admin/teacher#add";
     }
 
     @RequestMapping(value = "/delete/{pid}")

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -34,10 +35,10 @@ import at.danceandfun.service.CourseParticipantManager;
 import at.danceandfun.service.ParentManager;
 import at.danceandfun.service.ParticipantManager;
 import at.danceandfun.service.PersonManager;
-import at.danceandfun.util.Helpers;
 
 @Controller
 @RequestMapping(value = "admin/participant")
+@SessionAttributes("participant")
 public class ParticipantController {
 
     private static Logger logger = Logger
@@ -59,20 +60,17 @@ public class ParticipantController {
     private PersonManager personManager;
 
     private Participant participant;
+    private List<Participant> participantList;
+    private boolean setList = true;
 
     @PostConstruct
     public void init() {
         participant = new Participant();
+
     }
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public String listParticipants(ModelMap map) {
-        logger.debug("LIST Participant with id " + participant.getPid());
-
-        if (!editTrue) {
-            participant = new Participant();
-        }
-        List<Participant> participantList = new ArrayList<Participant>();
+    public void createParticipantList() {
+        participantList = new ArrayList<Participant>();
         DetachedCriteria criteria = DetachedCriteria
                 .forClass(Participant.class);
         criteria.addOrder(Order.asc("lastname"));
@@ -85,6 +83,21 @@ public class ParticipantController {
             }
             participantList.add(p);
         }
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public String listParticipants(ModelMap map) {
+        logger.debug("LIST Participant with id " + participant.getPid());
+
+        if (!editTrue) {
+            participant = new Participant();
+        }
+
+        if (setList) {
+            createParticipantList();
+        }
+        setList = false;
+
         map.addAttribute("participant", participant);
         map.addAttribute("participantList", participantList);
         editTrue = false;
@@ -103,7 +116,7 @@ public class ParticipantController {
             redirectAttributes.addFlashAttribute("participant", participant);
             this.participant = participant;
             editTrue = true;
-            return "redirect:/admin/participant";
+            return "redirect:/admin/participant#add";
 
         } else {
             logger.debug("ADD Participant with id " + participant.getPid());
@@ -129,9 +142,10 @@ public class ParticipantController {
                 logger.debug("New participant");
                 participant = (Participant) personManager
                         .getURLToken(participant);
-                participant.setPassword(Helpers.PASSWORD_FOR_DUMMY_ACCOUNTS);
                 participantManager.persist(participant);
-                personManager.sendURL(participant);
+                if (!participant.getEmail().equals("")) {
+                    personManager.sendURL(participant);
+                }
             }
 
             if (!participant.getTempSiblings().equals("")) {
@@ -185,7 +199,12 @@ public class ParticipantController {
                 }
             }
 
-            participantManager.merge(participant);
+            participant = participantManager.merge(participant);
+            if (!participant.isActivated()
+                    && !participant.getEmail().equals("")) {
+                personManager.sendURL(participant);
+            }
+            this.setList = true;
             this.participant = new Participant();
         }
         return "redirect:/admin/participant";
@@ -228,7 +247,7 @@ public class ParticipantController {
             participant.setTempCourseNames(actualCourseNames);
         }
 
-        return "redirect:/admin/participant";
+        return "redirect:/admin/participant#add";
     }
 
     @RequestMapping(value = "/delete/{pid}")
@@ -256,6 +275,7 @@ public class ParticipantController {
 
         participantManager.merge(participant);
         participant = new Participant();
+        this.setList = true;
         return "redirect:/admin/participant";
     }
 

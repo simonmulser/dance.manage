@@ -125,96 +125,98 @@ public class InvoiceController {
             @ModelAttribute(value = "invoice") @Valid Invoice invoice,
             BindingResult result, RedirectAttributes redirectAttributes,
             ModelMap map) {
-
-        editTrue = true;
-        Participant actualParticipant = participantManager.get(invoice
-                .getParticipant().getPid());
-        invoice.setParticipant(actualParticipant);
-        if (actualParticipant.hasParent()) {
-            invoice.setParent(actualParticipant.getParent());
-        }
-        if (status == 0) {
-            status = 1;
-        }
-
-        List<Position> positionsWithErrors = new ArrayList<Position>();
-        List<CourseParticipant> courseParticipantsToUpdate = new ArrayList<CourseParticipant>();
-        double totalAmount = 0;
-        int noneCounts = 0;
-        for (CourseParticipant cp : actualParticipant.getCourseParticipants()) {
-            for (Position pos : invoice.getPositions()) {
-                if (cp.isEnabled()
-                        && cp.getCourse().getCid() == pos.getKey().getCourse()
-                                .getCid()) {
-                    if (pos.getDuration() == Duration.NONE) {
-                        pos.setErrorMessage(geti18nMessage("message.notRelevatPosition"));
-                        noneCounts++;
-                    } else {
-                        CourseParticipant tempCP = new CourseParticipant();
-                        tempCP.setCourse(cp.getCourse());
-                        tempCP.setParticipant(cp.getParticipant());
-                        tempCP.setEnabled(true);
-                        tempCP.setDuration(pos.getDuration());
-                        courseParticipantsToUpdate.add(tempCP);
-                        if (pos.getDuration() == Duration.YEAR) {
-                            pos.setAmount(cp.getCourse().getYearPrice());
-                        } else {
-                            pos.setAmount(cp.getCourse().getSemesterPrice());
-                        }
-                        pos.setErrorMessage(geti18nMessage("message.okPosition"));
-                        totalAmount += pos.getAmount();
-                    }
-                    positionsWithErrors.add(pos);
-                }
-            }
-        }
-        invoice.setPositions(positionsWithErrors);
-
-        if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute(
-                    "org.springframework.validation.BindingResult.invoice",
-                    result);
-            redirectAttributes.addFlashAttribute("invoice", invoice);
-            this.invoice = invoice;
+        if (invoice.getParticipant() != null) {
             editTrue = true;
-            status = 0;
-            return "redirect:/admin/invoice";
-
-        }
-
-        if (noneCounts == invoice.getPositions().size()) { // alle Pos NONE
-            status = 0;
-        }
-        if (status != 0) {
-            if (invoice.getReduction() != null) {
-                invoice.setReductionAmount(totalAmount
-                        * (invoice.getReduction() / 100));
-                invoice.setTotalAmount(totalAmount
-                        - invoice.getReductionAmount());
-            } else {
-                invoice.setTotalAmount(totalAmount);
+            Participant actualParticipant = participantManager.get(invoice
+                    .getParticipant().getPid());
+            invoice.setParticipant(actualParticipant);
+            if (actualParticipant.hasParent()) {
+                invoice.setParent(actualParticipant.getParent());
             }
-        }
-        if (status == 1) { // readyToSave
-            status = 2;
-        } else if (status == 2) { // save
-            List<Position> finalPositions = new ArrayList<Position>();
-            for (Position pos : invoice.getPositions()) {
-                if (pos.getDuration() != Duration.NONE) {
-                    pos.getKey().setInvoice(invoice);
-                    finalPositions.add(pos);
+            if (status == 0) {
+                status = 1;
+            }
+
+            List<Position> positionsWithErrors = new ArrayList<Position>();
+            List<CourseParticipant> courseParticipantsToUpdate = new ArrayList<CourseParticipant>();
+            double totalAmount = 0;
+            int noneCounts = 0;
+            for (CourseParticipant cp : actualParticipant
+                    .getCourseParticipants()) {
+                for (Position pos : invoice.getPositions()) {
+                    if (cp.isEnabled()
+                            && cp.getCourse().getCid() == pos.getKey()
+                                    .getCourse().getCid()) {
+                        if (pos.getDuration() == Duration.NONE) {
+                            pos.setErrorMessage(geti18nMessage("message.notRelevatPosition"));
+                            noneCounts++;
+                        } else {
+                            CourseParticipant tempCP = new CourseParticipant();
+                            tempCP.setCourse(cp.getCourse());
+                            tempCP.setParticipant(cp.getParticipant());
+                            tempCP.setEnabled(true);
+                            tempCP.setDuration(pos.getDuration());
+                            courseParticipantsToUpdate.add(tempCP);
+                            if (pos.getDuration() == Duration.YEAR) {
+                                pos.setAmount(cp.getCourse().getYearPrice());
+                            } else {
+                                pos.setAmount(cp.getCourse().getSemesterPrice());
+                            }
+                            pos.setErrorMessage(geti18nMessage("message.okPosition"));
+                            totalAmount += pos.getAmount();
+                        }
+                        positionsWithErrors.add(pos);
+                    }
                 }
             }
-            invoice.setPositions(finalPositions);
-            invoice.setEnabled(true);
-            invoice.setDate(new LocalDateTime());
-            invoiceManager.persist(invoice);
-            for (CourseParticipant cp : courseParticipantsToUpdate) {
-                courseParticipantManager.persist(cp);
+            invoice.setPositions(positionsWithErrors);
+
+            if (result.hasErrors()) {
+                redirectAttributes.addFlashAttribute(
+                        "org.springframework.validation.BindingResult.invoice",
+                        result);
+                redirectAttributes.addFlashAttribute("invoice", invoice);
+                this.invoice = invoice;
+                editTrue = true;
+                status = 0;
+                return "redirect:/admin/invoice";
+
             }
-            status = 3;
+
+            if (noneCounts == invoice.getPositions().size()) { // alle Pos NONE
+                status = 0;
+            }
+            if (status != 0) {
+                if (invoice.getReduction() != null) {
+                    invoice.setReductionAmount(totalAmount
+                            * (invoice.getReduction() / 100));
+                    invoice.setTotalAmount(totalAmount
+                            - invoice.getReductionAmount());
+                } else {
+                    invoice.setTotalAmount(totalAmount);
+                }
+            }
+            if (status == 1) { // readyToSave
+                status = 2;
+            } else if (status == 2) { // save
+                List<Position> finalPositions = new ArrayList<Position>();
+                for (Position pos : invoice.getPositions()) {
+                    if (pos.getDuration() != Duration.NONE) {
+                        pos.getKey().setInvoice(invoice);
+                        finalPositions.add(pos);
+                    }
+                }
+                invoice.setPositions(finalPositions);
+                invoice.setEnabled(true);
+                invoice.setDate(new LocalDateTime());
+                invoiceManager.persist(invoice);
+                for (CourseParticipant cp : courseParticipantsToUpdate) {
+                    courseParticipantManager.persist(cp);
+                }
+                status = 3;
+            }
+            this.invoice = invoice;
         }
-        this.invoice = invoice;
         return "redirect:/admin/invoice";
     }
 

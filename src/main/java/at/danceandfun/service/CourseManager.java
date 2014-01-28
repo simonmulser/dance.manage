@@ -16,6 +16,8 @@ public interface CourseManager extends ManagerBase<Course> {
 
     public List<Course> searchForCourses(Teacher actualTeacher, String query);
 
+    public List<Course> searchForCourses(String query);
+
     public List<String> getParticipantPerStyle(List<Style> enabledStyles,
             List<CourseParticipant> enabledCourseParticipants, int year);
 

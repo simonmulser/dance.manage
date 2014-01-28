@@ -84,7 +84,7 @@ public class CourseController {
             redirectAttributes.addFlashAttribute("course", course);
             this.course = course;
             editTrue = true;
-            return "redirect:/admin/course";
+            return "redirect:/admin/course#add";
         }
         course.setEnabled(true);
 
@@ -119,7 +119,7 @@ public class CourseController {
         logger.debug("Edit Course with id " + cid);
         course = courseManager.get(cid);
         editTrue = true;
-        return "redirect:/admin/course";
+        return "redirect:/admin/course#add";
     }
 
     @RequestMapping(value = "/delete/{cid}")

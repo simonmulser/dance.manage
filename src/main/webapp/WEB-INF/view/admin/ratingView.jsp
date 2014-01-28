@@ -10,6 +10,7 @@
 
 <spring:message var="i18nTitle" code="nav.rating" />
 <dmtags:base title="${i18nTitle}" activesection="rating">
+	<dmtags:span width="12">
 	<spring:message var="i18nRating" code="widget.rating" />
 	<dmtags:widget title="${i18nRating}" style="noTable"
 		icon="icon-thumbs-up">
@@ -123,6 +124,9 @@
 			requestURI="/admin/rating" defaultsort="1">
 			<display:column sortable="true" titleKey="label.course">
 						${rating.course.name}
+			</display:column>
+			<display:column sortable="true" titleKey="label.ratingDate">
+						<fmt:formatDate value="${rating.created}" pattern="dd.MM.yyy HH:mm" />
 					</display:column>
 			<display:column titleKey="label.courseRating">
 				<c:forEach var="i" begin="1" end="5">
@@ -189,6 +193,7 @@
 			</display:column>
 		</display:table>
 	</dmtags:widget>
+	</dmtags:span>
 </dmtags:base>
 
 <script src="<c:url value="/js/searchBoxAutoComplete.js" />"></script>

@@ -1,5 +1,6 @@
 package at.danceandfun.controller;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -24,7 +25,9 @@ import at.danceandfun.service.AppointmentManager;
 import at.danceandfun.service.CourseManager;
 import at.danceandfun.service.CourseParticipantManager;
 import at.danceandfun.service.ParticipantManager;
+import at.danceandfun.service.PersonManager;
 import at.danceandfun.service.RatingManager;
+import at.danceandfun.util.PasswordBean;
 
 @Controller
 @RequestMapping(value = "/participant")
@@ -50,9 +53,20 @@ public class ParticipantHomeController {
     @Autowired
     private RatingManager ratingManager;
 
+    @Autowired
+    private PersonManager personManager;
+
     private Rating rating;
 
+    private PasswordBean passwordBean;
+
     private boolean editTrue = false;
+
+    @PostConstruct
+    public void init() {
+        logger.info("INIT ParticipantHomeController");
+        passwordBean = new PasswordBean();
+    }
 
     @RequestMapping(value = "/{pid}", method = RequestMethod.GET)
     public String showIndex(ModelMap map, @PathVariable int pid) {
@@ -89,6 +103,45 @@ public class ParticipantHomeController {
 
         logger.debug("updateParticipant");
         participantManager.merge(participant);
+        return "redirect:/participant/" + pid;
+
+    }
+
+    @RequestMapping(value = "/editPassword/{pid}", method = RequestMethod.GET)
+    public String showEditPassword(ModelMap map, @PathVariable int pid) {
+        logger.debug("showEditPassword");
+
+        map.put("participant", participantManager.get(pid));
+        map.put("password", passwordBean);
+        return "participant/editPassword";
+    }
+
+    @RequestMapping(value = "/editPassword/{pid}", method = RequestMethod.POST)
+    public String changePassword(ModelMap map, @PathVariable int pid,
+            @ModelAttribute("password") @Valid PasswordBean passwordBean,
+            BindingResult result, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.password",
+                    result);
+            redirectAttributes.addFlashAttribute("password", passwordBean);
+            this.passwordBean = passwordBean;
+            return "participant/editPassword";
+        }
+
+        Participant participant = participantManager.get(pid);
+        logger.info("Try to change password from user with ID: "
+                + participant.getPid());
+        passwordBean.setId(participant.getPid());
+
+        if (!personManager.changePassword(passwordBean)) {
+            logger.debug("OBJECT: " + passwordBean);
+            this.passwordBean = passwordBean;
+            redirectAttributes.addFlashAttribute("password", passwordBean);
+            return "participant/editPassword";
+        }
+
+        this.passwordBean = new PasswordBean();
         return "redirect:/participant/" + pid;
 
     }

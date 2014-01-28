@@ -50,7 +50,7 @@ public class Rating extends EntityBase {
     private String contraCritique;
 
     @Column(name = "ANSWER")
-    @Pattern(regexp = PatternConstants.MESSAGE_PATTERN, message = "{pattern.characters.message}")
+    @Pattern(regexp = PatternConstants.MESSAGE_PATTERN_ANSWER, message = "{pattern.characters.message}")
     private String answer;
 
     @ManyToOne

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -26,10 +27,10 @@ import at.danceandfun.service.AddressManager;
 import at.danceandfun.service.ParentManager;
 import at.danceandfun.service.ParticipantManager;
 import at.danceandfun.service.PersonManager;
-import at.danceandfun.util.Helpers;
 
 @Controller
 @RequestMapping(value = "admin/parent")
+@SessionAttributes("parent")
 public class ParentController {
 
     private static Logger logger = Logger.getLogger(ParentController.class);
@@ -81,7 +82,7 @@ public class ParentController {
             redirectAttributes.addFlashAttribute("parent", parent);
             this.parent = parent;
             editTrue = true;
-            return "redirect:/admin/parent";
+            return "redirect:/admin/parent#add";
 
         } else {
             logger.debug("ADD Participant with id " + parent.getPid());
@@ -94,12 +95,16 @@ public class ParentController {
             if (parent.getPid() == null) {
                 logger.debug("New parent");
                 parent = (Parent) personManager.getURLToken(parent);
-                parent.setPassword(Helpers.PASSWORD_FOR_DUMMY_ACCOUNTS);
                 parentManager.persist(parent);
-                personManager.sendURL(parent);
+                if (!parent.getEmail().equals("")) {
+                    personManager.sendURL(parent);
+                }
             } else {
                 logger.debug("Update parent");
-                parentManager.merge(parent);
+                parent = parentManager.merge(parent);
+                if (!parent.isActivated() && !parent.getEmail().equals("")) {
+                    personManager.sendURL(parent);
+                }
             }
 
             logger.debug("Finished updating parent");
@@ -115,7 +120,7 @@ public class ParentController {
         parent = parentManager.get(pid);
         editTrue = true;
 
-        return "redirect:/admin/parent";
+        return "redirect:/admin/parent#add";
     }
 
     @RequestMapping(value = "/delete/{pid}")

@@ -1,5 +1,6 @@
 package at.danceandfun.controller;
 
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
@@ -17,7 +18,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import at.danceandfun.entity.Teacher;
 import at.danceandfun.service.CourseManager;
+import at.danceandfun.service.PersonManager;
 import at.danceandfun.service.TeacherManager;
+import at.danceandfun.util.PasswordBean;
 
 @Controller
 @RequestMapping(value = "/teacher")
@@ -32,6 +35,17 @@ public class TeacherHomeController {
 
     @Autowired
     private CourseManager courseManager;
+
+    @Autowired
+    private PersonManager personManager;
+
+    private PasswordBean passwordBean;
+
+    @PostConstruct
+    public void init() {
+        logger.info("INIT ParentHomeController");
+        passwordBean = new PasswordBean();
+    }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String showIndex(ModelMap map) {
@@ -73,6 +87,43 @@ public class TeacherHomeController {
 
         logger.debug("updateTeacher");
         teacherManager.merge(teacher);
+        return "redirect:/teacher";
+
+    }
+
+    @RequestMapping(value = "/editPassword", method = RequestMethod.GET)
+    public String showEditPassword(ModelMap map) {
+        logger.debug("showEditPassword");
+
+        map.put("password", passwordBean);
+        return "teacher/editPassword";
+    }
+
+    @RequestMapping(value = "/editPassword", method = RequestMethod.POST)
+    public String changePassword(ModelMap map,
+            @ModelAttribute("password") @Valid PasswordBean passwordBean,
+            BindingResult result, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.password",
+                    result);
+            redirectAttributes.addFlashAttribute("password", passwordBean);
+            this.passwordBean = passwordBean;
+            return "teacher/editPassword";
+        }
+
+        logger.info("Try to change password from user with ID: "
+                + getLoggedInTeacher().getPid());
+        passwordBean.setId(getLoggedInTeacher().getPid());
+
+        if (!personManager.changePassword(passwordBean)) {
+            logger.debug("OBJECT: " + passwordBean);
+            this.passwordBean = passwordBean;
+            redirectAttributes.addFlashAttribute("password", passwordBean);
+            return "teacher/editPassword";
+        }
+
+        this.passwordBean = new PasswordBean();
         return "redirect:/teacher";
 
     }

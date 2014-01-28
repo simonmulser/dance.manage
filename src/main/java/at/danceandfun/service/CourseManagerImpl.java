@@ -65,6 +65,16 @@ public class CourseManagerImpl extends ManagerBaseImpl<Course> implements
         return courses;
     }
 
+    public List<Course> searchForCourses(String query) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Course.class);
+
+        criteria.add(Restrictions.like("name", query + "%"));
+        criteria.add(Restrictions.eq("enabled", true));
+
+        List<Course> courses = mainDao.getListByCriteria(criteria);
+        return courses;
+    }
+
     public List<String> getParticipantPerStyle(List<Style> enabledStyles,
             List<CourseParticipant> enabledCourseParticipants, int year) {
         List<String> participantsPerStyle = new ArrayList<String>();
@@ -83,8 +93,12 @@ public class CourseManagerImpl extends ManagerBaseImpl<Course> implements
                 }
 
             }
-            participantsPerStyle.add(style.getName() + "(" + participantCount
-                    + ")" + "," + participantCount);
+            if (participantCount > 0) {
+                participantsPerStyle.add(style.getName() + "("
+                        + participantCount + ")" + "," + participantCount);
+                logger.debug("ADDED: " + style.getName() + "("
+                        + participantCount + ")" + "," + participantCount);
+            }
             participantCount = 0;
         }
         return participantsPerStyle;

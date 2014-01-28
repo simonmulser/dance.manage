@@ -162,7 +162,9 @@ public class SatValidator {
                 for (int i = 0; i < validatedCourseList.size(); i++) {
 
                     if (validatedCourseList.get(i)
-                            .equals(currentCP.getCourse())) {
+                            .equals(currentCP.getCourse())
+                            && currentCP.getCourse().isEnabled()
+                            && currentCP.getCourse().isInPerformance()) {
                         courseIDList.add(i);
                     }
                 }
@@ -406,8 +408,7 @@ public class SatValidator {
                 for (CourseParticipant currentCoPa : participantList.get(
                         siblingIDs.get(i)).getCourseParticipants()) {
                     if (currentCoPa.getCourse().isEnabled()) {
-                        if (currentCoPa.getCourse().getAmountPerformances() == 1) {
-                        } else {
+                        if (currentCoPa.getCourse().getAmountPerformances() != 1) {
                             break;
                         }
                     }
