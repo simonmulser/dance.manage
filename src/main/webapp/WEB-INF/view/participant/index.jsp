@@ -33,7 +33,7 @@
 								<tr>
 									<td>${courseParticipant.course.year}</td>
 									<td>${courseParticipant.course.name}</td>
-									<td>${courseParticipant.duration}</td>
+									<td><spring:message code="${courseParticipant.duration.i18nIdentifier}" /></td>
 								</tr>
 							</c:forEach>
 						</tbody>

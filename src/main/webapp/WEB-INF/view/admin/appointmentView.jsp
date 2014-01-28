@@ -88,17 +88,23 @@
 <script src="<c:url value="/js/searchBoxAutoComplete.js" />"></script>
 <script type="text/javascript">
 	$(document)
-			.ready(
-
-					function() {
-						$(".datepicker")
-								.datepicker(
-										{
-											showOn : "button",
-											buttonImage : "/dancemanage/css/ui/images/calendar.gif",
-											buttonImageOnly : true,
-											dateFormat : "dd.mm.yy"
-										});
+			.ready(function() {
+		                     $(".datepicker")
+                             .datepicker(
+                                     {
+                                         showOn : "button",
+                                         buttonImage : "/dancemanage/css/ui/images/calendar.gif",
+                                         buttonImageOnly : true,
+                                         dateFormat : dateformat
+                                     });
+	                          $(".datepicker")
+	                             .datepicker(
+	                                     {
+	                                         showOn : "button",
+	                                         buttonImage : "/dancemanage/css/ui/images/calendar.gif",
+	                                         buttonImageOnly : true,
+	                                         dateFormat : dateformat
+	                                     });
 
 						$(".close").click(
 								function() {
@@ -161,7 +167,7 @@
 																			showOn : "button",
 																			buttonImage : "/dancemanage/css/ui/images/calendar.gif",
 																			buttonImageOnly : true,
-																			dateFormat : "dd.mm.yy"
+																			dateFormat : dateformat
 																		});
 													});
 
@@ -175,9 +181,9 @@
 								return -1;
 							}
 
-							var valueA = $.datepicker.parseDate("dd.mm.yy",
+							var valueA = $.datepicker.parseDate(dateformat,
 									$(a).children(".datepicker").val());
-							var valueB = $.datepicker.parseDate("dd.mm.yy",
+							var valueB = $.datepicker.parseDate(dateformat,
 									$(b).children(".datepicker").val());
 							return valueA > valueB ? 1 : -1;
 						}
