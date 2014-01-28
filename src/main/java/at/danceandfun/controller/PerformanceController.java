@@ -216,10 +216,6 @@ public class PerformanceController {
     public String savePerformancePlan(@PathVariable("planid") Integer planid) {
         logger.debug("SAVE the performanceplan");
 
-        for (Course c : tempPerformance1.getCourses()) {
-            System.out.println(c.getName());
-        }
-
         tempPerformance1.setEnabled(true);
         tempPerformance2.setEnabled(true);
         tempPerformance3.setEnabled(true);
@@ -314,10 +310,10 @@ public class PerformanceController {
     public String deletePerformancePlan(@PathVariable("planid") Integer planid) {
         logger.debug("Delete Performanceplan with id " + planid);
 
-        PerformancePlan plan = performancePlanManager.get(planid);
-        plan.setEnabled(false);
+        performancePlan = performancePlanManager.get(planid);
+        performancePlan.setEnabled(false);
 
-        performancePlanManager.merge(plan);
+        performancePlanManager.merge(performancePlan);
 
         return "redirect:/admin/performance";
     }
