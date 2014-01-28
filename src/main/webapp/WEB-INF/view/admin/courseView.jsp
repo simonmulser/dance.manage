@@ -21,95 +21,159 @@
 				class="form-horizontal">
 				<form:input path="cid" type="hidden" />
 				<form:input path="enabled" type="hidden" />
-				<div class="control-group">
-					<form:label path="name" class="control-label">
-						<spring:message code="label.coursename" />*
-				</form:label>
-					<div class="span6">
-						<form:input path="name" />
+
+				<spring:bind path="name">
+					<c:set var="divClass" value="control-group" />
+					<c:if test="${status.error}">
+						<c:set var="divClass" value="control-group error" />
+					</c:if>
+					<div class="${divClass}">
+						<form:label path="name" class="control-label">
+							<spring:message code="label.coursename" />*
+                </form:label>
+						<div class="span3">
+							<form:input path="name" cssErrorClass="has-error" />
+						</div>
+						<form:errors path="name" cssClass="help-inline" />
 					</div>
-					<form:errors path="name" cssClass="error" />
-				</div>
-				<div class="control-group">
-					<form:label path="address" class="control-label">
-						<spring:message code="label.coursePlace" />*
-				</form:label>
-					<div class="span6">
-						<form:radiobuttons path="address.aid" items="${addressList}"
-							itemValue="aid" />
+				</spring:bind>
+
+				<spring:bind path="address">
+					<c:set var="divClass" value="control-group" />
+					<c:if test="${status.error}">
+						<c:set var="divClass" value="control-group error" />
+					</c:if>
+					<div class="${divClass}">
+						<form:label path="address" class="control-label">
+							<spring:message code="label.coursePlace" />*
+                </form:label>
+						<div class="span3">
+							<form:radiobuttons path="address.aid" items="${addressList}"
+								itemValue="aid" />
+						</div>
+						<form:errors path="address" cssClass="help-inline" />
 					</div>
-					<form:errors path="address" cssClass="error" />
-				</div>
-				<div class="control-group">
-					<form:label path="duration" class="control-label">
-						<spring:message code="label.courseduration" />*
-				</form:label>
-					<div class="span6">
-						<form:select path="duration">
-							<form:options items="${CourseDuration}" itemLabel="label" />
-						</form:select>
+				</spring:bind>
+
+				<spring:bind path="duration">
+					<c:set var="divClass" value="control-group" />
+					<c:if test="${status.error}">
+						<c:set var="divClass" value="control-group error" />
+					</c:if>
+					<div class="${divClass}">
+						<form:label path="duration" class="control-label">
+							<spring:message code="label.courseduration" />*
+                </form:label>
+						<div class="span3">
+							<form:select path="duration" cssErrorClass="has-error">
+								<form:options items="${CourseDuration}" itemLabel="label" />
+							</form:select>
+						</div>
+						<form:errors path="duration" cssClass="help-inline" />
 					</div>
-					<form:errors path="duration" cssClass="error" />
-				</div>
-				<div class="control-group">
-					<form:label path="semesterPrice" class="control-label">
-						<spring:message code="label.semesterPrice" />*
-				</form:label>
-					<div class="span6">
-						<form:input path="semesterPrice" />
+				</spring:bind>
+
+				<spring:bind path="semesterPrice">
+					<c:set var="divClass" value="control-group" />
+					<c:if test="${status.error}">
+						<c:set var="divClass" value="control-group error" />
+					</c:if>
+					<div class="${divClass}">
+						<form:label path="semesterPrice" class="control-label">
+							<spring:message code="label.semesterPrice" />*
+                </form:label>
+						<div class="span3">
+							<form:input path="semesterPrice" cssErrorClass="has-error" />
+						</div>
+						<form:errors path="semesterPrice" cssClass="help-inline" />
 					</div>
-					<form:errors path="semesterPrice" cssClass="error" />
-				</div>
-				<div class="control-group">
-					<form:label path="yearPrice" class="control-label">
-						<spring:message code="label.yearPrice" />*
-				</form:label>
-					<div class="span6">
-						<form:input path="yearPrice" />
+				</spring:bind>
+
+				<spring:bind path="yearPrice">
+					<c:set var="divClass" value="control-group" />
+					<c:if test="${status.error}">
+						<c:set var="divClass" value="control-group error" />
+					</c:if>
+					<div class="${divClass}">
+						<form:label path="yearPrice" class="control-label">
+							<spring:message code="label.yearPrice" />*
+                </form:label>
+						<div class="span3">
+							<form:input path="yearPrice" cssErrorClass="has-error" />
+						</div>
+						<form:errors path="yearPrice" cssClass="help-inline" />
 					</div>
-					<form:errors path="yearPrice" cssClass="error" />
-					<form:errors cssClass="error" />
-				</div>
-				<div class="control-group">
-					<form:label path="weekday" class="control-label">
-						<spring:message code="label.courseweekday" />*
-				</form:label>
-					<div class="span6">
-						<form:select path="weekday">
-							<form:options items="${WeekDay}" itemLabel="label" />
-						</form:select>
+				</spring:bind>
+
+				<spring:bind path="weekday">
+					<c:set var="divClass" value="control-group" />
+					<c:if test="${status.error}">
+						<c:set var="divClass" value="control-group error" />
+					</c:if>
+					<div class="${divClass}">
+						<form:label path="weekday" class="control-label">
+							<spring:message code="label.courseweekday" />*
+                </form:label>
+						<div class="span3">
+							<form:select path="weekday" cssErrorClass="has-error">
+								<form:options items="${WeekDay}" itemLabel="label" />
+							</form:select>
+						</div>
+						<form:errors path="weekday" cssClass="help-inline" />
 					</div>
-					<form:errors path="weekday" cssClass="error" />
-				</div>
-				<div class="control-group">
-					<form:label path="time" class="control-label">
-						<spring:message code="label.coursetime" />*
-				</form:label>
-					<div class="span6">
-						<form:input path="time" />
+				</spring:bind>
+
+				<spring:bind path="time">
+					<c:set var="divClass" value="control-group" />
+					<c:if test="${status.error}">
+						<c:set var="divClass" value="control-group error" />
+					</c:if>
+					<div class="${divClass}">
+						<form:label path="time" class="control-label">
+							<spring:message code="label.coursetime" />*
+                </form:label>
+						<div class="span3">
+							<form:input path="time" cssErrorClass="has-error" />
+						</div>
+						<form:errors path="time" cssClass="help-inline" />
 					</div>
-					<form:errors path="time" cssClass="error" />
-				</div>
-				<div class="control-group">
-					<form:label path="inPerformance" class="control-label">
-						<spring:message code="label.inPerformance" />*
-				</form:label>
-					<div class="span6">
-						<form:checkbox path="inPerformance" />
+				</spring:bind>
+
+				<spring:bind path="inPerformance">
+					<c:set var="divClass" value="control-group" />
+					<c:if test="${status.error}">
+						<c:set var="divClass" value="control-group error" />
+					</c:if>
+					<div class="${divClass}">
+						<form:label path="inPerformance" class="control-label">
+							<spring:message code="label.inPerformance" />*
+                </form:label>
+						<div class="span3">
+							<form:checkbox path="inPerformance" cssErrorClass="has-error" />
+						</div>
+						<form:errors path="inPerformance" cssClass="help-inline" />
 					</div>
-					<form:errors path="inPerformance" cssClass="error" />
-				</div>
-				<div class="control-group">
-					<form:label path="estimatedSpectators" class="control-label">
-						<spring:message code="label.estimatedSpectators" />
-					</form:label>
-					<div class="span6">
-						<form:select path="estimatedSpectators">
-							<form:options items="${SpectatorAmount}" itemLabel="label" />
-						</form:select>
+				</spring:bind>
+
+				<spring:bind path="estimatedSpectators">
+					<c:set var="divClass" value="control-group" />
+					<c:if test="${status.error}">
+						<c:set var="divClass" value="control-group error" />
+					</c:if>
+					<div class="${divClass}">
+						<form:label path="estimatedSpectators" class="control-label">
+							<spring:message code="label.estimatedSpectators" />*
+                </form:label>
+						<div class="span3">
+							<form:select path="estimatedSpectators" cssErrorClass="has-error">
+								<form:options items="${SpectatorAmount}" itemLabel="label" />
+							</form:select>
+						</div>
+						<form:errors path="estimatedSpectators" cssClass="help-inline" />
 					</div>
-					<form:errors path="estimatedSpectators" cssClass="error" />
-				</div>
+				</spring:bind>
+
+
 				<div class="control-group">
 					<form:label path="ageGroup" class="control-label">
 						<spring:message code="label.ageGroup" />
@@ -121,26 +185,58 @@
 					</div>
 					<form:errors path="ageGroup" cssClass="error" />
 				</div>
-				<div class="control-group">
-					<form:label path="amountPerformances" class="control-label">
-						<spring:message code="label.amountPerformances" />
-					</form:label>
-					<div class="span6">
-						<form:input path="amountPerformances" />
+
+				<spring:bind path="ageGroup">
+					<c:set var="divClass" value="control-group" />
+					<c:if test="${status.error}">
+						<c:set var="divClass" value="control-group error" />
+					</c:if>
+					<div class="${divClass}">
+						<form:label path="ageGroup" class="control-label">
+							<spring:message code="label.ageGroup" />*
+                </form:label>
+						<div class="span3">
+							<form:select path="ageGroup" cssErrorClass="has-error">
+								<form:options items="${AgeGroup}" itemLabel="label" />
+							</form:select>
+						</div>
+						<form:errors path="ageGroup" cssClass="help-inline" />
 					</div>
-					<form:errors path="amountPerformances" cssClass="error" />
-				</div>
-				<div class="control-group">
-					<form:label path="level" class="control-label">
-						<spring:message code="label.courselevel" />
-					</form:label>
-					<div class="span6">
-						<form:select path="level">
-							<form:options items="${CourseLevel}" itemLabel="label" />
-						</form:select>
+				</spring:bind>
+
+				<spring:bind path="amountPerformances">
+					<c:set var="divClass" value="control-group" />
+					<c:if test="${status.error}">
+						<c:set var="divClass" value="control-group error" />
+					</c:if>
+					<div class="${divClass}">
+						<form:label path="amountPerformances" class="control-label">
+							<spring:message code="label.amountPerformances" />
+                </form:label>
+						<div class="span3">
+							<form:input path="amountPerformances" cssErrorClass="has-error" />
+						</div>
+						<form:errors path="amountPerformances" cssClass="help-inline" />
 					</div>
-					<form:errors path="level" cssClass="error" />
-				</div>
+				</spring:bind>
+
+				<spring:bind path="level">
+					<c:set var="divClass" value="control-group" />
+					<c:if test="${status.error}">
+						<c:set var="divClass" value="control-group error" />
+					</c:if>
+					<div class="${divClass}">
+						<form:label path="level" class="control-label">
+							<spring:message code="label.courselevel" />*
+                </form:label>
+						<div class="span3">
+							<form:select path="level" cssErrorClass="has-error">
+								<form:options items="${CourseLevel}" itemLabel="label" />
+							</form:select>
+						</div>
+						<form:errors path="level" cssClass="help-inline" />
+					</div>
+				</spring:bind>
 
 				<div id="find_keyword" class="control-group">
 					<form:label path="style.sid" class="control-label">
@@ -232,7 +328,8 @@
 				</display:column>
 					<display:column>
 						<c:set var="cid" value="${course.cid}" />
-						<a href="course/edit/${cid}#add"><spring:message code="label.edit" /></a>
+						<a href="course/edit/${cid}#add"><spring:message
+								code="label.edit" /></a>
 						<br />
 						<a href="course/delete/${cid}" class="openDialog" id="${cid}"><spring:message
 								code="label.delete" /></a>
@@ -270,7 +367,6 @@
 
 <script src="<c:url value="/js/searchBoxAutoComplete.js" />"></script>
 <script type="text/javascript">
-
 	// this section is needed if the url contains an anchor hash to a widget which is retracted by default
 	$(document).ready(
 			function() {
