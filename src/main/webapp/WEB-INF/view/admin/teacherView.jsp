@@ -208,7 +208,7 @@
 		showOn : "button",
 		buttonImage : "/dancemanage/css/ui/images/calendar.gif",
 		buttonImageOnly : true,
-		dateFormat : "dd.mm.yy",
+		dateFormat : dateformat,
 		changeMonth : true,
 		changeYear : true,
 		yearRange : "1960:2000"

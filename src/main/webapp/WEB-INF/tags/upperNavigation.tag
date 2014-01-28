@@ -2,14 +2,14 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="localeCode" value="${pageContext.response.locale}" />
-
+<div style="display:none;"id="language">${localeCode}</div>  
 <div class="navbar navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container">
 			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span> </a>
 			<a class="brand"
 				href="<c:url value="${homeLink}" />"><spring:message code="nav.title" /></a>
-			<c:if test="${user != null}">
+            <c:if test="${user != null}">
 				<div class="nav-collapse">
 					<ul class="nav pull-right">
 						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-flag"></i>&nbsp;<spring:message code="nav.language" />&nbsp;<b class="caret"></b></a>
@@ -38,4 +38,12 @@
 	<!-- /navbar-inner -->
 </div>
 <!-- /navbar -->
+<script type="text/javascript">
+var dateformat;
+if($("#language").text()=="en"){
+     dateformat="m/d/y";
+}else{
+     dateformat="d.m.y";
+}
+</script>
 

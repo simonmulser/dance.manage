@@ -104,8 +104,7 @@
 					<form:label path="dateTime" class="control-label">
 					</form:label>
 					<div class="span6">
-						<form:input path="dateTime" id="datepicker"
-							placeholder="01.01.2015" />
+						<form:input path="dateTime" id="datepicker" />
 						<br />
 						<form:errors path="dateTime" cssClass="error" />
 					</div>
@@ -613,7 +612,7 @@ $("#dialog-confirm").dialog({
 		showOn : "button",
 		buttonImage : "/dancemanage/css/ui/images/calendar.gif",
 		buttonImageOnly : true,
-		dateFormat : "dd.mm.yy",
+		dateFormat : dateformat,
 		changeMonth : true,
 		changeYear : true,
 		yearRange : "2014:2025",
