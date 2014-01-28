@@ -362,6 +362,7 @@ public class PerformanceController {
         map.put("performanceList1", tempPerformance1.getCourses());
         map.put("performanceList2", tempPerformance2.getCourses());
         map.put("performanceList3", tempPerformance3.getCourses());
+        map.put("dateTime", plan.getDateTime());
 
         return new ModelAndView("viewPerformancePdf", map);
     }

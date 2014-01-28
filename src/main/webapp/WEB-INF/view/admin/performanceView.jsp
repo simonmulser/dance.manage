@@ -126,7 +126,7 @@
 
 	<div>
 		<dmtags:span width="6">
-			<dmtags:widget title="${i18nShowPlan}" icon="icon-camera">
+			<dmtags:widget title="${i18nShowPlan}" icon="icon-camera" style="table" >
 				<spring:message var="i18nOverview" code="widget.overview" />
 				<display:table name="performancePlanList" id="row"
 					class="table table-striped table-bordered displaytag" pagesize="5"
