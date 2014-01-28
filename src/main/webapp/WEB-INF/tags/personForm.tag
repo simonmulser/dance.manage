@@ -19,39 +19,57 @@
 		<form:label path="firstname" class="control-label">
 			<spring:message code="label.firstname" />*
                 </form:label>
-		<div class="span6">
+		<div class="span3">
 			<form:input path="firstname" cssErrorClass="has-error" />
 		</div>
 		<form:errors path="firstname" cssClass="help-inline" />
 	</div>
 </spring:bind>
 
-<div class="control-group">
-	<form:label path="lastname" class="control-label">
-		<spring:message code="label.lastname" />*
+<spring:bind path="lastname">
+	<c:set var="divClass" value="control-group" />
+	<c:if test="${status.error}">
+		<c:set var="divClass" value="control-group error" />
+	</c:if>
+	<div class="${divClass}">
+		<form:label path="lastname" class="control-label">
+			<spring:message code="label.lastname" />*
                 </form:label>
-	<div class="span6">
-		<form:input path="lastname" />
+		<div class="span3">
+			<form:input path="lastname" cssErrorClass="has-error" />
+		</div>
+		<form:errors path="lastname" cssClass="help-inline" />
 	</div>
-	<form:errors path="lastname" cssClass="error" />
-</div>
+</spring:bind>
 
-<div class="control-group">
-	<form:label path="email" class="control-label">
-		<spring:message code="label.email" />
-                </form:label>
-	<div class="span6">
-		<form:input path="email" />
+<spring:bind path="email">
+	<c:set var="divClass" value="control-group" />
+	<c:if test="${status.error}">
+		<c:set var="divClass" value="control-group error" />
+	</c:if>
+	<div class="${divClass}">
+		<form:label path="email" class="control-label">
+			<spring:message code="label.email" />
+		</form:label>
+		<div class="span3">
+			<form:input path="email" cssErrorClass="has-error" />
+		</div>
+		<form:errors path="email" cssClass="help-inline" />
 	</div>
-	<form:errors path="email" cssClass="error" />
-</div>
+</spring:bind>
 
-<div class="control-group">
-	<form:label path="telephone" class="control-label">
-		<spring:message code="label.telephone" />*
+<spring:bind path="telephone">
+	<c:set var="divClass" value="control-group" />
+	<c:if test="${status.error}">
+		<c:set var="divClass" value="control-group error" />
+	</c:if>
+	<div class="${divClass}">
+		<form:label path="telephone" class="control-label">
+			<spring:message code="label.telephone" />*
                 </form:label>
-	<div class="span6">
-		<form:input path="telephone" />
+		<div class="span3">
+			<form:input path="telephone" cssErrorClass="has-error" />
+		</div>
+		<form:errors path="telephone" cssClass="help-inline" />
 	</div>
-	<form:errors path="telephone" cssClass="error" />
-</div>
+</spring:bind>
