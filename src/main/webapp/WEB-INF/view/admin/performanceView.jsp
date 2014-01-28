@@ -500,9 +500,8 @@
 
 					</div>
 				</div>
-				<c:if test="${!isSavedPlan}">
 					<div style="float: left; margin-left: 15px">
-						<form:form method="post" action="performance/save"
+						<form:form method="post" action="performance/save/${planid}"
 							commandName="performance" class="form-horizontal">
 
 							<div style="margin-top: 20px">
@@ -522,7 +521,6 @@
 							</div>
 						</form:form>
 					</div>
-				</c:if>
 			</dmtags:widget>
 		</c:if>
 	</dmtags:span>
