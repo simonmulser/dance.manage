@@ -84,35 +84,48 @@ public class ParentController {
             editTrue = true;
             return "redirect:/admin/parent#add";
 
-        } else {
-            logger.debug("ADD Participant with id " + parent.getPid());
-            parent.setEnabled(true);
-
-            if (parent.getAddress().getAid() == null) {
-                addressManager.merge(parent.getAddress());
-            }
-
-            if (parent.getPid() == null) {
-                logger.debug("New parent");
-                parent = (Parent) personManager.getURLToken(parent);
-                parentManager.persist(parent);
-                if (!parent.getEmail().equals("")) {
-                    personManager.sendURL(parent);
-                }
-            } else {
-                logger.debug("Update parent");
-                parent = parentManager.merge(parent);
-                if (!parent.isActivated() && !parent.getEmail().equals("")) {
-                    personManager.sendURL(parent);
-                }
-            }
-
-            logger.debug("Finished updating parent");
-            editTrue = false;
         }
-        return "redirect:/admin/parent";
+        if (!parent.getEmail().equals("")
+                && !personManager.getPersonByEmail(parent.getEmail()).isEmpty()) {
+            logger.error("ConstraintViolation for user with ID"
+                    + parent.getPid());
+            result.rejectValue("email", "email.constraintViolation");
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.parent",
+                    result);
+            redirectAttributes.addFlashAttribute("parent", parent);
+            this.parent = parent;
+            editTrue = true;
+            return "redirect:/admin/parent#add";
+        }
 
-    }
+        logger.debug("ADD Participant with id " + parent.getPid());
+        parent.setEnabled(true);
+
+        if (parent.getAddress().getAid() == null) {
+            addressManager.merge(parent.getAddress());
+        }
+
+        if (parent.getPid() == null) {
+            logger.debug("New parent");
+            parent = (Parent) personManager.getURLToken(parent);
+            parentManager.persist(parent);
+            if (!parent.getEmail().equals("")) {
+                personManager.sendURL(parent);
+            }
+        } else {
+            logger.debug("Update parent");
+            parent = parentManager.merge(parent);
+            if (!parent.isActivated() && !parent.getEmail().equals("")) {
+                personManager.sendURL(parent);
+            }
+        }
+
+        logger.debug("Finished updating parent");
+        editTrue = false;
+
+        return "redirect:/admin/parent";
+}
 
     @RequestMapping(value = "/edit/{pid}")
     public String editParent(@PathVariable("pid") Integer pid) {

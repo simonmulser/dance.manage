@@ -73,10 +73,45 @@
 
 		<c:choose>
 			<c:when test="${participant.invoices.size() gt 0}">
-				<!-- style="table" -->
-				<dmtags:widget title="${i18nInvoices}" icon="icon-envelope">
-                TODO show invoices
-            </dmtags:widget>
+                <c:forEach items="${participant.invoices}" var="invoice" varStatus="loop">
+                    <c:if test="${invoice.reduction != null}">
+                        <c:set var="hasReduction" value="true" />
+                    </c:if>
+                </c:forEach>
+                <dmtags:widget title="${i18nInvoices}" icon="icon-envelope" style="table">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th><spring:message code="label.invoiceDate" /></th>
+                                <th><spring:message code="label.name" /></th>
+                                <th><spring:message code="label.vatAmount" /></th>
+                                <c:if test="${hasReduction}">
+                                    <th><spring:message code="label.reduction" />&nbsp;(%)</th>
+                                    <th><spring:message code="label.reduction" /></th>
+                                </c:if>
+                                <th><spring:message code="label.courses" /></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach items="${participant.invoices}" var="invoice" varStatus="loop">
+                                <tr>
+                                    <td><joda:format value="${invoice.date}" pattern="yyyy-MM-dd" /></td>
+                                    <td>${invoice.totalAmount}</td>
+                                    <td>${invoice.vatAmount}</td>
+                                    <c:if test="${hasReduction}">
+                                        <td>${invoice.reduction}</td>
+                                        <td>${invoice.reductionAmount}</td>
+                                    </c:if>
+                                    <td><c:forEach items="${invoice.positions}" var="position" varStatus="innerLoop">
+                                        ${position.key.course.name}&nbsp;(<spring:message code="${position.duration.i18nIdentifier}" />)
+                                        <c:if test="${!innerLoop.last}">,&nbsp;</c:if>
+                                        </c:forEach></td>
+                                </tr>
+                            </c:forEach>
+
+                        </tbody>
+                    </table>
+                </dmtags:widget>
 			</c:when>
 			<c:otherwise>
 				<dmtags:widget title="${i18nInvoices}" style="noTable" icon="icon-envelope">
@@ -91,9 +126,9 @@
 			<div class="widget-header">
 				<i class="icon-user"></i>
 				<h3>${i18nMyAccount}</h3>
-				<a href="<c:url value='/participant/edit/${participant.pid}' />"><button type="submit" class="btn btn-primary">${i18nEdit}</button></a>
-				<a href="<c:url value='/participant/editPassword/${participant.pid}' />"><button type="submit" class="btn btn-primary">${i18nChangePassword}</button></a>
-				
+				<a href="<c:url value='/participant/edit/${participant.pid}' />"><button type="submit" class="btn btn-primary">${i18nEdit}</button></a> <a
+					href="<c:url value='/participant/editPassword/${participant.pid}' />"><button type="submit" class="btn btn-primary">${i18nChangePassword}</button></a>
+
 			</div>
 			<!-- /widget-header -->
 			<div class="widget-content">
@@ -129,28 +164,28 @@
 					</tr>
 
 					<tr>
-					    <td><spring:message code="label.street" /></td>
-					    <td>${participant.address.street}</td>
+						<td><spring:message code="label.street" /></td>
+						<td>${participant.address.street}</td>
 					</tr>
 					<tr>
-					    <td><spring:message code="label.number" /></td>
-					    <td>${participant.address.number}</td>
+						<td><spring:message code="label.number" /></td>
+						<td>${participant.address.number}</td>
 					</tr>
 					<tr>
 						<td><spring:message code="label.stair" /></td>
 						<td>${participant.address.stair}</td>
 					</tr>
 					<tr>
-					    <td><spring:message code="label.door" /></td>
-					    <td>${participant.address.door}</td>
+						<td><spring:message code="label.door" /></td>
+						<td>${participant.address.door}</td>
 					</tr>
 					<tr>
-					    <td><spring:message code="label.zip" /></td>
-					    <td>${participant.address.zip}</td>
+						<td><spring:message code="label.zip" /></td>
+						<td>${participant.address.zip}</td>
 					</tr>
 					<tr>
-					    <td><spring:message code="label.city" /></td>
-					    <td>${participant.address.city}</td>
+						<td><spring:message code="label.city" /></td>
+						<td>${participant.address.city}</td>
 					</tr>
 				</table>
 			</div>

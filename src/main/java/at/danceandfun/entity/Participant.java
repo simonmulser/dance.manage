@@ -189,6 +189,15 @@ public class Participant extends Person {
     }
 
     @JsonIgnore
+    public Set<Participant> getSiblingsReverse() {
+        return siblingsReverse;
+    }
+
+    public void setSiblingsReverse(Set<Participant> siblingsReverse) {
+        this.siblingsReverse = siblingsReverse;
+    }
+
+    @JsonIgnore
     public List<Invoice> getInvoices() {
         return invoices;
     }

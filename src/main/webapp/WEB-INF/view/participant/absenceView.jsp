@@ -72,7 +72,7 @@
 																		<form method="post" action="<c:url value='/participant/absence/update/${courseParticipant.course.slug}/${participant.pid}' />" class="form-horizontal">
 																			<input id="appointmentId" name="appointmentId" type="hidden" value="${appointment.apid}"> <input id="enabled" name="enabled" type="hidden" value="false">
 																			<div class="form-actions">
-																				<input type="submit" value="<spring:message code="label.report" />" class="btn btn-primary">
+																				<input type="submit" value="<spring:message code="label.reportPresent" />" class="btn btn-primary">
 																			</div>
 																		</form>
 																	</c:when>

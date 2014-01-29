@@ -103,7 +103,7 @@
 								</div>
 								<c:choose>
 									<c:when test="${!empty rating.proCritique }">
-										<div class="newestRatingsClear">
+										<div class="newestRatingsClear feedbackCritique">
 											<i class="icon-large icon-plus-sign"></i>&nbsp;${rating.proCritique }
 										</div>
 									</c:when>
@@ -111,7 +111,7 @@
 								</c:choose>
 								<c:choose>
 									<c:when test="${!empty rating.contraCritique }">
-										<div class="newestRatingsClear">
+										<div class="newestRatingsClear feedbackCritique">
 											<i class="icon-large icon-minus-sign"></i>&nbsp;${rating.contraCritique}
 										</div>
 									</c:when>

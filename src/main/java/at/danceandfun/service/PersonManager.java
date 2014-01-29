@@ -1,5 +1,7 @@
 package at.danceandfun.service;
 
+import java.util.List;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,6 +21,8 @@ public interface PersonManager extends UserDetailsService {
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException;
     
+    public List<Person> getPersonByEmail(String username);
+
     public Person get(int id);
 
     public void persist(Person person);

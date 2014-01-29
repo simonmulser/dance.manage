@@ -38,7 +38,9 @@
 									<tr>
 										<td>${child.firstname}</td>
 										<td>${child.lastname}</td>
-										<td style="text-align:center"><a href="<c:url value='/participant/${child.pid}'/>"><button type="submit" class="btn btn-info"><spring:message code="parent.viewChildAccount" ></spring:message></button></a></td>
+										<td style="text-align: center"><a href="<c:url value='/participant/${child.pid}'/>"><button type="submit" class="btn btn-info">
+													<spring:message code="parent.viewChildAccount"></spring:message>
+												</button></a></td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -55,10 +57,45 @@
 
 		<c:choose>
 			<c:when test="${user.invoices.size() gt 0}">
-				<!-- style="table" -->
-				<dmtags:widget title="${i18nInvoices}" icon="icon-envelope">
-                TODO show invoices
-            </dmtags:widget>
+				<c:forEach items="${user.invoices}" var="invoice" varStatus="loop">
+					<c:if test="${invoice.reduction != null}">
+						<c:set var="hasReduction" value="true" />
+					</c:if>
+				</c:forEach>
+				<dmtags:widget title="${i18nInvoices}" icon="icon-envelope" style="table">
+					<table class="table table-striped table-bordered">
+						<thead>
+							<tr>
+								<th><spring:message code="label.invoiceDate" /></th>
+								<th><spring:message code="label.name" /></th>
+								<th><spring:message code="label.vatAmount" /></th>
+								<c:if test="${hasReduction}">
+									<th><spring:message code="label.reduction" />&nbsp;(%)</th>
+									<th><spring:message code="label.reduction" /></th>
+								</c:if>
+								<th><spring:message code="label.courses" /></th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach items="${user.invoices}" var="invoice" varStatus="loop">
+								<tr>
+									<td><joda:format value="${invoice.date}" pattern="yyyy-MM-dd" /></td>
+									<td>${invoice.totalAmount}</td>
+									<td>${invoice.vatAmount}</td>
+									<c:if test="${hasReduction}">
+										<td>${invoice.reduction}</td>
+										<td>${invoice.reductionAmount}</td>
+									</c:if>
+									<td><c:forEach items="${invoice.positions}" var="position" varStatus="innerLoop">
+								        ${position.key.course.name}&nbsp;(<spring:message code="${position.duration.i18nIdentifier}" />)
+								        <c:if test="${!innerLoop.last}">,&nbsp;</c:if>
+										</c:forEach></td>
+								</tr>
+							</c:forEach>
+
+						</tbody>
+					</table>
+				</dmtags:widget>
 			</c:when>
 			<c:otherwise>
 				<dmtags:widget title="${i18nInvoices}" style="noTable" icon="icon-list">
@@ -73,8 +110,8 @@
 			<div class="widget-header">
 				<i class="icon-user"></i>
 				<h3>${i18nMyAccount}</h3>
-				<a href="<c:url value='/parent/edit' />"><button type="submit" class="btn btn-primary">${i18nEdit}</button></a>
-				<a href="<c:url value='/parent/editPassword' />"><button type="submit" class="btn btn-primary">${i18nChangePassword}</button></a>
+				<a href="<c:url value='/parent/edit' />"><button type="submit" class="btn btn-primary">${i18nEdit}</button></a> <a href="<c:url value='/parent/editPassword' />"><button type="submit"
+						class="btn btn-primary">${i18nChangePassword}</button></a>
 			</div>
 			<!-- /widget-header -->
 			<div class="widget-content">
