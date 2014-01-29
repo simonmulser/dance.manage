@@ -110,7 +110,8 @@ public class ParticipantController {
         }
 
         if (!participant.getEmail().equals("")
-                && !personManager.getPersonByEmail(participant.getEmail())
+                && !personManager.getPersonByEmail(participant.getEmail(),
+                        participant.getPid())
                         .isEmpty()) {
             logger.error("ConstraintViolation for user with ID"
                     + participant.getPid());
