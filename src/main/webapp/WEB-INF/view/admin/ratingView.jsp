@@ -104,7 +104,9 @@
 							<spring:message code="label.answer" />
 						</form:label>
 						<div class="span6">
-							<form:textarea path="answer" rows="6" />
+							<form:textarea path="answer" rows="6" maxlength="255" />
+							<br />
+							<spring:message code="help.maxChars" />
 						</div>
 						<form:errors path="answer" cssClass="error" />		
 					</div>
@@ -170,10 +172,10 @@
 					</c:choose>
 				</c:forEach>
 			</display:column>
-			<display:column titleKey="label.proCritique">
+			<display:column titleKey="label.proCritique" class="feedbackCritique">
 						${rating.proCritique}
 					</display:column>
-			<display:column titleKey="label.contraCritique">
+			<display:column titleKey="label.contraCritique" class="feedbackCritique">
 						${rating.contraCritique}
 					</display:column>
 			<display:column titleKey="label.answer">

@@ -190,7 +190,7 @@ public class ParticipantHomeController {
         map.put("participant", participant);
         map.put("enabledCourses", courseParticipantManager
                 .getEnabledDistinctCourseParticipants(participant));
-        return "participant/absenceView";
+        return "redirect:/participant/absence/" + pid;
     }
 
     @RequestMapping(value = "/absence/update/{slug}/{pid}", method = RequestMethod.POST)
@@ -219,7 +219,7 @@ public class ParticipantHomeController {
         map.put("participant", participant);
         map.put("enabledCourses", courseParticipantManager
                 .getEnabledDistinctCourseParticipants(participant));
-        return "participant/absenceView";
+        return "redirect:/participant/absence/" + pid;
     }
 
     @RequestMapping(value = "/rating/{pid}", method = RequestMethod.GET)

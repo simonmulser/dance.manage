@@ -17,16 +17,12 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 
 <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-<link href="css/bootstrap-responsive.min.css" rel="stylesheet"
-	type="text/css" />
-
+<link href="css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" />
 <link href="css/font-awesome.css" rel="stylesheet">
-<link
-	href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600"
-	rel="stylesheet">
-
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
 <link href="css/style.css" rel="stylesheet" type="text/css">
 <link href="css/pages/signin.css" rel="stylesheet" type="text/css">
+<script src="js/jquery-1.7.2.js"></script>
 
 </head>
 
@@ -101,7 +97,6 @@
 	
 
 
-	<script src="js/jquery-1.7.2.js"></script>
 	<script src="js/bootstrap.js"></script>
 
 	<script src="js/signin.js"></script>
