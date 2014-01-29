@@ -133,11 +133,11 @@
 									    </form:label>
 									    </td>
 								    <td class="input-append">
-								    	<form:input class="span1" path="reduction" />
+								    	<form:input path="reduction" cssErrorClass="has-error" />
 									 	<span class="add-on">%</span>
 									</td>
 									<td></td>
-									<td><form:errors path="reduction" cssClass="error" /></td>
+									<td><form:errors path="reduction" cssClass="help-inline" /></td>
 								</tr>
 								<tr>
 									<td></td>
