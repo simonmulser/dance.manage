@@ -77,7 +77,7 @@
 	</c:if>
 	<div class="${divClass}">
 		<form:label path="address.zip" class="control-label">
-			<spring:message code="label.zip" />
+			<spring:message code="label.zip" />*
 		</form:label>
 		<div class="span3">
 			<form:input path="address.zip" cssErrorClass="has-error" />
@@ -93,7 +93,7 @@
 	</c:if>
 	<div class="${divClass}">
 		<form:label path="address.city" class="control-label">
-			<spring:message code="label.city" />
+			<spring:message code="label.city" />*
 		</form:label>
 		<div class="span3">
 			<form:input path="address.city" cssErrorClass="has-error" />

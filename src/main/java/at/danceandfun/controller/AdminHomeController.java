@@ -101,7 +101,9 @@ public class AdminHomeController {
         }
 
         if (!admin.getEmail().equals("")
-                && !personManager.getPersonByEmail(admin.getEmail()).isEmpty()) {
+                && !personManager.getPersonByEmail(admin.getEmail(),
+                        admin.getPid()).isEmpty()) {
+
             logger.error("ConstraintViolation for user with ID"
                     + admin.getPid());
             result.rejectValue("email", "email.constraintViolation");

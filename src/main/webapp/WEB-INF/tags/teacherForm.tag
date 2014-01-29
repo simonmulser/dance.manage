@@ -15,7 +15,7 @@
 			<spring:message code="label.birthday" />*
                 </form:label>
 		<div class="span3">
-			<form:input path="birthday" cssErrorClass="has-error" />
+			<form:input path="birthday" id="datepicker" cssErrorClass="has-error" />
 		</div>
 		<form:errors path="birthday" cssClass="help-inline" />
 	</div>

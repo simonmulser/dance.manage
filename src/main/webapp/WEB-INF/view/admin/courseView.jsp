@@ -173,19 +173,6 @@
 					</div>
 				</spring:bind>
 
-
-				<div class="control-group">
-					<form:label path="ageGroup" class="control-label">
-						<spring:message code="label.ageGroup" />
-					</form:label>
-					<div class="span6">
-						<form:select path="ageGroup">
-							<form:options items="${AgeGroup}" itemLabel="label" />
-						</form:select>
-					</div>
-					<form:errors path="ageGroup" cssClass="error" />
-				</div>
-
 				<spring:bind path="ageGroup">
 					<c:set var="divClass" value="control-group" />
 					<c:if test="${status.error}">
@@ -212,7 +199,7 @@
 					<div class="${divClass}">
 						<form:label path="amountPerformances" class="control-label">
 							<spring:message code="label.amountPerformances" />
-                </form:label>
+						</form:label>
 						<div class="span3">
 							<form:input path="amountPerformances" cssErrorClass="has-error" />
 						</div>
@@ -238,25 +225,33 @@
 					</div>
 				</spring:bind>
 
-				<div id="find_keyword" class="control-group">
-					<form:label path="style.sid" class="control-label">
-						<spring:message code="label.style" />*
-				</form:label>
-					<div class="ui-widget span6">
-						<input id="stylesQuery" type="text" value="" /><i
-							title="<spring:message code='help.searchStyle' />"
-							class="inline-tooltip icon icon-question-sign"></i>
-						<div id="showStyles">
-							<c:if test="${!empty course.style.sid }">
-								<span class="styleTag">${course.style.name}&nbsp;<i
-									class="icon icon-remove"></i></span>
-							</c:if>
+				<spring:bind path="style.sid">
+					<c:set var="divClass" value="control-group" />
+					<c:if test="${status.error}">
+						<c:set var="divClass" value="control-group error" />
+					</c:if>
+					<div id="find_keyword" class="${divClass}">
+						<form:label path="style.sid" class="control-label">
+							<spring:message code="label.style" />*
+                </form:label>
+						<div class="ui-widget span3">
+							<input id="stylesQuery" cssErrorClass="has-error" type="text"
+								value="" /><i
+								title="<spring:message code='help.searchStyle' />"
+								class="inline-tooltip icon icon-question-sign"></i>
+							<div id="showStyles">
+								<c:if test="${!empty course.style.sid }">
+									<span class="styleTag">${course.style.name}&nbsp;<i
+										class="icon icon-remove"></i></span>
+								</c:if>
+							</div>
+							<form:input path="style.sid" id="styleSid" type="hidden" />
+							<form:input path="style.name" id="styleName" type="hidden" />
 						</div>
-						<form:input path="style.sid" id="styleSid" type="hidden" />
-						<form:input path="style.name" id="styleName" type="hidden" />
+						<form:errors path="style.sid" cssClass="help-inline" />
 					</div>
-					<form:errors path="style.sid" cssClass="error" />
-				</div>
+				</spring:bind>
+
 
 				<div id="find_keyword" class="control-group">
 					<form:label path="teacher.pid" class="control-label">

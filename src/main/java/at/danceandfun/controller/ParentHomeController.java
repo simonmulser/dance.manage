@@ -93,7 +93,8 @@ public class ParentHomeController {
         }
 
         if (!parent.getEmail().equals("")
-                && !personManager.getPersonByEmail(parent.getEmail()).isEmpty()) {
+                && !personManager.getPersonByEmail(parent.getEmail(),
+                        parent.getPid()).isEmpty()) {
             logger.error("ConstraintViolation for user with ID"
                     + parent.getPid());
             result.rejectValue("email", "email.constraintViolation");
