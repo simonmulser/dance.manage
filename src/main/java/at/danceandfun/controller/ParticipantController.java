@@ -126,26 +126,23 @@ public class ParticipantController {
 
         logger.debug("ADD Participant with id " + participant.getPid());
         participant.setEnabled(true);
-            if (!(participant.getParent().getPid() == null)) {
-                Parent newParent = parentManager.get(participant.getParent()
-                        .getPid());
-                participant.setParent(newParent);
-            } else {
-                participant.setParent(null);
-            }
+        if (!(participant.getParent().getPid() == null)) {
+            Parent newParent = parentManager.get(participant.getParent()
+                    .getPid());
+            participant.setParent(newParent);
+        } else {
+            participant.setParent(null);
+        }
 
         if (participant.getAddress().getAid() == null) {
             addressManager.persist(participant.getAddress());
         }
 
-        if (!(participant.getParent().getPid() == null)) {
-            logger.debug("Parent neu setzen mit pid: "
-                    + participant.getParent().getPid());
+        if (!(participant.getParent() == null)) {
             Parent newParent = parentManager.get(participant.getParent()
                     .getPid());
             participant.setParent(newParent);
         } else {
-            logger.debug("Parent ist null: " + participant.getParent().getPid());
             participant.setParent(null);
         }
 
@@ -211,7 +208,7 @@ public class ParticipantController {
         participant = participantManager.merge(participant);
         if (!participant.isActivated() && !participant.getEmail().equals("")) {
             personManager.sendURL(participant);
-         }
+        }
         this.participant = new Participant();
 
         return "redirect:/admin/participant";
