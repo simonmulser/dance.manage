@@ -467,7 +467,6 @@ background: #ffffff; /* Old browsers */ color:#444; line-height:normal;}
 
 .widget-table .table {
 	margin-bottom: 0;
-	table-layout: fixed;
 	border: none;
 }
 

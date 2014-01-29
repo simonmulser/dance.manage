@@ -17,9 +17,11 @@
                 <i class="icon-remove-sign"></i>&nbsp;&nbsp;
             <spring:message code="user.exception" />
             <br />
+            <div style="display:none;">
             Exception&nbsp;Message:&nbsp;${exception.message}
             <br />
             ${stackTrace}
+            </div>
             </dmtags:widget>
         </dmtags:span>
     </dmtags:center>

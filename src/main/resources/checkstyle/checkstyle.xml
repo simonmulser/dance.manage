@@ -25,11 +25,15 @@
         <property name="fileExtensions" value="java, xml" />
     </module>
 
+    <!-- checks the properties files -->
+    <module name="Translation" />
+
     <!-- Checks individual java src-Files and defines properties that are 
         applicable -->
     <!-- to checking such files -->
     <module name="TreeWalker">
-        <property name="cacheFile" value="/src/main/resources/checkstyle/.checkstyleCache" />
+        <property name="cacheFile"
+            value="/src/main/resources/checkstyle/.checkstyleCache" />
         <property name="fileExtensions" value="java" />
 
         <!-- Checks for naming conventions -->
@@ -184,6 +188,7 @@
         <module name="MethodParamPad" />
         <!-- Checks for whitespaces around generic type parameters -->
         <module name="GenericWhitespace" />
+
     </module>
 
 </module>
