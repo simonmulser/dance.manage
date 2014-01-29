@@ -86,7 +86,8 @@ public class TeacherHomeController {
         }
 
         if (!teacher.getEmail().equals("")
-                && !personManager.getPersonByEmail(teacher.getEmail())
+                && !personManager.getPersonByEmail(teacher.getEmail(),
+                        teacher.getPid())
                         .isEmpty()) {
             logger.error("ConstraintViolation for user with ID"
                     + teacher.getPid());

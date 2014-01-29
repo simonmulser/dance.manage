@@ -138,10 +138,13 @@ public class PersonManagerImpl implements PersonManager {
         return personDao.get(id);
     }
 
-    public List<Person> getPersonByEmail(String username) {
+    public List<Person> getPersonByEmail(String username, Integer pid) {
         List<Criterion> criterions = new ArrayList<Criterion>();
         criterions.add(Restrictions.eq("email", username));
         criterions.add(Restrictions.eq("enabled", true));
+        if (pid != null){
+            criterions.add(Restrictions.not(Restrictions.eq("pid", pid)));
+        }
         
         return personDao.getListByCriterions(criterions);
     }

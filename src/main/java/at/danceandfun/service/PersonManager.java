@@ -21,7 +21,7 @@ public interface PersonManager extends UserDetailsService {
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException;
     
-    public List<Person> getPersonByEmail(String username);
+    public List<Person> getPersonByEmail(String username, Integer pid);
 
     public Person get(int id);
 
