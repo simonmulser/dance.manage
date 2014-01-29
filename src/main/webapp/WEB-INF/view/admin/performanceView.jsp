@@ -165,8 +165,7 @@
 		<c:if test="${!empty performanceList1}">
 			<dmtags:widget
 				title="${i18nScheduleProposal}&nbsp;&nbsp;${dateTime.toString('dd.MM.yyyy')}"
-				style="table" id="plan" icon="icon-list"
-				pdfLink="performance/viewPerformancePdf/${currentPlanId}">
+				style="table" id="plan" icon="icon-list" pdfLink="${isSavedPlan ? 'performance/viewPerformancePdf/'.concat(currentPlanId) : ''}" >
 				<br />
 
 				<div class="tabbable">
