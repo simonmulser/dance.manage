@@ -60,17 +60,20 @@ public class ParticipantController {
     private PersonManager personManager;
 
     private Participant participant;
-    private List<Participant> participantList;
-    private boolean setList = true;
 
     @PostConstruct
     public void init() {
         participant = new Participant();
-
     }
 
-    public void createParticipantList() {
-        participantList = new ArrayList<Participant>();
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public String listParticipants(ModelMap map) {
+        logger.debug("LIST Participant with id " + participant.getPid());
+
+        if (!editTrue) {
+            participant = new Participant();
+        }
+        List<Participant> participantList = new ArrayList<Participant>();
         DetachedCriteria criteria = DetachedCriteria
                 .forClass(Participant.class);
         criteria.addOrder(Order.asc("lastname"));
@@ -83,20 +86,6 @@ public class ParticipantController {
             }
             participantList.add(p);
         }
-    }
-
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public String listParticipants(ModelMap map) {
-        logger.debug("LIST Participant with id " + participant.getPid());
-
-        if (!editTrue) {
-            participant = new Participant();
-        }
-
-        if (setList) {
-            createParticipantList();
-        }
-        setList = false;
 
         map.addAttribute("participant", participant);
         map.addAttribute("participantList", participantList);
@@ -127,14 +116,10 @@ public class ParticipantController {
             }
 
             if (!(participant.getParent().getPid() == null)) {
-                logger.debug("Parent neu setzen mit pid: "
-                        + participant.getParent().getPid());
                 Parent newParent = parentManager.get(participant.getParent()
                         .getPid());
                 participant.setParent(newParent);
             } else {
-                logger.debug("Parent ist null: "
-                        + participant.getParent().getPid());
                 participant.setParent(null);
             }
 
@@ -204,7 +189,6 @@ public class ParticipantController {
                     && !participant.getEmail().equals("")) {
                 personManager.sendURL(participant);
             }
-            this.setList = true;
             this.participant = new Participant();
         }
         return "redirect:/admin/participant";
@@ -275,7 +259,6 @@ public class ParticipantController {
 
         participantManager.merge(participant);
         participant = new Participant();
-        this.setList = true;
         return "redirect:/admin/participant";
     }
 

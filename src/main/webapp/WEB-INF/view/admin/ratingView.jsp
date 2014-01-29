@@ -104,7 +104,9 @@
 							<spring:message code="label.answer" />
 						</form:label>
 						<div class="span6">
-							<form:textarea path="answer" rows="6" />
+							<form:textarea path="answer" rows="6" maxlength="255" />
+							<br />
+							<spring:message code="help.maxChars" />
 						</div>
 						<form:errors path="answer" cssClass="error" />		
 					</div>
