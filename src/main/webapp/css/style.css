@@ -467,7 +467,7 @@ background: #ffffff; /* Old browsers */ color:#444; line-height:normal;}
 
 .widget-table .table {
 	margin-bottom: 0;
-	
+	table-layout: fixed;
 	border: none;
 }
 
@@ -560,7 +560,7 @@ ul.messages_layout li {
 	position: relative
 }
 ul.messages_layout li.left {
-	padding-left: 75px
+	padding-left: 65px
 }
 ul.messages_layout li.right {
 	padding-right: 75px
@@ -1506,5 +1506,9 @@ span.pagelinks {
 	position: absolute;
 	margin-right: 13px !important;
 	margin-top: 12px;
+}
+
+.feedbackCritique {
+	word-wrap: break-word;
 }
 

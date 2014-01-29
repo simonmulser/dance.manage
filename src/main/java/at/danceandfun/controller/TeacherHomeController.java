@@ -85,6 +85,19 @@ public class TeacherHomeController {
             return "teacher/editTeacher";
         }
 
+        if (!teacher.getEmail().equals("")
+                && !personManager.getPersonByEmail(teacher.getEmail())
+                        .isEmpty()) {
+            logger.error("ConstraintViolation for user with ID"
+                    + teacher.getPid());
+            result.rejectValue("email", "email.constraintViolation");
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.teacher",
+                    result);
+            redirectAttributes.addFlashAttribute("teacher", teacher);
+            return "teacher/editTeacher";
+        }
+
         logger.debug("updateTeacher");
         teacherManager.merge(teacher);
         return "redirect:/teacher";

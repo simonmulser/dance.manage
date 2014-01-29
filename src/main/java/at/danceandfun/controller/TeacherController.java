@@ -98,80 +98,95 @@ public class TeacherController {
             this.teacher = teacher;
             editTrue = true;
             return "redirect:/admin/teacher#add";
-        } else {
-            teacher.setEnabled(true);
-
-            if (!teacher.getTempCourses().equals("")) {
-                String[] courses = teacher.getTempCourses().split(";");
-                for (String s : courses) {
-                    Course actualCourse = courseManager.get(Math.abs(Integer
-                            .parseInt(s)));
-                    teacher.setCourses(courseManager.getEnabledCourses(teacher));
-                    if (Integer.parseInt(s) < 0) {
-                        teacher.getCourses().remove(actualCourse);
-                        actualCourse.setTeacher(null);
-                        courseManager.merge(actualCourse);
-
-                    } else if (!teacher.getCourses().contains(actualCourse)) {
-                        logger.debug("Neuen Kurs hinzufügen");
-
-                        teacher.getCourses().add(actualCourse);
-                    } else {
-                        logger.debug("Bestehender Kurs mit name: "
-                                + actualCourse.getName());
-                    }
-                }
-                teacher.setTempCourses("");
-            }
-
-            if (!teacher.getTempStyles().equals("")) {
-                String[] styles = teacher.getTempStyles().split(";");
-                for (String s : styles) {
-                    Style actualStyle = styleManager.get(Math.abs(Integer
-                            .parseInt(s)));
-
-                    if (Integer.parseInt(s) < 0) {
-                        logger.debug("Stil löschen: " + actualStyle.getSid());
-                        teacher.getStyles().remove(actualStyle);
-                    } else if (!teacher.getStyles().contains(actualStyle)) {
-                        logger.debug("Neuen Stil hinzufügen: "
-                                + actualStyle.getSid());
-                        teacher.getStyles().add(actualStyle);
-                    } else {
-                        logger.debug("Bestehender Stil mit name: "
-                                + actualStyle.getName());
-                    }
-                }
-                teacher.setTempStyles("");
-            }
-
-            if (teacher.getAddress().getAid() == null) {
-                addressManager.persist(teacher.getAddress());
-            }
-
-            if (teacher.getPid() == null) {
-                logger.debug("New teacher");
-                teacher = (Teacher) personManager.getURLToken(teacher);
-                teacherManager.persist(teacher);
-                if (!teacher.getEmail().equals("")) {
-                    personManager.sendURL(teacher);
-                }
-            } else {
-                logger.debug("Update teacher");
-                teacher = teacherManager.merge(teacher);
-                if (!teacher.isActivated() && !teacher.getEmail().equals("")) {
-                    personManager.sendURL(teacher);
-                }
-            }
-
-            if (teacher.getCourses().size() > 0) {
-                for (Course c : teacher.getCourses()) {
-                    c.setTeacher(teacher);
-                    courseManager.merge(c);
-                }
-            }
-            this.teacher = new Teacher();
         }
+        
+        if (!teacher.getEmail().equals("")
+                && !personManager.getPersonByEmail(teacher.getEmail())
+                        .isEmpty()) {
+            logger.error("ConstraintViolation for user with ID"
+                    + teacher.getPid());
+            result.rejectValue("email", "email.constraintViolation");
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.teacher",
+                    result);
+            redirectAttributes.addFlashAttribute("teacher", teacher);
+            this.teacher = teacher;
+            editTrue = true;
+            return "redirect:/admin/teacher#add";
+        }
+
+        teacher.setEnabled(true);
+
+        if (!teacher.getTempCourses().equals("")) {
+            String[] courses = teacher.getTempCourses().split(";");
+            for (String s : courses) {
+                Course actualCourse = courseManager.get(Math.abs(Integer
+                        .parseInt(s)));
+                teacher.setCourses(courseManager.getEnabledCourses(teacher));
+                if (Integer.parseInt(s) < 0) {
+                    teacher.getCourses().remove(actualCourse);
+                    actualCourse.setTeacher(null);
+                    courseManager.merge(actualCourse);
+
+                } else if (!teacher.getCourses().contains(actualCourse)) {
+                    logger.debug("Neuen Kurs hinzufügen");
+
+                    teacher.getCourses().add(actualCourse);
+                } else {
+                    logger.debug("Bestehender Kurs mit name: "
+                            + actualCourse.getName());
+                }
+            }
+            teacher.setTempCourses("");
+        }
+
+        if (!teacher.getTempStyles().equals("")) {
+            String[] styles = teacher.getTempStyles().split(";");
+            for (String s : styles) {
+                Style actualStyle = styleManager.get(Math.abs(Integer
+                        .parseInt(s)));
+
+                if (Integer.parseInt(s) < 0) {
+                    logger.debug("Stil löschen: " + actualStyle.getSid());
+                    teacher.getStyles().remove(actualStyle);
+                } else if (!teacher.getStyles().contains(actualStyle)) {
+                    logger.debug("Neuen Stil hinzufügen: "
+                            + actualStyle.getSid());
+                    teacher.getStyles().add(actualStyle);
+                } else {
+                    logger.debug("Bestehender Stil mit name: "
+                            + actualStyle.getName());
+                }
+            }
+            teacher.setTempStyles("");
+        }
+
+        if (teacher.getAddress().getAid() == null) {
+            addressManager.persist(teacher.getAddress());
+        }
+
+        if (teacher.getPid() == null) {
+            logger.debug("New teacher");
+            teacher = (Teacher) personManager.getURLToken(teacher);
+            teacherManager.persist(teacher);
+            if (!teacher.getEmail().equals("")) {
+                personManager.sendURL(teacher);
+            }
+        } else {
+            logger.debug("Update teacher");
+            teacher = teacherManager.merge(teacher);
+            if (!teacher.isActivated() && !teacher.getEmail().equals("")) {
+                personManager.sendURL(teacher);
+            }
+        }
+
+        if (teacher.getCourses().size() > 0) {
+            for (Course c : teacher.getCourses()) {
+                c.setTeacher(teacher);
+                courseManager.merge(c);
+            }
+        }
+        this.teacher = new Teacher();
         return "redirect:/admin/teacher";
     }
 

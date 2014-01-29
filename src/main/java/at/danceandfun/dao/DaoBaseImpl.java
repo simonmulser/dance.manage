@@ -5,12 +5,14 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -35,9 +37,23 @@ public class DaoBaseImpl<T> implements DaoBase<T> {
         return entityManager.contains(domain);
     }
 
-    public T merge(T domain) {
+    public T merge(T domain) throws PersistenceException {
         logger.debug("update");
-        return entityManager.merge(domain);
+        try {
+            return entityManager.merge(domain);
+        } catch (PersistenceException persistenceException) {
+            logger.error("EXCEEEPtION");
+            Throwable t = persistenceException.getCause();
+            while ((t != null) && !(t instanceof ConstraintViolationException)) {
+                t = t.getCause();
+            }
+            if (t instanceof ConstraintViolationException) {
+                logger.error("VIOLAAATION");
+                throw persistenceException;
+            } else {
+                throw persistenceException;
+            }
+        }
     }
 
     public T get(Serializable id) {

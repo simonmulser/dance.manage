@@ -212,13 +212,9 @@ public class PerformanceController {
         return "redirect:/admin/performance";
     }
 
-    @RequestMapping(value = "/save")
-    public String savePerformancePlan() {
+    @RequestMapping(value = "/save/{planid}")
+    public String savePerformancePlan(@PathVariable("planid") Integer planid) {
         logger.debug("SAVE the performanceplan");
-
-        for (Course c : tempPerformance1.getCourses()) {
-            System.out.println(c.getName());
-        }
 
         tempPerformance1.setEnabled(true);
         tempPerformance2.setEnabled(true);
@@ -229,12 +225,20 @@ public class PerformanceController {
         performances.add(tempPerformance2);
         performances.add(tempPerformance3);
 
+        if (isSavedPlan) {
+            performancePlan = performancePlanManager.get(planid);
+        }
+
         performancePlan.setPerformances(performances);
 
         performancePlan.setDateTime(dateTime);
         performancePlan.setEnabled(true);
 
-        performancePlanManager.persist(performancePlan);
+        if (isSavedPlan) {
+            performancePlanManager.merge(performancePlan);
+        } else {
+            performancePlanManager.persist(performancePlan);
+        }
 
         isSavedPlan = true;
 
@@ -306,10 +310,10 @@ public class PerformanceController {
     public String deletePerformancePlan(@PathVariable("planid") Integer planid) {
         logger.debug("Delete Performanceplan with id " + planid);
 
-        PerformancePlan plan = performancePlanManager.get(planid);
-        plan.setEnabled(false);
+        performancePlan = performancePlanManager.get(planid);
+        performancePlan.setEnabled(false);
 
-        performancePlanManager.merge(plan);
+        performancePlanManager.merge(performancePlan);
 
         return "redirect:/admin/performance";
     }
@@ -362,6 +366,7 @@ public class PerformanceController {
         map.put("performanceList1", tempPerformance1.getCourses());
         map.put("performanceList2", tempPerformance2.getCourses());
         map.put("performanceList3", tempPerformance3.getCourses());
+        map.put("dateTime", plan.getDateTime());
 
         return new ModelAndView("viewPerformancePdf", map);
     }
@@ -460,16 +465,6 @@ public class PerformanceController {
         } else {
             this.sibsSamePerformance = false;
         }
-    }
-
-    private List<Integer> setCourseIds(List<Course> courses) {
-        List<Integer> courseID = new ArrayList<Integer>();
-
-        for (Course currentCourse : courses) {
-            courseID.add(currentCourse.getCid());
-        }
-
-        return courseID;
     }
 
     public void setPerformanceManager(PerformanceManager performanceManager) {

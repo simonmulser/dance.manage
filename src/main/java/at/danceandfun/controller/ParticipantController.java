@@ -60,17 +60,20 @@ public class ParticipantController {
     private PersonManager personManager;
 
     private Participant participant;
-    private List<Participant> participantList;
-    private boolean setList = true;
 
     @PostConstruct
     public void init() {
         participant = new Participant();
-
     }
 
-    public void createParticipantList() {
-        participantList = new ArrayList<Participant>();
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public String listParticipants(ModelMap map) {
+        logger.debug("LIST Participant with id " + participant.getPid());
+
+        if (!editTrue) {
+            participant = new Participant();
+        }
+        List<Participant> participantList = new ArrayList<Participant>();
         DetachedCriteria criteria = DetachedCriteria
                 .forClass(Participant.class);
         criteria.addOrder(Order.asc("lastname"));
@@ -83,20 +86,6 @@ public class ParticipantController {
             }
             participantList.add(p);
         }
-    }
-
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public String listParticipants(ModelMap map) {
-        logger.debug("LIST Participant with id " + participant.getPid());
-
-        if (!editTrue) {
-            participant = new Participant();
-        }
-
-        if (setList) {
-            createParticipantList();
-        }
-        setList = false;
 
         map.addAttribute("participant", participant);
         map.addAttribute("participantList", participantList);
@@ -118,97 +107,114 @@ public class ParticipantController {
             editTrue = true;
             return "redirect:/admin/participant#add";
 
-        } else {
-            logger.debug("ADD Participant with id " + participant.getPid());
-            participant.setEnabled(true);
+        }
 
-            if (participant.getAddress().getAid() == null) {
-                addressManager.persist(participant.getAddress());
-            }
+        if (!participant.getEmail().equals("")
+                && !personManager.getPersonByEmail(participant.getEmail())
+                        .isEmpty()) {
+            logger.error("ConstraintViolation for user with ID"
+                    + participant.getPid());
+            result.rejectValue("email", "email.constraintViolation");
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.participant",
+                    result);
+            redirectAttributes.addFlashAttribute("participant", participant);
+            this.participant = participant;
+            editTrue = true;
+            return "redirect:/admin/participant#add";
+        }
 
+        logger.debug("ADD Participant with id " + participant.getPid());
+        participant.setEnabled(true);
             if (!(participant.getParent().getPid() == null)) {
-                logger.debug("Parent neu setzen mit pid: "
-                        + participant.getParent().getPid());
                 Parent newParent = parentManager.get(participant.getParent()
                         .getPid());
                 participant.setParent(newParent);
             } else {
-                logger.debug("Parent ist null: "
-                        + participant.getParent().getPid());
                 participant.setParent(null);
             }
 
-            if (participant.getPid() == null) {
-                logger.debug("New participant");
-                participant = (Participant) personManager
-                        .getURLToken(participant);
-                participantManager.persist(participant);
-                if (!participant.getEmail().equals("")) {
-                    personManager.sendURL(participant);
-                }
-            }
+        if (participant.getAddress().getAid() == null) {
+            addressManager.persist(participant.getAddress());
+        }
 
-            if (!participant.getTempSiblings().equals("")) {
-                String[] siblings = participant.getTempSiblings().split(";");
-                for (String s : siblings) {
-                    Participant actualParticipant = participantManager.get(Math
-                            .abs(Integer.parseInt(s)));
+        if (!(participant.getParent().getPid() == null)) {
+            logger.debug("Parent neu setzen mit pid: "
+                    + participant.getParent().getPid());
+            Parent newParent = parentManager.get(participant.getParent()
+                    .getPid());
+            participant.setParent(newParent);
+        } else {
+            logger.debug("Parent ist null: " + participant.getParent().getPid());
+            participant.setParent(null);
+        }
 
-                    if (Integer.parseInt(s) < 0) {
-                        actualParticipant.getSiblings().remove(participant);
-                        participant.getSiblings().remove(actualParticipant);
-                        participantManager.merge(participant);
-                        participantManager.merge(actualParticipant);
-                    } else if (!participant.getSiblings().contains(
-                            actualParticipant)) {
-                        participant.getSiblings().add(actualParticipant);
-                    }
-                }
-            }
-
-            if (!participant.getTempCourses().equals("")) {
-                if (participant.getPid() != null) {
-                    participant.setCourseParticipants(courseParticipantManager
-                            .getEnabledCourseParticipants(participantManager
-                                    .get(participant.getPid())));
-                }
-                String[] courses = participant.getTempCourses().split(";");
-                for (String s : courses) {
-                    Course actualCourse = courseManager.get(Math.abs(Integer
-                            .parseInt(s)));
-
-                    if (Integer.parseInt(s) < 0) {
-                        if (participant.getCourseParticipantsById(actualCourse) != null) {
-                            List<CourseParticipant> deleteCPs = participant
-                                    .getCourseParticipantsById(actualCourse);
-                            for (CourseParticipant cp : deleteCPs) {
-                                participant.getCourseParticipants().remove(cp);
-                                cp.setEnabled(false);
-                                courseParticipantManager.merge(cp);
-                            }
-
-                        }
-                    } else if (participant
-                            .getCourseParticipantsById(actualCourse) == null) {
-                        CourseParticipant newCP = new CourseParticipant();
-                        newCP.setCourse(actualCourse);
-                        newCP.setParticipant(participant);
-                        newCP.setEnabled(true);
-                        participant.getCourseParticipants().add(newCP);
-                    }
-                }
-            }
-
-            participant = participantManager.merge(participant);
-            if (!participant.isActivated()
-                    && !participant.getEmail().equals("")) {
+        if (participant.getPid() == null) {
+            logger.debug("New participant");
+            participant = (Participant) personManager.getURLToken(participant);
+            participantManager.persist(participant);
+            if (!participant.getEmail().equals("")) {
                 personManager.sendURL(participant);
             }
-            this.setList = true;
-            this.participant = new Participant();
         }
-        return "redirect:/admin/participant";
 
+        if (!participant.getTempSiblings().equals("")) {
+            String[] siblings = participant.getTempSiblings().split(";");
+            for (String s : siblings) {
+                Participant actualParticipant = participantManager.get(Math
+                        .abs(Integer.parseInt(s)));
+
+                if (Integer.parseInt(s) < 0) {
+                    actualParticipant.getSiblings().remove(participant);
+                    participant.getSiblings().remove(actualParticipant);
+                    participantManager.merge(participant);
+                    participantManager.merge(actualParticipant);
+                } else if (!participant.getSiblings().contains(
+                        actualParticipant)) {
+                    participant.getSiblings().add(actualParticipant);
+                }
+            }
+        }
+
+        if (!participant.getTempCourses().equals("")) {
+            if (participant.getPid() != null) {
+                participant.setCourseParticipants(courseParticipantManager
+                        .getEnabledCourseParticipants(participantManager
+                                .get(participant.getPid())));
+            }
+            String[] courses = participant.getTempCourses().split(";");
+            for (String s : courses) {
+                Course actualCourse = courseManager.get(Math.abs(Integer
+                        .parseInt(s)));
+
+                if (Integer.parseInt(s) < 0) {
+                    if (participant.getCourseParticipantsById(actualCourse) != null) {
+                        List<CourseParticipant> deleteCPs = participant
+                                .getCourseParticipantsById(actualCourse);
+                        for (CourseParticipant cp : deleteCPs) {
+                            participant.getCourseParticipants().remove(cp);
+                            cp.setEnabled(false);
+                            courseParticipantManager.merge(cp);
+                        }
+
+                    }
+                } else if (participant.getCourseParticipantsById(actualCourse) == null) {
+                    CourseParticipant newCP = new CourseParticipant();
+                    newCP.setCourse(actualCourse);
+                    newCP.setParticipant(participant);
+                    newCP.setEnabled(true);
+                    participant.getCourseParticipants().add(newCP);
+                }
+            }
+        }
+
+        participant = participantManager.merge(participant);
+        if (!participant.isActivated() && !participant.getEmail().equals("")) {
+            personManager.sendURL(participant);
+         }
+        this.participant = new Participant();
+
+        return "redirect:/admin/participant";
     }
 
     @RequestMapping(value = "/edit/{pid}")
@@ -275,7 +281,6 @@ public class ParticipantController {
 
         participantManager.merge(participant);
         participant = new Participant();
-        this.setList = true;
         return "redirect:/admin/participant";
     }
 

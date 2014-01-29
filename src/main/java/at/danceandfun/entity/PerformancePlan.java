@@ -12,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Type;
@@ -35,7 +34,6 @@ public class PerformancePlan extends EntityBase {
     @Column(name = "DATETIME")
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
     @NotNull
-    @Future
     private LocalDate dateTime;
 
     @Column(name = "ENABLED")

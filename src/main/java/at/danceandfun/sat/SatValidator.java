@@ -35,6 +35,10 @@ public class SatValidator {
         this.courseList1 = performancePlan.get(1).getCourses();
         this.courseList2 = performancePlan.get(2).getCourses();
         this.courseList3 = performancePlan.get(3).getCourses();
+
+        this.courseList1 = resetRestrictions(courseList1);
+        this.courseList2 = resetRestrictions(courseList2);
+        this.courseList3 = resetRestrictions(courseList3);
     }
 
     /**
@@ -501,6 +505,25 @@ public class SatValidator {
                     }
                 }
             }
+        }
+
+        return validatedCourseList;
+    }
+
+    /**
+     * @summary Resets the restriction parameters of the passed courses
+     * @param validatedCourseList
+     * @return
+     */
+    private List<Course> resetRestrictions(List<Course> validatedCourseList) {
+        for (Course c : validatedCourseList) {
+            c.setAdvancedAtEndRestriction(false);
+            c.setBalancedAgeGroup(false);
+            c.setBalancedAmountOfSpectators(false);
+            c.setBalletRestriction(false);
+            c.setMultipleGroupsSamePerformance(false);
+            c.setSibsSamePerformance(false);
+            c.setTwoBreaksRestriction(false);
         }
 
         return validatedCourseList;

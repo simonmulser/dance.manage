@@ -5,15 +5,19 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
-
-<div class="control-group">
-	<form:label path="birthday" class="control-label">
-		<spring:message code="label.birthday" />*
+<spring:bind path="birthday">
+	<c:set var="divClass" value="control-group" />
+	<c:if test="${status.error}">
+		<c:set var="divClass" value="control-group error" />
+	</c:if>
+	<div class="${divClass}">
+		<form:label path="birthday" class="control-label">
+			<spring:message code="label.birthday" />*
                 </form:label>
-	<div class="span6">
-		<form:input path="birthday" id="datepicker" />
+		<div class="span3">
+			<form:input path="birthday" cssErrorClass="has-error" />
+		</div>
+		<form:errors path="birthday" cssClass="help-inline" />
 	</div>
-	<form:errors path="birthday" cssClass="error" />
-	<form:errors cssClass="error" />
-</div>
+</spring:bind>
 
