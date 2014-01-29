@@ -18,6 +18,7 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -90,7 +91,8 @@ public class Course extends EntityBase implements Cloneable {
     private Integer ageGroup;
 
     @Column(name = "AMOUNT_PERFORMANCES")
-    @Min(value = 0, message = "{min.values.positive}")
+    @Min(value = 1, message = "{min.values.positive}")
+    @Max(value = 3, message = "{max.value}")
     private Integer amountPerformances;
 
     @Column(name = "ENABLED")
@@ -122,9 +124,6 @@ public class Course extends EntityBase implements Cloneable {
     @NotNull
     @Valid
     private Style style;
-
-    // @ManyToMany(mappedBy = "courses")
-    // private List<Performance> performances = new ArrayList<Performance>();
 
     @OneToMany(mappedBy = "key.course", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     private List<Position> positions = new ArrayList<Position>();

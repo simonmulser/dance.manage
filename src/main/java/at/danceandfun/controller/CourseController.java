@@ -77,7 +77,19 @@ public class CourseController {
             @ModelAttribute(value = "course") @Valid Course course,
             BindingResult result, RedirectAttributes redirectAttributes) {
         logger.debug("ADD Course with id " + course.getCid());
+
         if (result.hasErrors()) {
+            if (course.isInPerformance() && course.getAmountPerformances() == null) {
+                logger.error("Violation of input for course:" + course.getCid());
+                result.rejectValue("amountPerformances",
+                        "course.amountPerformancesNull");
+            }
+            
+            if (!course.isInPerformance() && course.getAmountPerformances() != null) {
+                logger.error("Violation of input for course:" + course.getCid());
+                result.rejectValue("amountPerformances",
+                        "course.notSetForPerformance");
+            }
             redirectAttributes.addFlashAttribute(
                     "org.springframework.validation.BindingResult.course",
                     result);
@@ -86,6 +98,31 @@ public class CourseController {
             editTrue = true;
             return "redirect:/admin/course#add";
         }
+
+        if (course.isInPerformance() && course.getAmountPerformances() == null) {
+            logger.error("Violation of input for course:" + course.getCid());
+            result.rejectValue("amountPerformances",
+                    "course.amountPerformancesNull");
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.course",
+                    result);
+            this.course = course;
+            editTrue = true;
+            return "redirect:/admin/course#add";
+        }
+
+        if (!course.isInPerformance() && course.getAmountPerformances() != null) {
+            logger.error("Violation of input for course:" + course.getCid());
+            result.rejectValue("amountPerformances",
+                    "course.notSetForPerformance");
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.course",
+                    result);
+            this.course = course;
+            editTrue = true;
+            return "redirect:/admin/course#add";
+        }
+
         course.setEnabled(true);
 
         if (!(course.getAddress().getAid() == null)) {

@@ -90,7 +90,12 @@ public class TeacherController {
             @ModelAttribute(value = "teacher") @Valid Teacher teacher,
             BindingResult result, RedirectAttributes redirectAttributes) {
 
-        if (result.hasErrors()) {
+        if (!teacher.getEmail().equals("")
+                && !personManager.getPersonByEmail(teacher.getEmail(),
+                        teacher.getPid()).isEmpty()) {
+            logger.error("ConstraintViolation for user with ID"
+                    + teacher.getPid());
+            result.rejectValue("email", "email.constraintViolation");
             redirectAttributes.addFlashAttribute(
                     "org.springframework.validation.BindingResult.teacher",
                     result);
@@ -100,13 +105,7 @@ public class TeacherController {
             return "redirect:/admin/teacher#add";
         }
         
-        if (!teacher.getEmail().equals("")
-                && !personManager.getPersonByEmail(teacher.getEmail(),
-                        teacher.getPid())
-                        .isEmpty()) {
-            logger.error("ConstraintViolation for user with ID"
-                    + teacher.getPid());
-            result.rejectValue("email", "email.constraintViolation");
+        if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute(
                     "org.springframework.validation.BindingResult.teacher",
                     result);

@@ -9,7 +9,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -72,18 +71,6 @@ public class TeacherHomeController {
     public String updateParticipant(ModelMap map,
             @ModelAttribute("teacher") @Valid Teacher teacher,
             BindingResult result, RedirectAttributes redirectAttributes) {
-        if (result.hasErrors()) {
-            for (ObjectError oe : result.getAllErrors()) {
-                logger.error("ERROR TOSTRING: " + oe.toString());
-                logger.error("ERRORS: " + oe.getCode() + " "
-                        + oe.getDefaultMessage());
-            }
-            redirectAttributes.addFlashAttribute(
-                    "org.springframework.validation.BindingResult.teacher",
-                    result);
-            redirectAttributes.addFlashAttribute("teacher", teacher);
-            return "teacher/editTeacher";
-        }
 
         if (!teacher.getEmail().equals("")
                 && !personManager.getPersonByEmail(teacher.getEmail(),
@@ -92,6 +79,14 @@ public class TeacherHomeController {
             logger.error("ConstraintViolation for user with ID"
                     + teacher.getPid());
             result.rejectValue("email", "email.constraintViolation");
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.teacher",
+                    result);
+            redirectAttributes.addFlashAttribute("teacher", teacher);
+            return "teacher/editTeacher";
+        }
+
+        if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute(
                     "org.springframework.validation.BindingResult.teacher",
                     result);

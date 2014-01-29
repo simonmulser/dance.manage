@@ -75,16 +75,7 @@ public class ParentController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addParent(@ModelAttribute("parent") @Valid Parent parent,
             BindingResult result, RedirectAttributes redirectAttributes) {
-        if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute(
-                    "org.springframework.validation.BindingResult.parent",
-                    result);
-            redirectAttributes.addFlashAttribute("parent", parent);
-            this.parent = parent;
-            editTrue = true;
-            return "redirect:/admin/parent#add";
 
-        }
         if (!parent.getEmail().equals("")
                 && !personManager.getPersonByEmail(parent.getEmail(),
                         parent.getPid()).isEmpty()) {
@@ -98,6 +89,17 @@ public class ParentController {
             this.parent = parent;
             editTrue = true;
             return "redirect:/admin/parent#add";
+        }
+
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.parent",
+                    result);
+            redirectAttributes.addFlashAttribute("parent", parent);
+            this.parent = parent;
+            editTrue = true;
+            return "redirect:/admin/parent#add";
+
         }
 
         logger.debug("ADD Participant with id " + parent.getPid());

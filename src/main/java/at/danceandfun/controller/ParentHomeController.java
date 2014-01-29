@@ -84,13 +84,6 @@ public class ParentHomeController {
     public String updateParent(ModelMap map,
             @ModelAttribute("parent") @Valid Parent parent,
             BindingResult result, RedirectAttributes redirectAttributes) {
-        if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute(
-                    "org.springframework.validation.BindingResult.participant",
-                    result);
-            redirectAttributes.addFlashAttribute("parent", parent);
-            return "parent/editParent";
-        }
 
         if (!parent.getEmail().equals("")
                 && !personManager.getPersonByEmail(parent.getEmail(),
@@ -100,6 +93,14 @@ public class ParentHomeController {
             result.rejectValue("email", "email.constraintViolation");
             redirectAttributes.addFlashAttribute(
                     "org.springframework.validation.BindingResult.parent",
+                    result);
+            redirectAttributes.addFlashAttribute("parent", parent);
+            return "parent/editParent";
+        }
+
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.participant",
                     result);
             redirectAttributes.addFlashAttribute("parent", parent);
             return "parent/editParent";

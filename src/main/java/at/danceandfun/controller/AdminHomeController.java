@@ -92,13 +92,6 @@ public class AdminHomeController {
     public String updateParent(ModelMap map,
             @ModelAttribute("admin") @Valid Admin admin,
             BindingResult result, RedirectAttributes redirectAttributes) {
-        if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute(
-                    "org.springframework.validation.BindingResult.admin",
-                    result);
-            redirectAttributes.addFlashAttribute("admin", admin);
-            return "admin/editAdmin";
-        }
 
         if (!admin.getEmail().equals("")
                 && !personManager.getPersonByEmail(admin.getEmail(),
@@ -113,7 +106,15 @@ public class AdminHomeController {
             redirectAttributes.addFlashAttribute("admin", admin);
             return "admin/editAdmin";
         }
-        map.put("constraintViolation", 0);
+
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.admin",
+                    result);
+            redirectAttributes.addFlashAttribute("admin", admin);
+            return "admin/editAdmin";
+        }
+
         logger.debug("updateAdmin");
         adminManager.merge(admin);
         return "redirect:/admin";

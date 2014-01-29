@@ -98,21 +98,10 @@ public class ParticipantController {
     public String addParticipant(
             @ModelAttribute("participant") @Valid Participant participant,
             BindingResult result, RedirectAttributes redirectAttributes) {
-        if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute(
-                    "org.springframework.validation.BindingResult.participant",
-                    result);
-            redirectAttributes.addFlashAttribute("participant", participant);
-            this.participant = participant;
-            editTrue = true;
-            return "redirect:/admin/participant#add";
-
-        }
 
         if (!participant.getEmail().equals("")
                 && !personManager.getPersonByEmail(participant.getEmail(),
-                        participant.getPid())
-                        .isEmpty()) {
+                        participant.getPid()).isEmpty()) {
             logger.error("ConstraintViolation for user with ID"
                     + participant.getPid());
             result.rejectValue("email", "email.constraintViolation");
@@ -123,6 +112,17 @@ public class ParticipantController {
             this.participant = participant;
             editTrue = true;
             return "redirect:/admin/participant#add";
+        }
+
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.participant",
+                    result);
+            redirectAttributes.addFlashAttribute("participant", participant);
+            this.participant = participant;
+            editTrue = true;
+            return "redirect:/admin/participant#add";
+
         }
 
         logger.debug("ADD Participant with id " + participant.getPid());

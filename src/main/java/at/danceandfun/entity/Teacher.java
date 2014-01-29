@@ -23,7 +23,6 @@ import javax.validation.constraints.Size;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 
 import at.danceandfun.role.RoleTeacher;
@@ -56,7 +55,6 @@ public class Teacher extends Person {
 
     @Column(name = "ENGAGEMENTDATE")
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
-    @DateTimeFormat(pattern = "dd.MM.yyyy")
     private LocalDate engagementDate;
 
     @Column(name = "COMMENT")

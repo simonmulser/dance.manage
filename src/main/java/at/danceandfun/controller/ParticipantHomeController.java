@@ -93,13 +93,6 @@ public class ParticipantHomeController {
             @ModelAttribute("participant") @Valid Participant participant,
             BindingResult result, RedirectAttributes redirectAttributes,
             @PathVariable int pid) {
-        if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute(
-                    "org.springframework.validation.BindingResult.participant",
-                    result);
-            redirectAttributes.addFlashAttribute("participant", participant);
-            return "participant/editParticipant";
-        }
 
         if (!participant.getEmail().equals("")
                 && !personManager.getPersonByEmail(participant.getEmail(),
@@ -108,6 +101,14 @@ public class ParticipantHomeController {
             logger.error("ConstraintViolation for user with ID"
                     + participant.getPid());
             result.rejectValue("email", "email.constraintViolation");
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.participant",
+                    result);
+            redirectAttributes.addFlashAttribute("participant", participant);
+            return "participant/editParticipant";
+        }
+
+        if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute(
                     "org.springframework.validation.BindingResult.participant",
                     result);
