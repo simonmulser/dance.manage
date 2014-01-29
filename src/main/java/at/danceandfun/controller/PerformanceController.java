@@ -103,12 +103,6 @@ public class PerformanceController {
         return "admin/performanceView";
     }
 
-    @RequestMapping(value = "/jumpToPlan/{plan}", method = RequestMethod.GET)
-    public String jumpToPlan(@PathVariable("plan") Integer plan, ModelMap map) {
-
-        return "redirect:/admin/performance#plan" + plan;
-    }
-
     @RequestMapping(value = "/build", method = RequestMethod.POST)
     public String buildPerformance(
             ModelMap map,
