@@ -17,7 +17,7 @@ public class GlobalExceptionController {
     @ExceptionHandler(BusinessException.class)
     public ModelAndView handleBusinessExceptionException(
             BusinessException exception) {
-        logger.error("exception" + exception.getMessage());
+        logger.error("businessException" + exception.getMessage());
 
         ModelAndView model = new ModelAndView("error/exception");
         model.addObject("exception", exception);
@@ -33,13 +33,12 @@ public class GlobalExceptionController {
         model.addObject("exception", exception);
         model.addObject("stackTrace", ExceptionUtils.getStackTrace(exception));
         return model;
-
     }
-    
+
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ModelAndView MissingServletRequestParameter(
             MissingServletRequestParameterException exception) {
-        logger.error("exception" + exception.getMessage());
+        logger.error("missingServletException" + exception.getMessage());
 
         ModelAndView model = new ModelAndView("error/exception");
         model.addObject("exception", exception);

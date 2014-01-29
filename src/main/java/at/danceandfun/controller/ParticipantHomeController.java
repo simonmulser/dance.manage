@@ -101,6 +101,19 @@ public class ParticipantHomeController {
             return "participant/editParticipant";
         }
 
+        if (!participant.getEmail().equals("")
+                && !personManager.getPersonByEmail(participant.getEmail())
+                        .isEmpty()) {
+            logger.error("ConstraintViolation for user with ID"
+                    + participant.getPid());
+            result.rejectValue("email", "email.constraintViolation");
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.participant",
+                    result);
+            redirectAttributes.addFlashAttribute("participant", participant);
+            return "participant/editParticipant";
+        }
+
         logger.debug("updateParticipant");
         participantManager.merge(participant);
         return "redirect:/participant/" + pid;

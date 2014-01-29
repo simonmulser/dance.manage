@@ -100,6 +100,18 @@ public class AdminHomeController {
             return "admin/editAdmin";
         }
 
+        if (!admin.getEmail().equals("")
+                && !personManager.getPersonByEmail(admin.getEmail()).isEmpty()) {
+            logger.error("ConstraintViolation for user with ID"
+                    + admin.getPid());
+            result.rejectValue("email", "email.constraintViolation");
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.admin",
+                    result);
+            redirectAttributes.addFlashAttribute("admin", admin);
+            return "admin/editAdmin";
+        }
+        map.put("constraintViolation", 0);
         logger.debug("updateAdmin");
         adminManager.merge(admin);
         return "redirect:/admin";

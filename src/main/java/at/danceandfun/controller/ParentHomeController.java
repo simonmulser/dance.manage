@@ -92,6 +92,18 @@ public class ParentHomeController {
             return "parent/editParent";
         }
 
+        if (!parent.getEmail().equals("")
+                && !personManager.getPersonByEmail(parent.getEmail()).isEmpty()) {
+            logger.error("ConstraintViolation for user with ID"
+                    + parent.getPid());
+            result.rejectValue("email", "email.constraintViolation");
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.parent",
+                    result);
+            redirectAttributes.addFlashAttribute("parent", parent);
+            return "parent/editParent";
+        }
+
         logger.debug("updateParent");
         parentManager.merge(parent);
         return "redirect:/parent";

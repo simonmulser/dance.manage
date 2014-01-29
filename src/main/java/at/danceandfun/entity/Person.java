@@ -23,14 +23,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import at.danceandfun.util.PatternConstants;
 
-/**
- * @author simon
- *
- */
-/**
- * @author simon
- * 
- */
 @Entity
 @Table(name = "PERSON")
 @Inheritance(strategy = InheritanceType.JOINED)
