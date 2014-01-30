@@ -57,7 +57,6 @@ public class PerformanceController {
     private Performance tempPerformance3 = new Performance();
     private Map<Integer, Performance> performancePlanMap;
     private PerformancePlan performancePlan;
-    private List<PerformancePlan> performancePlanList;
     private LocalDate dateTime;
     private int currentPlanId;
     private boolean balletRestriction = true;
@@ -157,7 +156,7 @@ public class PerformanceController {
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (SatException s) {
-                System.out.println(s.getMessage());
+                logger.info(s.getMessage());
                 if (s.getMessage().equals("Execution too long")) {
                     countTries++;
                 }
@@ -323,49 +322,13 @@ public class PerformanceController {
         logger.info("Creating performance pdf");
 
         HashMap<String, Object> map = new HashMap<String, Object>(1);
-        PerformancePlan plan = performancePlanManager.get(planid);
-        List<Participant> participantList = participantManager.getEnabledList();
-
-        List<Course> fetchedCourses = courseManager.getEnabledList();
-        List<Performance> fetchedPerformances = plan.getPerformances();
-
-        for (Performance currentPerformance : fetchedPerformances) {
-            List<Course> courseList = new ArrayList<Course>();
-            for (Integer currentID : currentPerformance.getCourseIds()) {
-                for (Course currrentCourse : fetchedCourses) {
-                    if (currrentCourse.getCid() == currentID) {
-                        courseList.add(currrentCourse);
-                        continue;
-                    }
-                }
-            }
-            currentPerformance.setCourses(courseList);
-        }
-
-        tempPerformance1 = fetchedPerformances.get(0);
-        tempPerformance2 = fetchedPerformances.get(1);
-        tempPerformance3 = fetchedPerformances.get(2);
-
-        performancePlanMap = new HashMap<Integer, Performance>();
-
-        performancePlanMap.put(1, tempPerformance1);
-        performancePlanMap.put(2, tempPerformance2);
-        performancePlanMap.put(3, tempPerformance3);
-
-        SatValidator validator = new SatValidator(performancePlanMap,
-                participantList);
-        performancePlanMap = validator.validatePerformancePlan();
-
-        tempPerformance1 = performancePlanMap.get(1);
-        tempPerformance2 = performancePlanMap.get(2);
-        tempPerformance3 = performancePlanMap.get(3);
 
         isSavedPlan = true;
 
         map.put("performanceList1", tempPerformance1.getCourses());
         map.put("performanceList2", tempPerformance2.getCourses());
         map.put("performanceList3", tempPerformance3.getCourses());
-        map.put("dateTime", plan.getDateTime());
+        map.put("dateTime", dateTime);
 
         return new ModelAndView("viewPerformancePdf", map);
     }

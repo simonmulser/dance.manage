@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.apache.log4j.Logger;
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.SolverFactory;
 import org.sat4j.specs.ContradictionException;
@@ -45,6 +46,8 @@ public class GenerateSatSolution {
     private int dummies;
     private int movedCourses;
     private List<Integer> swappedCourses;
+
+    private static Logger logger = Logger.getLogger(GenerateSatSolution.class);
 
     @Autowired
     private CourseManager courseManager;
@@ -278,7 +281,6 @@ public class GenerateSatSolution {
                         if (oldPosition != newPosition) {
                             break;
                         }
-                        System.out.println(oldPosition + " " + newPosition);
                     }
                     try {
                         switch (newPosition) {
@@ -1221,7 +1223,7 @@ public class GenerateSatSolution {
                 int[] model = problem.model();
                 return model;
             } else {
-                System.out.println("Unsatisfiable !");
+                logger.warn("Unsatisfiable");
                 throw new SatException("Problem is unsatisfiable");
             }
         } catch (TimeoutException e) {
