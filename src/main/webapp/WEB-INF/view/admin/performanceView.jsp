@@ -559,10 +559,7 @@
 																	posSource : row.id,
 																	posTarget : newPos
 																},
-																function() {
-																	$("plan").load("/dancemanage/admin/performance", function () {
-																		$(this).unbind("load");
-																	})
+																function(theResponse) {window.location.replace("/dancemanage/admin/performance/jumpToPlan/1");
 																});
 
 											}
@@ -587,10 +584,7 @@
 																	posSource : row.id,
 																	posTarget : newPos
 																},
-																function() {
-																	$("plan").load("/dancemanage/admin/performance", function () {
-																		$(this).unbind("load");
-																	})
+																function(theResponse) {window.location.replace("/dancemanage/admin/performance/jumpToPlan/2");
 																});
 
 											}
@@ -615,10 +609,7 @@
 																	posSource : row.id,
 																	posTarget : newPos
 																},
-																function() {
-																	$("plan").load("/dancemanage/admin/performance", function () {
-																		$(this).unbind("load");
-																	})
+																function(theResponse) {window.location.replace("/dancemanage/admin/performance/jumpToPlan/3");
 																});
 
 											}
