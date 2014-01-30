@@ -35,7 +35,7 @@ public class CourseDaoTest {
     public static Course getValidCourse() {
         Course course = new Course();
         course.setAgeGroup(AgeGroup.BIG);
-        course.setAmountPerformances(5);
+        course.setAmountPerformances(2);
         course.setWeekday(WeekDay.MONDAY);
         course.setDuration(CourseDuration.HUNDRED);
         course.setEstimatedSpectators(SpectatorAmount.HIGH);

@@ -36,10 +36,13 @@ public class SearchManagerImpl implements SearchManager {
         DetachedCriteria criteria = DetachedCriteria
                 .forClass(Participant.class);
 
+        String[] array = query.split(" ");
+        for (int i = 0; i < array.length; i++) {
         criteria.add(Restrictions.or(
-                Restrictions.like("firstname", query + "%"),
-                Restrictions.like("lastname", query + "%")));
-        
+                    Restrictions.like("firstname", "%" + array[i] + "%"),
+                    Restrictions.like("lastname", "%" + array[i] + "%")));
+        }
+
         return participantDao.getEnabledListWithCriteria(criteria);
     }
 
@@ -48,19 +51,24 @@ public class SearchManagerImpl implements SearchManager {
         DetachedCriteria criteria = DetachedCriteria
 .forClass(Teacher.class);
 
+        String[] array = query.split(" ");
+        for (int i = 0; i < array.length; i++) {
         criteria.add(Restrictions.or(
-                Restrictions.like("firstname", query + "%"),
-                Restrictions.like("lastname", query + "%")));
-
+                    Restrictions.like("firstname", "%" + array[i] + "%"),
+                    Restrictions.like("lastname", "%" + array[i] + "%")));
+        }
         return teacherDao.getEnabledListWithCriteria(criteria);
     }
 
     public List<Parent> searchParents(String query) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Parent.class);
 
+        String[] array = query.split(" ");
+        for (int i = 0; i < array.length; i++) {
         criteria.add(Restrictions.or(
-                Restrictions.like("firstname", query + "%"),
-                Restrictions.like("lastname", query + "%")));
+                    Restrictions.like("firstname", "%" + array[i] + "%"),
+                    Restrictions.like("lastname", "%" + array[i] + "%")));
+        }
 
         return parentDao.getEnabledListWithCriteria(criteria);
     }
@@ -69,7 +77,10 @@ public class SearchManagerImpl implements SearchManager {
     public List<Course> searchCourses(String query) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Course.class);
 
-        criteria.add(Restrictions.like("name", query + "%"));
+        String[] array = query.split(" ");
+        for (int i = 0; i < array.length; i++) {
+            criteria.add(Restrictions.like("name", "%" + array[i] + "%"));
+        }
 
         return courseDao.getEnabledListWithCriteria(criteria);
     }

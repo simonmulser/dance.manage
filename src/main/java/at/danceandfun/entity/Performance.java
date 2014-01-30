@@ -29,11 +29,6 @@ public class Performance extends EntityBase {
     @GeneratedValue
     private Integer perid;
 
-    // @Column(name = "DATETIME")
-    // @Type(type =
-    // "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
-    // private LocalTime dateTime;
-
     @ElementCollection
     @CollectionTable(name = "COURSEID", joinColumns = @JoinColumn(name = "PERFORMANCE_ID"))
     private List<Integer> courseIds;
@@ -51,7 +46,6 @@ public class Performance extends EntityBase {
     @ManyToMany(mappedBy = "performances")
     private List<PerformancePlan> performancePlans = new ArrayList<PerformancePlan>();
 
-    // TODO NiceToHave mapping with person/participant for ticket selling
 
     public Performance() {
     }
@@ -63,14 +57,6 @@ public class Performance extends EntityBase {
     public void setPerid(Integer perid) {
         this.perid = perid;
     }
-
-    // public LocalTime getDateTime() {
-    // return dateTime;
-    // }
-    //
-    // public void setDateTime(LocalTime dateTime) {
-    // this.dateTime = dateTime;
-    // }
 
     public Address getAddress() {
         return address;
