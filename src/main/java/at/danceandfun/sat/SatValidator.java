@@ -12,7 +12,7 @@ import at.danceandfun.entity.Performance;
 
 /**
  * This class works as a validator for the SAT solver. The input parameters
- * contain of the solution from the solver and the list of participants. In the
+ * include the solution from the solver and the list of participants. In the
  * process of validating the solution, specific boolean variables are set for
  * every course and every restriction. The class ValidatedCourse works as a link
  * to store the restriction booleans for every course.
@@ -339,6 +339,20 @@ public class SatValidator {
         return performanceMap;
     }
 
+    /**
+     * @summary This method validates the restriction for a multiple courses of
+     *          one participant performing in the same performance. Every course
+     *          is inspected and the boolean for the specific restriction is set
+     *          to 'true' if the constraint is violated
+     * @param validatedCourseList
+     *            Gets a list of ValidatedCourses as an input. This class
+     *            contains a course and booleans for the violation of
+     *            restrictions
+     * @param participantList
+     *            list of all participants
+     * @return list of validated courses with the updated booleans of
+     *         multipleGroupsSamePerformance
+     */
     private List<Course> validateMultipleCoursesInSamePerformance(
             List<Course> validatedCourseList, List<Participant> participantList) {
         List<Integer> notValidated = new ArrayList<Integer>();
@@ -377,6 +391,20 @@ public class SatValidator {
         return validatedCourseList;
     }
 
+    /**
+     * @summary This method validates the restriction for participants with
+     *          siblings performing in the same performance. Every course is
+     *          inspected and the boolean for the specific restriction is set to
+     *          'true' if the constraint is violated
+     * @param validatedCourseList
+     *            Gets a list of ValidatedCourses as an input. This class
+     *            contains a course and booleans for the violation of
+     *            restrictions
+     * @param participantList
+     *            list of all participants
+     * @return list of validated courses with the updated booleans of
+     *         sibsSamePerformance
+     */
     private List<Course> validateSiblingsInSamePerformance(
             List<Course> validatedCourseList, List<Participant> participantList) {
         List<Integer> sibCourses = new ArrayList<Integer>();
@@ -513,7 +541,9 @@ public class SatValidator {
     /**
      * @summary Resets the restriction parameters of the passed courses
      * @param validatedCourseList
-     * @return
+     *            list of validated courses
+     * @return list of validated courses with the boolean for the restrictions
+     *         reseted.
      */
     private List<Course> resetRestrictions(List<Course> validatedCourseList) {
         for (Course c : validatedCourseList) {

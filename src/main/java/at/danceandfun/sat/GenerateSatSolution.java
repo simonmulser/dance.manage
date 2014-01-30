@@ -26,9 +26,10 @@ import at.danceandfun.enumeration.CourseLevel;
 import at.danceandfun.exception.SatException;
 import at.danceandfun.service.CourseManager;
 
-/* GenerateSatSolution contains the implemented eight restrictions, which have
- * to be regarded by the creation of the performance plan. It also gives the 
- * information the right syntax to the SAT Solver over.
+/**
+ * GenerateSatSolution contains the implemented eight restrictions, which have
+ * to be regarded by the creation of the performance plan. It also gives the SAT
+ * Solver the information in the right syntax.
  */
 public class GenerateSatSolution {
 
@@ -188,8 +189,11 @@ public class GenerateSatSolution {
      *          time slot needs one course and that every course has to be used.
      * @param courses
      * @param k
+     *            number of courses
      * @param t
+     *            number of slots
      * @param p
+     *            number of performances
      */
     private void addBasicRestrictions(List<Course> courses, int k, int t, int p) {
         List<Integer> tempList = new ArrayList<Integer>();
@@ -246,6 +250,13 @@ public class GenerateSatSolution {
         }
     }
 
+    /**
+     * @summary If courses are performing more than once in a performance, they
+     *          are cloned and added to 'newOrderOfCourses' to satisfy the
+     *          solver
+     * @param courses
+     *            list of all courses
+     */
     private void handleMultipleCourses(List<Course> courses) {
         List<Course> helpList = new ArrayList<Course>();
 
@@ -307,16 +318,11 @@ public class GenerateSatSolution {
      *          of the same kind, are not allowed to stand behind one another.
      * @param courses
      * @param k
+     *            number of courses
      * @param t
+     *            number of slots
      * @param p
-     */
-    /**
-     * @summary This method adds the restriction, which says, that two courses
-     *          of the same kind, are not allowed to stand behind one another.
-     * @param courses
-     * @param k
-     * @param t
-     * @param p
+     *            number of performances
      */
     private void addNotTwoOfAKind(List<Course> courses, int k, int t, int p,
             int movedCourses) throws SatException {
@@ -377,10 +383,15 @@ public class GenerateSatSolution {
      *          participants dances in more than 1 course, there must be at
      *          least 2 breaks in between.
      * @param courses
+     *            list of all courses
      * @param participants
+     *            list of all participants
      * @param k
+     *            number of courses
      * @param t
+     *            number of slots
      * @param p
+     *            number of performances
      */
     private void add2SlotBrake(List<Course> courses,
             List<Participant> participants, int k, int t, int p)
@@ -469,7 +480,9 @@ public class GenerateSatSolution {
      * @summary This method puts the courses who are dancing in all 3
      *          performances at the end of each performance
      * @param courses
+     *            list of all courses
      * @param t
+     *            number of slots
      */
     private void addAdvancedAtTheEnd(List<Course> courses, int t) {
         Map<String, int[]> usedCourses = new HashMap<String, int[]>();
@@ -505,6 +518,15 @@ public class GenerateSatSolution {
 
     }
 
+    /**
+     * @summary Checks if the given list of courses matches the criteria of +-3
+     *          balanced amount of spectators for all 3 performances. Throws
+     *          SatException if not.
+     * @param courses
+     *            list of all courses
+     * @throws SatException
+     *             throws SatException if the list is not balanced
+     */
     private void arrangeAmountOfSpectators(List<Course> courses)
             throws SatException {
         int amount1 = 0;
@@ -535,6 +557,15 @@ public class GenerateSatSolution {
         }
     }
 
+    /**
+     * @summary Checks if the given list of courses matches the criteria of +-3
+     *          balanced mean age group for all 3 performances. Throws
+     *          SatException if not.
+     * @param courses
+     *            list of all courses
+     * @throws SatException
+     *             throws SatException if the list is not balanced
+     */
     private void arrangeAgeGroup(List<Course> courses) throws SatException {
         int amount1 = 0;
         int amount2 = 0;
@@ -565,11 +596,13 @@ public class GenerateSatSolution {
     }
 
     /**
+     * @summary If the participant dances in more than one course, all of
+     *          his/her courses should perform in the same performance. This
+     *          method moves the courses in the list to match this criteria.
      * @param courses
+     *            list of all courses
      * @param participants
-     * @param k
-     * @param t
-     * @param p
+     *            list of all participants
      * @throws SatException
      */
     private void multipleGroupsInSamePerformance(List<Course> courses,
@@ -639,6 +672,16 @@ public class GenerateSatSolution {
         }
     }
 
+    /**
+     * @summary If the participant has siblings, dancing in other courses, they
+     *          should perform in the same performance. This method moves the
+     *          courses in the list to match this criteria.
+     * @param courses
+     *            list of all courses
+     * @param participants
+     *            list of all participants
+     * @throws SatException
+     */
     private void sibsInSamePerformance(List<Course> courses,
             List<Participant> participants) throws SatException {
         List<Integer> idList = new ArrayList<Integer>();
@@ -770,6 +813,19 @@ public class GenerateSatSolution {
         }
     }
 
+    /**
+     * @summary Helping method to swap courses in 'newOrderOfCourses'
+     * @param amount1
+     *            all the courses that need to be swapped in the first
+     *            performance
+     * @param amount2
+     *            all the courses that need to be swapped in the second
+     *            performance
+     * @param amount3
+     *            all the courses that need to be swapped in the third
+     *            performance
+     * @throws SatException
+     */
     private void swapCourses(List<Integer> amount1, List<Integer> amount2,
             List<Integer> amount3) throws SatException {
         Random r = new Random();
@@ -994,6 +1050,11 @@ public class GenerateSatSolution {
         }
     }
 
+    /**
+     * @summary Helping method to swap courses
+     * @param listOfTakenCourses
+     * @return index of the swapped course
+     */
     private int helpSwapping(List<Integer> listOfTakenCourses) {
 
         List<Integer> list = new ArrayList<Integer>();
@@ -1017,6 +1078,11 @@ public class GenerateSatSolution {
 
     }
 
+    /**
+     * @summary Helping method to swap courses
+     * @param listOfTakenCourses
+     * @return index of the swapped course
+     */
     private int helpSwappingSecond(List<Integer> list) {
         Random r = new Random();
         int index = r.nextInt(list.size() - 1);
@@ -1026,6 +1092,14 @@ public class GenerateSatSolution {
         return index;
     }
 
+    /**
+     * @summary Checks if the course has already been swapped
+     * @param alreadySwapped
+     *            list of swapped courses
+     * @param courseID
+     *            id of the course to be checked
+     * @throws SatException
+     */
     private void checkAlreadySwapped(List<Integer> alreadySwapped, int courseID)
             throws SatException {
         for (int i = 0; i < alreadySwapped.size(); i++) {
@@ -1039,7 +1113,8 @@ public class GenerateSatSolution {
      * @summary Converts the list into a Integer Array, which is necessary to
      *          fill the SAT Solver.
      * @param list
-     * @return
+     *            list of integers reflecting the variables for the solver
+     * @return integer array of the variables
      */
     private int[] convertToIntegerArray(List<Integer> list) {
         int[] intArray = new int[list.size()];
@@ -1055,8 +1130,11 @@ public class GenerateSatSolution {
      * @summary Maps back the Integer values to the original expressions like
      *          play, course or time slot.
      * @param solution
+     *            array of integer reflecting the solution of the solver
      * @param courses
-     * @return
+     *            list of all courses
+     * @return map that includes three performances with their courses mapped by
+     *         the solution array
      */
     private Map<Integer, Performance> backMapping(int[] solution,
             List<Course> courses) throws SatException {
@@ -1117,7 +1195,7 @@ public class GenerateSatSolution {
 
     /**
      * @summary Execution of the SAT Solver, finding of solutions.
-     * @return
+     * @return integer array with a valid solution of the problem
      */
     private int[] executeSingleSAT() throws SatException {
         solver = SolverFactory.newDefault();
@@ -1151,6 +1229,14 @@ public class GenerateSatSolution {
         }
     }
 
+    /**
+     * @summary Checks the given list of courses for multiple courses in one
+     *          performance
+     * @param courses
+     *            list of all courses
+     * @throws SatException
+     *             throws exception if multiple courses are found
+     */
     private void checkForMultipleCourses(List<Course> courses)
             throws SatException {
         int size = courses.size();
@@ -1198,6 +1284,7 @@ public class GenerateSatSolution {
      * @summary This method sets the dummy courses to beginning of the
      *          performance
      * @param courses
+     *            list of all courses
      */
     private void addDummyClauses(List<Course> courses) {
         int foundDummies = 0;
@@ -1222,6 +1309,12 @@ public class GenerateSatSolution {
         }
     }
 
+    /**
+     * @summary Deletes all dummy courses in the performances
+     * @param performanceMap
+     *            map, containing three performances
+     * @return map without the dummy courses
+     */
     private Map<Integer, Performance> deleteDummies(
             Map<Integer, Performance> performanceMap) {
 
