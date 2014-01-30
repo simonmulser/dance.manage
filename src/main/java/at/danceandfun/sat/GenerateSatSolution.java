@@ -94,6 +94,8 @@ public class GenerateSatSolution {
         addBasicRestrictions(newOrderOfCourses, numberOfCourses, numberOfSlots,
                 numberOfPlays);
 
+        checkForMultipleCourses(newOrderOfCourses);
+
         solution = executeSingleSAT();
         plan = backMapping(solution, newOrderOfCourses);
 
@@ -1146,6 +1148,30 @@ public class GenerateSatSolution {
             }
         } catch (TimeoutException e) {
             throw new SatException("Execution too long");
+        }
+    }
+
+    private void checkForMultipleCourses(List<Course> courses)
+            throws SatException {
+        int size = courses.size();
+
+        for (int i = 0; i < 3; i++) {
+            List<Course> sublist = courses.subList(size / 3 * i, size / 3 * i
+                    + 1);
+
+            for (Course currentCourse : sublist) {
+                int counter = 0;
+                for (Course coursesToCheck : sublist) {
+                    if (currentCourse.getCid() == coursesToCheck.getCid()
+                            && !currentCourse.isDummyCourse()) {
+                        counter++;
+                    }
+                }
+                if (counter > 1) {
+                    throw new SatException(
+                            "Course is more than once in the performance");
+                }
+            }
         }
     }
 
