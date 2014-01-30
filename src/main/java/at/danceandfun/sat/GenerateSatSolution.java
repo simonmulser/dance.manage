@@ -1244,8 +1244,8 @@ public class GenerateSatSolution {
         int size = courses.size();
 
         for (int i = 0; i < 3; i++) {
-            List<Course> sublist = courses.subList(size / 3 * i, size / 3 * i
-                    + 1);
+            List<Course> sublist = courses.subList(size / 3 * i, size / 3
+                    * (i + 1));
 
             for (Course currentCourse : sublist) {
                 int counter = 0;

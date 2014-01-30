@@ -209,6 +209,10 @@ public class PerformanceController {
     public String savePerformancePlan(@PathVariable("planid") Integer planid) {
         logger.info("SAVE the performanceplan");
 
+        if (planid == null) {
+            isSavedPlan = false;
+        }
+        
         tempPerformance1.setEnabled(true);
         tempPerformance2.setEnabled(true);
         tempPerformance3.setEnabled(true);
