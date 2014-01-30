@@ -62,7 +62,7 @@ public class InvoiceController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String listInvoices(ModelMap map) {
-        logger.debug("LIST all invoices from DB");
+        logger.info("LIST all invoices from DB");
         if (status == 3) {
             init();
         }
@@ -229,7 +229,7 @@ public class InvoiceController {
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
     @RequestMapping(value = "/viewInvoicePDF/{iid}", method = RequestMethod.GET)
     public ModelAndView viewInvoicePdf(@PathVariable("iid") Integer iid) {
-        logger.debug("Creating pdf for invoice with id " + iid);
+        logger.info("Creating pdf for invoice with id " + iid);
         Invoice inv = invoiceManager.get(iid);
         if (inv == null) {
             throw new IllegalArgumentException("Invoice with id " + iid

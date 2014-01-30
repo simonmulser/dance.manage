@@ -48,7 +48,7 @@ public class TeacherHomeController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String showIndex(ModelMap map) {
-        logger.debug("showIndexTeacher");
+        logger.info("showIndexTeacher");
         Teacher teacher = getLoggedInTeacher();
 
         map.put("teacher", teacher);
@@ -59,7 +59,7 @@ public class TeacherHomeController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String showEdit(ModelMap map) {
-        logger.debug("showEditTeacher");
+        logger.info("showEditTeacher");
         Teacher teacher = getLoggedInTeacher();
 
         map.put("teacher", teacher);
@@ -94,7 +94,7 @@ public class TeacherHomeController {
             return "teacher/editTeacher";
         }
 
-        logger.debug("updateTeacher");
+        logger.info("updateTeacher");
         teacherManager.merge(teacher);
         return "redirect:/teacher";
 
@@ -102,7 +102,7 @@ public class TeacherHomeController {
 
     @RequestMapping(value = "/editPassword", method = RequestMethod.GET)
     public String showEditPassword(ModelMap map) {
-        logger.debug("showEditPassword");
+        logger.info("showEditPassword");
 
         map.put("password", passwordBean);
         return "teacher/editPassword";
@@ -126,7 +126,7 @@ public class TeacherHomeController {
         passwordBean.setId(getLoggedInTeacher().getPid());
 
         if (!personManager.changePassword(passwordBean)) {
-            logger.debug("OBJECT: " + passwordBean);
+            logger.info("OBJECT: " + passwordBean);
             this.passwordBean = passwordBean;
             redirectAttributes.addFlashAttribute("password", passwordBean);
             return "teacher/editPassword";
@@ -139,7 +139,7 @@ public class TeacherHomeController {
 
     @RequestMapping(value = "/absence", method = RequestMethod.GET)
     public String showAbsence(ModelMap map) {
-        logger.debug("showAbsenceTeacher");
+        logger.info("showAbsenceTeacher");
         Teacher teacher = getLoggedInTeacher();
 
         map.put("teacher", teacher);

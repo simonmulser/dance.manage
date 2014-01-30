@@ -79,7 +79,7 @@ public class StatisticsController {
 
     @RequestMapping(value = "/viewCourseStatisticsPdf", method = RequestMethod.GET)
     public ModelAndView viewCourseStatisticsPdf() {
-        logger.debug("Creating course statistics pdf");
+        logger.info("Creating course statistics pdf");
 
         HashMap<String, Object> map = new HashMap<String, Object>(1);
         DetachedCriteria criteria = DetachedCriteria.forClass(Course.class);

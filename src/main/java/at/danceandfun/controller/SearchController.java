@@ -29,7 +29,7 @@ public class SearchController {
     @RequestMapping(value = "request", method = RequestMethod.GET)
     public String requestSearch(@RequestParam("query") String query,
             ModelMap model) {
-        logger.debug("Search in DB with term: " + query);
+        logger.info("Search in DB with term: " + query);
         
         fillSearchObject(query);
         model.put("searchResults", searchResults);
@@ -40,7 +40,7 @@ public class SearchController {
     @RequestMapping(value = "/searchQuery", method = RequestMethod.GET)
     public @ResponseBody
     List<EntityBase> searchQuery(@RequestParam("term") String query) {
-        logger.debug("Search in DB with term: " + query);
+        logger.info("Search in DB with term: " + query);
         fillSearchObject(query);
         return searchResults.getAllResults();
     }

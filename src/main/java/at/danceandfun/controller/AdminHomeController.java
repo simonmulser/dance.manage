@@ -81,7 +81,7 @@ public class AdminHomeController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String showEdit(ModelMap map) {
-        logger.debug("showEdit");
+        logger.info("showEdit");
         Admin admin = getLoggedInAdmin();
 
         map.put("admin", admin);
@@ -115,7 +115,7 @@ public class AdminHomeController {
             return "admin/editAdmin";
         }
 
-        logger.debug("updateAdmin");
+        logger.info("updateAdmin");
         adminManager.merge(admin);
         return "redirect:/admin";
 
@@ -123,7 +123,7 @@ public class AdminHomeController {
 
     @RequestMapping(value = "/editPassword", method = RequestMethod.GET)
     public String showEditPassword(ModelMap map) {
-        logger.debug("showEditPassword");
+        logger.info("showEditPassword");
 
         map.put("password", passwordBean);
         return "admin/editPassword";

@@ -55,7 +55,7 @@ public class ParentController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String listParents(ModelMap map) {
-        logger.debug("LIST Parent with id " + parent.getPid());
+        logger.info("LIST Parent with id " + parent.getPid());
 
         if (!editTrue) {
             parent = new Parent();
@@ -102,7 +102,7 @@ public class ParentController {
 
         }
 
-        logger.debug("ADD Participant with id " + parent.getPid());
+        logger.info("ADD Participant with id " + parent.getPid());
         parent.setEnabled(true);
 
         if (parent.getAddress().getAid() == null) {
@@ -110,21 +110,21 @@ public class ParentController {
         }
 
         if (parent.getPid() == null) {
-            logger.debug("New parent");
+            logger.info("New parent");
             parent = (Parent) personManager.getURLToken(parent);
             parentManager.persist(parent);
             if (!parent.getEmail().equals("")) {
                 personManager.sendURL(parent);
             }
         } else {
-            logger.debug("Update parent");
+            logger.info("Update parent");
             parent = parentManager.merge(parent);
             if (!parent.isActivated() && !parent.getEmail().equals("")) {
                 personManager.sendURL(parent);
             }
         }
 
-        logger.debug("Finished updating parent");
+        logger.info("Finished updating parent");
         editTrue = false;
 
         return "redirect:/admin/parent";
@@ -132,7 +132,7 @@ public class ParentController {
 
     @RequestMapping(value = "/edit/{pid}")
     public String editParent(@PathVariable("pid") Integer pid) {
-        logger.debug("Edit Parent with id " + pid);
+        logger.info("Edit Parent with id " + pid);
         parent = parentManager.get(pid);
         editTrue = true;
 
@@ -141,7 +141,7 @@ public class ParentController {
 
     @RequestMapping(value = "/delete/{pid}")
     public String deleteParent(@PathVariable("pid") Integer pid) {
-        logger.debug("Delete Parent with id " + pid);
+        logger.info("Delete Parent with id " + pid);
         parent = parentManager.get(pid);
         parent.setEnabled(false);
         if (parent.getChildren().size() > 0) {
@@ -159,7 +159,7 @@ public class ParentController {
 
     @RequestMapping(value = "/viewParentListPdf", method = RequestMethod.GET)
     public ModelAndView viewParentListPdf() {
-        logger.debug("Creating participants by course count pdf");
+        logger.info("Creating participants by course count pdf");
 
         HashMap<String, Object> map = new HashMap<String, Object>(1);
         DetachedCriteria criteria = DetachedCriteria.forClass(Parent.class);

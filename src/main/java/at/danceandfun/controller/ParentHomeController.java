@@ -57,7 +57,7 @@ public class ParentHomeController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String showIndex(ModelMap map) {
-        logger.debug("showIndex");
+        logger.info("showIndex");
         Parent parent = getLoggedInParent();
 
         List<CourseParticipant> enabledCoursesofChildren = new ArrayList<CourseParticipant>();
@@ -73,7 +73,7 @@ public class ParentHomeController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String showEdit(ModelMap map) {
-        logger.debug("showEdit");
+        logger.info("showEdit");
         Parent parent = getLoggedInParent();
 
         map.put("parent", parent);
@@ -106,7 +106,7 @@ public class ParentHomeController {
             return "parent/editParent";
         }
 
-        logger.debug("updateParent");
+        logger.info("updateParent");
         parentManager.merge(parent);
         return "redirect:/parent";
 
@@ -114,7 +114,7 @@ public class ParentHomeController {
 
     @RequestMapping(value = "/add/child", method = RequestMethod.GET)
     public String showAddChild(ModelMap map) {
-        logger.debug("addChild");
+        logger.info("addChild");
         Parent parent = getLoggedInParent();
 
         map.put("parent", parent);
@@ -127,7 +127,7 @@ public class ParentHomeController {
             @RequestParam("childPassword") String childPassword,
             BindingResult result, RedirectAttributes redirectAttributes) {
 
-        logger.debug("addChildParent");
+        logger.info("addChildParent");
         Parent parent = getLoggedInParent();
         Participant particpant = paticipantManager.get(Integer
                 .parseInt(childId));
@@ -141,7 +141,7 @@ public class ParentHomeController {
 
     @RequestMapping(value = "/editPassword", method = RequestMethod.GET)
     public String showEditPassword(ModelMap map) {
-        logger.debug("showEditPassword");
+        logger.info("showEditPassword");
 
         map.put("password", passwordBean);
         return "parent/editPassword";
@@ -165,7 +165,7 @@ public class ParentHomeController {
         passwordBean.setId(getLoggedInParent().getPid());
 
         if (!personManager.changePassword(passwordBean)) {
-            logger.debug("OBJECT: " + passwordBean);
+            logger.info("OBJECT: " + passwordBean);
             this.passwordBean = passwordBean;
             redirectAttributes.addFlashAttribute("password", passwordBean);
             return "parent/editPassword";

@@ -70,7 +70,7 @@ public class ParticipantHomeController {
 
     @RequestMapping(value = "/{pid}", method = RequestMethod.GET)
     public String showIndex(ModelMap map, @PathVariable int pid) {
-        logger.debug("showIndex");
+        logger.info("showIndex");
         Participant participant = participantManager.get(pid);
 
         map.put("participant", participant);
@@ -81,7 +81,7 @@ public class ParticipantHomeController {
 
     @RequestMapping(value = "/edit/{pid}", method = RequestMethod.GET)
     public String showEdit(ModelMap map, @PathVariable int pid) {
-        logger.debug("showEdit");
+        logger.info("showEdit");
         Participant participant = participantManager.get(pid);
 
         map.put("participant", participant);
@@ -116,7 +116,7 @@ public class ParticipantHomeController {
             return "participant/editParticipant";
         }
 
-        logger.debug("updateParticipant");
+        logger.info("updateParticipant");
         participantManager.merge(participant);
         return "redirect:/participant/" + pid;
 
@@ -124,7 +124,7 @@ public class ParticipantHomeController {
 
     @RequestMapping(value = "/editPassword/{pid}", method = RequestMethod.GET)
     public String showEditPassword(ModelMap map, @PathVariable int pid) {
-        logger.debug("showEditPassword");
+        logger.info("showEditPassword");
 
         map.put("participant", participantManager.get(pid));
         map.put("password", passwordBean);
@@ -150,7 +150,7 @@ public class ParticipantHomeController {
         passwordBean.setId(participant.getPid());
 
         if (!personManager.changePassword(passwordBean)) {
-            logger.debug("OBJECT: " + passwordBean);
+            logger.info("OBJECT: " + passwordBean);
             this.passwordBean = passwordBean;
             redirectAttributes.addFlashAttribute("password", passwordBean);
             return "participant/editPassword";
@@ -163,7 +163,7 @@ public class ParticipantHomeController {
 
     @RequestMapping(value = "/absence/{pid}", method = RequestMethod.GET)
     public String showAbsence(ModelMap map, @PathVariable int pid) {
-        logger.debug("showAbsence");
+        logger.info("showAbsence");
         Participant participant = participantManager.get(pid);
 
         map.put("participant", participant);
@@ -184,7 +184,7 @@ public class ParticipantHomeController {
         Appointment appointment = appointmentManager.get(appointmentId);
         Absence absence = new Absence(participant, appointment, reason);
 
-        logger.debug("saveAbsence for course:" + slug + " appointment("
+        logger.info("saveAbsence for course:" + slug + " appointment("
                 + appointment + ") cause:" + reason);
 
         participantManager.mergeAbsence(absence);
@@ -213,7 +213,7 @@ public class ParticipantHomeController {
             absence.setEnabled(true);
         }
 
-        logger.debug("updateAbsence for course:" + slug + " appointment:"
+        logger.info("updateAbsence for course:" + slug + " appointment:"
                 + appointment + " participant:" + participant);
 
         participantManager.mergeAbsence(absence);
@@ -226,7 +226,7 @@ public class ParticipantHomeController {
 
     @RequestMapping(value = "/rating/{pid}", method = RequestMethod.GET)
     public String showRating(ModelMap map, @PathVariable int pid) {
-        logger.debug("showRating");
+        logger.info("showRating");
         Participant participant = participantManager.get(pid);
         participant.setCourseParticipants(courseParticipantManager
                 .getEnabledDistinctCourseParticipants(participant));
@@ -248,7 +248,7 @@ public class ParticipantHomeController {
     public String addRating(ModelMap map, @PathVariable int pid,
             @ModelAttribute(value = "rating") @Valid Rating rating,
             BindingResult result, RedirectAttributes redirectAttributes) {
-        logger.debug("addRating");
+        logger.info("addRating");
 
         if (result.hasErrors()) {
             logger.error("VALIDATION ERRORS: " + result.getAllErrors().size());

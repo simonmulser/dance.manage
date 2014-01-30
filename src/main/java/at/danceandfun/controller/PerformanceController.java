@@ -73,7 +73,7 @@ public class PerformanceController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String listPerformances(ModelMap map) {
-        logger.debug("LIST performances with id " + performance.getPerid());
+        logger.info("LIST performances with id " + performance.getPerid());
 
         if (!editTrue) {
             performancePlan = new PerformancePlan();
@@ -109,7 +109,7 @@ public class PerformanceController {
             HttpServletRequest request,
             @ModelAttribute(value = "performancePlan") @Valid PerformancePlan plan,
             BindingResult result, RedirectAttributes redirectAttributes) {
-        logger.debug("BUILD performance");
+        logger.info("BUILD performance");
 
         setCheckedRestrictions(request);
 
@@ -188,7 +188,7 @@ public class PerformanceController {
             HttpServletRequest request,
             @ModelAttribute(value = "performancePlan") @Valid PerformancePlan plan,
             BindingResult result, RedirectAttributes redirectAttributes) {
-        logger.debug("VALDIATE performancePlan");
+        logger.info("VALDIATE performancePlan");
         List<Participant> participantList = participantManager.getEnabledList();
 
         performancePlanMap.put(1, tempPerformance1);
@@ -208,7 +208,7 @@ public class PerformanceController {
 
     @RequestMapping(value = "/save/{planid}")
     public String savePerformancePlan(@PathVariable("planid") Integer planid) {
-        logger.debug("SAVE the performanceplan");
+        logger.info("SAVE the performanceplan");
 
         tempPerformance1.setEnabled(true);
         tempPerformance2.setEnabled(true);
@@ -251,7 +251,7 @@ public class PerformanceController {
     @RequestMapping(value = "/show/{planid}")
     public String showPerformancePlan(@PathVariable("planid") Integer planid,
             ModelMap map) {
-        logger.debug("Show Performanceplan with id " + planid);
+        logger.info("Show Performanceplan with id " + planid);
 
         PerformancePlan plan = performancePlanManager.get(planid);
         List<Participant> participantList = participantManager.getEnabledList();
@@ -307,7 +307,7 @@ public class PerformanceController {
 
     @RequestMapping(value = "/delete/{planid}")
     public String deletePerformancePlan(@PathVariable("planid") Integer planid) {
-        logger.debug("Delete Performanceplan with id " + planid);
+        logger.info("Delete Performanceplan with id " + planid);
 
         performancePlan = performancePlanManager.get(planid);
         performancePlan.setEnabled(false);
@@ -320,7 +320,7 @@ public class PerformanceController {
     @RequestMapping(value = "/viewPerformancePdf/{planid}", method = RequestMethod.GET)
     public ModelAndView viewPerformancePdf(
             @PathVariable("planid") Integer planid) {
-        logger.debug("Creating performance pdf");
+        logger.info("Creating performance pdf");
 
         HashMap<String, Object> map = new HashMap<String, Object>(1);
         PerformancePlan plan = performancePlanManager.get(planid);

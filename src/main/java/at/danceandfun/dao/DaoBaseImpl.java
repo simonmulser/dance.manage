@@ -28,17 +28,17 @@ public class DaoBaseImpl<T> implements DaoBase<T> {
     }
 
     public void persist(T domain) {
-        logger.debug("save");
+        logger.info("save");
         entityManager.persist(domain);
     }
 
     public boolean contains(T domain) {
-        logger.debug("check if persisted");
+        logger.info("check if persisted");
         return entityManager.contains(domain);
     }
 
     public T merge(T domain) throws PersistenceException {
-        logger.debug("update");
+        logger.info("update");
         try {
             return entityManager.merge(domain);
         } catch (PersistenceException persistenceException) {
@@ -57,21 +57,21 @@ public class DaoBaseImpl<T> implements DaoBase<T> {
     }
 
     public T get(Serializable id) {
-        logger.debug("get");
+        logger.info("get");
         return entityManager.find(classz, id);
     }
 
     @SuppressWarnings("unchecked")
     public List<T> getListByCriteria(DetachedCriteria detachedCriteria,
             int offset, int size) {
-        logger.debug("getListByCriteria with offset and size");
+        logger.info("getListByCriteria with offset and size");
         return detachedCriteria.getExecutableCriteria(getHibernateSession())
                 .list();
     }
 
     @SuppressWarnings("unchecked")
     public List<T> getListByCriterions(List<Criterion> criterions) {
-        logger.debug("getListByCriteria by criterions");
+        logger.info("getListByCriteria by criterions");
         DetachedCriteria detachedCriteria = DetachedCriteria.forClass(classz);
         for (Criterion criterion : criterions) {
             detachedCriteria.add(criterion);
@@ -82,7 +82,7 @@ public class DaoBaseImpl<T> implements DaoBase<T> {
 
     @SuppressWarnings("unchecked")
     public List<T> getListByCriteria(DetachedCriteria detachedCriteria) {
-        logger.debug("getListByCriteria");
+        logger.info("getListByCriteria");
         return detachedCriteria.getExecutableCriteria(getHibernateSession())
                 .list();
 
@@ -90,7 +90,7 @@ public class DaoBaseImpl<T> implements DaoBase<T> {
 
     @SuppressWarnings("unchecked")
     public List<T> getEnabledListWithCriteria(DetachedCriteria detachedCriteria) {
-        logger.debug("getListByCriteria");
+        logger.info("getListByCriteria");
         detachedCriteria.add(Restrictions.eq("enabled", true));
         return detachedCriteria.getExecutableCriteria(getHibernateSession())
                 .list();

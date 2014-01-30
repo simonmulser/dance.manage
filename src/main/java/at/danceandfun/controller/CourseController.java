@@ -56,7 +56,7 @@ public class CourseController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String listCourses(ModelMap map) {
-        logger.debug("LIST course with id " + course.getCid());
+        logger.info("LIST course with id " + course.getCid());
 
         if (!editTrue) {
             course = new Course();
@@ -76,7 +76,7 @@ public class CourseController {
     public String addCourse(
             @ModelAttribute(value = "course") @Valid Course course,
             BindingResult result, RedirectAttributes redirectAttributes) {
-        logger.debug("ADD Course with id " + course.getCid());
+        logger.info("ADD Course with id " + course.getCid());
 
         if (result.hasErrors()) {
             if (course.isInPerformance() && course.getAmountPerformances() == null) {
@@ -153,7 +153,7 @@ public class CourseController {
 
     @RequestMapping(value = "/edit/{cid}")
     public String editCourse(@PathVariable("cid") Integer cid) {
-        logger.debug("Edit Course with id " + cid);
+        logger.info("Edit Course with id " + cid);
         course = courseManager.get(cid);
         editTrue = true;
         return "redirect:/admin/course#add";
@@ -161,7 +161,7 @@ public class CourseController {
 
     @RequestMapping(value = "/delete/{cid}")
     public String deleteCourse(@PathVariable("cid") Integer cid) {
-        logger.debug("Delete Course with id " + cid);
+        logger.info("Delete Course with id " + cid);
         course = courseManager.get(cid);
         course.setEnabled(false);
         courseManager.merge(course);
@@ -183,7 +183,7 @@ public class CourseController {
 
     @RequestMapping(value = "/viewCourseListPdf", method = RequestMethod.GET)
     public ModelAndView viewCourseListPdf() {
-        logger.debug("Creating course list pdf");
+        logger.info("Creating course list pdf");
 
         HashMap<String, Object> map = new HashMap<String, Object>(1);
         DetachedCriteria criteria = DetachedCriteria.forClass(Course.class);

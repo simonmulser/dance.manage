@@ -68,7 +68,7 @@ public class ParticipantController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String listParticipants(ModelMap map) {
-        logger.debug("LIST Participant with id " + participant.getPid());
+        logger.info("LIST Participant with id " + participant.getPid());
 
         if (!editTrue) {
             participant = new Participant();
@@ -125,7 +125,7 @@ public class ParticipantController {
 
         }
 
-        logger.debug("ADD Participant with id " + participant.getPid());
+        logger.info("ADD Participant with id " + participant.getPid());
         participant.setEnabled(true);
         if (!(participant.getParent().getPid() == null)) {
             Parent newParent = parentManager.get(participant.getParent()
@@ -148,7 +148,7 @@ public class ParticipantController {
         }
 
         if (participant.getPid() == null) {
-            logger.debug("New participant");
+            logger.info("New participant");
             participant = (Participant) personManager.getURLToken(participant);
             participantManager.persist(participant);
             if (!participant.getEmail().equals("")) {
@@ -217,7 +217,7 @@ public class ParticipantController {
 
     @RequestMapping(value = "/edit/{pid}")
     public String editParticipant(@PathVariable("pid") Integer pid) {
-        logger.debug("Edit Participant with id " + pid);
+        logger.info("Edit Participant with id " + pid);
         participant = participantManager.get(pid);
         editTrue = true;
 
@@ -256,7 +256,7 @@ public class ParticipantController {
 
     @RequestMapping(value = "/delete/{pid}")
     public String deleteParticipant(@PathVariable("pid") Integer pid) {
-        logger.debug("Delete Participant with id " + pid);
+        logger.info("Delete Participant with id " + pid);
         participant = participantManager.get(pid);
         participant.setEnabled(false);
         if (participant.getSiblings().size() > 0) {
@@ -302,7 +302,7 @@ public class ParticipantController {
 
     @RequestMapping(value = "/viewParticipantListPdf", method = RequestMethod.GET)
     public ModelAndView viewParticipantListPdf() {
-        logger.debug("Creating participants list pdf");
+        logger.info("Creating participants list pdf");
 
         HashMap<String, Object> map = new HashMap<String, Object>(1);
         List<Participant> participantList = new ArrayList<Participant>();

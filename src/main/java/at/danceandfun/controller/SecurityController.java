@@ -155,7 +155,7 @@ public class SecurityController {
 
     @RequestMapping(value = "/resetPassword", method = RequestMethod.GET)
     public String showEditPassword(ModelMap map) {
-        logger.debug("showEditPassword");
+        logger.info("showEditPassword");
 
         map.put("resetCode", resetCode);
         map.put("usernameBean", usernameBean);

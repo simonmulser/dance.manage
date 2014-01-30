@@ -62,7 +62,7 @@ public class RatingController {
 
     @RequestMapping(value = "/addAnswer/{rid}", method = RequestMethod.GET)
     public String addRating(ModelMap map, @PathVariable("rid") int rid) {
-        logger.debug("addAnswer");
+        logger.info("addAnswer");
         editTrue = true;
         rating = ratingManager.get(rid);
         return "redirect:/admin/rating";

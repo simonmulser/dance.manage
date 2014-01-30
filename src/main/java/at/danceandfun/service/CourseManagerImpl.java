@@ -96,7 +96,7 @@ public class CourseManagerImpl extends ManagerBaseImpl<Course> implements
             if (participantCount > 0) {
                 participantsPerStyle.add(style.getName() + "("
                         + participantCount + ")" + "," + participantCount);
-                logger.debug("ADDED: " + style.getName() + "("
+                logger.info("ADDED: " + style.getName() + "("
                         + participantCount + ")" + "," + participantCount);
             }
             participantCount = 0;
@@ -131,7 +131,7 @@ public class CourseManagerImpl extends ManagerBaseImpl<Course> implements
         criteria.add(Restrictions.eq("teacher", teacher));
 
         List<Course> courses = mainDao.getListByCriteria(criteria);
-        logger.debug("Received list from courseDAO with " + courses.size()
+        logger.info("Received list from courseDAO with " + courses.size()
                 + " elements");
         return courses;
     }

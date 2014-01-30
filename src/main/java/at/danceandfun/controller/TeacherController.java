@@ -62,7 +62,7 @@ public class TeacherController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String listTeachers(ModelMap map) {
-        logger.debug("LIST Teacher with id " + teacher.getPid());
+        logger.info("LIST Teacher with id " + teacher.getPid());
 
         if (!editTrue) {
             teacher = new Teacher();
@@ -129,11 +129,11 @@ public class TeacherController {
                     courseManager.merge(actualCourse);
 
                 } else if (!teacher.getCourses().contains(actualCourse)) {
-                    logger.debug("Neuen Kurs hinzufügen");
+                    logger.info("Neuen Kurs hinzufügen");
 
                     teacher.getCourses().add(actualCourse);
                 } else {
-                    logger.debug("Bestehender Kurs mit name: "
+                    logger.info("Bestehender Kurs mit name: "
                             + actualCourse.getName());
                 }
             }
@@ -147,14 +147,14 @@ public class TeacherController {
                         .parseInt(s)));
 
                 if (Integer.parseInt(s) < 0) {
-                    logger.debug("Stil löschen: " + actualStyle.getSid());
+                    logger.info("Stil löschen: " + actualStyle.getSid());
                     teacher.getStyles().remove(actualStyle);
                 } else if (!teacher.getStyles().contains(actualStyle)) {
-                    logger.debug("Neuen Stil hinzufügen: "
+                    logger.info("Neuen Stil hinzufügen: "
                             + actualStyle.getSid());
                     teacher.getStyles().add(actualStyle);
                 } else {
-                    logger.debug("Bestehender Stil mit name: "
+                    logger.info("Bestehender Stil mit name: "
                             + actualStyle.getName());
                 }
             }
@@ -166,14 +166,14 @@ public class TeacherController {
         }
 
         if (teacher.getPid() == null) {
-            logger.debug("New teacher");
+            logger.info("New teacher");
             teacher = (Teacher) personManager.getURLToken(teacher);
             teacherManager.persist(teacher);
             if (!teacher.getEmail().equals("")) {
                 personManager.sendURL(teacher);
             }
         } else {
-            logger.debug("Update teacher");
+            logger.info("Update teacher");
             teacher = teacherManager.merge(teacher);
             if (!teacher.isActivated() && !teacher.getEmail().equals("")) {
                 personManager.sendURL(teacher);
@@ -192,7 +192,7 @@ public class TeacherController {
 
     @RequestMapping(value = "/edit/{pid}")
     public String editTeacher(@PathVariable("pid") Integer pid) {
-        logger.debug("Edit Teacher with id " + pid);
+        logger.info("Edit Teacher with id " + pid);
         this.teacher = teacherManager.get(pid);
         editTrue = true;
 
@@ -225,7 +225,7 @@ public class TeacherController {
 
     @RequestMapping(value = "/delete/{pid}")
     public String deleteTeacher(@PathVariable("pid") Integer pid) {
-        logger.debug("Delete Teacher with id " + pid);
+        logger.info("Delete Teacher with id " + pid);
         this.teacher = teacherManager.get(pid);
         teacher.setEnabled(false);
 
@@ -264,7 +264,7 @@ public class TeacherController {
 
     @RequestMapping(value = "/viewTeacherListPdf", method = RequestMethod.GET)
     public ModelAndView viewTeacherListPdf() {
-        logger.debug("Creating teacher list pdf");
+        logger.info("Creating teacher list pdf");
 
         HashMap<String, Object> map = new HashMap<String, Object>(1);
         DetachedCriteria criteria = DetachedCriteria.forClass(Teacher.class);

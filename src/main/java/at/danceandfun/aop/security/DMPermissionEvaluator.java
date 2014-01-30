@@ -28,7 +28,7 @@ public class DMPermissionEvaluator implements PermissionEvaluator {
     @Transactional
     public boolean hasPermission(Authentication authentication,
             Object targetDomainObject, Object permission) {
-        logger.debug("entered hasPermission");
+        logger.info("entered hasPermission");
 
         boolean hasPermission = false;
         if (canHandle(authentication, targetDomainObject, permission)) {

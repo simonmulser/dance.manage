@@ -41,7 +41,7 @@ public class ListController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String showLists(ModelMap map) {
-        logger.debug("SHOWLISTS");
+        logger.info("SHOWLISTS");
         List<CourseParticipant> courseParticipants = courseParticipantManager
                 .getCourseParticipantsByCount();
         List<Participant> participantsByCourseCount = new ArrayList<Participant>();
@@ -76,7 +76,7 @@ public class ListController {
 
     @RequestMapping(value = "/viewPerformanceDetailPdf", method = RequestMethod.GET)
     public ModelAndView viewPerformanceDetailPdf() {
-        logger.debug("Creating performance details pdf");
+        logger.info("Creating performance details pdf");
 
         List<Course> courses = new ArrayList<Course>();
         DetachedCriteria criteria = DetachedCriteria.forClass(Course.class);
@@ -96,7 +96,7 @@ public class ListController {
 
     @RequestMapping(value = "/viewParticipantsByCourseCountPdf", method = RequestMethod.GET)
     public ModelAndView viewParticipantsByCourseCountPdf() {
-        logger.debug("Creating participants by course count pdf");
+        logger.info("Creating participants by course count pdf");
 
         List<CourseParticipant> courseParticipants = courseParticipantManager
                 .getCourseParticipantsByCount();
@@ -117,7 +117,7 @@ public class ListController {
 
     @RequestMapping(value = "/viewParticipantsByNumberOfSiblingsPdf", method = RequestMethod.GET)
     public ModelAndView viewParticipantsByNumberOfSiblingsPdf() {
-        logger.debug("Creating participants by course count pdf");
+        logger.info("Creating participants by course count pdf");
 
         HashMap<String, Object> map = new HashMap<String, Object>(1);
         map.put("participantsByNumberOfSiblings",
